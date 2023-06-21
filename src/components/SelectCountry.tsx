@@ -9,16 +9,22 @@
 
 import React from 'react'
 import { getData } from 'country-list'
+import ComponentPayload from '@/object-types/ComponentPayLoad'
 
-export default function SelectCountryComponent() {
+interface Props {
+    onChange: any,
+    value: string
+}
+
+export default function SelectCountryComponent(props: Props) {
 
     return(
         <>
-            <label htmlFor="country" className="form-label fw-bold">Country</label>
-            <select className="form-select" aria-label="country" id="country" defaultValue="">
+            <label htmlFor="country" className="form-label fw-bold">Owner Country</label>
+            <select className="form-select" aria-label="country" id="country" defaultValue="" name ="ownerCountry" onChange={props.onChange} value={props.value}>
                 <option value="">Select a country</option>
                 {getData().map((country: any) => (
-                    <option key={country.code} value={country.code}>
+                    <option key={country.code} value={country.name}>
                         {country.name}
                 </option>
                 ))}

@@ -14,6 +14,7 @@ import { useState } from 'react';
 interface Props {
     header: string;
     keyName: string;
+    onChange: any;
 }
 
 interface Input {
@@ -30,6 +31,7 @@ export default function AddKeyValueComponent(props: Props) {
         const list: Input[] = [...inputList];
         list[index][name as keyof Input] = value;
         setInputList(list);
+        props.onChange(list);
     };
 
     const handleRemoveClick = (index: number) => {
@@ -53,10 +55,10 @@ export default function AddKeyValueComponent(props: Props) {
                         return (
                             <div className="row mb-2" key ="">
                                 <div className="col-lg-5">
-                                    <input name="key" value={elem.key} type="text" onChange={e => handleInputChange(e, j)} className="form-control" placeholder={`Enter ${props.keyName.toLowerCase()} key`} aria-describedby={`${props.keyName.toLowerCase()} key`} />
+                                    <input name="key" value={elem.key} type="text" onChange={e => handleInputChange(e, j)} className="form-control" placeholder={`Enter ${props.keyName.toLowerCase()} key`} required aria-describedby={`${props.keyName.toLowerCase()} key`} />
                                 </div>
                                 <div className="col-lg-5">
-                                    <input name="value" value={elem.value} type="text" onChange={e => handleInputChange(e, j)} className="form-control" placeholder={`Enter ${props.keyName.toLowerCase()} value`} aria-describedby={`${props.keyName.toLowerCase()} value`} />
+                                    <input name="value" value={elem.value} type="text" onChange={e => handleInputChange(e, j)} className="form-control" placeholder={`Enter ${props.keyName.toLowerCase()} value`} required aria-describedby={`${props.keyName.toLowerCase()} value`} />
                                 </div>
                                 <div className="col-lg-2">
                                     <button type="button" onClick={() => handleRemoveClick(j)} className={`fw-bold btn btn-light ${styles['button-plain']}`}><i className="bi bi-trash3-fill"></i></button>
@@ -65,7 +67,7 @@ export default function AddKeyValueComponent(props: Props) {
                         )
                     })
                 }
-                <div className="col-lg-3">
+                <div className="col-lg-4">
                     <button type="button" onClick={() => handleAddClick()} className={`fw-bold btn btn-light ${styles['button-plain']}`}>{`Click to add row to ${props.keyName.split(" ").map((elem) => elem[0].toUpperCase() + elem.substring(1)).join(" ")}`}</button>
                 </div>
             </div>
