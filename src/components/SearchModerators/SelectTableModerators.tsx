@@ -4,26 +4,41 @@ import { Session } from '@/object-types/Session'
 import { Form } from 'react-bootstrap'
 import React, { useState } from 'react'
 import { Table, _ } from '@/components/sw360'
+import ModeratorsTable from './ModeratorsTable'
+import ModeratorsResponse from '@/object-types/ModeratorResponse'
+
 interface Props {
   session?: Session,
   users: any[]
   onChange: any
-  email: Array<string>
+  email: any[]
 }
 
 const SelectTableModerators = ({session, users, onChange, email} : Props) => {
 
-  
-
-
   const handlerRadioButton = (item: any) => {
-    // const emails: Array<string> = email;
-    console.log(item)
-    // emails.push(emailModerator)
-    // console.log("sau")
-    // console.log(emails)
-    // setmoderators(emails)
+    if (email.includes(item)) {
+      const index = email.indexOf(item);
+      if (index !== -1) {
+        email.splice(index, 1);
+      }
+    } else {
+      email.push(item)
+    }
+    const fullNames: string [] = [];
+    const moderatorsEmail: string [] = [];
+    email.map((item) => {
+      fullNames.push(item.givenName.concat(" ").concat(item.lastName));
+      moderatorsEmail.push(item.email);
+    })
+    const moderatorsName: string = fullNames.join(" , ");
+    const moderatorsResponse: ModeratorsResponse = {
+      fullName: moderatorsName,
+      emails: moderatorsEmail
+    }
+    onChange(moderatorsResponse);
   }
+
   const columns = [
     {
         name: "",
@@ -51,11 +66,10 @@ const SelectTableModerators = ({session, users, onChange, email} : Props) => {
       }
   ]
 
-
   return (
     <>
         <div className='row'>
-            <Table data={users} columns={columns} />
+            <ModeratorsTable data={users} columns={columns} />
         </div>
     </>
   )

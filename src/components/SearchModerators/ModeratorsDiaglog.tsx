@@ -18,8 +18,8 @@ import ApiUtils from '@/utils/api/api.util';
 import HttpStatus from '@/object-types/enums/HttpStatus';
 import { useCallback, useEffect, useState } from 'react';
 import CommonUtils from '@/utils/common.utils';
-import User from '@/object-types/User';
 import SelectTableModerators from './SelectTableModerators';
+import ModeratorsResponse from '@/object-types/ModeratorResponse';
 
 interface Props {
   show?: boolean
@@ -31,7 +31,8 @@ interface Props {
 const ModeratorsDiaglog = ({ show, setShow, session, onChange}: Props) => {
 
   const [data, setData] = useState();
-  const [moderators, setmoderators] = useState<Array<string>>(['tuan@gmail.com']);
+  const [moderators, setmoderators] = useState([]);
+  const [moderatorsResponse, setModeratorsResponse] = useState<ModeratorsResponse>();
   const [users, setUsers] =useState([]);
 
   const handleCloseDialog = () => {
@@ -65,12 +66,11 @@ const ModeratorsDiaglog = ({ show, setShow, session, onChange}: Props) => {
   }, []);
 
   const handleClickSelectModerators = () => {
-    console.log(moderators)
-    onChange(moderators)
+    onChange(moderatorsResponse)
     setShow(!show);
   }
 
-  const getModeratorIds = useCallback((email: string[]) => setmoderators(email), []);
+  const getModeratorIds = useCallback((moderatorsResponse: ModeratorsResponse) => setModeratorsResponse(moderatorsResponse), []);
 
 
   return (

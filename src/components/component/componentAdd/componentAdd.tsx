@@ -26,6 +26,7 @@ import ComponentOwnerDiaglog from "@/components/SearchComponentOwner/ComponentOw
 import { SideBar } from "@/components/sw360";
 import VendorResponse from "@/object-types/VendorResponse";
 import UserResponse from "@/object-types/UserResponse";
+import ModeratorsResponse from "@/object-types/ModeratorResponse";
 
 interface Props {
     session? : Session
@@ -37,6 +38,7 @@ export default function ComponentAddSummary({ session }: Props) {
     const router = useRouter();
     const [vendorName, setVendorName] = useState<string>();
     const [fullNameComponentOwner, setFullNameComponentOwner] = useState<string>();
+    const [fullNameModerators, setFullNameModerators] = useState<string>();
     const [componentPayload, setComponentPayload] = useState<ComponentPayload>({
         name:'' ,
         description: '',
@@ -122,10 +124,11 @@ export default function ComponentAddSummary({ session }: Props) {
         });
     };
 
-    const setModerators = (emails: string[]) => {
+    const setModerators = (moderatorsResponse: ModeratorsResponse) => {
+        setFullNameModerators(moderatorsResponse.fullName)
         setComponentPayload({
             ...componentPayload,
-            moderators: emails
+            moderators: moderatorsResponse.emails
         });
     };
 
@@ -305,7 +308,7 @@ export default function ComponentAddSummary({ session }: Props) {
                                             <label htmlFor="moderators" className="form-label fw-bold">Moderators</label>
                                             <input type="text" className="form-control" data-bs-toggle="modal" data-bs-target="#search_users_modal" 
                                             placeholder="Click to edit" id="moderators" aria-describedby="Moderators" readOnly={true} 
-                                            name = "moderators" onChange={updateField} value={componentPayload.moderators} onClick={handleClickSearchModerators}/>
+                                            name = "moderators" onChange={updateField} value={fullNameModerators} onClick={handleClickSearchModerators}/>
                                              <ModeratorsDiaglog show={dialogOpenModerators} setShow={setDialogOpenModerators}  session={session} onChange={setModerators}/>
                                         </div>
                                     </div>

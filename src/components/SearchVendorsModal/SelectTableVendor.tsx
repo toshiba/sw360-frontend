@@ -50,7 +50,6 @@ const SelectTableVendor = (props : Props) => {
     }
   ]
 
-
   return (
     <>
         <div className='row'>
