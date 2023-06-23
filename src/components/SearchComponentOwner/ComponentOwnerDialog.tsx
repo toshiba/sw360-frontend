@@ -19,7 +19,8 @@ import HttpStatus from '@/object-types/enums/HttpStatus';
 import { useCallback, useEffect, useState } from 'react';
 import CommonUtils from '@/utils/common.utils';
 import SelectTableComponentOwner from './SelectTableComponentOwner';
-import User from '@/object-types/User';
+import ComponentOwnerResponse from '@/object-types/ComponentOwnerResponse';
+
 
 interface Props {
   show?: boolean
@@ -31,7 +32,7 @@ interface Props {
 const ComponentOwnerDiaglog = ({ show, setShow, session, onChange}: Props) => {
 
   const [data, setData] = useState();
-  const [componentOwnerId, setComponentOwnerId] = useState<string>();
+  const [componentOwner, setComponentOwner] = useState<ComponentOwnerResponse>();
   const [users, setUsers] =useState([]);
 
   const handleCloseDialog = () => {
@@ -65,12 +66,11 @@ const ComponentOwnerDiaglog = ({ show, setShow, session, onChange}: Props) => {
   }, []);
 
   const handleClickSelectComponentOwnerId = () => {
-    console.log(componentOwnerId)
-    onChange(componentOwnerId)
+    onChange(componentOwner)
     setShow(!show);
   }
 
-  const getComponentOwnerId = useCallback((email: string) => setComponentOwnerId(email), []);
+  const getComponentOwner = useCallback((componentOwnerResponse: ComponentOwnerResponse) => setComponentOwner(componentOwnerResponse), []);
 
   return (
     <Modal
@@ -95,7 +95,7 @@ const ComponentOwnerDiaglog = ({ show, setShow, session, onChange}: Props) => {
                 </div>
             </div>
             <div className="row mt-3">
-                <SelectTableComponentOwner session={session}  users={users} onChange={getComponentOwnerId} />
+                <SelectTableComponentOwner users={users} onChange={getComponentOwner} />
             </div>
         </div>
       </Modal.Body>

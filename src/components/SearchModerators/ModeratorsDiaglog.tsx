@@ -96,7 +96,7 @@ const ModeratorsDiaglog = ({ show, setShow, session, onChange}: Props) => {
                 </div>
             </div>
             <div className="row mt-3">
-                <SelectTableModerators session={session}  users={users} onChange={getModeratorIds} email={moderators} />
+                <SelectTableModerators users={users} onChange={getModeratorIds} email={moderators} />
             </div>
         </div>
       </Modal.Body>

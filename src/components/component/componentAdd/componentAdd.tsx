@@ -15,8 +15,8 @@ import SelectCountryComponent from "@/components/SelectCountry"
 import AddAdditionalRolesComponent from "@/components/AddAdditionalRoles"
 import SearchUsersModalComponent from "@/components/SearchUsersModal"
 import CommonTabIds from "@/object-types/enums/CommonTabsIds";
-import { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { notFound, useRouter } from "next/navigation";
 import ComponentPayload from "@/object-types/ComponentPayLoad";
 import MapData from "@/object-types/MapData";
 import VendorDialog from "@/components/SearchVendorsModal/VendorDialog";
@@ -25,8 +25,11 @@ import ModeratorsDiaglog from "@/components/SearchModerators/ModeratorsDiaglog";
 import ComponentOwnerDiaglog from "@/components/SearchComponentOwner/ComponentOwnerDialog";
 import { SideBar } from "@/components/sw360";
 import VendorResponse from "@/object-types/VendorResponse";
-import UserResponse from "@/object-types/UserResponse";
 import ModeratorsResponse from "@/object-types/ModeratorResponse";
+import ComponentOwnerResponse from "@/object-types/ComponentOwnerResponse";
+import ApiUtils from "@/utils/api/api.util";
+import HttpStatus from "@/object-types/enums/HttpStatus";
+import CommonUtils from "@/utils/common.utils";
 
 interface Props {
     session? : Session
@@ -37,8 +40,37 @@ export default function ComponentAddSummary({ session }: Props) {
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
     const router = useRouter();
     const [vendorName, setVendorName] = useState<string>();
+    const [goToComponents,setGoToComponents] = useState(false);
     const [fullNameComponentOwner, setFullNameComponentOwner] = useState<string>();
     const [fullNameModerators, setFullNameModerators] = useState<string>();
+    const [addtionalRoles, setAddtionalRoles] = useState([]);
+    const [externalId, setExternalId] = useState([]);
+    const [addtionalDatas, setAddtionalDatas] = useState([]);
+    const [categories,setCategories] = useState();
+    const [homepage,setHomepage] = useState();
+    const [wiki,setWiki] = useState();
+    const [blog,setBlog] = useState();
+    const [isUrlHomepage,setIsUrlHomePage] = useState(true);
+    const [isUrlBlog,setIsUrlBlog] = useState(true);
+    const [isUrlWiki,setIsUrlWiki] = useState(true);
+
+    // const urlPatternValidation = (URL: string) => {
+    //     const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');    
+    //     return regex.test(URL);
+    // };
+
+
+    // const updateUrl = (e: any) => {
+    //     const isUrl = urlPatternValidation(e.target.value);
+    //     setIsUrlHomePage(isUrl)
+    //     if (isUrl) {
+    //         setComponentPayload({
+    //             ...componentPayload,
+    //             [e.target.name]: e.target.value
+    //         });
+    //     }
+    // };
+
     const [componentPayload, setComponentPayload] = useState<ComponentPayload>({
         name:'' ,
         description: '',
@@ -49,7 +81,7 @@ export default function ComponentAddSummary({ session }: Props) {
         ownerGroup: '',
         ownerCountry:'',
         roles: null,
-        externalIds:  null,
+        externalIds: null,
         additionalData: null,
         defaultVendorId: '',
         categories: null,
@@ -64,9 +96,7 @@ export default function ComponentAddSummary({ session }: Props) {
     const [dialogOpenModerators, setDialogOpenModerators] = useState(false)
 
     const handleClickSearchVendor = useCallback(() => setDialogOpenVendor(true), []);
-
     const handleClickSearchComponentOwner = useCallback(() => setDialogOpenComponentOwner(true), []);
-
     const handleClickSearchModerators = useCallback(() => setDialogOpenModerators(true), []);
 
     const tabList = [
@@ -87,25 +117,49 @@ export default function ComponentAddSummary({ session }: Props) {
         });
     };
 
+    const updateFieldCategories = (e: any) => {
+        setCategories(e.target.value)
+    };
+
+    const splitValueCategories = (categories: string) => {
+        const categorieDatas: string [] = categories.split(",");
+        return categorieDatas;
+    }
+
     const setAddtionalData = (additionalDatas: MapData[]) => {
+        setAddtionalDatas(additionalDatas);
+        const additionalData = convertAddtionalExternalIdsData(addtionalDatas);
+        console.log("additionalData");
+        console.log(additionalData);
         setComponentPayload({
             ...componentPayload,
-            additionalData: additionalDatas
+            additionalData: additionalData
         });
     };
 
     const setExternalIds = (externalIds: MapData[]) => {
+        setExternalId(externalIds);
+        const externalIdDatas = convertAddtionalExternalIdsData(externalId);
+        console.log("externalIdDatas");
+        console.log(externalIdDatas);
         setComponentPayload({
             ...componentPayload,
-            externalIds: externalIds
+            externalIds: externalIdDatas
         });
     };
 
     const setRoles = (roles: MapData[]) => {
+        setAddtionalRoles(roles)
+        console.log("addtionalRoles")
+        console.log(addtionalRoles)
+        const roleDatas = convertRoles(roles);
+        console.log("roleDatas")
+        console.log(roleDatas)
         setComponentPayload({
             ...componentPayload,
-            roles: roles
+            roles: roleDatas
         });
+
     };
 
     const setVendorId = (vendorResponse: VendorResponse) => {
@@ -116,11 +170,11 @@ export default function ComponentAddSummary({ session }: Props) {
         });
     };
 
-    const setComponentOwnerId = (userResponse: UserResponse) => {
-        setFullNameComponentOwner(userResponse.fullName);
+    const setComponentOwnerId = (componentOwnerResponse: ComponentOwnerResponse) => {
+        setFullNameComponentOwner(componentOwnerResponse.fullName);
         setComponentPayload({
             ...componentPayload,
-            componentOwner: userResponse.email
+            componentOwner: componentOwnerResponse.email
         });
     };
 
@@ -132,30 +186,126 @@ export default function ComponentAddSummary({ session }: Props) {
         });
     };
 
-    const submit = () => {
+    const handleClearVendor = () => {
+        setVendorName("");
+        setComponentPayload({
+            ...componentPayload,
+            defaultVendorId:""
+        });
+    }
+
+    const handleClearComponentOwner = () => {
+        setFullNameComponentOwner("");
+        setComponentPayload({
+            ...componentPayload,
+            componentOwner: ""
+        });
+    }
+
+    const handleClearModerators = () => {
+        setFullNameModerators("")
+        setComponentPayload({
+            ...componentPayload,
+            moderators: []
+        });
+    }
+
+    const convertRoles = (datas: any[]) => {
+        const contributors: string [] = [];
+        const commiters: string [] = [];
+        const expecters: string [] = [];
+        datas.forEach(data => {
+            if (data.role === "Contributor"){
+                contributors.push(data.email)
+            }
+            if (data.role === "Committer"){
+                commiters.push(data.email)
+            }
+            if (data.role === "Expert"){
+                expecters.push(data.email)
+            }
+        })
+        const roles = {
+            "Contributor": contributors,
+            "Committer": commiters,
+            "Expert": expecters
+            }
+        return roles;
+    }
+
+    const convertAddtionalExternalIdsData = (datas: any[]) => {
+        const keyValueExternalId: string [] =[] ;
+        const map = new Map<string,string>();  
+        datas.forEach(data => {
+            map.set(data.key,data.key);
+            const line = `"${data.key}":"${data.value}"`
+            keyValueExternalId.push(line);
+        });
+
+        console.log("----map---")
+        console.log(map)
+        const dataMap = JSON.stringify(Object.fromEntries(map));
+        console.log( )
+        // const externalData: string = keyValueExternalId.join(",");
+
+        // const externalDatatype = "{";
+        // const name = externalDatatype.concat(externalData).concat("}")
+        return map;
+    }
+    const submit = async () => {
+        // categories
+        const categoriesData: string[] = splitValueCategories(categories);
+        console.log("-------categoriesData---------");
+        console.log(categoriesData);
+        setComponentPayload({
+            ...componentPayload,
+            categories: categoriesData
+        });
 
 
-        console.log(componentPayload.description )
-        console.log(componentPayload.componentType )
-        console.log(componentPayload.moderators )
-        console.log(componentPayload.componentOwner )
-        console.log(componentPayload.ownerAccountingUnit )
-        console.log(componentPayload.ownerGroup )
-        console.log(componentPayload.ownerCountry)
-        console.log(componentPayload.roles )
-        console.log(componentPayload.externalIds  )
-        console.log(componentPayload.additionalData )
-        console.log(componentPayload.defaultVendorId )
-        console.log(componentPayload.categories )
-        console.log(componentPayload.homepage )
-        console.log(componentPayload.mailinglist )
-        console.log(componentPayload.wiki )
-        console.log(componentPayload.blog )
+        console.log("---componentPayload----categories---------");
+        console.log(componentPayload.categories);
+        console.log("-------roles---------");
+        console.log(componentPayload.roles);
+        console.log("-------externalIds---------");
+        console.log(componentPayload.externalIds);
+        console.log("-------additionalData---------");
+        console.log(componentPayload.additionalData);
+
+
+
+        console.log("-------componentPayload--------");
+        console.log(componentPayload);
+        const json = JSON.stringify(componentPayload);
+
+        console.log("-------json--------");
+        console.log(json);
+        console.log("-------json----replaceAll----");
+        console.log(json.replaceAll("\\", ""));
+        
+        const userObject = JSON.parse(json);
+
+        console.log("-------userObject--------");
+        console.log(userObject);
+        
+        
+        // Send Request Post
+
+        // const response = await ApiUtils.POST("components",componentPayload,session.user.access_token)
+        // console.log(response.status)
+        // if (response.status == HttpStatus.CREATED) {
+        //     setGoToComponents(true)
+        //     if(goToComponents) {
+        //         router.push('/components');
+        //     }
+        // } else {
+        //     console.log("not found")
+        //     console.log(response.status)
+        // //   notFound();
+        // }
 
         // router.push("/components")
     }
-
-
 
     return (
         <>
@@ -186,7 +336,7 @@ export default function ComponentAddSummary({ session }: Props) {
                                     </div>
                                     <div className="row">
                                         <div className="col-lg-4">
-                                            <label htmlFor="name" className="form-label fw-bold">Name </label>
+                                            <label htmlFor="name" className="form-label fw-bold">Name <span className="text-red">*</span></label>
                                             <input type="text" className="form-control" placeholder="Enter Name" id="name" name="name" 
                                             aria-describedby="name" required value={componentPayload.name} onChange={updateField}/>
                                         </div>
@@ -197,26 +347,26 @@ export default function ComponentAddSummary({ session }: Props) {
                                             <div id="createdBy" className="form-text"><i className="bi bi-x-circle"></i></div>
                                         </div>
                                         <div className="col-lg-4">
-                                            <label htmlFor="categories" className="form-label fw-bold">Categories </label>
+                                            <label htmlFor="categories" className="form-label fw-bold">Categories <span className="text-red">*</span></label>
                                             <input type="text" className="form-control" placeholder="e.g.,Library,cloud,mobile,..." 
                                             id="categories" aria-describedby="categories" required name = "categories" 
-                                            onChange={updateField} value={componentPayload.categories}/>
+                                            onChange={updateFieldCategories} value={componentPayload.categories}/>
                                         </div>
                                     </div>
                                     <hr className="my-4" />
                                     <div className="row">
                                     <div className="col-lg-4">
-                                            <label htmlFor="component_type" className="form-label fw-bold">Component Type</label>
+                                            <label htmlFor="component_type" className="form-label fw-bold">Component Type <span className="text-red">*</span></label>
                                             <select className="form-select" aria-label="component_type" id="component_type" required defaultValue="" 
                                             name = "componentType" onChange={updateField} value={componentPayload.componentType}>
                                                 <option value=""></option>
                                                 <option value="OSS">OSS</option>
                                                 <option value="COST">COST</option>
-                                                <option value="Internal">Internal</option>
-                                                <option value="Inner Source">Inner Source</option>
-                                                <option value="Service">Service</option>
-                                                <option value="Freeware">Freeware</option>
-                                                <option value="Code Snippet">Code Snippet</option>
+                                                <option value="INTERNAL">Internal</option>
+                                                <option value="INNER_SOURCE">Inner Source</option>
+                                                <option value="SERVICE">Service</option>
+                                                <option value="FREESOFTWARE">Freeware</option>
+                                                <option value="CODE_SNIPPET">Code Snippet</option>
                                             </select>
                                             <div id="learn_more_about_component_type" className="form-text">
                                                 <i className="bi bi-info-circle"></i> Learn more about component types.</div>
@@ -229,11 +379,15 @@ export default function ComponentAddSummary({ session }: Props) {
                                             readOnly={true} name = "defaultVendorId" onClick={handleClickSearchVendor} value={vendorName}/>
                                             <div id="default_vendor" className="form-text"><i className="bi bi-x-circle"></i></div>
                                             <VendorDialog show={dialogOpenVendor} setShow={setDialogOpenVendor} onChange={setVendorId} session={session}/>
+                                            <span onClick={handleClearVendor}>x</span>
                                         </div>
                                         <div className="col-lg-4">
                                             <label htmlFor="tag" className="form-label fw-bold">Homepage Url</label>
                                             <input type="text" className="form-control" placeholder="Will be set automatically" id="tag" aria-describedby="Tag"
                                              name = "homepage" onChange={updateField} value={componentPayload.homepage} />
+                                            {!isUrlHomepage && (
+                                                <div style={{ color: "#F61C04" }}>URL is not valid.</div>
+                                            )}
                                         </div>
                                     </div>
                                     <hr className="my-4" />
@@ -242,11 +396,17 @@ export default function ComponentAddSummary({ session }: Props) {
                                             <label htmlFor="blog_url" className="form-label fw-bold">Blog URL</label>
                                             <input type="text" className="form-control" placeholder="Enter Blog URL" id="blog_url" aria-describedby="blog_url" 
                                             name = "blog" onChange={updateField} value={componentPayload.blog} />
+                                            {!isUrlBlog && (
+                                                <div style={{ color: "#F61C04" }}>URL is not valid.</div>
+                                            )}
                                         </div>
                                         <div className="col-lg-4">
                                             <label htmlFor="wiki_url" className="form-label fw-bold">Wiki URL</label>
                                             <input type="text" className="form-control" placeholder="Enter Wiki URL" id="wiki_url" aria-describedby="wiki_url"
                                             name = "wiki" onChange={updateField} value={componentPayload.wiki} />
+                                            {!isUrlWiki && (
+                                                <div style={{ color: "#F61C04" }}>URL is not valid.</div>
+                                            )}
                                         </div>
                                         <div className="col-lg-4">
                                             <label htmlFor="mailing_list_url" className="form-label fw-bold">Mailing List URL</label>
@@ -285,6 +445,7 @@ export default function ComponentAddSummary({ session }: Props) {
                                             placeholder="Click to edit" id="component_owner" aria-describedby="component_owner" readOnly={true} 
                                             name = "componentOwner" onClick={handleClickSearchComponentOwner} onChange={updateField} value={fullNameComponentOwner}/>
                                             <ComponentOwnerDiaglog show={dialogOpenComponentOwner} setShow={setDialogOpenComponentOwner}  session={session} onChange={setComponentOwnerId}/>
+                                            <span onClick={handleClearComponentOwner}>x</span>
                                         </div>
                                         <div className="col-lg-4">
                                             <label htmlFor="owner_accounting_unit" className="form-label fw-bold">Owner Accounting Unit</label>
@@ -310,6 +471,7 @@ export default function ComponentAddSummary({ session }: Props) {
                                             placeholder="Click to edit" id="moderators" aria-describedby="Moderators" readOnly={true} 
                                             name = "moderators" onChange={updateField} value={fullNameModerators} onClick={handleClickSearchModerators}/>
                                              <ModeratorsDiaglog show={dialogOpenModerators} setShow={setDialogOpenModerators}  session={session} onChange={setModerators}/>
+                                             <span onClick={handleClearModerators}>x</span>
                                         </div>
                                     </div>
                                     <hr className="my-4" />

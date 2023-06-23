@@ -1,3 +1,13 @@
+// Copyright (C) TOSHIBA CORPORATION, 2023. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2023. Part of the SW360 Frontend Project.
+
+// This program and the accompanying materials are made
+// available under the terms of the Eclipse Public License 2.0
+// which is available at https://www.eclipse.org/legal/epl-2.0/
+
+// SPDX-License-Identifier: EPL-2.0
+// License-Filename: LICENSE
+
 'use client'
 
 import { Session } from '@/object-types/Session'
@@ -6,12 +16,11 @@ import React, { useEffect, useState } from 'react'
 import { Table, _ } from '@/components/sw360'
 import VendorResponse from '@/object-types/VendorResponse'
 interface Props {
-  session?: Session,
   vendors: any[],
   onChange: any
 }
 
-const SelectTableVendor = (props : Props) => {
+const SelectTableVendor = ({vendors, onChange} : Props) => {
 // item._links.self.href
   const handlerRadioButton = (item: any) => {
     const vendorId: string =  handleId(item._links.self.href);
@@ -19,7 +28,7 @@ const SelectTableVendor = (props : Props) => {
         id: vendorId,
         fullName: item.fullName
     }
-    props.onChange(vendorResponse)
+    onChange(vendorResponse)
   }
 
   const handleId = (id: string): string => {
@@ -53,7 +62,7 @@ const SelectTableVendor = (props : Props) => {
   return (
     <>
         <div className='row'>
-            <Table data={props.vendors} columns={columns} />
+            <Table data={vendors} columns={columns} />
         </div>
     </>
   )

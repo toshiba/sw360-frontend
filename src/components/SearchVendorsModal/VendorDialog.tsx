@@ -91,7 +91,7 @@ const VendorDialog = ({ show, setShow, session, onChange}: Props) => {
                 </div>
             </div>
             <div className="row mt-3">
-                <SelectTableVendor session={session}  vendors={vendors} onChange={getVendorId}/>
+                <SelectTableVendor vendors={vendors} onChange={getVendorId}/>
             </div>
         </div>
       </Modal.Body>

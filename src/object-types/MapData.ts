@@ -9,7 +9,13 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-export default interface MapData {
-    key: string;
-    value: string;
+// export default interface MapData {
+//     key: string;
+//     value: string;
+// }
+
+
+export default interface Input {
+    role: string;
+    email: string;
 }

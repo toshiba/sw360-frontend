@@ -1,27 +1,34 @@
+// Copyright (C) TOSHIBA CORPORATION, 2023. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2023. Part of the SW360 Frontend Project.
+
+// This program and the accompanying materials are made
+// available under the terms of the Eclipse Public License 2.0
+// which is available at https://www.eclipse.org/legal/epl-2.0/
+
+// SPDX-License-Identifier: EPL-2.0
+// License-Filename: LICENSE
+
 'use client'
 
-
-import { Session } from '@/object-types/Session'
 import { Form } from 'react-bootstrap'
 import React, { useState } from 'react'
 import { Table, _ } from '@/components/sw360'
-import UserResponse from '@/object-types/UserResponse'
+import ComponentOwnerResponse from '@/object-types/ComponentOwnerResponse'
 
 interface Props {
-  session?: Session
   users: any[]
   onChange: any
 }
 
-const SelectTableComponentOwner = ({session, users, onChange} : Props) => {
+const SelectTableComponentOwner = ({users, onChange} : Props) => {
   
   const handlerRadioButton = (item: any) => {
     const fullName = item.givenName.concat(" ").concat(item.lastName)
-    const userResponse: UserResponse = {
+    const componentOwnerResponse: ComponentOwnerResponse = {
       fullName: fullName,
       email: item.email
     }
-    onChange(userResponse)
+    onChange(componentOwnerResponse)
   }
 
   const columns = [
@@ -52,51 +59,6 @@ const SelectTableComponentOwner = ({session, users, onChange} : Props) => {
         <div className='row'>
             <Table data={users} columns={columns} />
         </div>
-      {/* <div className='row'>
-        <Grid
-          data={showData}
-          columns={[
-            {
-              name: "",
-              formatter: (email: string) => _(<Form.Check name='componentOwner' type='radio' onClick={() => handlerRadioButton(email)} ></Form.Check>),
-              width: '10%'
-            },
-            {
-              name: "GivenName",
-           
-              sort: true
-            },
-            {
-              name: "LastName",
-              sort: true
-            },
-            {
-              name: "Email",
-              sort: true
-            },
-            {
-              name: "Department",
-              sort: true
-            }
-          ]}
-          pagination={{
-            limit: 10
-          }}
-          search={true}
-          language={{
-            search: {
-              placeholder: "🔍 Search..."
-            }
-          }}
-          style={{
-            header: {
-              display: 'block',
-              width: 'fit-content',
-              float: 'right'
-            }
-          }}
-        />
-      </div> */}
     </>
   )
 }
