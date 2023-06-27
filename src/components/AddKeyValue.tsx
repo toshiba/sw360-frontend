@@ -30,8 +30,12 @@ export default function AddKeyValueComponent(props: Props) {
         const { name, value } = e.target;
         const list: Input[] = [...inputList];
         list[index][name as keyof Input] = value;
+        const map = new Map<string,string>();
+        list.forEach(item => {
+           map.set(item.key, item.value);
+        })
         setInputList(list);
-        props.onChange(list);
+        props.onChange(map);
     };
 
     const handleRemoveClick = (index: number) => {

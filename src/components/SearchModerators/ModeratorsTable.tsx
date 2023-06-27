@@ -24,7 +24,7 @@ const compare = (preState: any, nextState: any) => {
 
 }
   
-const ModeratorsTable  = memo(function VulnerTable({columns, data}: Props) {
+const ModeratorsTable  = memo(function ModeratorsTable({columns, data}: Props) {
   
     return <Table columns={columns} data={data}/>
   

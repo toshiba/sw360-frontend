@@ -15,8 +15,8 @@ import SelectCountryComponent from "@/components/SelectCountry"
 import AddAdditionalRolesComponent from "@/components/AddAdditionalRoles"
 import SearchUsersModalComponent from "@/components/SearchUsersModal"
 import CommonTabIds from "@/object-types/enums/CommonTabsIds";
-import { useCallback, useEffect, useState } from "react";
-import { notFound, useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
 import ComponentPayload from "@/object-types/ComponentPayLoad";
 import MapData from "@/object-types/MapData";
 import VendorDialog from "@/components/SearchVendorsModal/VendorDialog";
@@ -29,8 +29,6 @@ import ModeratorsResponse from "@/object-types/ModeratorResponse";
 import ComponentOwnerResponse from "@/object-types/ComponentOwnerResponse";
 import ApiUtils from "@/utils/api/api.util";
 import HttpStatus from "@/object-types/enums/HttpStatus";
-import CommonUtils from "@/utils/common.utils";
-
 interface Props {
     session? : Session
 }
@@ -40,36 +38,11 @@ export default function ComponentAddSummary({ session }: Props) {
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
     const router = useRouter();
     const [vendorName, setVendorName] = useState<string>();
-    const [goToComponents,setGoToComponents] = useState(false);
     const [fullNameComponentOwner, setFullNameComponentOwner] = useState<string>();
     const [fullNameModerators, setFullNameModerators] = useState<string>();
-    const [addtionalRoles, setAddtionalRoles] = useState([]);
-    const [externalId, setExternalId] = useState([]);
-    const [addtionalDatas, setAddtionalDatas] = useState([]);
-    const [categories,setCategories] = useState();
-    const [homepage,setHomepage] = useState();
-    const [wiki,setWiki] = useState();
-    const [blog,setBlog] = useState();
-    const [isUrlHomepage,setIsUrlHomePage] = useState(true);
-    const [isUrlBlog,setIsUrlBlog] = useState(true);
-    const [isUrlWiki,setIsUrlWiki] = useState(true);
-
-    // const urlPatternValidation = (URL: string) => {
-    //     const regex = new RegExp('(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?');    
-    //     return regex.test(URL);
-    // };
-
-
-    // const updateUrl = (e: any) => {
-    //     const isUrl = urlPatternValidation(e.target.value);
-    //     setIsUrlHomePage(isUrl)
-    //     if (isUrl) {
-    //         setComponentPayload({
-    //             ...componentPayload,
-    //             [e.target.name]: e.target.value
-    //         });
-    //     }
-    // };
+    const [dialogOpenVendor, setDialogOpenVendor] = useState(false)
+    const [dialogOpenComponentOwner, setDialogOpenComponentOwner] = useState(false)
+    const [dialogOpenModerators, setDialogOpenModerators] = useState(false)
 
     const [componentPayload, setComponentPayload] = useState<ComponentPayload>({
         name:'' ,
@@ -90,10 +63,6 @@ export default function ComponentAddSummary({ session }: Props) {
         wiki: '',
         blog: '',
     });
-
-    const [dialogOpenVendor, setDialogOpenVendor] = useState(false)
-    const [dialogOpenComponentOwner, setDialogOpenComponentOwner] = useState(false)
-    const [dialogOpenModerators, setDialogOpenModerators] = useState(false)
 
     const handleClickSearchVendor = useCallback(() => setDialogOpenVendor(true), []);
     const handleClickSearchComponentOwner = useCallback(() => setDialogOpenComponentOwner(true), []);
@@ -117,44 +86,42 @@ export default function ComponentAddSummary({ session }: Props) {
         });
     };
 
-    const updateFieldCategories = (e: any) => {
-        setCategories(e.target.value)
+    const setCategoriesData = (e: any) => {
+        const data: string [] = splitValueCategories(e.target.value)
+            setComponentPayload({
+                ...componentPayload,
+                categories: data
+            });
     };
 
-    const splitValueCategories = (categories: string) => {
-        const categorieDatas: string [] = categories.split(",");
-        return categorieDatas;
+    const splitValueCategories = (valueCatergories: string) => {
+        return valueCatergories.split(",");
     }
 
-    const setAddtionalData = (additionalDatas: MapData[]) => {
-        setAddtionalDatas(additionalDatas);
-        const additionalData = convertAddtionalExternalIdsData(addtionalDatas);
-        console.log("additionalData");
-        console.log(additionalData);
+    const setAddtionalData = (additionalDatas: Map<string,string>) => {
+        const obj:any = {};
+        additionalDatas.forEach((value, key) => {
+            obj[key] = value;
+        });
         setComponentPayload({
             ...componentPayload,
-            additionalData: additionalData
+            additionalData: obj
         });
     };
 
-    const setExternalIds = (externalIds: MapData[]) => {
-        setExternalId(externalIds);
-        const externalIdDatas = convertAddtionalExternalIdsData(externalId);
-        console.log("externalIdDatas");
-        console.log(externalIdDatas);
+    const setExternalIds = (externalIds: Map<string,string>) => {
+        const obj:any = {};
+        externalIds.forEach((value, key) => {
+            obj[key] = value;
+        });
         setComponentPayload({
             ...componentPayload,
-            externalIds: externalIdDatas
+            externalIds: obj
         });
     };
 
     const setRoles = (roles: MapData[]) => {
-        setAddtionalRoles(roles)
-        console.log("addtionalRoles")
-        console.log(addtionalRoles)
         const roleDatas = convertRoles(roles);
-        console.log("roleDatas")
-        console.log(roleDatas)
         setComponentPayload({
             ...componentPayload,
             roles: roleDatas
@@ -233,78 +200,17 @@ export default function ComponentAddSummary({ session }: Props) {
         return roles;
     }
 
-    const convertAddtionalExternalIdsData = (datas: any[]) => {
-        const keyValueExternalId: string [] =[] ;
-        const map = new Map<string,string>();  
-        datas.forEach(data => {
-            map.set(data.key,data.key);
-            const line = `"${data.key}":"${data.value}"`
-            keyValueExternalId.push(line);
-        });
-
-        console.log("----map---")
-        console.log(map)
-        const dataMap = JSON.stringify(Object.fromEntries(map));
-        console.log( )
-        // const externalData: string = keyValueExternalId.join(",");
-
-        // const externalDatatype = "{";
-        // const name = externalDatatype.concat(externalData).concat("}")
-        return map;
-    }
     const submit = async () => {
-        // categories
-        const categoriesData: string[] = splitValueCategories(categories);
-        console.log("-------categoriesData---------");
-        console.log(categoriesData);
-        setComponentPayload({
-            ...componentPayload,
-            categories: categoriesData
-        });
 
+        const response = await ApiUtils.POST("components",componentPayload,session.user.access_token)
+        if (response.status == HttpStatus.CREATED) {
+            const data = await response.json();
+            router.push('/components/detail/'+ data.id);
+        } else {
+            console.log("not found")
+            console.log(response.status)
+        }
 
-        console.log("---componentPayload----categories---------");
-        console.log(componentPayload.categories);
-        console.log("-------roles---------");
-        console.log(componentPayload.roles);
-        console.log("-------externalIds---------");
-        console.log(componentPayload.externalIds);
-        console.log("-------additionalData---------");
-        console.log(componentPayload.additionalData);
-
-
-
-        console.log("-------componentPayload--------");
-        console.log(componentPayload);
-        const json = JSON.stringify(componentPayload);
-
-        console.log("-------json--------");
-        console.log(json);
-        console.log("-------json----replaceAll----");
-        console.log(json.replaceAll("\\", ""));
-        
-        const userObject = JSON.parse(json);
-
-        console.log("-------userObject--------");
-        console.log(userObject);
-        
-        
-        // Send Request Post
-
-        // const response = await ApiUtils.POST("components",componentPayload,session.user.access_token)
-        // console.log(response.status)
-        // if (response.status == HttpStatus.CREATED) {
-        //     setGoToComponents(true)
-        //     if(goToComponents) {
-        //         router.push('/components');
-        //     }
-        // } else {
-        //     console.log("not found")
-        //     console.log(response.status)
-        // //   notFound();
-        // }
-
-        // router.push("/components")
     }
 
     return (
@@ -346,11 +252,12 @@ export default function ComponentAddSummary({ session }: Props) {
                                             placeholder="Will be set auto" id="createdBy" aria-describedby="Created By" readOnly={true} />
                                             <div id="createdBy" className="form-text"><i className="bi bi-x-circle"></i></div>
                                         </div>
+                                        {/* <Categories onchange={getCategories} value={componentPayload.categories} /> */}
                                         <div className="col-lg-4">
                                             <label htmlFor="categories" className="form-label fw-bold">Categories <span className="text-red">*</span></label>
                                             <input type="text" className="form-control" placeholder="e.g.,Library,cloud,mobile,..." 
                                             id="categories" aria-describedby="categories" required name = "categories" 
-                                            onChange={updateFieldCategories} value={componentPayload.categories}/>
+                                            onChange={setCategoriesData} value={componentPayload.categories}/>
                                         </div>
                                     </div>
                                     <hr className="my-4" />
@@ -383,30 +290,21 @@ export default function ComponentAddSummary({ session }: Props) {
                                         </div>
                                         <div className="col-lg-4">
                                             <label htmlFor="tag" className="form-label fw-bold">Homepage Url</label>
-                                            <input type="text" className="form-control" placeholder="Will be set automatically" id="tag" aria-describedby="Tag"
+                                            <input type="URL" className="form-control" placeholder="Will be set automatically" id="tag" aria-describedby="Tag"
                                              name = "homepage" onChange={updateField} value={componentPayload.homepage} />
-                                            {!isUrlHomepage && (
-                                                <div style={{ color: "#F61C04" }}>URL is not valid.</div>
-                                            )}
                                         </div>
                                     </div>
                                     <hr className="my-4" />
                                     <div className="row">
                                         <div className="col-lg-4">
                                             <label htmlFor="blog_url" className="form-label fw-bold">Blog URL</label>
-                                            <input type="text" className="form-control" placeholder="Enter Blog URL" id="blog_url" aria-describedby="blog_url" 
+                                            <input type="URL" className="form-control" placeholder="Enter Blog URL" id="blog_url" aria-describedby="blog_url"
                                             name = "blog" onChange={updateField} value={componentPayload.blog} />
-                                            {!isUrlBlog && (
-                                                <div style={{ color: "#F61C04" }}>URL is not valid.</div>
-                                            )}
                                         </div>
                                         <div className="col-lg-4">
                                             <label htmlFor="wiki_url" className="form-label fw-bold">Wiki URL</label>
-                                            <input type="text" className="form-control" placeholder="Enter Wiki URL" id="wiki_url" aria-describedby="wiki_url"
+                                            <input type="URL" className="form-control" placeholder="Enter Wiki URL" id="wiki_url" aria-describedby="wiki_url"
                                             name = "wiki" onChange={updateField} value={componentPayload.wiki} />
-                                            {!isUrlWiki && (
-                                                <div style={{ color: "#F61C04" }}>URL is not valid.</div>
-                                            )}
                                         </div>
                                         <div className="col-lg-4">
                                             <label htmlFor="mailing_list_url" className="form-label fw-bold">Mailing List URL</label>
