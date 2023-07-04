@@ -8,4 +8,6 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-export type RolesType = (roles: Input[]) => void
+import AttachmentDetail from "./AttachmentDetail";
+
+export type AttachmentType = (attachmentDatas: AttachmentDetail[]) => void

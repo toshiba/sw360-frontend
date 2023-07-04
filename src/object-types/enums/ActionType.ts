@@ -8,4 +8,9 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-export type RolesType = (roles: Input[]) => void
+enum ActionType {
+    ADD = 'add',
+    EDIT = 'edit',
+}
+
+export default ActionType

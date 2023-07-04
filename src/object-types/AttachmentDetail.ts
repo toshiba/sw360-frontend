@@ -8,4 +8,18 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-export type RolesType = (roles: Input[]) => void
+export default interface AttachmentDetail {
+    attachmentContentId: string
+    filename: string
+    sha1: string
+    attachmentType: string
+    createdBy: string
+    createdTeam: string
+    createdComment: string
+    createdOn: string
+    checkedTeam: string
+    checkedComment: string
+    checkedOn: string
+    checkStatus: string
+    checkedBy: string
+}
