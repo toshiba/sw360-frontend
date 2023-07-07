@@ -27,7 +27,9 @@ const SummaryRole = ({ component }: any) => {
       <tbody hidden={toggle}>
         <tr>
           <td>{t('Component Owner')}:</td>
-          {(component.componentOwner) && <td>{component.componentOwner}</td>}
+          {(component['_embedded']) && <td>{(component['_embedded']['componentOwner']) &&
+            <a className={styles.link} href={`mailto:${component['_embedded']['componentOwner']['email']}`}>{component['_embedded']['componentOwner']['fullName']}</a>
+          } </td>}
         </tr>
         <tr>
           <td>{t('Owner Accounting Unit')}:</td>
@@ -43,7 +45,7 @@ const SummaryRole = ({ component }: any) => {
         </tr>
         <tr>
           <td>{t('Moderators')}:</td>
-          {(component['_embedded']) && <td>{(component['_embedded']['sw360:moderators']) && 
+          {(component['_embedded']) && <td>{(component['_embedded']['sw360:moderators']) &&
             <a className={styles.link} href={`mailto:${component['_embedded']['sw360:moderators']['email']}`}>{component['_embedded']['createdBy']['fullName']}</a>
           } </td>}
         </tr>
