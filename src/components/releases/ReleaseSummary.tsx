@@ -11,7 +11,6 @@
 'use client'
 import styles from './AddRelease.module.css'
 import React from 'react'
-import 'react-toastify/dist/ReactToastify.css'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
 

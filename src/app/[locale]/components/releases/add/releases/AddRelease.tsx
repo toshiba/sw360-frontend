@@ -13,8 +13,6 @@ import { useState } from 'react'
 
 import CommonTabIds from '@/object-types/enums/CommonTabsIds'
 import { Session } from '@/object-types/Session'
-import { useTranslations } from 'next-intl'
-import { COMMON_NAMESPACE } from '@/object-types/Constants'
 import { SideBar, PageButtonHeader } from '@/components/sw360'
 import ReleaseTabIds from '@/object-types/enums/ReleaseTabIds'
 import ReleaseAddSummary from '@/components/releases/ReleaseAddSummary'

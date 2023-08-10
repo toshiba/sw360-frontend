@@ -9,10 +9,28 @@
 // License-Filename: LICENSE
 
 'use client'
-const LinkedReleases = () => {
 
+import TitleLinkedReleases from './TitleLinkedReleases/TitleLinkedReleases'
+import styles from '../../Attachments/Attachment.module.css'
+import TableLinkedReleases from './TableLinkedReleases/TableLinkedReleases'
+import { useTranslations } from 'next-intl'
+import { COMMON_NAMESPACE } from '@/object-types/Constants'
+const LinkedReleases = () => {
+    const t = useTranslations(COMMON_NAMESPACE)
     return (
         <>
+            <div className={`row ${styles['attachment-table']}`} style={{ padding: '25px' }}>
+                <TitleLinkedReleases />
+                <TableLinkedReleases />
+            </div>
+            <div>
+                <button
+                    type='button'
+                    className={`fw-bold btn btn-light button-plain`}
+                >
+                    {t('Click to add Releases')}
+                </button>
+            </div>
         </>
     )
 }
