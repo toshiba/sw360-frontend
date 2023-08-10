@@ -17,32 +17,32 @@ import ApiUtils from '@/utils/api/api.util'
 import HttpStatus from '@/object-types/enums/HttpStatus'
 import { useCallback, useEffect, useState } from 'react'
 import CommonUtils from '@/utils/common.utils'
-import SelectTableModerators from './SelectTableModerators'
-import Moderators from '@/object-types/Moderators'
-import { ModeratorsType } from '@/object-types/ModeratorsType'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
+import { LicensesType } from '@/object-types/LicensesType'
+import Licenses from '@/object-types/Licenses'
+import SelectTableMainLicenses from './SelectTableMainLicenses'
 
 interface Props {
     show?: boolean
     setShow?: React.Dispatch<React.SetStateAction<boolean>>
     session?: Session
-    selectModerators?: ModeratorsType
+    selectLicenses?: LicensesType
 }
 
-const ModeratorsDiaglog = ({ show, setShow, session, selectModerators }: Props) => {
+const MainLicensesDiaglog = ({ show, setShow, session, selectLicenses }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [data, setData] = useState()
-    const [moderators, setModerators] = useState([])
-    const [moderatorsResponse, setModeratorsResponse] = useState<Moderators>()
-    const [users, setUsers] = useState([])
+    const [licenses, setLicenses] = useState([])
+    const [licensesResponse, setLicensesResponse] = useState<Licenses>()
+    const [licenseDatas, setLicenseDatas] = useState([])
 
     const handleCloseDialog = () => {
         setShow(!show)
     }
 
     const searchVendor = () => {
-        setUsers(data)
+        setLicenseDatas(data)
     }
 
     const fetchData: any = useCallback(async (url: string) => {
@@ -51,22 +51,19 @@ const ModeratorsDiaglog = ({ show, setShow, session, selectModerators }: Props) 
             const data = await response.json()
             return data
         } else {
-            notFound()
+            return []
         }
     }, [])
 
     useEffect(() => {
-        fetchData(`users`).then((users: any) => {
+        fetchData(`licenses`).then((users: any) => {
             if (
                 !CommonUtils.isNullOrUndefined(users['_embedded']) &&
-                !CommonUtils.isNullOrUndefined(users['_embedded']['sw360:users'])
+                !CommonUtils.isNullOrUndefined(users['_embedded']['sw360:licenses'])
             ) {
-                const data = users['_embedded']['sw360:users'].map((item: any) => [
+                const data = users['_embedded']['sw360:licenses'].map((item: any) => [
                     item,
-                    item.givenName,
-                    item.lastName,
-                    item.email,
-                    item.department,
+                    item.fullName,
                 ])
                 setData(data)
             }
@@ -74,16 +71,16 @@ const ModeratorsDiaglog = ({ show, setShow, session, selectModerators }: Props) 
     }, [])
 
     const handleClickSelectModerators = () => {
-        selectModerators(moderatorsResponse)
+        selectLicenses(licensesResponse)
         setShow(!show)
     }
 
-    const getModerators: ModeratorsType = useCallback((moderators: Moderators) => setModeratorsResponse(moderators), [])
+    const getLicenses: LicensesType = useCallback((licenses: Licenses) => setLicensesResponse(licenses), [])
 
     return (
         <Modal show={show} onHide={handleCloseDialog} backdrop='static' centered size='lg'>
             <Modal.Header closeButton>
-                <Modal.Title>{t('Search User')}</Modal.Title>
+                <Modal.Title>{t('Search Licenses')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className='modal-body'>
@@ -93,7 +90,7 @@ const ModeratorsDiaglog = ({ show, setShow, session, selectModerators }: Props) 
                                 type='text'
                                 className='form-control'
                                 placeholder={t('Enter search text')}
-                                aria-describedby='Search User'
+                                aria-describedby='Search Licenses'
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -110,7 +107,7 @@ const ModeratorsDiaglog = ({ show, setShow, session, selectModerators }: Props) 
                         </div>
                     </div>
                     <div className='row mt-3'>
-                        <SelectTableModerators users={users} setModerator={getModerators} emails={moderators} />
+                        <SelectTableMainLicenses licenseDatas={licenseDatas} setLicenses={getLicenses} fullnames={licenses} />
                     </div>
                 </div>
             </Modal.Body>
@@ -123,19 +120,16 @@ const ModeratorsDiaglog = ({ show, setShow, session, selectModerators }: Props) 
                 >
                     {t('Close')}
                 </Button>
-                <Button type='button' className={`fw-bold btn btn-light button-plain`}>
-                    {t('Add User')}
-                </Button>
                 <Button
                     type='button'
                     className={`fw-bold btn btn-light button-orange`}
                     onClick={handleClickSelectModerators}
                 >
-                    {t('Select User')}
+                    {t('Select Licenses')}
                 </Button>
             </Modal.Footer>
         </Modal>
     )
 }
 
-export default ModeratorsDiaglog
+export default MainLicensesDiaglog

@@ -18,7 +18,7 @@ import { COMMON_NAMESPACE } from '@/object-types/Constants'
 import ApiUtils from '@/utils/api/api.util'
 import HttpStatus from '@/object-types/enums/HttpStatus'
 import { signOut } from 'next-auth/react'
-import { notFound } from 'next/navigation'
+import { notFound, useRouter } from 'next/navigation'
 import { Session } from '@/object-types/Session'
 import ReleaseLink from '@/object-types/ReleaseLink'
 
@@ -31,6 +31,7 @@ interface Props {
 
 const Releases = ({ session, componentId }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
+    const router = useRouter()
     const [data, setData] = useState([])
 
     const fetchData: any = useCallback(
@@ -80,7 +81,7 @@ const Releases = ({ session, componentId }: Props) => {
         }
     ]
     const handleAddReleaseClick = () => {
-        // Handle Add release
+        router.push(`/components/edit/${componentId}/release/add`)
     }
 
     return (

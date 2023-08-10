@@ -13,7 +13,7 @@
 import { Form } from 'react-bootstrap'
 import React from 'react'
 import { _ } from '@/components/sw360'
-import ModeratorsTable from './ModeratorsTable'
+import ModeratorsTable from './ContributorsTable'
 import Moderators from '@/object-types/Moderators'
 import { ModeratorsType } from '@/object-types/ModeratorsType'
 
@@ -23,7 +23,7 @@ interface Props {
     emails?: any[]
 }
 
-const SelectTableModerators = ({ users, setModerator, emails }: Props) => {
+const SelectTableContributors = ({ users, setModerator, emails }: Props) => {
     const handlerRadioButton = (item: any) => {
         if (emails.includes(item)) {
             const index = emails.indexOf(item)
@@ -90,4 +90,4 @@ const SelectTableModerators = ({ users, setModerator, emails }: Props) => {
     )
 }
 
-export default React.memo(SelectTableModerators)
+export default React.memo(SelectTableContributors)

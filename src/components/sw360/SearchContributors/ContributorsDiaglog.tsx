@@ -17,7 +17,7 @@ import ApiUtils from '@/utils/api/api.util'
 import HttpStatus from '@/object-types/enums/HttpStatus'
 import { useCallback, useEffect, useState } from 'react'
 import CommonUtils from '@/utils/common.utils'
-import SelectTableModerators from './SelectTableModerators'
+import SelectTableModerators from './SelectTableContributors'
 import Moderators from '@/object-types/Moderators'
 import { ModeratorsType } from '@/object-types/ModeratorsType'
 import { useTranslations } from 'next-intl'
@@ -30,7 +30,7 @@ interface Props {
     selectModerators?: ModeratorsType
 }
 
-const ModeratorsDiaglog = ({ show, setShow, session, selectModerators }: Props) => {
+const ContributorsDiaglog = ({ show, setShow, session, selectModerators }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [data, setData] = useState()
     const [moderators, setModerators] = useState([])
@@ -138,4 +138,4 @@ const ModeratorsDiaglog = ({ show, setShow, session, selectModerators }: Props) 
     )
 }
 
-export default ModeratorsDiaglog
+export default ContributorsDiaglog

@@ -17,32 +17,32 @@ import ApiUtils from '@/utils/api/api.util'
 import HttpStatus from '@/object-types/enums/HttpStatus'
 import { useCallback, useEffect, useState } from 'react'
 import CommonUtils from '@/utils/common.utils'
-import SelectTableModerators from './SelectTableModerators'
-import Moderators from '@/object-types/Moderators'
-import { ModeratorsType } from '@/object-types/ModeratorsType'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
+import SelectTableLinkedReleases from './SelectTableLinkedReleases'
+import LinkedRelease from '@/object-types/LinkedRelease'
 
 interface Props {
-    show?: boolean
-    setShow?: React.Dispatch<React.SetStateAction<boolean>>
-    session?: Session
-    selectModerators?: ModeratorsType
+    show: boolean
+    setShow: React.Dispatch<React.SetStateAction<boolean>>
+    session: Session
+    selectLinkedReleases: any
+    onReRender: () => void
 }
 
-const ModeratorsDiaglog = ({ show, setShow, session, selectModerators }: Props) => {
+const LinkedReleasesDiaglog = ({ show, setShow, session, selectLinkedReleases, onReRender }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [data, setData] = useState()
-    const [moderators, setModerators] = useState([])
-    const [moderatorsResponse, setModeratorsResponse] = useState<Moderators>()
-    const [users, setUsers] = useState([])
+    const [linkedReleases, setLinkedReleases] = useState([])
+    const [linkedReleasesResponse, setLinkedReleasesResponse] = useState<LinkedRelease>()
+    const [releases, setReleases] = useState([])
 
     const handleCloseDialog = () => {
         setShow(!show)
     }
 
-    const searchVendor = () => {
-        setUsers(data)
+    const searchLinkedReleases = () => {
+        setReleases(data)
     }
 
     const fetchData: any = useCallback(async (url: string) => {
@@ -56,34 +56,36 @@ const ModeratorsDiaglog = ({ show, setShow, session, selectModerators }: Props) 
     }, [])
 
     useEffect(() => {
-        fetchData(`users`).then((users: any) => {
+        fetchData(`releases?allDetails=true`).then((users: any) => {
             if (
                 !CommonUtils.isNullOrUndefined(users['_embedded']) &&
-                !CommonUtils.isNullOrUndefined(users['_embedded']['sw360:users'])
+                !CommonUtils.isNullOrUndefined(users['_embedded']['sw360:releases'])
             ) {
-                const data = users['_embedded']['sw360:users'].map((item: any) => [
+                const data = users['_embedded']['sw360:releases'].map((item: any) => [
                     item,
-                    item.givenName,
-                    item.lastName,
-                    item.email,
-                    item.department,
+                    item.vendor ? item.vendor.fullName : " ",
+                    item.name,
+                    item.version,
+                    item.clearingState,
+                    item.mainlineState,
                 ])
                 setData(data)
             }
         })
     }, [])
 
-    const handleClickSelectModerators = () => {
-        selectModerators(moderatorsResponse)
+    const handleClickSelectLinkedReleases = () => {
+        selectLinkedReleases(linkedReleasesResponse)
         setShow(!show)
+        onReRender()
     }
 
-    const getModerators: ModeratorsType = useCallback((moderators: Moderators) => setModeratorsResponse(moderators), [])
+    const getLinkedReleases: (releaseLink: LinkedRelease) => void = useCallback((releaseLink: LinkedRelease) => setLinkedReleasesResponse(releaseLink), [])
 
     return (
         <Modal show={show} onHide={handleCloseDialog} backdrop='static' centered size='lg'>
             <Modal.Header closeButton>
-                <Modal.Title>{t('Search User')}</Modal.Title>
+                <Modal.Title>{t('Link Releases')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className='modal-body'>
@@ -93,24 +95,21 @@ const ModeratorsDiaglog = ({ show, setShow, session, selectModerators }: Props) 
                                 type='text'
                                 className='form-control'
                                 placeholder={t('Enter search text')}
-                                aria-describedby='Search User'
+                                aria-describedby='Link Releases'
                             />
                         </div>
                         <div className='col-lg-4'>
                             <button
                                 type='button'
                                 className={`fw-bold btn btn-light button-plain me-2`}
-                                onClick={searchVendor}
+                                onClick={searchLinkedReleases}
                             >
                                 {t('Search')}
-                            </button>
-                            <button type='button' className={`fw-bold btn btn-light button-plain me-2`}>
-                                {t('Reset')}
                             </button>
                         </div>
                     </div>
                     <div className='row mt-3'>
-                        <SelectTableModerators users={users} setModerator={getModerators} emails={moderators} />
+                        <SelectTableLinkedReleases releases={releases} setLinkedReleases={getLinkedReleases} linkedReleases={linkedReleases} />
                     </div>
                 </div>
             </Modal.Body>
@@ -123,19 +122,16 @@ const ModeratorsDiaglog = ({ show, setShow, session, selectModerators }: Props) 
                 >
                     {t('Close')}
                 </Button>
-                <Button type='button' className={`fw-bold btn btn-light button-plain`}>
-                    {t('Add User')}
-                </Button>
                 <Button
                     type='button'
                     className={`fw-bold btn btn-light button-orange`}
-                    onClick={handleClickSelectModerators}
+                    onClick={handleClickSelectLinkedReleases}
                 >
-                    {t('Select User')}
+                    {t('Link Releases')}
                 </Button>
             </Modal.Footer>
         </Modal>
     )
 }
 
-export default ModeratorsDiaglog
+export default LinkedReleasesDiaglog
