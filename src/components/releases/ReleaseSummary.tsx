@@ -19,12 +19,15 @@ import { VendorDialog } from '../sw360'
 import Licenses from '@/object-types/Licenses'
 import OtherLicensesDiaglog from '../sw360/SearchOtherLicenses/OtherLicensesDialog'
 import MainLicensesDiaglog from '../sw360/SearchMainLicenses/MainLicensesDialog'
+import ModeratorsDiaglog from '../sw360/SearchModerators/ModeratorsDiaglog'
+import Moderators from '@/object-types/Moderators'
+import ContributorsDiaglog from '../sw360/SearchContributors/ContributorsDiaglog'
 
 interface Props {
     session?: Session
 }
 
-const ReleaseSummary = ({session}: Props) => {
+const ReleaseSummary = ({ session }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [dialogOpenVendor, setDialogOpenVendor] = useState(false)
     const handleClickSearchVendor = useCallback(() => setDialogOpenVendor(true), [])
@@ -32,6 +35,8 @@ const ReleaseSummary = ({session}: Props) => {
     const handleClickSearchMainLicenses = useCallback(() => setDialogOpenMainLicenses(true), [])
     const [dialogOpenOtherLicenses, setDialogOpenOtherLicenses] = useState(false)
     const handleClickSearchOtherLicenses = useCallback(() => setDialogOpenOtherLicenses(true), [])
+    const [dialogOpenContributors, setDialogOpenContributors] = useState(false)
+    const handleClickSearchContributors = useCallback(() => setDialogOpenContributors(true), [])
 
     const setVendorId = (vendorResponse: Vendor) => {
         const vendorData: Vendor = {
@@ -57,9 +62,17 @@ const ReleaseSummary = ({session}: Props) => {
         console.log(otherLicenses)
     }
 
+    const setContributors = (contributorsResponse: Moderators) => {
+        const contributors: Moderators = {
+            emails: contributorsResponse.emails,
+            fullName: contributorsResponse.fullName,
+        }
+        console.log(contributors)
+    }
+
     return (
         <>
-            <div className='col' style={{padding:'0px 12px'}}>
+            <div className='col' style={{ padding: '0px 12px' }}>
                 <div className='row mb-4'>
                     <div className={`${styles['header']} mb-2`}>
                         <p className='fw-bold mt-3'>{t('Release Summary')}</p>
@@ -101,7 +114,7 @@ const ReleaseSummary = ({session}: Props) => {
                                 name='name'
                                 aria-describedby='name'
                                 readOnly={true}
-                                value="ComponentName"
+                                value='ComponentName'
                             />
                             <div id='learn_more_about_component_type' className='form-text'>
                                 <i className='bi bi-info-circle'></i>(i) Name of the component.
@@ -324,7 +337,7 @@ const ReleaseSummary = ({session}: Props) => {
                                 id='modified_on'
                                 aria-describedby='Modified on'
                                 readOnly={true}
-                                value="2023-08-09"
+                                value='2023-08-09'
                             />
                         </div>
                     </div>
@@ -357,6 +370,13 @@ const ReleaseSummary = ({session}: Props) => {
                                 aria-describedby='component_owner'
                                 readOnly={true}
                                 name='componentOwner'
+                                onClick={handleClickSearchContributors}
+                            />
+                            <ContributorsDiaglog
+                                show={dialogOpenContributors}
+                                setShow={setDialogOpenContributors}
+                                session={session}
+                                selectModerators={setContributors}
                             />
                         </div>
                         <div className='col-lg-4'>
