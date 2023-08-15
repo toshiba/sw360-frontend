@@ -16,6 +16,8 @@ import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
 import Vendor from '@/object-types/Vendor'
 import { VendorDialog } from '../sw360'
+import LicensesDiaglog from '../sw360/SearchMainLicenses/MainLicensesDialog'
+import Licenses from '@/object-types/Licenses'
 
 interface Props {
     session?: Session
@@ -25,6 +27,9 @@ const ReleaseSummary = ({session}: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [dialogOpenVendor, setDialogOpenVendor] = useState(false)
     const handleClickSearchVendor = useCallback(() => setDialogOpenVendor(true), [])
+    const [dialogOpenLicenses, setDialogOpenLicenses] = useState(false)
+    const handleClickSearchLicenses = useCallback(() => setDialogOpenLicenses(true), [])
+
     const setVendorId = (vendorResponse: Vendor) => {
         const vendorData: Vendor = {
             id: vendorResponse.id,
@@ -32,6 +37,15 @@ const ReleaseSummary = ({session}: Props) => {
         }
         console.log(vendorData)
     }
+
+    const setMainLicensesId = (licenseResponse: Licenses) => {
+        const mainLicenses: Licenses = {
+            id: licenseResponse.id,
+            fullName: licenseResponse.fullName,
+        }
+        console.log(mainLicenses)
+    }
+
     return (
         <>
             <div className='col' style={{padding:'0px 12px'}}>
@@ -162,7 +176,7 @@ const ReleaseSummary = ({session}: Props) => {
                                 {t('Release date')}
                             </label>
                             <input
-                                type='URL'
+                                type='date'
                                 className='form-control'
                                 placeholder='Enter Release Date'
                                 id='wiki_url'
@@ -183,7 +197,14 @@ const ReleaseSummary = ({session}: Props) => {
                                 id='default_vendor'
                                 aria-describedby='Vendor'
                                 readOnly={true}
+                                onClick={handleClickSearchLicenses}
                                 name='defaultVendorId'
+                            />
+                            <LicensesDiaglog
+                                show={dialogOpenLicenses}
+                                setShow={setDialogOpenLicenses}
+                                session={session}
+                                selectLicenses={setMainLicensesId}
                             />
                             <div id='default_vendor' className='form-text'>
                                 <i className='bi bi-x-circle'></i>
