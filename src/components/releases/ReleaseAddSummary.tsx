@@ -42,7 +42,7 @@ export default function ReleaseAddSummary({ session }: Props) {
                 <div className='container' style={{ maxWidth: '98vw', marginTop: '10px' }}>
                     <div className='row'>
                         <div className='col' style={{fontSize:'0.875rem'}}>
-                            <ReleaseSummary />
+                            <ReleaseSummary session={session}/>
                             <div className='row mb-4'>
                                 <AddAdditionalRolesComponent
                                     documentType={DocumentTypes.COMPONENT}

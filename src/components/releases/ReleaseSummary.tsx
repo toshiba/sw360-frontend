@@ -10,12 +10,28 @@
 
 'use client'
 import styles from './AddRelease.module.css'
-import React from 'react'
+import { Session } from '@/object-types/Session'
+import React, { useCallback, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
+import Vendor from '@/object-types/Vendor'
+import { VendorDialog } from '../sw360'
 
-const ReleaseSummary = () => {
+interface Props {
+    session?: Session
+}
+
+const ReleaseSummary = ({session}: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
+    const [dialogOpenVendor, setDialogOpenVendor] = useState(false)
+    const handleClickSearchVendor = useCallback(() => setDialogOpenVendor(true), [])
+    const setVendorId = (vendorResponse: Vendor) => {
+        const vendorData: Vendor = {
+            id: vendorResponse.id,
+            fullName: vendorResponse.fullName,
+        }
+        console.log(vendorData)
+    }
     return (
         <>
             <div className='col' style={{padding:'0px 12px'}}>
@@ -37,7 +53,14 @@ const ReleaseSummary = () => {
                                 id='default_vendor'
                                 aria-describedby='Vendor'
                                 readOnly={true}
+                                onClick={handleClickSearchVendor}
                                 name='defaultVendorId'
+                            />
+                            <VendorDialog
+                                show={dialogOpenVendor}
+                                setShow={setDialogOpenVendor}
+                                selectVendor={setVendorId}
+                                session={session}
                             />
                             <span>x</span>
                         </div>
