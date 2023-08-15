@@ -13,7 +13,7 @@
 import { Form } from 'react-bootstrap'
 import React from 'react'
 import { _ } from '@/components/sw360'
-import LicensesTable from './MainLicensesTable'
+import LicensesTable from './OtherLicensesTable'
 import { LicensesType } from '@/object-types/LicensesType'
 import Licenses from '@/object-types/Licenses'
 
@@ -23,7 +23,7 @@ interface Props {
     fullnames: any[]
 }
 
-const SelectTableMainLicenses = ({ licenseDatas, setLicenses, fullnames }: Props) => {
+const SelectTableOtherLicenses = ({ licenseDatas, setLicenses, fullnames }: Props) => {
     const handlerRadioButton = (item: any) => {
         if (fullnames.includes(item)) {
             const index = fullnames.indexOf(item)
@@ -78,4 +78,4 @@ const SelectTableMainLicenses = ({ licenseDatas, setLicenses, fullnames }: Props
     )
 }
 
-export default React.memo(SelectTableMainLicenses)
+export default React.memo(SelectTableOtherLicenses)

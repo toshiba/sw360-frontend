@@ -21,8 +21,8 @@ const compare = (preState: any, nextState: any) => {
     return Object.entries(preState.data).sort().toString() === Object.entries(nextState.data).sort().toString()
 }
 
-const MainLicensesTable = memo(function LicensesTable({ columns, data }: Props) {
+const OtherLicensesTable = memo(function LicensesTable({ columns, data }: Props) {
     return <Table columns={columns} data={data} />
 }, compare)
 
-export default MainLicensesTable
+export default OtherLicensesTable

@@ -21,7 +21,7 @@ import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
 import { LicensesType } from '@/object-types/LicensesType'
 import Licenses from '@/object-types/Licenses'
-import SelectTableMainLicenses from './SelectTableMainLicenses'
+import SelectTableOtherLicenses from './SelectTableOtherLicenses'
 
 interface Props {
     show: boolean
@@ -30,7 +30,7 @@ interface Props {
     selectLicenses: LicensesType
 }
 
-const MainLicensesDiaglog = ({ show, setShow, session, selectLicenses }: Props) => {
+const OtherLicensesDiaglog = ({ show, setShow, session, selectLicenses }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [data, setData] = useState()
     const [licenses, setLicenses] = useState([])
@@ -107,7 +107,7 @@ const MainLicensesDiaglog = ({ show, setShow, session, selectLicenses }: Props) 
                         </div>
                     </div>
                     <div className='row mt-3'>
-                        <SelectTableMainLicenses licenseDatas={licenseDatas} setLicenses={getLicenses} fullnames={licenses} />
+                        <SelectTableOtherLicenses licenseDatas={licenseDatas} setLicenses={getLicenses} fullnames={licenses} />
                     </div>
                 </div>
             </Modal.Body>
@@ -132,4 +132,4 @@ const MainLicensesDiaglog = ({ show, setShow, session, selectLicenses }: Props) 
     )
 }
 
-export default MainLicensesDiaglog
+export default OtherLicensesDiaglog
