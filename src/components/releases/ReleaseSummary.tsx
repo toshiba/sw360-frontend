@@ -37,6 +37,8 @@ const ReleaseSummary = ({ session }: Props) => {
     const handleClickSearchOtherLicenses = useCallback(() => setDialogOpenOtherLicenses(true), [])
     const [dialogOpenContributors, setDialogOpenContributors] = useState(false)
     const handleClickSearchContributors = useCallback(() => setDialogOpenContributors(true), [])
+    const [dialogOpenModerators, setDialogOpenModerators] = useState(false)
+    const handleClickSearchModerators = useCallback(() => setDialogOpenModerators(true), [])
 
     const setVendorId = (vendorResponse: Vendor) => {
         const vendorData: Vendor = {
@@ -68,6 +70,14 @@ const ReleaseSummary = ({ session }: Props) => {
             fullName: contributorsResponse.fullName,
         }
         console.log(contributors)
+    }
+
+    const setModerators = (moderatorsResponse: Moderators) => {
+        const moderators: Moderators = {
+            emails: moderatorsResponse.emails,
+            fullName: moderatorsResponse.fullName,
+        }
+        console.log(moderators)
     }
 
     return (
@@ -393,6 +403,13 @@ const ReleaseSummary = ({ session }: Props) => {
                                 aria-describedby='Moderators'
                                 readOnly={true}
                                 name='moderators'
+                                onClick={handleClickSearchModerators}
+                            />
+                            <ModeratorsDiaglog
+                                show={dialogOpenModerators}
+                                setShow={setDialogOpenModerators}
+                                session={session}
+                                selectModerators={setModerators}
                             />
                         </div>
                     </div>
