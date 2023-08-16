@@ -28,6 +28,43 @@ export default function ReleaseAddSummary({ session }: Props) {
     const [roles, setRoles] = useState<Input[]>([])
     const [externalIds, setExternalIds] = useState<Input[]>([])
     const [addtionalData, setAddtionalData] = useState<Input[]>([])
+
+    const setDataAddtionalData = (additionalDatas: Map<string, string>) => {
+        const obj = Object.fromEntries(additionalDatas)
+        console.log(obj)
+    }
+
+    const setDataExternalIds = (externalIds: Map<string, string>) => {
+        const obj = Object.fromEntries(externalIds)
+        console.log(obj)
+    }
+
+    const setDataRoles = (roles: Input[]) => {
+        const roleDatas = convertRoles(roles)
+        console.log(roleDatas)
+    }
+
+    const convertRoles = (datas: any[]) => {
+        const contributors: string[] = []
+        const commiters: string[] = []
+        const expecters: string[] = []
+        datas.forEach((data) => {
+            if (data.key === 'Contributor') {
+                contributors.push(data.value)
+            } else if (data.key === 'Committer') {
+                commiters.push(data.value)
+            } else if (data.key === 'Expert') {
+                expecters.push(data.value)
+            }
+        })
+        const roles = {
+            Contributor: contributors,
+            Committer: commiters,
+            Expert: expecters,
+        }
+        return roles
+    }
+
     return (
         <>
             <SearchUsersModalComponent />
@@ -48,6 +85,7 @@ export default function ReleaseAddSummary({ session }: Props) {
                                     documentType={DocumentTypes.COMPONENT}
                                     roles={roles}
                                     setRoles={setRoles}
+                                    setDataRoles={setDataRoles}
                                 />
                             </div>
                             <div className='row mb-4'>
@@ -56,6 +94,7 @@ export default function ReleaseAddSummary({ session }: Props) {
                                     keyName={'external id'}
                                     setData={setExternalIds}
                                     data={externalIds}
+                                    setMap={setDataExternalIds}
                                 />
                             </div>
                             <div className='row mb-4'>
@@ -64,6 +103,7 @@ export default function ReleaseAddSummary({ session }: Props) {
                                     keyName={'additional data'}
                                     setData={setAddtionalData}
                                     data={addtionalData}
+                                    setMap={setDataAddtionalData}
                                 />
                             </div>
                             <ReleaseRepository />
