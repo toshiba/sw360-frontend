@@ -27,6 +27,14 @@ interface Props {
     session?: Session
 }
 
+const getDate = () => {
+    const today = new Date();
+    const month = today.getMonth() + 1;
+    const year = today.getFullYear();
+    const date = today.getDate();
+    return `${month}/${date}/${year}`;
+}
+
 const ReleaseSummary = ({ session }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [dialogOpenVendor, setDialogOpenVendor] = useState(false)
@@ -39,6 +47,7 @@ const ReleaseSummary = ({ session }: Props) => {
     const handleClickSearchContributors = useCallback(() => setDialogOpenContributors(true), [])
     const [dialogOpenModerators, setDialogOpenModerators] = useState(false)
     const handleClickSearchModerators = useCallback(() => setDialogOpenModerators(true), [])
+    const [currentDate, setCurrentDate] = useState(getDate());
 
     const setVendorId = (vendorResponse: Vendor) => {
         const vendorData: Vendor = {
@@ -206,16 +215,16 @@ const ReleaseSummary = ({ session }: Props) => {
                             />
                         </div>
                         <div className='col-lg-4'>
-                            <label htmlFor='wiki_url' className='form-label fw-bold'>
+                            <label htmlFor='releaseDate' className='form-label fw-bold'>
                                 {t('Release date')}
                             </label>
                             <input
                                 type='date'
                                 className='form-control'
                                 placeholder='Enter Release Date'
-                                id='wiki_url'
-                                aria-describedby='wiki_url'
-                                name='wiki'
+                                id='releaseDate'
+                                aria-describedby='releaseDate'
+                                name='releaseDate'
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -342,12 +351,12 @@ const ReleaseSummary = ({ session }: Props) => {
                                 {t('Created on')}
                             </label>
                             <input
-                                type='date'
+                                type='text'
                                 className='form-control'
                                 id='modified_on'
                                 aria-describedby='Modified on'
                                 readOnly={true}
-                                value='2023-08-09'
+                                value={currentDate}
                             />
                         </div>
                     </div>
