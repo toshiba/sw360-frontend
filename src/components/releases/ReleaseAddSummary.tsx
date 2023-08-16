@@ -16,9 +16,9 @@ import DocumentTypes from '@/object-types/enums/DocumentTypes'
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
-import SearchUsersModalComponent from '../sw360/SearchUsersModal/SearchUsersModal'
 import ReleaseSummary from './ReleaseSummary'
 import ReleaseRepository from './ReleaseRepository'
+import Repository from '@/object-types/Repository'
 interface Props {
     session?: Session
 }
@@ -28,6 +28,10 @@ export default function ReleaseAddSummary({ session }: Props) {
     const [roles, setRoles] = useState<Input[]>([])
     const [externalIds, setExternalIds] = useState<Input[]>([])
     const [addtionalData, setAddtionalData] = useState<Input[]>([])
+    const [releaseRepository, setReleaseRepository] = useState<Repository>({
+        repositorytype: 'UNKNOWN',
+        url: ''
+    })
 
     const setDataAddtionalData = (additionalDatas: Map<string, string>) => {
         const obj = Object.fromEntries(additionalDatas)
@@ -67,7 +71,6 @@ export default function ReleaseAddSummary({ session }: Props) {
 
     return (
         <>
-            <SearchUsersModalComponent />
             <form
                 action=''
                 id='form_submit'
@@ -78,8 +81,8 @@ export default function ReleaseAddSummary({ session }: Props) {
             >
                 <div className='container' style={{ maxWidth: '98vw', marginTop: '10px' }}>
                     <div className='row'>
-                        <div className='col' style={{fontSize:'0.875rem'}}>
-                            <ReleaseSummary session={session}/>
+                        <div className='col' style={{ fontSize: '0.875rem' }}>
+                            <ReleaseSummary session={session} />
                             <div className='row mb-4'>
                                 <AddAdditionalRolesComponent
                                     documentType={DocumentTypes.COMPONENT}
@@ -106,7 +109,10 @@ export default function ReleaseAddSummary({ session }: Props) {
                                     setMap={setDataAddtionalData}
                                 />
                             </div>
-                            <ReleaseRepository />
+                            <ReleaseRepository
+                                releaseRepository={releaseRepository}
+                                setReleaseRepository={setReleaseRepository}
+                            />
                         </div>
                     </div>
                 </div>

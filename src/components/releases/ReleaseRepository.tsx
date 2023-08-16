@@ -13,9 +13,23 @@ import styles from '@/css/AddKeyValue.module.css'
 import React from 'react'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
+import Repository from '@/object-types/Repository'
 
-const ReleaseRepository = () => {
+interface Props {
+    setReleaseRepository?: React.Dispatch<React.SetStateAction<Repository>>
+    releaseRepository?: Repository
+}
+
+const ReleaseRepository = ({releaseRepository, setReleaseRepository }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+        setReleaseRepository({
+            ...releaseRepository,
+            [e.target.name]: e.target.value,
+        })
+    }
+
     return (
         <>
             <div className='row mb-4'>
@@ -32,8 +46,9 @@ const ReleaseRepository = () => {
                                 aria-label='component_type'
                                 id='repository_type'
                                 required
-                                defaultValue='Open'
-                                name='repositoryType'
+                                name='repositorytype'
+                                value={releaseRepository.repositorytype ?? ''}
+                                onChange={(e) => handleInputChange(e)}
                             >
                                 <option value='UNKNOWN'>{t('Unknown')}</option>
                                 <option value='GIT'>{t('Git')}</option>
@@ -72,7 +87,9 @@ const ReleaseRepository = () => {
                                 id='version'
                                 aria-describedby='version'
                                 required
-                                name='version'
+                                name='url'
+                                value={releaseRepository.url ?? ''}
+                                onChange={(e) => handleInputChange(e)}
                             />
                         </div>
                     </div>
