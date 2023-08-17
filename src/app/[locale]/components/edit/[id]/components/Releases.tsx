@@ -81,7 +81,7 @@ const Releases = ({ session, componentId }: Props) => {
         }
     ]
     const handleAddReleaseClick = () => {
-        router.push('/components/releases/add')
+        router.push(`/components/edit/${componentId}/release/add`)
     }
 
     return (
