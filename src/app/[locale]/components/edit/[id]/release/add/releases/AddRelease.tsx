@@ -9,7 +9,7 @@
 // License-Filename: LICENSE
 
 'use client'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import CommonTabIds from '@/object-types/enums/CommonTabsIds'
 import { Session } from '@/object-types/Session'
@@ -18,13 +18,14 @@ import ReleaseTabIds from '@/object-types/enums/ReleaseTabIds'
 import ReleaseAddSummary from '@/components/releases/ReleaseAddSummary'
 import LinkedReleases from '@/components/releases/LinkedReleases/LinkedReleases'
 import ReleasePayload from '@/object-types/ReleasePayload'
-import { useRouter } from 'next/navigation'
+import { notFound, useRouter } from 'next/navigation'
 import ApiUtils from '@/utils/api/api.util'
 import HttpStatus from '@/object-types/enums/HttpStatus'
 import Vendor from '@/object-types/Vendor'
 import Moderators from '@/object-types/Moderators'
 import Licenses from '@/object-types/Licenses'
 import Repository from '@/object-types/Repository'
+import { signOut } from 'next-auth/react'
 
 interface Props {
     session?: Session
@@ -97,6 +98,30 @@ const AddRelease = ({ session, componentId }: Props) => {
         repositorytype: 'UNKNOWN',
         url: '',
     })
+
+    const fetchData: any = useCallback(
+      async (url: string) => {
+          const response = await ApiUtils.GET(url, session.user.access_token)
+          if (response.status == HttpStatus.OK) {
+              const data = await response.json()
+              return data
+          } else if (response.status == HttpStatus.UNAUTHORIZED) {
+              signOut()
+          } else {
+              notFound()
+          }
+      },
+      [session.user.access_token]
+    )
+
+    useEffect(() => {
+        fetchData(`components/${componentId}`).then((component: any) => {
+            setReleasePayload({
+                ...releasePayload,
+                name: component.name,
+            })
+        })
+    }, [componentId, fetchData])
 
     const submit = async () => {
         console.log(releasePayload)
