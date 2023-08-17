@@ -14,19 +14,26 @@ import React from 'react'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
 import Repository from '@/object-types/Repository'
+import ReleasePayload from '@/object-types/ReleasePayload'
 
 interface Props {
+    releasePayload?: ReleasePayload
+    setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
     setReleaseRepository?: React.Dispatch<React.SetStateAction<Repository>>
     releaseRepository?: Repository
 }
 
-const ReleaseRepository = ({releaseRepository, setReleaseRepository }: Props) => {
+const ReleaseRepository = ({releaseRepository, setReleaseRepository, releasePayload, setReleasePayload }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
 
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         setReleaseRepository({
             ...releaseRepository,
             [e.target.name]: e.target.value,
+        })
+        setReleasePayload({
+            ...releasePayload,
+            repository: releaseRepository,
         })
     }
 

@@ -17,6 +17,14 @@ import { SideBar, PageButtonHeader } from '@/components/sw360'
 import ReleaseTabIds from '@/object-types/enums/ReleaseTabIds'
 import ReleaseAddSummary from '@/components/releases/ReleaseAddSummary'
 import LinkedReleases from '@/components/releases/LinkedReleases/LinkedReleases'
+import ReleasePayload from '@/object-types/ReleasePayload'
+import { useRouter } from 'next/navigation'
+import ApiUtils from '@/utils/api/api.util'
+import HttpStatus from '@/object-types/enums/HttpStatus'
+import Vendor from '@/object-types/Vendor'
+import Moderators from '@/object-types/Moderators'
+import Licenses from '@/object-types/Licenses'
+import Repository from '@/object-types/Repository'
 
 interface Props {
     session?: Session
@@ -35,9 +43,67 @@ const tabList = [
 ]
 
 const AddRelease = ({ session, componentId }: Props) => {
+    const router = useRouter()
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
+    const [releasePayload, setReleasePayload] = useState<ReleasePayload>({
+        name: '',
+        cpeid: '',
+        version: '',
+        componentId: componentId,
+        releaseDate: '',
+        externalIds: null,
+        additionalData: null,
+        mainlineState: '',
+        contributors: null,
+        moderators: null,
+        roles: null,
+        mainLicenseIds: null,
+        otherLicenseIds: null,
+        vendorId: '',
+        languages: null,
+        operatingSystems: null,
+        softwarePlatforms: null,
+        sourceCodeDownloadurl: '',
+        binaryDownloadurl: '',
+        repository: null,
+    })
+
+    const [vendor, setVendor] = useState<Vendor>({
+        id: '',
+        fullName: '',
+    })
+
+    const [mainLicensesId, setMainLicensesId] = useState<Licenses>({
+        id: null,
+        fullName: '',
+    })
+
+    const [otherLicensesId, setOtherLicensesId] = useState<Licenses>({
+        id: null,
+        fullName: '',
+    })
+
+    const [contributor, setContributor] = useState<Moderators>({
+        emails: null,
+        fullName: '',
+    })
+
+    const [moderator, setModerator] = useState<Moderators>({
+        emails: null,
+        fullName: '',
+    })
+
+    const [releaseRepository, setReleaseRepository] = useState<Repository>({
+        repositorytype: 'UNKNOWN',
+        url: '',
+    })
+
+    const submit = async () => {
+        console.log(releasePayload)
+    }
+
     const headerButtons = {
-        'Create Release': { link: '/components/' + componentId, type: 'primary' },
+        'Create Release': { link: '', type: 'primary', onClick: submit },
         Cancel: { link: '/components/detail/' + componentId, type: 'secondary' },
     }
 
@@ -53,7 +119,23 @@ const AddRelease = ({ session, componentId }: Props) => {
                             <PageButtonHeader buttons={headerButtons}></PageButtonHeader>
                         </div>
                         <div className='row' hidden={selectedTab !== CommonTabIds.SUMMARY ? true : false}>
-                            <ReleaseAddSummary session={session} />
+                            <ReleaseAddSummary
+                                session={session}
+                                releasePayload={releasePayload}
+                                setReleasePayload={setReleasePayload}
+                                vendor={vendor}
+                                setVendor={setVendor}
+                                mainLicensesId={mainLicensesId}
+                                setMainLicensesId={setMainLicensesId}
+                                otherLicensesId={otherLicensesId}
+                                setOtherLicensesId={setOtherLicensesId}
+                                contributor={contributor}
+                                setContributor={setContributor}
+                                moderator={moderator}
+                                setModerator={setModerator}
+                                releaseRepository={releaseRepository}
+                                setReleaseRepository={setReleaseRepository}
+                            />
                         </div>
                         <div className='row' hidden={selectedTab != ReleaseTabIds.LINKED_RELEASES ? true : false}>
                             <LinkedReleases />

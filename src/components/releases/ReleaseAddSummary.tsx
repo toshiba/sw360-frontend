@@ -19,33 +19,72 @@ import { COMMON_NAMESPACE } from '@/object-types/Constants'
 import ReleaseSummary from './ReleaseSummary'
 import ReleaseRepository from './ReleaseRepository'
 import Repository from '@/object-types/Repository'
+import ReleasePayload from '@/object-types/ReleasePayload'
+import Licenses from '@/object-types/Licenses'
+import Vendor from '@/object-types/Vendor'
+import Moderators from '@/object-types/Moderators'
 interface Props {
     session?: Session
+    releasePayload?: ReleasePayload
+    setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
+    vendor?: Vendor
+    setVendor?: React.Dispatch<React.SetStateAction<Vendor>>
+    mainLicensesId?: Licenses
+    setMainLicensesId?: React.Dispatch<React.SetStateAction<Licenses>>
+    otherLicensesId?: Licenses
+    setOtherLicensesId?: React.Dispatch<React.SetStateAction<Licenses>>
+    contributor?: Moderators
+    setContributor?: React.Dispatch<React.SetStateAction<Moderators>>
+    moderator?: Moderators
+    setModerator?: React.Dispatch<React.SetStateAction<Moderators>>
+    releaseRepository?: Repository
+    setReleaseRepository?: React.Dispatch<React.SetStateAction<Repository>>
 }
 
-export default function ReleaseAddSummary({ session }: Props) {
+export default function ReleaseAddSummary({
+    session,
+    releasePayload,
+    setReleasePayload,
+    vendor,
+    setVendor,
+    mainLicensesId,
+    setMainLicensesId,
+    otherLicensesId,
+    setOtherLicensesId,
+    contributor,
+    setContributor,
+    moderator,
+    setModerator,
+    releaseRepository,
+    setReleaseRepository
+}: Props) {
     const t = useTranslations(COMMON_NAMESPACE)
     const [roles, setRoles] = useState<Input[]>([])
     const [externalIds, setExternalIds] = useState<Input[]>([])
     const [addtionalData, setAddtionalData] = useState<Input[]>([])
-    const [releaseRepository, setReleaseRepository] = useState<Repository>({
-        repositorytype: 'UNKNOWN',
-        url: ''
-    })
 
     const setDataAddtionalData = (additionalDatas: Map<string, string>) => {
         const obj = Object.fromEntries(additionalDatas)
-        console.log(obj)
+        setReleasePayload({
+            ...releasePayload,
+            additionalData: obj,
+        })
     }
 
     const setDataExternalIds = (externalIds: Map<string, string>) => {
         const obj = Object.fromEntries(externalIds)
-        console.log(obj)
+        setReleasePayload({
+            ...releasePayload,
+            externalIds: obj,
+        })
     }
 
     const setDataRoles = (roles: Input[]) => {
         const roleDatas = convertRoles(roles)
-        console.log(roleDatas)
+        setReleasePayload({
+            ...releasePayload,
+            roles: roleDatas,
+        })
     }
 
     const convertRoles = (datas: any[]) => {
@@ -82,7 +121,21 @@ export default function ReleaseAddSummary({ session }: Props) {
                 <div className='container' style={{ maxWidth: '98vw', marginTop: '10px' }}>
                     <div className='row'>
                         <div className='col' style={{ fontSize: '0.875rem' }}>
-                            <ReleaseSummary session={session} />
+                            <ReleaseSummary
+                                session={session}
+                                releasePayload={releasePayload}
+                                setReleasePayload={setReleasePayload}
+                                vendor={vendor}
+                                setVendor={setVendor}
+                                mainLicensesId={mainLicensesId}
+                                setMainLicensesId={setMainLicensesId}
+                                otherLicensesId={otherLicensesId}
+                                setOtherLicensesId={setOtherLicensesId}
+                                contributor={contributor}
+                                setContributor={setContributor}
+                                moderator={moderator}
+                                setModerator={setModerator}
+                            />
                             <div className='row mb-4'>
                                 <AddAdditionalRolesComponent
                                     documentType={DocumentTypes.COMPONENT}
@@ -112,6 +165,8 @@ export default function ReleaseAddSummary({ session }: Props) {
                             <ReleaseRepository
                                 releaseRepository={releaseRepository}
                                 setReleaseRepository={setReleaseRepository}
+                                releasePayload={releasePayload}
+                                setReleasePayload={setReleasePayload}
                             />
                         </div>
                     </div>

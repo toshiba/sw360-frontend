@@ -20,7 +20,7 @@ export default interface ReleasePayload {
     mainlineState?: string
     contributors?: string[]
     moderators?: string[]
-    roles?: any 
+    roles?: any
     mainLicenseIds?: string[]
     otherLicenseIds?: string[]
     vendorId?: string

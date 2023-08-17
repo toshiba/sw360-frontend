@@ -22,20 +22,47 @@ import MainLicensesDiaglog from '../sw360/SearchMainLicenses/MainLicensesDialog'
 import ModeratorsDiaglog from '../sw360/SearchModerators/ModeratorsDiaglog'
 import Moderators from '@/object-types/Moderators'
 import ContributorsDiaglog from '../sw360/SearchContributors/ContributorsDiaglog'
+import ReleasePayload from '@/object-types/ReleasePayload'
 
 interface Props {
     session?: Session
+    releasePayload: ReleasePayload
+    setReleasePayload: React.Dispatch<React.SetStateAction<ReleasePayload>>
+    vendor?: Vendor
+    setVendor?: React.Dispatch<React.SetStateAction<Vendor>>
+    mainLicensesId?: Licenses
+    setMainLicensesId?: React.Dispatch<React.SetStateAction<Licenses>>
+    otherLicensesId?: Licenses
+    setOtherLicensesId?: React.Dispatch<React.SetStateAction<Licenses>>
+    contributor?: Moderators
+    setContributor?: React.Dispatch<React.SetStateAction<Moderators>>
+    moderator?: Moderators
+    setModerator?: React.Dispatch<React.SetStateAction<Moderators>>
 }
 
 const getDate = () => {
-    const today = new Date();
-    const month = today.getMonth() + 1;
-    const year = today.getFullYear();
-    const date = today.getDate();
-    return `${month}/${date}/${year}`;
+    const today = new Date()
+    const month = today.getMonth() + 1
+    const year = today.getFullYear()
+    const date = today.getDate()
+    return `${month}/${date}/${year}`
 }
 
-const ReleaseSummary = ({ session }: Props) => {
+const ReleaseSummary = ({
+    session,
+    releasePayload,
+    setReleasePayload,
+    vendor,
+    setVendor,
+    mainLicensesId,
+    setMainLicensesId,
+    otherLicensesId,
+    setOtherLicensesId,
+    contributor,
+    setContributor,
+    moderator,
+    setModerator,
+}: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [dialogOpenVendor, setDialogOpenVendor] = useState(false)
     const handleClickSearchVendor = useCallback(() => setDialogOpenVendor(true), [])
@@ -47,30 +74,61 @@ const ReleaseSummary = ({ session }: Props) => {
     const handleClickSearchContributors = useCallback(() => setDialogOpenContributors(true), [])
     const [dialogOpenModerators, setDialogOpenModerators] = useState(false)
     const handleClickSearchModerators = useCallback(() => setDialogOpenModerators(true), [])
-    const [currentDate, setCurrentDate] = useState(getDate());
+    const [currentDate, setCurrentDate] = useState(getDate())
+
+    const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+        setReleasePayload({
+            ...releasePayload,
+            [e.target.name]: e.target.value,
+        })
+    }
+
+    const setArrayData = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+        const data: string[] = splitValueCategories(e.target.value)
+        setReleasePayload({
+            ...releasePayload,
+            [e.target.name]: data,
+        })
+    }
+
+    const splitValueCategories = (valueCatergories: string) => {
+        return valueCatergories.split(',')
+    }
 
     const setVendorId = (vendorResponse: Vendor) => {
         const vendorData: Vendor = {
             id: vendorResponse.id,
             fullName: vendorResponse.fullName,
         }
-        console.log(vendorData)
+        setVendor(vendorData)
+        setReleasePayload({
+            ...releasePayload,
+            vendorId: vendorResponse.id,
+        })
     }
 
-    const setMainLicensesId = (licenseResponse: Licenses) => {
+    const setMainLicenses = (licenseResponse: Licenses) => {
         const mainLicenses: Licenses = {
             id: licenseResponse.id,
             fullName: licenseResponse.fullName,
         }
-        console.log(mainLicenses)
+        setMainLicensesId(mainLicenses)
+        setReleasePayload({
+            ...releasePayload,
+            mainLicenseIds: mainLicenses.id,
+        })
     }
 
-    const setOtherLicensesId = (licenseResponse: Licenses) => {
+    const setOtherLicenses = (licenseResponse: Licenses) => {
         const otherLicenses: Licenses = {
             id: licenseResponse.id,
             fullName: licenseResponse.fullName,
         }
-        console.log(otherLicenses)
+        setOtherLicensesId(otherLicenses)
+        setReleasePayload({
+            ...releasePayload,
+            otherLicenseIds: otherLicenses.id,
+        })
     }
 
     const setContributors = (contributorsResponse: Moderators) => {
@@ -78,7 +136,11 @@ const ReleaseSummary = ({ session }: Props) => {
             emails: contributorsResponse.emails,
             fullName: contributorsResponse.fullName,
         }
-        console.log(contributors)
+        setContributor(contributors)
+        setReleasePayload({
+            ...releasePayload,
+            contributors: contributors.emails,
+        })
     }
 
     const setModerators = (moderatorsResponse: Moderators) => {
@@ -86,7 +148,11 @@ const ReleaseSummary = ({ session }: Props) => {
             emails: moderatorsResponse.emails,
             fullName: moderatorsResponse.fullName,
         }
-        console.log(moderators)
+        setModerator(moderators)
+        setReleasePayload({
+            ...releasePayload,
+            moderators: moderators.emails,
+        })
     }
 
     return (
@@ -112,6 +178,7 @@ const ReleaseSummary = ({ session }: Props) => {
                                 readOnly={true}
                                 onClick={handleClickSearchVendor}
                                 name='defaultVendorId'
+                                value={vendor.fullName ?? ''}
                             />
                             <VendorDialog
                                 show={dialogOpenVendor}
@@ -134,6 +201,7 @@ const ReleaseSummary = ({ session }: Props) => {
                                 aria-describedby='name'
                                 readOnly={true}
                                 value='ComponentName'
+                                onChange={updateField}
                             />
                             <div id='learn_more_about_component_type' className='form-text'>
                                 <i className='bi bi-info-circle'></i>(i) Name of the component.
@@ -151,6 +219,7 @@ const ReleaseSummary = ({ session }: Props) => {
                                 aria-describedby='version'
                                 required
                                 name='version'
+                                onChange={updateField}
                             />
                         </div>
                     </div>
@@ -166,7 +235,8 @@ const ReleaseSummary = ({ session }: Props) => {
                                 placeholder='e.g., Java,C++, C#,...'
                                 id='programming_languages'
                                 aria-describedby='programming_languages'
-                                name='programming_languages'
+                                name='languages'
+                                onChange={setArrayData}
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -179,7 +249,8 @@ const ReleaseSummary = ({ session }: Props) => {
                                 placeholder='e.g.,Linux,MAC,Windows,...'
                                 id='operating_systems'
                                 aria-describedby='operating_systems'
-                                name='operating_systems'
+                                name='operatingSystems'
+                                onChange={setArrayData}
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -192,7 +263,8 @@ const ReleaseSummary = ({ session }: Props) => {
                                 placeholder='Enter CPE ID'
                                 id='tag'
                                 aria-describedby='Tag'
-                                name='homepage'
+                                name='cpeid'
+                                onChange={updateField}
                             />
                             <div id='learn_more_about_component_type' className='form-text'>
                                 <i className='bi bi-info-circle'></i>(i) Learn more about the CPE ID format.
@@ -211,7 +283,8 @@ const ReleaseSummary = ({ session }: Props) => {
                                 placeholder='e.g.,Adobe AIR,.NET,Qt,...'
                                 id='blog_url'
                                 aria-describedby='blog_url'
-                                name='blog'
+                                name='softwarePlatforms'
+                                onChange={setArrayData}
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -225,10 +298,11 @@ const ReleaseSummary = ({ session }: Props) => {
                                 id='releaseDate'
                                 aria-describedby='releaseDate'
                                 name='releaseDate'
+                                onChange={updateField}
                             />
                         </div>
                         <div className='col-lg-4'>
-                            <label htmlFor='default_vendor' className='form-label fw-bold'>
+                            <label htmlFor='mainLicenseIds' className='form-label fw-bold'>
                                 {t('Main Licenses')}
                             </label>
                             <input
@@ -237,19 +311,20 @@ const ReleaseSummary = ({ session }: Props) => {
                                 data-bs-toggle='modal'
                                 data-bs-target='#search_vendors_modal'
                                 placeholder={t('Click to set vendor')}
-                                id='default_vendor'
+                                id='mainLicenseIds'
                                 aria-describedby='Vendor'
                                 readOnly={true}
                                 onClick={handleClickSearchMainLicenses}
-                                name='defaultVendorId'
+                                name='mainLicenseIds'
+                                value={mainLicensesId.fullName ?? ''}
                             />
                             <MainLicensesDiaglog
                                 show={dialogOpenMainLicenses}
                                 setShow={setDialogOpenMainLicenses}
                                 session={session}
-                                selectLicenses={setMainLicensesId}
+                                selectLicenses={setMainLicenses}
                             />
-                            <div id='default_vendor' className='form-text'>
+                            <div id='mainLicenseIds-i' className='form-text'>
                                 <i className='bi bi-x-circle'></i>
                             </div>
                         </div>
@@ -257,7 +332,7 @@ const ReleaseSummary = ({ session }: Props) => {
                     <hr className='my-2' />
                     <div className='row'>
                         <div className='col-lg-4'>
-                            <label htmlFor='default_vendor' className='form-label fw-bold'>
+                            <label htmlFor='otherLicenseIds' className='form-label fw-bold'>
                                 {t('Other licenses')}
                             </label>
                             <input
@@ -266,24 +341,25 @@ const ReleaseSummary = ({ session }: Props) => {
                                 data-bs-toggle='modal'
                                 data-bs-target='#search_vendors_modal'
                                 placeholder={t('Click to set vendor')}
-                                id='default_vendor'
+                                id='otherLicenseIds'
                                 aria-describedby='Vendor'
                                 readOnly={true}
-                                name='defaultVendorId'
+                                name='otherLicenseIds'
                                 onClick={handleClickSearchOtherLicenses}
+                                value={otherLicensesId.fullName ?? ''}
                             />
                             <OtherLicensesDiaglog
                                 show={dialogOpenOtherLicenses}
                                 setShow={setDialogOpenOtherLicenses}
                                 session={session}
-                                selectLicenses={setOtherLicensesId}
+                                selectLicenses={setOtherLicenses}
                             />
-                            <div id='default_vendor' className='form-text'>
+                            <div id='otherLicenseIds-i' className='form-text'>
                                 <i className='bi bi-x-circle'></i>
                             </div>
                         </div>
                         <div className='col-lg-4'>
-                            <label htmlFor='wiki_url' className='form-label fw-bold'>
+                            <label htmlFor='sourceCodeDownloadurl' className='form-label fw-bold'>
                                 {t('Source Code Download URL')}
                             </label>
                             <input
@@ -292,20 +368,22 @@ const ReleaseSummary = ({ session }: Props) => {
                                 placeholder={t('Enter URL')}
                                 id='wiki_url'
                                 aria-describedby='wiki_url'
-                                name='wiki'
+                                name='sourceCodeDownloadurl'
+                                onChange={updateField}
                             />
                         </div>
                         <div className='col-lg-4'>
-                            <label htmlFor='wiki_url' className='form-label fw-bold'>
+                            <label htmlFor='binaryDownloadurl' className='form-label fw-bold'>
                                 {t('Binary Download URL')}
                             </label>
                             <input
                                 type='URL'
                                 className='form-control'
                                 placeholder={t('Enter URL')}
-                                id='wiki_url'
+                                id='binaryDownloadurl'
                                 aria-describedby='wiki_url'
-                                name='wiki'
+                                name='binaryDownloadurl'
+                                onChange={updateField}
                             />
                         </div>
                     </div>
@@ -325,16 +403,17 @@ const ReleaseSummary = ({ session }: Props) => {
                             />
                         </div>
                         <div className='col-lg-4'>
-                            <label htmlFor='component_type' className='form-label fw-bold'>
+                            <label htmlFor='mainlineState' className='form-label fw-bold'>
                                 {t('Release Mainline State')} <span className='text-red'>*</span>
                             </label>
                             <select
                                 className='form-select'
                                 aria-label='component_type'
-                                id='component_type'
+                                id='mainlineState'
                                 required
                                 defaultValue='Open'
-                                name='componentType'
+                                name='mainlineState'
+                                onChange={updateField}
                             >
                                 <option value='OPEN'>{t('OPEN')}</option>
                                 <option value='MAINLINE'> {t('MAINLINE')}</option>
@@ -342,18 +421,18 @@ const ReleaseSummary = ({ session }: Props) => {
                                 <option value='PHASEOUT'>{t('PHASEOUT')}</option>
                                 <option value='DENIED'>{t('DENIED')}</option>
                             </select>
-                            <div id='learn_more_about_component_type' className='form-text'>
+                            <div id='mainlineState-i' className='form-text'>
                                 <i className='bi bi-info-circle'></i>(i) Learn more about the CPE ID format.
                             </div>
                         </div>
                         <div className='col-lg-4'>
-                            <label htmlFor='modified_on' className='form-label fw-bold'>
+                            <label htmlFor='createdOn' className='form-label fw-bold'>
                                 {t('Created on')}
                             </label>
                             <input
                                 type='text'
                                 className='form-control'
-                                id='modified_on'
+                                id='createdOn'
                                 aria-describedby='Modified on'
                                 readOnly={true}
                                 value={currentDate}
@@ -363,21 +442,21 @@ const ReleaseSummary = ({ session }: Props) => {
                     <hr className='my-2' />
                     <div className='row'>
                         <div className='col-lg-4'>
-                            <label htmlFor='modified_on' className='form-label fw-bold'>
+                            <label htmlFor='createdBy' className='form-label fw-bold'>
                                 {t('Created by')}
                             </label>
                             <input
                                 type='text'
                                 className='form-control'
-                                id='modified_on'
+                                id='createdBy'
                                 placeholder='Will be set automatically'
                                 aria-describedby='Modified on'
                                 readOnly={true}
                             />
                         </div>
                         <div className='col-lg-4'>
-                            <label htmlFor='component_owner' className='form-label fw-bold'>
-                                {t('Component Owner')}
+                            <label htmlFor='contributors' className='form-label fw-bold'>
+                                {t('Contributors')}
                             </label>
                             <input
                                 type='text'
@@ -385,11 +464,12 @@ const ReleaseSummary = ({ session }: Props) => {
                                 data-bs-toggle='modal'
                                 data-bs-target='#search_users_modal'
                                 placeholder={t('Click to edit')}
-                                id='component_owner'
+                                id='contributors'
                                 aria-describedby='component_owner'
                                 readOnly={true}
-                                name='componentOwner'
+                                name='contributors'
                                 onClick={handleClickSearchContributors}
+                                value={contributor.fullName ?? ''}
                             />
                             <ContributorsDiaglog
                                 show={dialogOpenContributors}
@@ -413,6 +493,7 @@ const ReleaseSummary = ({ session }: Props) => {
                                 readOnly={true}
                                 name='moderators'
                                 onClick={handleClickSearchModerators}
+                                value={moderator.fullName ?? ''}
                             />
                             <ModeratorsDiaglog
                                 show={dialogOpenModerators}
