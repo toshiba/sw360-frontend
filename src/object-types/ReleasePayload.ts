@@ -30,4 +30,5 @@ export default interface ReleasePayload {
     sourceCodeDownloadurl?: string
     binaryDownloadurl?: string
     repository?: Repository
+    releaseIdToRelationship?: any
 }

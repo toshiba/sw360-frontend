@@ -24,10 +24,10 @@ import Licenses from '@/object-types/Licenses'
 import SelectTableMainLicenses from './SelectTableMainLicenses'
 
 interface Props {
-    show: boolean
-    setShow: React.Dispatch<React.SetStateAction<boolean>>
-    session: Session
-    selectLicenses: LicensesType
+    show?: boolean
+    setShow?: React.Dispatch<React.SetStateAction<boolean>>
+    session?: Session
+    selectLicenses?: LicensesType
 }
 
 const MainLicensesDiaglog = ({ show, setShow, session, selectLicenses }: Props) => {
@@ -51,7 +51,7 @@ const MainLicensesDiaglog = ({ show, setShow, session, selectLicenses }: Props) 
             const data = await response.json()
             return data
         } else {
-            notFound()
+            return []
         }
     }, [])
 

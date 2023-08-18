@@ -67,6 +67,7 @@ const AddRelease = ({ session, componentId }: Props) => {
         sourceCodeDownloadurl: '',
         binaryDownloadurl: '',
         repository: null,
+        releaseIdToRelationship: null,
     })
 
     const [vendor, setVendor] = useState<Vendor>({
@@ -100,18 +101,18 @@ const AddRelease = ({ session, componentId }: Props) => {
     })
 
     const fetchData: any = useCallback(
-      async (url: string) => {
-          const response = await ApiUtils.GET(url, session.user.access_token)
-          if (response.status == HttpStatus.OK) {
-              const data = await response.json()
-              return data
-          } else if (response.status == HttpStatus.UNAUTHORIZED) {
-              signOut()
-          } else {
-              notFound()
-          }
-      },
-      [session.user.access_token]
+        async (url: string) => {
+            const response = await ApiUtils.GET(url, session.user.access_token)
+            if (response.status == HttpStatus.OK) {
+                const data = await response.json()
+                return data
+            } else if (response.status == HttpStatus.UNAUTHORIZED) {
+                signOut()
+            } else {
+                notFound()
+            }
+        },
+        [session.user.access_token]
     )
 
     useEffect(() => {
@@ -163,7 +164,11 @@ const AddRelease = ({ session, componentId }: Props) => {
                             />
                         </div>
                         <div className='row' hidden={selectedTab != ReleaseTabIds.LINKED_RELEASES ? true : false}>
-                            <LinkedReleases />
+                            <LinkedReleases
+                                session={session}
+                                releasePayload={releasePayload}
+                                setReleasePayload={setReleasePayload}
+                            />
                         </div>
                     </div>
                 </div>

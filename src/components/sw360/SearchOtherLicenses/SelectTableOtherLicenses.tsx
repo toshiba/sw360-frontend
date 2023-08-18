@@ -18,9 +18,9 @@ import { LicensesType } from '@/object-types/LicensesType'
 import Licenses from '@/object-types/Licenses'
 
 interface Props {
-    licenseDatas: any[]
-    setLicenses: LicensesType
-    fullnames: any[]
+    licenseDatas?: any[]
+    setLicenses?: LicensesType
+    fullnames?: any[]
 }
 
 const SelectTableOtherLicenses = ({ licenseDatas, setLicenses, fullnames }: Props) => {

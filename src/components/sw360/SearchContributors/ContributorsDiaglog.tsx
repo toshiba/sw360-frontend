@@ -24,10 +24,10 @@ import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
 
 interface Props {
-    show: boolean
-    setShow: React.Dispatch<React.SetStateAction<boolean>>
-    session: Session
-    selectModerators: ModeratorsType
+    show?: boolean
+    setShow?: React.Dispatch<React.SetStateAction<boolean>>
+    session?: Session
+    selectModerators?: ModeratorsType
 }
 
 const ContributorsDiaglog = ({ show, setShow, session, selectModerators }: Props) => {

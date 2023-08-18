@@ -18,9 +18,9 @@ import Moderators from '@/object-types/Moderators'
 import { ModeratorsType } from '@/object-types/ModeratorsType'
 
 interface Props {
-    users: any[]
-    setModerator: ModeratorsType
-    emails: any[]
+    users?: any[]
+    setModerator?: ModeratorsType
+    emails?: any[]
 }
 
 const SelectTableModerators = ({ users, setModerator, emails }: Props) => {
