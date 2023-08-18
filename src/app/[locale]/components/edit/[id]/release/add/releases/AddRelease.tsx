@@ -26,6 +26,9 @@ import Moderators from '@/object-types/Moderators'
 import Licenses from '@/object-types/Licenses'
 import Repository from '@/object-types/Repository'
 import { signOut } from 'next-auth/react'
+import { ToastContainer, TypeOptions, toast } from 'react-toastify'
+import { useTranslations } from 'next-intl'
+import { COMMON_NAMESPACE } from '@/object-types/Constants'
 
 interface Props {
     session?: Session
@@ -45,6 +48,7 @@ const tabList = [
 
 const AddRelease = ({ session, componentId }: Props) => {
     const router = useRouter()
+    const t = useTranslations(COMMON_NAMESPACE)
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
     const [releasePayload, setReleasePayload] = useState<ReleasePayload>({
         name: '',
@@ -54,7 +58,7 @@ const AddRelease = ({ session, componentId }: Props) => {
         releaseDate: '',
         externalIds: null,
         additionalData: null,
-        mainlineState: '',
+        mainlineState: 'OPEN',
         contributors: null,
         moderators: null,
         roles: null,
@@ -124,8 +128,29 @@ const AddRelease = ({ session, componentId }: Props) => {
         })
     }, [componentId, fetchData])
 
+    const notify = (text: string, type: TypeOptions) =>
+    toast(text, {
+        type,
+        position: toast.POSITION.TOP_LEFT,
+        theme: 'colored',
+    })
+
+    const handleId = (id: string): string => {
+        return id.split('/').at(-1)
+    }
+
     const submit = async () => {
-        console.log(releasePayload)
+        const response = await ApiUtils.POST('releases', releasePayload, session.user.access_token)
+        if (response.status == HttpStatus.CREATED) {
+            const data = await response.json()
+            notify(t('Component is created'), 'success')
+            const releaseId: string = handleId(data._links.self.href)
+            router.push('/components/releases/detail/' + releaseId)
+        } else if (response.status == HttpStatus.CONFLICT){
+            notify(t('Component is Duplicate'), 'warning')
+        } else {
+            notify(t('Create Component failed'), 'error')
+        }
     }
 
     const headerButtons = {
@@ -144,6 +169,7 @@ const AddRelease = ({ session, componentId }: Props) => {
                         <div className='row' style={{ marginBottom: '20px' }}>
                             <PageButtonHeader buttons={headerButtons}></PageButtonHeader>
                         </div>
+                        <ToastContainer className='foo' style={{ width: '300px', height: '100px' }} />
                         <div className='row' hidden={selectedTab !== CommonTabIds.SUMMARY ? true : false}>
                             <ReleaseAddSummary
                                 session={session}

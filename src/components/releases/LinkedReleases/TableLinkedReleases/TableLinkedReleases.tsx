@@ -56,7 +56,7 @@ export default function TableLinkedReleases({ releaseLinks, setReleaseLinks, set
                         <div key={index}>
                             <div className={`${styles['div-row']}`}>
                                 <input
-                                    className={`${styles['input-comment']}`}
+                                    className={`${styles['input-field']}`}
                                     name='vendor'
                                     value={item.vendor ?? ''}
                                     type='text'
@@ -64,21 +64,21 @@ export default function TableLinkedReleases({ releaseLinks, setReleaseLinks, set
                                     readOnly
                                 />
                                 <input
-                                    className={`${styles['input-comment']}`}
+                                    className={`${styles['input-field']}`}
                                     type='text'
                                     value={item.name ?? ''}
                                     name='name'
                                     readOnly
                                 />
                                 <input
-                                    className={`${styles['input-comment']}`}
+                                    className={`${styles['input-field']}`}
                                     type='text'
                                     value={item.version ?? ''}
                                     name='version'
                                     readOnly
                                 />
                                 <select
-                                    className={`${styles['select-status']}`}
+                                    className={`${styles['select-relation']}`}
                                     aria-label='releaseRelationship'
                                     id='releaseRelationship'
                                     name='releaseRelationship'

@@ -411,7 +411,6 @@ const ReleaseSummary = ({
                                 aria-label='component_type'
                                 id='mainlineState'
                                 required
-                                defaultValue='Open'
                                 name='mainlineState'
                                 onChange={updateField}
                             >

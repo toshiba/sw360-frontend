@@ -18,16 +18,16 @@ export default function TitleLinkedReleases() {
         <>
             <div className={`row ${styles['div-title-second']}`}>
                 <div className={`${styles['div-filename']}`}>
-                    <p >{t('Vendor Name')}</p>
+                    <p className='fw-bold mt-2' >{t('Vendor Name')}</p>
                 </div>
                 <div className={`${styles['div-filename']}`}>
-                    <p >{t('Release name')}</p>
+                    <p className='fw-bold mt-2'>{t('Release name')}</p>
                 </div>
                 <div className={`${styles['div-filename']}`}>
-                    <p >{t('Release version')}</p>
+                    <p className='fw-bold mt-2'>{t('Release version')}</p>
                 </div>
                 <div className={`${styles['div-filename']}`}>
-                    <p >{t('Release relation')}</p>
+                    <p className='fw-bold mt-2'>{t('Release relation')}</p>
                 </div>
             </div>
         </>
