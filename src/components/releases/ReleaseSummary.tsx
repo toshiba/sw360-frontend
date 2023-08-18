@@ -107,6 +107,18 @@ const ReleaseSummary = ({
         })
     }
 
+    const handleClearVendor = () => {
+        const vendorData: Vendor = {
+            id: '',
+            fullName: '',
+        }
+        setVendor(vendorData)
+        setReleasePayload({
+            ...releasePayload,
+            vendorId: '',
+        })
+    }
+
     const setMainLicenses = (licenseResponse: Licenses) => {
         const mainLicenses: Licenses = {
             id: licenseResponse.id,
@@ -186,7 +198,7 @@ const ReleaseSummary = ({
                                 selectVendor={setVendorId}
                                 session={session}
                             />
-                            <span>x</span>
+                            <span onClick={handleClearVendor} >x</span>
                         </div>
                         <div className='col-lg-4'>
                             <label htmlFor='name' className='form-label fw-bold'>
