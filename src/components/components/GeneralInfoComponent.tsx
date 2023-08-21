@@ -9,7 +9,7 @@
 // License-Filename: LICENSE
 
 'use client'
-import styles from './AddComponents.module.css'
+import styles from './SummaryComponent.module.css'
 import React, { useCallback, useState } from 'react'
 import { VendorDialog } from '@/components/sw360'
 import { Session } from '@/object-types/Session'

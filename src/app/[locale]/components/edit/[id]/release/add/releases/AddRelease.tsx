@@ -15,7 +15,6 @@ import CommonTabIds from '@/object-types/enums/CommonTabsIds'
 import { Session } from '@/object-types/Session'
 import { SideBar, PageButtonHeader } from '@/components/sw360'
 import ReleaseTabIds from '@/object-types/enums/ReleaseTabIds'
-import ReleaseAddSummary from '@/components/releases/ReleaseAddSummary'
 import LinkedReleases from '@/components/releases/LinkedReleases/LinkedReleases'
 import ReleasePayload from '@/object-types/ReleasePayload'
 import { notFound, useRouter } from 'next/navigation'
@@ -29,6 +28,7 @@ import { signOut } from 'next-auth/react'
 import { ToastContainer, TypeOptions, toast } from 'react-toastify'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
+import ReleaseAddSummary from './ReleaseAddSummary'
 
 interface Props {
     session?: Session

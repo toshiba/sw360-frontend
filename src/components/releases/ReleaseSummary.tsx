@@ -9,7 +9,7 @@
 // License-Filename: LICENSE
 
 'use client'
-import styles from './AddRelease.module.css'
+import styles from './ReleaseSummary.module.css'
 import { Session } from '@/object-types/Session'
 import React, { useCallback, useState } from 'react'
 import { useTranslations } from 'next-intl'

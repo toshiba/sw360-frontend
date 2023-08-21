@@ -16,13 +16,13 @@ import DocumentTypes from '@/object-types/enums/DocumentTypes'
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
-import ReleaseSummary from './ReleaseSummary'
-import ReleaseRepository from './ReleaseRepository'
 import Repository from '@/object-types/Repository'
 import ReleasePayload from '@/object-types/ReleasePayload'
 import Licenses from '@/object-types/Licenses'
 import Vendor from '@/object-types/Vendor'
 import Moderators from '@/object-types/Moderators'
+import ReleaseSummary from '@/components/releases/ReleaseSummary'
+import ReleaseRepository from '@/components/releases/ReleaseRepository'
 interface Props {
     session?: Session
     releasePayload?: ReleasePayload
