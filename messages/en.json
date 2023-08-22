@@ -395,6 +395,22 @@
         "Will be set auto": "Will be set auto",
         "Will be set automatically": "Will be set automatically",
         "Wiki URL": "Wiki Url",
-        "Yes": "Yes"
+        "Yes": "Yes",
+        "Additional request Info": "Additional request Info",
+        "Comment": "Comment",
+        "Count of Security Vulnerabilities": "Count of Security Vulnerabilities",
+        "Ausfuhrliste": "Ausfuhrliste",
+        "ECCN": "ECCN",
+        "Learn more about ECC statuses": "Learn more about ECC statuses",
+        "COTS Responsible": "COTS Responsible",
+        "COTS Clearing Deadline": "COTS Clearing Deadline",
+        "Used License": "Used License",
+        "COTS Clearing Report URL": "COTS Clearing Report URL",
+        "Commercial Details Administration": "Commercial Details Administration",
+        "Update Release": "Update Release",
+        "Commercial Details": "Commercial Details",
+        "Contains OSS": "Contains OSS",
+        "OSS Contract Signed": "OSS Contract Signed",
+        "Source Code Available": "Source Code Available"
     }
 }

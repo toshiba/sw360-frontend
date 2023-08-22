@@ -26,11 +26,11 @@ import ComponentPayload from '@/object-types/ComponentPayLoad'
 import TitleAttachment from './TiltleAttachment/TitleAttachment'
 
 interface Props {
-    documentId: string
-    session: Session
-    documentType: string
-    componentData: ComponentPayload
-    setComponentData: React.Dispatch<React.SetStateAction<ComponentPayload>>
+    documentId?: string
+    session?: Session
+    documentType?: string
+    componentData?: ComponentPayload
+    setComponentData?: React.Dispatch<React.SetStateAction<ComponentPayload>>
 }
 
 const EditAttachments = ({ documentId, session, documentType, componentData, setComponentData }: Props) => {

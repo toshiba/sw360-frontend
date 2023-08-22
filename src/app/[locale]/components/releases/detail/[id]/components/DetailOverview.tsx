@@ -145,7 +145,7 @@ const DetailOverview = ({ session, releaseId }: Props) => {
     }
 
     const headerButtons = {
-        'Edit release': { link: '', type: 'primary' },
+        'Edit release': { link: `/components/editRelease/${releaseId}`, type: 'primary' },
         Merge: { link: '', type: 'secondary' },
         Subscribe: { link: '', type: 'outline-success' },
     }

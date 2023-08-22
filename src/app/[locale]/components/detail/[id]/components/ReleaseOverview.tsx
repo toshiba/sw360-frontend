@@ -133,7 +133,8 @@ const ReleaseOverview = ({ session, componentId }: Props) => {
                             alt='Fossology'
                             onClick={() => handleFossologyClearing(id)}
                         />
-                        <Link href={'/release/edit/' + id} style={{ color: 'gray', fontSize: '14px' }}>
+                        {/* /components/edit/${componentId}/release/edit/${id} */}
+                        <Link href={`/components/editRelease/${id}`} style={{ color: 'gray', fontSize: '14px' }}>
                             <FaPencilAlt />
                         </Link>{' '}
                         &nbsp;

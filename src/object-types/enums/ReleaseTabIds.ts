@@ -12,6 +12,7 @@ enum ReleaseTabIds {
   LINKED_RELEASES = 'tab-Releases',
   CLEARING_DETAILS = 'tab-ClearingDetails',
   ECC_DETAILS = 'tab-EccDetails',
+  COMMERCIAL_DETAILS = 'tab-CommercialDetails',
 }
 
 export default ReleaseTabIds

@@ -22,7 +22,7 @@ import LinkedRelease from '@/object-types/LinkedRelease'
 import ReleasePayload from '@/object-types/ReleasePayload'
 
 interface Props {
-    session: Session
+    session?: Session
     releasePayload?: ReleasePayload
     setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
 }
@@ -56,29 +56,31 @@ const LinkedReleases = ({ session, releasePayload, setReleasePayload }: Props) =
 
     return (
         <>
-            <LinkedReleasesDiaglog
-                session={session}
-                show={linkedReleasesDiaglog}
-                setShow={setLinkedReleasesDiaglog}
-                selectLinkedReleases={selectLinkedReleases}
-                onReRender={handleReRender}
-            />
-            <div className={`row ${styles['attachment-table']}`} style={{ padding: '25px' }}>
-                <TitleLinkedReleases />
-                <TableLinkedReleases
-                    releaseLinks={releaseLinks}
-                    setReleaseLinks={setReleaseLinks}
-                    setReleaseIdToRelationshipsToReleasePayLoad={setReleaseIdToRelationshipsToReleasePayLoad}
+            <div className='col' style={{ fontSize: '0.875rem' }}>
+                <LinkedReleasesDiaglog
+                    session={session}
+                    show={linkedReleasesDiaglog}
+                    setShow={setLinkedReleasesDiaglog}
+                    selectLinkedReleases={selectLinkedReleases}
+                    onReRender={handleReRender}
                 />
-            </div>
-            <div>
-                <button
-                    type='button'
-                    className={`fw-bold btn btn-light button-plain`}
-                    onClick={handleClickSelectLinkedReleases}
-                >
-                    {t('Click to add Releases')}
-                </button>
+                <div className={`row ${styles['attachment-table']}`} style={{ padding: '25px',fontSize: '0.875rem', paddingTop: '1px' }}>
+                    <TitleLinkedReleases />
+                    <TableLinkedReleases
+                        releaseLinks={releaseLinks}
+                        setReleaseLinks={setReleaseLinks}
+                        setReleaseIdToRelationshipsToReleasePayLoad={setReleaseIdToRelationshipsToReleasePayLoad}
+                    />
+                </div>
+                <div>
+                    <button
+                        type='button'
+                        className={`fw-bold btn btn-light button-plain`}
+                        onClick={handleClickSelectLinkedReleases}
+                    >
+                        {t('Click to add Releases')}
+                    </button>
+                </div>
             </div>
         </>
     )
