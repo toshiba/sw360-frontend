@@ -17,13 +17,22 @@ import Repository from '@/object-types/Repository'
 import ReleasePayload from '@/object-types/ReleasePayload'
 
 interface Props {
+    // releaseData?: ReleasePayload
+    // setReleaseData?:React.Dispatch<React.SetStateAction<ReleasePayload>>
     releasePayload?: ReleasePayload
     setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
     setReleaseRepository?: React.Dispatch<React.SetStateAction<Repository>>
     releaseRepository?: Repository
 }
 
-const ReleaseRepository = ({releaseRepository, setReleaseRepository, releasePayload, setReleasePayload }: Props) => {
+const ReleaseRepository = ({
+    releaseRepository,
+    setReleaseRepository,
+    releasePayload,
+    setReleasePayload,
+    // releaseData,
+    // setReleaseData,
+}: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
 
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
@@ -44,62 +53,62 @@ const ReleaseRepository = ({releaseRepository, setReleaseRepository, releasePayl
                     <p className='fw-bold mt-3'> {t('Release Repository')}</p>
                 </div>
                 <div className='row'>
-                        <div className='col-lg-4'>
-                            <label htmlFor='repository_type' className='form-label fw-bold'>
-                                {t('Repository Type')} <span className='text-red'>*</span>
-                            </label>
-                            <select
-                                className='form-select'
-                                aria-label='component_type'
-                                id='repository_type'
-                                required
-                                name='repositorytype'
-                                value={releaseRepository.repositorytype ?? ''}
-                                onChange={(e) => handleInputChange(e)}
-                            >
-                                <option value='UNKNOWN'>{t('Unknown')}</option>
-                                <option value='GIT'>{t('Git')}</option>
-                                <option value='CLEARCASE'>{t('ClearCase')}</option>
-                                <option value='SVN'>{t('Subversion (SVN)')}</option>
-                                <option value='CVS'>{t('CVS')}</option>
-                                <option value='MERCURIAL'>{t('Mercurial')}</option>
-                                <option value='PERFORCE'>{t('Perforce')}</option>
-                                <option value='VISUAL_SOURCESAFE'>{t('Visual SourceSafe')}</option>
-                                <option value='BAZAAR'>{t('Bazaar')}</option>
-                                <option value='ALIENBRAIN'>{t('Alienbrain')}</option>
-                                <option value='TEAM_FOUNDATION_SERVER'>{t('Team Foundation Server')}</option>
-                                <option value='RATIONAL_SYNERGY'>{t('IBM Rational Synergy')}</option>
-                                <option value='PTC_INTEGRITY'>{t('PTC Integrity')}</option>
-                                <option value='DTR'>{t('SAP Design Time Repository (DTR)')}</option>
-                                <option value='DARCS'>{t('Darcs')}</option>
-                                <option value='FOSSIL'>{t('Fossil')}</option>
-                                <option value='GNU_ARCH'>{t('GNU arch')}</option>
-                                <option value='MONOTONE'>{t('Monotone')}</option>
-                                <option value='BIT_KEEPER'>{t('BitKeeper')}</option>
-                                <option value='RATIONAL_TEAM_CONCERT'>{t('Rational Team Concert')}</option>
-                                <option value='RCS'>{t('Revision Control System (RCS)')}</option>
-                            </select>
-                            <div id='learn_more_about_component_type' className='form-text'>
-                                <i className='bi bi-info-circle'></i>(i)Learn more about repository types.
-                            </div>
-                        </div>
-                        <div className='col-lg-4'>
-                            <label htmlFor='repository_url' className='form-label fw-bold'>
-                                {t('Repository URL')}
-                            </label>
-                            <input
-                                type='URL'
-                                className='form-control'
-                                placeholder='Enter URL'
-                                id='repository_url'
-                                aria-describedby='version'
-                                required
-                                name='url'
-                                value={releaseRepository.url ?? ''}
-                                onChange={(e) => handleInputChange(e)}
-                            />
+                    <div className='col-lg-4'>
+                        <label htmlFor='repository_type' className='form-label fw-bold'>
+                            {t('Repository Type')} <span className='text-red'>*</span>
+                        </label>
+                        <select
+                            className='form-select'
+                            aria-label='component_type'
+                            id='repository_type'
+                            required
+                            name='repositorytype'
+                            value={releaseRepository.repositorytype ?? ''}
+                            onChange={(e) => handleInputChange(e)}
+                        >
+                            <option value='UNKNOWN'>{t('Unknown')}</option>
+                            <option value='GIT'>{t('Git')}</option>
+                            <option value='CLEARCASE'>{t('ClearCase')}</option>
+                            <option value='SVN'>{t('Subversion (SVN)')}</option>
+                            <option value='CVS'>{t('CVS')}</option>
+                            <option value='MERCURIAL'>{t('Mercurial')}</option>
+                            <option value='PERFORCE'>{t('Perforce')}</option>
+                            <option value='VISUAL_SOURCESAFE'>{t('Visual SourceSafe')}</option>
+                            <option value='BAZAAR'>{t('Bazaar')}</option>
+                            <option value='ALIENBRAIN'>{t('Alienbrain')}</option>
+                            <option value='TEAM_FOUNDATION_SERVER'>{t('Team Foundation Server')}</option>
+                            <option value='RATIONAL_SYNERGY'>{t('IBM Rational Synergy')}</option>
+                            <option value='PTC_INTEGRITY'>{t('PTC Integrity')}</option>
+                            <option value='DTR'>{t('SAP Design Time Repository (DTR)')}</option>
+                            <option value='DARCS'>{t('Darcs')}</option>
+                            <option value='FOSSIL'>{t('Fossil')}</option>
+                            <option value='GNU_ARCH'>{t('GNU arch')}</option>
+                            <option value='MONOTONE'>{t('Monotone')}</option>
+                            <option value='BIT_KEEPER'>{t('BitKeeper')}</option>
+                            <option value='RATIONAL_TEAM_CONCERT'>{t('Rational Team Concert')}</option>
+                            <option value='RCS'>{t('Revision Control System (RCS)')}</option>
+                        </select>
+                        <div id='learn_more_about_component_type' className='form-text'>
+                            <i className='bi bi-info-circle'></i>(i)Learn more about repository types.
                         </div>
                     </div>
+                    <div className='col-lg-4'>
+                        <label htmlFor='repository_url' className='form-label fw-bold'>
+                            {t('Repository URL')}
+                        </label>
+                        <input
+                            type='URL'
+                            className='form-control'
+                            placeholder='Enter URL'
+                            id='repository_url'
+                            aria-describedby='version'
+                            required
+                            name='url'
+                            value={releaseRepository.url ?? ''}
+                            onChange={(e) => handleInputChange(e)}
+                        />
+                    </div>
+                </div>
             </div>
         </>
     )

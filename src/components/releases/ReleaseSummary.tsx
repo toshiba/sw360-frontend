@@ -26,8 +26,10 @@ import ReleasePayload from '@/object-types/ReleasePayload'
 
 interface Props {
     session?: Session
-    releasePayload: ReleasePayload
-    setReleasePayload: React.Dispatch<React.SetStateAction<ReleasePayload>>
+    releasePayload?: ReleasePayload
+    setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
+    // releaseData?: ReleasePayload
+    // setReleaseData?: React.Dispatch<React.SetStateAction<ReleasePayload>>
     vendor?: Vendor
     setVendor?: React.Dispatch<React.SetStateAction<Vendor>>
     mainLicensesId?: Licenses
@@ -52,6 +54,8 @@ const ReleaseSummary = ({
     session,
     releasePayload,
     setReleasePayload,
+    // releaseData,
+    // setReleaseData,
     vendor,
     setVendor,
     mainLicensesId,

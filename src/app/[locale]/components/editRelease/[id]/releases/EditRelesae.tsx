@@ -9,7 +9,7 @@
 // License-Filename: LICENSE
 
 'use client'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import CommonTabIds from '@/object-types/enums/CommonTabsIds'
 import { Session } from '@/object-types/Session'
@@ -22,16 +22,17 @@ import EditClearingDetails from './ClearingDetail/EditClearingDetails'
 import EditECCDetails from './ECCDetail/EditECCDetails'
 import EditCommercialDetails from './CommercialDetails/EditCommercialDetails'
 import ReleasePayload from '@/object-types/ReleasePayload'
-import { useRouter } from 'next/navigation'
+import { notFound, useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
 import Vendor from '@/object-types/Vendor'
 import Licenses from '@/object-types/Licenses'
 import Moderators from '@/object-types/Moderators'
 import Repository from '@/object-types/Repository'
-import ReleaseAddSummary from '../../../edit/[id]/release/add/releases/ReleaseAddSummary'
 import ApiUtils from '@/utils/api/api.util'
 import HttpStatus from '@/object-types/enums/HttpStatus'
+import ReleaseEditSummary from './ReleaseEditSummary'
+import { signOut } from 'next-auth/react'
 
 interface Props {
     session?: Session
@@ -53,6 +54,10 @@ const EditRelease = ({ session, releaseId }: Props) => {
         additionalData: null,
         mainlineState: 'OPEN',
         contributors: null,
+        createdOn: '',
+        createBy: '',
+        modifiedBy: '', 
+        modifiedOn: '',
         moderators: null,
         roles: null,
         mainLicenseIds: null,
@@ -133,8 +138,9 @@ const EditRelease = ({ session, releaseId }: Props) => {
                             <PageButtonHeader buttons={headerButtons}></PageButtonHeader>
                         </div>
                         <div className='row' hidden={selectedTab !== CommonTabIds.SUMMARY ? true : false}>
-                            <ReleaseAddSummary
+                            <ReleaseEditSummary
                                 session={session}
+                                releaseId={releaseId}
                                 releasePayload={releasePayload}
                                 setReleasePayload={setReleasePayload}
                                 vendor={vendor}
@@ -154,6 +160,8 @@ const EditRelease = ({ session, releaseId }: Props) => {
                         <div className='row' hidden={selectedTab != ReleaseTabIds.LINKED_RELEASES ? true : false}>
                             <LinkedReleases
                                 session={session}
+                                // releaseData={releaseData}
+                                // setReleaseData={setReleaseData}
                                 releasePayload={releasePayload}
                                 setReleasePayload={setReleasePayload}
                             />
