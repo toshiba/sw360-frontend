@@ -24,62 +24,62 @@ const RequestInformation = () => {
                     </div>
                     <div className='row'>
                         <div className='col-lg-4'>
-                            <label htmlFor='ECC_Status' className='form-label fw-bold'>
+                            <label htmlFor='request_id' className='form-label fw-bold'>
                                 {t('Request ID')}
                             </label>
                             <input
                                 type='text'
                                 className='form-control'
                                 placeholder='Enter request ID'
-                                id='ECC_comment'
+                                id='request_id'
                                 aria-describedby='version'
                                 required
-                                name='ECC_comment'
+                                name='request_id'
                             />
                         </div>
                         <div className='col-lg-4'>
-                            <label htmlFor='ECC_comment' className='form-label fw-bold'>
+                            <label htmlFor='additional_request_info' className='form-label fw-bold'>
                                 {t('Additional request Info')}
                             </label>
                             <input
                                 type='text'
                                 className='form-control'
                                 placeholder='Enter additional request Info'
-                                id='ECC_comment'
+                                id='additional_request_info'
                                 aria-describedby='version'
                                 required
-                                name='ECC_comment'
+                                name='additional_request_info'
                             />
                         </div>
                     </div>
                     <hr className='my-2' />
                     <div className='row'>
                         <div className='col-lg-4'>
-                            <label htmlFor='ECC_Status' className='form-label fw-bold'>
+                            <label htmlFor='evaluation_start' className='form-label fw-bold'>
                                 {t('Evaluation Start')}
                             </label>
                             <input
                                 type='date'
                                 className='form-control'
                                 placeholder='Enter ECC comment'
-                                id='ECC_comment'
+                                id='evaluation_start'
                                 aria-describedby='version'
                                 required
-                                name='ECC_comment'
+                                name='evaluation_start'
                             />
                         </div>
                         <div className='col-lg-4'>
-                            <label htmlFor='ECC_comment' className='form-label fw-bold'>
+                            <label htmlFor='evaluation_end' className='form-label fw-bold'>
                                 {t('Evaluation End')}
                             </label>
                             <input
                                 type='date'
                                 className='form-control'
                                 placeholder='Enter ECC comment'
-                                id='ECC_comment'
+                                id='evaluation_end'
                                 aria-describedby='version'
                                 required
-                                name='ECC_comment'
+                                name='evaluation_end'
                             />
                         </div>
                     </div>

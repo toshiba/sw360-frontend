@@ -24,30 +24,30 @@ const COTSOSSInformation = () => {
                     </div>
                     <div className='row'>
                         <div className='col-lg-4'>
-                            <label htmlFor='programming_languages' className='form-label fw-bold'>
+                            <label htmlFor='used_license' className='form-label fw-bold'>
                                 {t('Used License')}
                             </label>
                             <input
                                 type='text'
                                 className='form-control'
                                 placeholder='Enter used license'
-                                id='programming_languages'
-                                aria-describedby='programming_languages'
-                                name='languages'
+                                id='used_license'
+                                aria-describedby='used_license'
+                                name='used_license'
                             />
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
+                                <input id='contains_OSS' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='contains_OSS'>
                                 {t('Contains OSS')}
                                 </label>
                             </div>
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
+                                <input id='OSS_contract_signed' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='OSS_contract_signed'>
                                 {t('OSS Contract Signed')}
                                 </label>
                             </div>
@@ -56,22 +56,22 @@ const COTSOSSInformation = () => {
                     <hr className='my-2' />
                     <div className='row'>
                         <div className='col-lg-4'>
-                            <label htmlFor='programming_languages' className='form-label fw-bold'>
+                            <label htmlFor='COTS_clearing_report_url' className='form-label fw-bold'>
                                 {t('COTS Clearing Report URL')}
                             </label>
                             <input
                                 type='text'
                                 className='form-control'
                                 placeholder='Enter URL'
-                                id='programming_languages'
-                                aria-describedby='programming_languages'
-                                name='languages'
+                                id='COTS_clearing_report_url'
+                                aria-describedby='COTS_clearing_report_url'
+                                name='COTS_clearing_report_url'
                             />
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
+                                <input id='source_code_available' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='source_code_available'>
                                     {t('Source Code Available')}
                                 </label>
                             </div>

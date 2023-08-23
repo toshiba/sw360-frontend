@@ -24,31 +24,31 @@ const SupplementalInformation = () => {
                     </div>
                     <div className='row'>
                         <div className='col-lg-4'>
-                            <label htmlFor='ECC_Status' className='form-label fw-bold'>
+                            <label htmlFor='external_supplier_id' className='form-label fw-bold'>
                                 {t('External Supplier ID')}
                             </label>
                             <input
                                 type='text'
                                 className='form-control'
                                 placeholder='Enter External Supplier ID'
-                                id='ECC_comment'
+                                id='external_supplier_id'
                                 aria-describedby='version'
                                 required
-                                name='ECC_comment'
+                                name='external_supplier_id'
                             />
                         </div>
                         <div className='col-lg-4'>
-                            <label htmlFor='ECC_comment' className='form-label fw-bold'>
+                            <label htmlFor='count_security_vulnerabilities' className='form-label fw-bold'>
                                 {t('Count of Security Vulnerabilities')}
                             </label>
                             <input
                                 type='text'
                                 className='form-control'
                                 placeholder='Enter Count of Security Vulnerabilities'
-                                id='ECC_comment'
+                                id='count_security_vulnerabilities'
                                 aria-describedby='version'
                                 required
-                                name='ECC_comment'
+                                name='count_security_vulnerabilities'
                             />
                         </div>
                     </div>

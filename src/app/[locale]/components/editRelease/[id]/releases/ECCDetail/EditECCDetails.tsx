@@ -77,77 +77,77 @@ const EditECCDetails = () => {
                         <hr className='my-2' />
                         <div className='row'>
                             <div className='col-lg-4'>
-                                <label htmlFor='programming_languages' className='form-label fw-bold'>
+                                <label htmlFor='ausfuhrliste' className='form-label fw-bold'>
                                     {t('Ausfuhrliste')}
                                 </label>
                                 <input
                                     type='text'
                                     className='form-control'
                                     placeholder='Enter AL'
-                                    id='programming_languages'
-                                    aria-describedby='programming_languages'
-                                    name='languages'
+                                    id='ausfuhrliste'
+                                    aria-describedby='ausfuhrliste'
+                                    name='ausfuhrliste'
                                 />
                             </div>
                             <div className='col-lg-4'>
-                                <label htmlFor='operating_systems' className='form-label fw-bold'>
+                                <label htmlFor='eccn' className='form-label fw-bold'>
                                     {t('ECCN')}
                                 </label>
                                 <input
                                     type='text'
                                     className='form-control'
                                     placeholder='Enter ECCN'
-                                    id='operating_systems'
-                                    aria-describedby='operating_systems'
-                                    name='operatingSystems'
+                                    id='eccn'
+                                    aria-describedby='eccn'
+                                    name='eccn'
                                 />
                             </div>
                             <div className='col-lg-4'>
-                                <label htmlFor='tag' className='form-label fw-bold'>
+                                <label htmlFor='material_index_number' className='form-label fw-bold'>
                                     {t('Material Index Number')}
                                 </label>
                                 <input
                                     type='text'
                                     className='form-control'
                                     placeholder='Enter material index number'
-                                    id='tag'
-                                    aria-describedby='Tag'
-                                    name='cpeid'
+                                    id='material_index_number'
+                                    aria-describedby='material_index_number'
+                                    name='material_index_number'
                                 />
                             </div>
                         </div>
                         <hr className='my-2' />
                         <div className='row'>
                             <div className='col-lg-4'>
-                                <label htmlFor='blog_url' className='form-label fw-bold'>
+                                <label htmlFor='assessor_contact_person' className='form-label fw-bold'>
                                     {t('Assessor Contact Person')}
                                 </label>
                                 <input
                                     type='URL'
                                     className='form-control'
                                     placeholder='Will be set automatically'
-                                    id='blog_url'
-                                    aria-describedby='blog_url'
-                                    name='softwarePlatforms'
+                                    id='assessor_contact_person'
+                                    aria-describedby='assessor_contact_person'
+                                    name='assessor_contact_person'
                                     readOnly={true}
                                 />
                             </div>
                             <div className='col-lg-4'>
-                                <label htmlFor='releaseDate' className='form-label fw-bold'>
+                                <label htmlFor='assessor_department' className='form-label fw-bold'>
                                     {t('Assessor Department')}
                                 </label>
                                 <input
                                     type='text'
                                     className='form-control'
                                     placeholder='Will be set automatically'
-                                    id='releaseDate'
-                                    aria-describedby='releaseDate'
-                                    name='releaseDate'
+                                    id='assessor_department'
+                                    aria-describedby='assessor_department'
+                                    name='assessor_department'
                                     readOnly={true}
                                 />
                             </div>
                             <div className='col-lg-4'>
-                                <label htmlFor='mainLicenseIds' className='form-label fw-bold'>
+                                <label htmlFor='assessment_date' className='form-label fw-bold'>
                                     {t('Assessment Date')}
                                 </label>
                                 <input
@@ -156,14 +156,11 @@ const EditECCDetails = () => {
                                     data-bs-toggle='modal'
                                     data-bs-target='#search_vendors_modal'
                                     placeholder={t('Will be set automatically')}
-                                    id='mainLicenseIds'
-                                    aria-describedby='Vendor'
+                                    id='assessment_date'
+                                    aria-describedby='assessment_date'
                                     readOnly={true}
-                                    name='mainLicenseIds'
+                                    name='assessment_date'
                                 />
-                                <div id='mainLicenseIds-i' className='form-text'>
-                                    <i className='bi bi-x-circle'></i>
-                                </div>
                             </div>
                         </div>
                     </div>

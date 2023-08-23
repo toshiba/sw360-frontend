@@ -25,25 +25,24 @@ const ClearingDetails = () => {
                     <div className='row'>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
+                                <input id='binaries_original_from_community' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='binaries_original_from_community'>
                                     {t('Binaries Original from Community')}
-                                    
                                 </label>
                             </div>
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
+                                <input id='binaries_self_made' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='binaries_self_made'>
                                     {t('Binaries Self-Made')}
                                 </label>
                             </div>
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
+                                <input id='component_license_information' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='component_license_information'>
                                     {t('Component License Information')}
                                 </label>
                             </div>
@@ -53,24 +52,24 @@ const ClearingDetails = () => {
                     <div className='row'>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
+                                <input id='source_code_delivery' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='source_code_delivery'>
                                     {t('Source Code Delivery')}
                                 </label>
                             </div>
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
+                                <input id='source_code_community' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='source_code_community'>
                                     {t('Source Code Original from Community')}
                                 </label>
                             </div>
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
+                                <input id='source_code_tool_made' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='source_code_tool_made'>
                                     {t('Source Code Tool-Made')}
                                 </label>
                             </div>
@@ -80,16 +79,16 @@ const ClearingDetails = () => {
                     <div className='row'>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
+                                <input id='source_code_self_made' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='source_code_self_made'>
                                     {t('Source Code Self-Made')}
                                 </label>
                             </div>
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
+                                <input id='screenshot_website' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='screenshot_website'>
                                     
                                     {t('Screenshot of Website')}
                                 </label>
@@ -97,8 +96,8 @@ const ClearingDetails = () => {
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
+                                <input id='finalized_license_scan_report' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='finalized_license_scan_report'>
                                     {t('Finalized License Scan Report')}
                                 </label>
                             </div>
@@ -108,26 +107,24 @@ const ClearingDetails = () => {
                     <div className='row'>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
+                                <input id='license_scan_report_result' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='license_scan_report_result'>
                                     {t('License Scan Report Result')}
                                 </label>
                             </div>
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
-                                    
+                                <input id='legal_evaluation' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='legal_evaluation'>
                                     {t('Legal Evaluation')}
                                 </label>
                             </div>
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
-                                   
+                                <input id='license_agreement' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='license_agreement'>
                                     {t('License Agreement')}
                                 </label>
                             </div>
@@ -136,67 +133,66 @@ const ClearingDetails = () => {
                     <hr className='my-2' />
                     <div className='row'>
                         <div className='col-lg-4'>
-                            <label htmlFor='programming_languages' className='form-label fw-bold'>
+                            <label htmlFor='scanned' className='form-label fw-bold'>
                                 {t('Scanned')}
                             </label>
                             <input
                                 type='text'
                                 className='form-control'
                                 placeholder='Enter scanned'
-                                id='programming_languages'
-                                aria-describedby='programming_languages'
-                                name='languages'
+                                id='scanned'
+                                aria-describedby='scanned'
+                                name='scanned'
                             />
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original' type='checkbox' className='form-check-input' name='' />
-                                <label className='form-label fw-bold' htmlFor='binaries_original'>
-                                    
+                                <input id='component_clearing_report' type='checkbox' className='form-check-input' name='' />
+                                <label className='form-label fw-bold' htmlFor='component_clearing_report'>
                                     {t('Component Clearing Report')}
                                 </label>
                             </div>
                         </div>
                         <div className='col-lg-4'>
-                            <label htmlFor='tag' className='form-label fw-bold'>
+                            <label htmlFor='clearing_standard' className='form-label fw-bold'>
                                 {t('Clearing Standard')}
                             </label>
                             <input
                                 type='text'
                                 className='form-control'
                                 placeholder='Enter clearing standard'
-                                id='tag'
+                                id='clearing_standard'
                                 aria-describedby='Tag'
-                                name='cpeid'
+                                name='clearing_standard'
                             />
                         </div>
                     </div>
                     <hr className='my-2' />
                     <div className='row'>
                         <div className='col-lg-4'>
-                            <label htmlFor='programming_languages' className='form-label fw-bold'>
+                            <label htmlFor='external_url' className='form-label fw-bold'>
                                 {t('External URL')}
                             </label>
                             <input
                                 type='text'
                                 className='form-control'
                                 placeholder='Enter URL'
-                                id='programming_languages'
-                                aria-describedby='programming_languages'
-                                name='languages'
+                                id='external_url'
+                                aria-describedby='external_url'
+                                name='external_url'
                             />
                         </div>
                         <div className='col-lg-4'>
-                            <label htmlFor='tag' className='form-label fw-bold'>
+                            <label htmlFor='comment' className='form-label fw-bold'>
                                 {t('Comment')}
                             </label>
                             <input
                                 type='text'
                                 className='form-control'
                                 placeholder='Enter your comments'
-                                id='tag'
-                                aria-describedby='Tag'
-                                name='cpeid'
+                                id='comment'
+                                aria-describedby='comment'
+                                name='comment'
                             />
                         </div>
                     </div>

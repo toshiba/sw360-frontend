@@ -286,14 +286,14 @@ const ReleaseSummary = ({
                     <hr className='my-2' />
                     <div className='row'>
                         <div className='col-lg-4'>
-                            <label htmlFor='blog_url' className='form-label fw-bold'>
+                            <label htmlFor='software_platforms' className='form-label fw-bold'>
                                 {t('Software Platforms')}
                             </label>
                             <input
                                 type='URL'
                                 className='form-control'
                                 placeholder='e.g.,Adobe AIR,.NET,Qt,...'
-                                id='blog_url'
+                                id='software_platforms'
                                 aria-describedby='blog_url'
                                 name='softwarePlatforms'
                                 onChange={setArrayData}
@@ -402,14 +402,14 @@ const ReleaseSummary = ({
                     <hr className='my-2' />
                     <div className='row'>
                         <div className='col-lg-4'>
-                            <label htmlFor='modified_on' className='form-label fw-bold'>
+                            <label htmlFor='clearing_state' className='form-label fw-bold'>
                                 {t('Clearing State')}
                             </label>
                             <input
                                 type='text'
                                 className='form-control'
-                                id='modified_on'
-                                aria-describedby='Modified on'
+                                id='clearing_state'
+                                aria-describedby='clearing_state'
                                 readOnly={true}
                                 value='NEW'
                             />

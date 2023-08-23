@@ -29,14 +29,16 @@ import Vendor from '@/object-types/Vendor'
 import Licenses from '@/object-types/Licenses'
 import Moderators from '@/object-types/Moderators'
 import Repository from '@/object-types/Repository'
-import ReleaseAddSummary from '../../edit/[id]/release/add/releases/ReleaseAddSummary'
+import ReleaseAddSummary from '../../../edit/[id]/release/add/releases/ReleaseAddSummary'
+import ApiUtils from '@/utils/api/api.util'
+import HttpStatus from '@/object-types/enums/HttpStatus'
 
 interface Props {
     session?: Session
-    componentId?: string
+    releaseId?: string
 }
 
-const EditRelease = ({ session, componentId }: Props) => {
+const EditRelease = ({ session, releaseId }: Props) => {
     const router = useRouter()
     const t = useTranslations(COMMON_NAMESPACE)
     const [tabList, setTabList] = useState(ReleaseEditTabs.WITH_COMMERCIAL_DETAILS)
@@ -45,7 +47,7 @@ const EditRelease = ({ session, componentId }: Props) => {
         name: '',
         cpeid: '',
         version: '',
-        componentId: componentId,
+        componentId: '',
         releaseDate: '',
         externalIds: null,
         additionalData: null,
@@ -95,61 +97,28 @@ const EditRelease = ({ session, componentId }: Props) => {
         url: '',
     })
 
-    // const fetchData: any = useCallback(
-    //     async (url: string) => {
-    //         const response = await ApiUtils.GET(url, session.user.access_token)
-    //         if (response.status == HttpStatus.OK) {
-    //             const data = await response.json()
-    //             return data
-    //         } else if (response.status == HttpStatus.UNAUTHORIZED) {
-    //             signOut()
-    //         } else {
-    //             notFound()
-    //         }
-    //     },
-    //     [session.user.access_token]
-    // )
-
-    // useEffect(() => {
-    //     fetchData(`components/${componentId}`).then((component: any) => {
-    //         setReleasePayload({
-    //             ...releasePayload,
-    //             name: component.name,
-    //         })
-    //     })
-    // }, [componentId, fetchData])
-
-    // const notify = (text: string, type: TypeOptions) =>
-    // toast(text, {
-    //     type,
-    //     position: toast.POSITION.TOP_LEFT,
-    //     theme: 'colored',
-    // })
-
-    // const handleId = (id: string): string => {
-    //     return id.split('/').at(-1)
-    // }
-
-    // const submit = async () => {
-    //     const response = await ApiUtils.POST('releases', releasePayload, session.user.access_token)
-    //     if (response.status == HttpStatus.CREATED) {
-    //         const data = await response.json()
-    //         notify(t('Component is created'), 'success')
-    //         const releaseId: string = handleId(data._links.self.href)
-    //         router.push('/components/releases/detail/' + releaseId)
-    //     } else if (response.status == HttpStatus.CONFLICT){
-    //         notify(t('Component is Duplicate'), 'warning')
-    //     } else {
-    //         notify(t('Create Component failed'), 'error')
-    //     }
-    // }
+    const submit = async () => {
+        console.log("---------------------------------")
+        console.log(releaseId)
+        // const response = await ApiUtils.POST('releases', releasePayload, session.user.access_token)
+        // if (response.status == HttpStatus.CREATED) {
+        //     const data = await response.json()
+        //     notify(t('Component is created'), 'success')
+        //     const releaseId: string = handleId(data._links.self.href)
+        //     router.push('/components/releases/detail/' + releaseId)
+        // } else if (response.status == HttpStatus.CONFLICT){
+        //     notify(t('Component is Duplicate'), 'warning')
+        // } else {
+        //     notify(t('Create Component failed'), 'error')
+        // }
+    }
     const headerButtons = {
-        'Update Release': { link: '', type: 'primary' },
+        'Update Release': { link:  '/releases/detail/' + releaseId, type: 'primary', onclick: submit },
         'Delete Release': {
-            link: '/components/edit/' + componentId,
+            link: '/releases/detail/' + releaseId,
             type: 'danger',
         },
-        Cancel: { link: '/components/detail/' + componentId, type: 'secondary' },
+        Cancel: { link: '/releases/detail/' + releaseId, type: 'secondary' },
     }
 
     return (
@@ -199,7 +168,7 @@ const EditRelease = ({ session, componentId }: Props) => {
                             {/* <EditAttachments session={session} /> */}
                         </div>
                         <div className='row' hidden={selectedTab != ReleaseTabIds.COMMERCIAL_DETAILS ? true : false}>
-                            <EditCommercialDetails />
+                            <EditCommercialDetails session={session}/>
                         </div>
                     </div>
                 </div>

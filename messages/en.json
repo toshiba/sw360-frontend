@@ -411,6 +411,9 @@
         "Commercial Details": "Commercial Details",
         "Contains OSS": "Contains OSS",
         "OSS Contract Signed": "OSS Contract Signed",
-        "Source Code Available": "Source Code Available"
+        "Source Code Available": "Source Code Available",
+        "IN_PROGRESS": "In Progress",
+        "ECC_STATUS": "Open, In Progress, Approved, Rejected",
+        "COTS OSS Information": "COTS OSS Information"
     }
 }

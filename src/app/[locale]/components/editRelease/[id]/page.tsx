@@ -11,7 +11,7 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { getServerSession } from "next-auth/next"
 import { Session } from '@/object-types/Session'
-import EditRelease from './EditRelesae'
+import EditRelease from './releases/EditRelesae'
 
 interface Context {
   params: { id: string }
@@ -19,9 +19,9 @@ interface Context {
 
 const ReleaseAddPage = async ({ params }: Context) => {
   const session: Session = await getServerSession(authOptions);
-  const componentId = params.id;
+  const releaseId = params.id;
 
-  return <EditRelease session={session} componentId={componentId} />
+  return <EditRelease session={session} releaseId={releaseId} />
 }
 
 export default ReleaseAddPage

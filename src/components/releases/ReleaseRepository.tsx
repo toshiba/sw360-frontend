@@ -84,14 +84,14 @@ const ReleaseRepository = ({releaseRepository, setReleaseRepository, releasePayl
                             </div>
                         </div>
                         <div className='col-lg-4'>
-                            <label htmlFor='version' className='form-label fw-bold'>
+                            <label htmlFor='repository_url' className='form-label fw-bold'>
                                 {t('Repository URL')}
                             </label>
                             <input
                                 type='URL'
                                 className='form-control'
                                 placeholder='Enter URL'
-                                id='version'
+                                id='repository_url'
                                 aria-describedby='version'
                                 required
                                 name='url'

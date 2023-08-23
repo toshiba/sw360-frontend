@@ -10,17 +10,19 @@
 
 'use client'
 
-import COTSOSSInformation from "./COTSOSSInformation"
-import CommercialDetailsAdministration from "./CommercialDetailsAdministration"
-
-const EditCommercialDetails = () => {
+import { Session } from '@/object-types/Session'
+import COTSOSSInformation from './COTSOSSInformation'
+import CommercialDetailsAdministration from './CommercialDetailsAdministration'
+interface Props {
+    session?: Session
+}
+const EditCommercialDetails = ({ session }: Props) => {
     return (
         <>
             <div className='container' style={{ maxWidth: '98vw', marginTop: '10px', fontSize: '0.875rem' }}>
-                <CommercialDetailsAdministration />
+                <CommercialDetailsAdministration session={session} />
 
                 <COTSOSSInformation />
-
             </div>
         </>
     )
