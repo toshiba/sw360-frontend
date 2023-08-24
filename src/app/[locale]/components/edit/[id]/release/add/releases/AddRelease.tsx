@@ -29,27 +29,20 @@ import { ToastContainer, TypeOptions, toast } from 'react-toastify'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
 import ReleaseAddSummary from './ReleaseAddSummary'
+import ReleaseAddTabs from './ReleaseAddTab'
+import EditCommercialDetails from '@/components/CommercialDetails/EditCommercialDetails'
+import ComponentOwner from '@/object-types/ComponentOwner'
 
 interface Props {
     session?: Session
     componentId?: string
 }
 
-const tabList = [
-    {
-        id: CommonTabIds.SUMMARY,
-        name: 'Summary',
-    },
-    {
-        id: ReleaseTabIds.LINKED_RELEASES,
-        name: 'Linked Releases',
-    },
-]
-
 const AddRelease = ({ session, componentId }: Props) => {
     const router = useRouter()
     const t = useTranslations(COMMON_NAMESPACE)
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
+    const [tabList, setTabList] = useState(ReleaseAddTabs.WITHOUT_COMMERCIAL_DETAILS)
     const [releasePayload, setReleasePayload] = useState<ReleasePayload>({
         name: '',
         cpeid: '',
@@ -72,6 +65,7 @@ const AddRelease = ({ session, componentId }: Props) => {
         binaryDownloadurl: '',
         repository: null,
         releaseIdToRelationship: null,
+        cotsDetails: null,
     })
 
     const [vendor, setVendor] = useState<Vendor>({
@@ -104,6 +98,11 @@ const AddRelease = ({ session, componentId }: Props) => {
         url: '',
     })
 
+    const [cotsResponsible, setCotsResponsible] = useState<ComponentOwner>({
+        email: '',
+        fullName: '',
+    })
+
     const fetchData: any = useCallback(
         async (url: string) => {
             const response = await ApiUtils.GET(url, session.user.access_token)
@@ -125,15 +124,18 @@ const AddRelease = ({ session, componentId }: Props) => {
                 ...releasePayload,
                 name: component.name,
             })
+            if (component.componentType === 'COTS') {
+                setTabList(ReleaseAddTabs.WITH_COMMERCIAL_DETAILS)
+            }
         })
     }, [componentId, fetchData])
 
     const notify = (text: string, type: TypeOptions) =>
-    toast(text, {
-        type,
-        position: toast.POSITION.TOP_LEFT,
-        theme: 'colored',
-    })
+        toast(text, {
+            type,
+            position: toast.POSITION.TOP_LEFT,
+            theme: 'colored',
+        })
 
     const handleId = (id: string): string => {
         return id.split('/').at(-1)
@@ -146,7 +148,7 @@ const AddRelease = ({ session, componentId }: Props) => {
             notify(t('Component is created'), 'success')
             const releaseId: string = handleId(data._links.self.href)
             router.push('/components/releases/detail/' + releaseId)
-        } else if (response.status == HttpStatus.CONFLICT){
+        } else if (response.status == HttpStatus.CONFLICT) {
             notify(t('Component is Duplicate'), 'warning')
         } else {
             notify(t('Create Component failed'), 'error')
@@ -192,6 +194,15 @@ const AddRelease = ({ session, componentId }: Props) => {
                         <div className='row' hidden={selectedTab != ReleaseTabIds.LINKED_RELEASES ? true : false}>
                             <LinkedReleases
                                 session={session}
+                                releasePayload={releasePayload}
+                                setReleasePayload={setReleasePayload}
+                            />
+                        </div>
+                        <div className='row' hidden={selectedTab != ReleaseTabIds.COMMERCIAL_DETAILS ? true : false}>
+                            <EditCommercialDetails
+                                session={session}
+                                cotsResponsible={cotsResponsible}
+                                setCotsResponsible={setCotsResponsible}
                                 releasePayload={releasePayload}
                                 setReleasePayload={setReleasePayload}
                             />

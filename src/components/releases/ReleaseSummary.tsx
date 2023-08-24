@@ -213,7 +213,6 @@ const ReleaseSummary = ({
                                 aria-describedby='name'
                                 readOnly={true}
                                 value={releasePayload.name ?? ''}
-                                onChange={updateField}
                             />
                             <div id='learn_more_about_component_type' className='form-text'>
                                 <i className='bi bi-info-circle'></i>(i) Name of the component.

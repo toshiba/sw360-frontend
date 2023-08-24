@@ -12,7 +12,7 @@
 
 import { Form } from 'react-bootstrap'
 import React from 'react'
-import { _ } from '@/components/sw360'
+import { Table, _ } from '@/components/sw360'
 import LicensesTable from './MainLicensesTable'
 import { LicensesType } from '@/object-types/LicensesType'
 import Licenses from '@/object-types/Licenses'
@@ -72,7 +72,8 @@ const SelectTableMainLicenses = ({ licenseDatas, setLicenses, fullnames }: Props
     return (
         <>
             <div className='row'>
-                <LicensesTable data={licenseDatas} columns={columns} />
+                <Table columns={columns} data={licenseDatas} />
+                {/* <LicensesTable data={licenseDatas} columns={columns} /> */}
             </div>
         </>
     )

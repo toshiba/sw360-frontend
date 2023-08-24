@@ -32,7 +32,7 @@ interface Props {
 
 const MainLicensesDiaglog = ({ show, setShow, session, selectLicenses }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
-    const [data, setData] = useState()
+    const [data, setData] = useState([])
     const [licenses, setLicenses] = useState([])
     const [licensesResponse, setLicensesResponse] = useState<Licenses>()
     const [licenseDatas, setLicenseDatas] = useState([])
@@ -56,12 +56,16 @@ const MainLicensesDiaglog = ({ show, setShow, session, selectLicenses }: Props) 
     }, [])
 
     useEffect(() => {
-        fetchData(`licenses`).then((users: any) => {
+        fetchData(`licenses`).then((licenses: any) => {
+            if(typeof licenses == "undefined") {
+                setData([]);
+                return;
+            }
             if (
-                !CommonUtils.isNullOrUndefined(users['_embedded']) &&
-                !CommonUtils.isNullOrUndefined(users['_embedded']['sw360:licenses'])
-            ) {
-                const data = users['_embedded']['sw360:licenses'].map((item: any) => [
+                !CommonUtils.isNullOrUndefined(licenses['_embedded']) &&
+                !CommonUtils.isNullOrUndefined(licenses['_embedded']['sw360:licenses'])
+            ){
+                const data = licenses['_embedded']['sw360:licenses'].map((item: any) => [
                     item,
                     item.fullName,
                 ])
