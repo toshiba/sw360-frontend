@@ -100,12 +100,12 @@ const MainLicensesDiaglog = ({ show, setShow, session, selectLicenses }: Props) 
                         <div className='col-lg-4'>
                             <button
                                 type='button'
-                                className={`fw-bold btn btn-light button-plain me-2`}
+                                className={`fw-bold btn btn-secondary`}
                                 onClick={searchVendor}
                             >
                                 {t('Search')}
                             </button>
-                            <button type='button' className={`fw-bold btn btn-light button-plain me-2`}>
+                            <button type='button' className={`fw-bold btn btn-secondary`}>
                                 {t('Reset')}
                             </button>
                         </div>
@@ -119,14 +119,14 @@ const MainLicensesDiaglog = ({ show, setShow, session, selectLicenses }: Props) 
                 <Button
                     type='button'
                     data-bs-dismiss='modal'
-                    className={`fw-bold btn btn-light button-plain me-2`}
+                    className={`fw-bold btn btn-secondary`}
                     onClick={handleCloseDialog}
                 >
                     {t('Close')}
                 </Button>
                 <Button
                     type='button'
-                    className={`fw-bold btn btn-light button-orange`}
+                    className={`fw-bold btn btn-secondary`}
                     onClick={handleClickSelectModerators}
                 >
                     {t('Select Licenses')}
