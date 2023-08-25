@@ -17,6 +17,7 @@ export default interface ReleasePayload {
     releaseDate?: string
     externalIds?: any
     additionalData?: any
+    clearingState?:string
     createdOn?: string
     createBy?: string
     modifiedBy?: string 

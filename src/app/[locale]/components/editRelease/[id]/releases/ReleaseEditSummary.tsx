@@ -30,6 +30,7 @@ import ApiUtils from '@/utils/api/api.util'
 interface Props {
     session?: Session
     releaseId?: string
+    actionType?: string
     releasePayload?: ReleasePayload
     setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
     vendor?: Vendor
@@ -49,6 +50,7 @@ interface Props {
 export default function ReleaseEditSummary({
     session,
     releaseId,
+    actionType,
     releasePayload,
     setReleasePayload,
     vendor,
@@ -239,27 +241,35 @@ export default function ReleaseEditSummary({
                 setContributor(handlerContributor(release['_embedded']['sw360:contributors']))
             }
 
-            if (typeof release['_embedded']['defaultVendor'] !== 'undefined') {
+            if (typeof release['_embedded']['sw360:vendors'] !== 'undefined') {
                 const vendor: Vendor = {
-                    id: release.defaultVendorId,
-                    fullName: release['_embedded']['defaultVendor']['fullName'],
+                    id: handleId(release['_embedded']['sw360:vendors'][0]._links.self.href),
+                    fullName: release['_embedded']['sw360:vendors'][0].fullName,
                 }
                 setVendor(vendor)
             }
 
             let modifiedBy = ''
-            if (typeof release['_embedded']['modifiedBy'] !== 'undefined') {
-                modifiedBy = release['_embedded']['modifiedBy']['fullName']
+            if (typeof release['_embedded']['sw360:modifiedBy'] !== 'undefined') {
+                modifiedBy = release['_embedded']['sw360:modifiedBy']['fullName']
             }
 
             let createBy = ''
-            if (typeof release['_embedded']['modifiedBy'] !== 'undefined') {
-                createBy = release['_embedded']['createdBy']['fullName']
+            if (typeof release['_embedded']['sw360:createdBy'] !== 'undefined') {
+                createBy = release['_embedded']['sw360:createdBy']['fullName']
             }
 
             let componentId = ''
             if (typeof release['_links']['sw360:component']['href'] !== 'undefined') {
                 componentId = handleId(release['_links']['sw360:component']['href'])
+            }
+
+            if (typeof release.repository !== 'undefined') {
+                const repository: Repository = {
+                    repositorytype: release.repository.repositorytype,
+                    url: release.repository.url
+                }
+                setReleaseRepository(repository)
             }
 
             const releasePayload: ReleasePayload = {
@@ -270,6 +280,7 @@ export default function ReleaseEditSummary({
                 releaseDate: release.releaseDate,
                 externalIds: release.externalIds,
                 additionalData: release.additionalData,
+                clearingState: release.clearingState,
                 mainlineState: release.mainlineState,
                 contributors: getEmailsModerators(release['_embedded']['sw360:contributors']),
                 createdOn: release.createdOn,
@@ -280,20 +291,16 @@ export default function ReleaseEditSummary({
                 roles:convertRoles(convertObjectToMapRoles(release.roles)),
                 mainLicenseIds: release.mainLicenseIds,
                 otherLicenseIds: release.otherLicenseIds,
-                vendorId: release.vendorId,
+                vendorId: handleId(release['_embedded']['sw360:vendors'][0]._links.self.href),
                 languages: release.languages,
                 operatingSystems: release.operatingSystems,
                 softwarePlatforms: release.softwarePlatforms,
                 sourceCodeDownloadurl: release.sourceCodeDownloadurl,
                 binaryDownloadurl: release.binaryDownloadurl,
-                repository: null,
+                repository: release.repository,
                 releaseIdToRelationship: release.releaseIdToRelationship,
             }
-            console.log("---------------------");
-            console.log(releasePayload);
-
             setReleasePayload(releasePayload)
-
         })
     }, [releaseId, fetchData])
 
@@ -312,8 +319,7 @@ export default function ReleaseEditSummary({
                         session={session}
                         releasePayload={releasePayload}
                         setReleasePayload={setReleasePayload}
-                        // releasePayload={releasePayload}
-                        // setReleasePayload={setReleasePayload}
+                        actionType={actionType}
                         vendor={vendor}
                         setVendor={setVendor}
                         mainLicensesId={mainLicensesId}
@@ -356,8 +362,6 @@ export default function ReleaseEditSummary({
                         setReleaseRepository={setReleaseRepository}
                         releasePayload={releasePayload}
                         setReleasePayload={setReleasePayload}
-                        // releaseData={releaseData}
-                        // setReleaseData={setReleaseData}
                     />
                 </div>
             </form>

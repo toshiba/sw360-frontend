@@ -23,9 +23,11 @@ import ModeratorsDiaglog from '../sw360/SearchModerators/ModeratorsDiaglog'
 import Moderators from '@/object-types/Moderators'
 import ContributorsDiaglog from '../sw360/SearchContributors/ContributorsDiaglog'
 import ReleasePayload from '@/object-types/ReleasePayload'
+import ActionType from '@/object-types/enums/ActionType'
 
 interface Props {
     session?: Session
+    actionType?: string
     releasePayload?: ReleasePayload
     setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
     // releaseData?: ReleasePayload
@@ -52,6 +54,7 @@ const getDate = () => {
 
 const ReleaseSummary = ({
     session,
+    actionType,
     releasePayload,
     setReleasePayload,
     // releaseData,
@@ -171,6 +174,14 @@ const ReleaseSummary = ({
         })
     }
 
+    const defaultValueCreatedOn = () => {
+        return actionType === ActionType.EDIT ? releasePayload.createdOn : currentDate
+    }
+
+    const defaultValueClearingState = () => {
+        return actionType === ActionType.EDIT ? releasePayload.clearingState : 'NEW'
+
+    }
     return (
         <>
             <div className='col' style={{ padding: '0px 12px' }}>
@@ -236,6 +247,7 @@ const ReleaseSummary = ({
                                 required
                                 name='version'
                                 onChange={updateField}
+                                value={releasePayload.version ?? ''}
                             />
                         </div>
                     </div>
@@ -253,6 +265,7 @@ const ReleaseSummary = ({
                                 aria-describedby='programming_languages'
                                 name='languages'
                                 onChange={setArrayData}
+                                value={releasePayload.languages ?? ''}
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -267,6 +280,7 @@ const ReleaseSummary = ({
                                 aria-describedby='operating_systems'
                                 name='operatingSystems'
                                 onChange={setArrayData}
+                                value={releasePayload.operatingSystems ?? ''}
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -281,6 +295,7 @@ const ReleaseSummary = ({
                                 aria-describedby='Tag'
                                 name='cpeid'
                                 onChange={updateField}
+                                value={releasePayload.cpeid ?? ''}
                             />
                             <div id='learn_more_about_component_type' className='form-text'>
                                 <i className='bi bi-info-circle'></i>(i) Learn more about the CPE ID format.
@@ -301,6 +316,7 @@ const ReleaseSummary = ({
                                 aria-describedby='blog_url'
                                 name='softwarePlatforms'
                                 onChange={setArrayData}
+                                value={releasePayload.softwarePlatforms ?? ''}
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -315,6 +331,7 @@ const ReleaseSummary = ({
                                 aria-describedby='releaseDate'
                                 name='releaseDate'
                                 onChange={updateField}
+                                value={releasePayload.releaseDate ?? ''}
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -386,6 +403,7 @@ const ReleaseSummary = ({
                                 aria-describedby='wiki_url'
                                 name='sourceCodeDownloadurl'
                                 onChange={updateField}
+                                value={releasePayload.sourceCodeDownloadurl ?? ''}
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -400,6 +418,7 @@ const ReleaseSummary = ({
                                 aria-describedby='wiki_url'
                                 name='binaryDownloadurl'
                                 onChange={updateField}
+                                value={releasePayload.binaryDownloadurl ?? ''}
                             />
                         </div>
                     </div>
@@ -415,7 +434,8 @@ const ReleaseSummary = ({
                                 id='clearing_state'
                                 aria-describedby='clearing_state'
                                 readOnly={true}
-                                value='NEW'
+                                defaultValue={defaultValueClearingState()}
+                                name='clearingState'
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -428,6 +448,7 @@ const ReleaseSummary = ({
                                 id='mainlineState'
                                 required
                                 name='mainlineState'
+                                value={releasePayload.mainlineState ?? ''}
                                 onChange={updateField}
                             >
                                 <option value='OPEN'>{t('OPEN')}</option>
@@ -450,7 +471,7 @@ const ReleaseSummary = ({
                                 id='createdOn'
                                 aria-describedby='Modified on'
                                 readOnly={true}
-                                value={currentDate}
+                                defaultValue={defaultValueCreatedOn()}
                             />
                         </div>
                     </div>
@@ -467,6 +488,8 @@ const ReleaseSummary = ({
                                 placeholder='Will be set automatically'
                                 aria-describedby='Modified on'
                                 readOnly={true}
+                                name='createBy'
+                                value={releasePayload.createBy ?? ''} 
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -530,6 +553,8 @@ const ReleaseSummary = ({
                                 id='modified_on'
                                 aria-describedby='Modified on'
                                 readOnly={true}
+                                name='modifiedOn'
+                                value={releasePayload.modifiedOn ?? ''}
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -543,6 +568,8 @@ const ReleaseSummary = ({
                                 id='modified_by'
                                 aria-describedby='Modified By'
                                 readOnly={true}
+                                name='modifiedBy'
+                                value={releasePayload.modifiedBy ?? ''}
                             />
                         </div>
                     </div>

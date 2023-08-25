@@ -33,6 +33,7 @@ import ApiUtils from '@/utils/api/api.util'
 import HttpStatus from '@/object-types/enums/HttpStatus'
 import ReleaseEditSummary from './ReleaseEditSummary'
 import { signOut } from 'next-auth/react'
+import ActionType from '@/object-types/enums/ActionType'
 
 interface Props {
     session?: Session
@@ -101,7 +102,6 @@ const EditRelease = ({ session, releaseId }: Props) => {
         repositorytype: 'UNKNOWN',
         url: '',
     })
-
     const submit = async () => {
         console.log("---------------------------------")
         console.log(releaseId)
@@ -118,7 +118,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
         // }
     }
     const headerButtons = {
-        'Update Release': { link:  '/releases/detail/' + releaseId, type: 'primary', onclick: submit },
+        'Update Release': { link:  '' + releaseId, type: 'primary', onclick: submit },
         'Delete Release': {
             link: '/releases/detail/' + releaseId,
             type: 'danger',
@@ -141,6 +141,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
                             <ReleaseEditSummary
                                 session={session}
                                 releaseId={releaseId}
+                                actionType={ActionType.EDIT}
                                 releasePayload={releasePayload}
                                 setReleasePayload={setReleasePayload}
                                 vendor={vendor}
