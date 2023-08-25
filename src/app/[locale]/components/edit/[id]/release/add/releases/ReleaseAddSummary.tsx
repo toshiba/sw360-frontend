@@ -22,6 +22,7 @@ import Vendor from '@/object-types/Vendor'
 import Licenses from '@/object-types/Licenses'
 import Moderators from '@/object-types/Moderators'
 import Repository from '@/object-types/Repository'
+import { useState } from 'react'
 
 interface Props {
     session?: Session
@@ -59,7 +60,54 @@ export default function ReleaseAddSummary({
     setReleaseRepository,
 }: Props) {
     const t = useTranslations(COMMON_NAMESPACE)
+    const [roles, setRoles] = useState<Input[]>([])
+    const [externalIds, setExternalIds] = useState<Input[]>([])
+    const [addtionalData, setAddtionalData] = useState<Input[]>([])
 
+    const setDataAddtionalData = (additionalDatas: Map<string, string>) => {
+        const obj = Object.fromEntries(additionalDatas)
+        setReleasePayload({
+            ...releasePayload,
+            additionalData: obj,
+        })
+    }
+
+    const setDataExternalIds = (externalIds: Map<string, string>) => {
+        const obj = Object.fromEntries(externalIds)
+        setReleasePayload({
+            ...releasePayload,
+            externalIds: obj,
+        })
+    }
+
+    const setDataRoles = (roles: Input[]) => {
+        const roleDatas = convertRoles(roles)
+        setReleasePayload({
+            ...releasePayload,
+            roles: roleDatas,
+        })
+    }
+
+    const convertRoles = (datas: any[]) => {
+        const contributors: string[] = []
+        const commiters: string[] = []
+        const expecters: string[] = []
+        datas.forEach((data) => {
+            if (data.key === 'Contributor') {
+                contributors.push(data.value)
+            } else if (data.key === 'Committer') {
+                commiters.push(data.value)
+            } else if (data.key === 'Expert') {
+                expecters.push(data.value)
+            }
+        })
+        const roles = {
+            Contributor: contributors,
+            Committer: commiters,
+            Expert: expecters,
+        }
+        return roles
+    }
     return (
         <>
             <form
