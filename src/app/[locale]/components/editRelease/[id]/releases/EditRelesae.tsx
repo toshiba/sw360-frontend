@@ -22,19 +22,18 @@ import EditClearingDetails from './ClearingDetail/EditClearingDetails'
 import EditECCDetails from './ECCDetail/EditECCDetails'
 import EditCommercialDetails from './CommercialDetails/EditCommercialDetails'
 import ReleasePayload from '@/object-types/ReleasePayload'
-import { notFound, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
 import Vendor from '@/object-types/Vendor'
 import Licenses from '@/object-types/Licenses'
 import Moderators from '@/object-types/Moderators'
-import Repository from '@/object-types/Repository'
 import ApiUtils from '@/utils/api/api.util'
 import HttpStatus from '@/object-types/enums/HttpStatus'
 import ReleaseEditSummary from './ReleaseEditSummary'
 import { signOut } from 'next-auth/react'
 import ActionType from '@/object-types/enums/ActionType'
-import CommonUtils from '@/utils/common.utils'
+import ECCInformation from '@/object-types/ECCInformation'
 
 interface Props {
     session?: Session
@@ -47,7 +46,6 @@ const EditRelease = ({ session, releaseId }: Props) => {
     const [tabList, setTabList] = useState(ReleaseEditTabs.WITH_COMMERCIAL_DETAILS)
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
     const [release, setRelease] = useState<any>(undefined)
-
 
     const fetchData: any = useCallback(
         async (url: string) => {
@@ -65,10 +63,21 @@ const EditRelease = ({ session, releaseId }: Props) => {
     )
 
     useEffect(() => {
-        fetchData(`releases/${releaseId}`)
-            .then((release: any) => {
-                setRelease(release)
-            })
+        fetchData(`releases/${releaseId}`).then((release: any) => {
+            setRelease(release)
+            const eccInformation: ECCInformation = {
+                eccStatus: release.eccInformation.eccStatus,
+                al: release.eccInformation.al,
+                eccn: release.eccInformation.eccn,
+                assessorContactPerson: release.eccInformation.assessorContactPerson,
+                assessorDepartment: release.eccInformation.assessorDepartment,
+                eccComment: release.eccInformation.eccComment,
+                materialIndexNumber: release.eccInformation.materialIndexNumber,
+                assessmentDate: release.eccInformation.assessmentDate
+            }
+            setEccInformation(eccInformation)
+        })
+
     }, [releaseId])
 
     const [releasePayload, setReleasePayload] = useState<ReleasePayload>({
@@ -83,7 +92,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
         contributors: null,
         createdOn: '',
         createBy: '',
-        modifiedBy: '', 
+        modifiedBy: '',
         modifiedOn: '',
         moderators: null,
         roles: null,
@@ -97,6 +106,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
         binaryDownloadurl: '',
         repository: null,
         releaseIdToRelationship: null,
+        eccInformation: null
     })
 
     const [vendor, setVendor] = useState<Vendor>({
@@ -124,13 +134,18 @@ const EditRelease = ({ session, releaseId }: Props) => {
         fullName: '',
     })
 
-    const [releaseRepository, setReleaseRepository] = useState<Repository>({
-        repositorytype: 'UNKNOWN',
-        url: '',
-    })
+    const [eccInformation, setEccInformation] = useState<ECCInformation>({
+        eccStatus: '',
+        al: '',
+        eccn: '',
+        assessorContactPerson: '',
+        assessorDepartment: '',
+        eccComment: '',
+        materialIndexNumber: '',
+        assessmentDate: ''
+    });
     const submit = async () => {
-        console.log("---------------------------------")
-        console.log(releaseId)
+        console.log('---------------------------------')
         console.log(releasePayload)
         // const response = await ApiUtils.POST('releases', releasePayload, session.user.access_token)
         // if (response.status == HttpStatus.CREATED) {
@@ -145,7 +160,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
         // }
     }
     const headerButtons = {
-        'Update Release': { link:  '', type: 'primary', onClick: submit },
+        'Update Release': { link: '', type: 'primary', onClick: submit },
         'Delete Release': {
             link: '/releases/detail/' + releaseId,
             type: 'danger',
@@ -182,8 +197,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
                                 setContributor={setContributor}
                                 moderator={moderator}
                                 setModerator={setModerator}
-                                releaseRepository={releaseRepository}
-                                setReleaseRepository={setReleaseRepository}
+                                eccInformation={eccInformation}
                             />
                         </div>
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.LINKED_RELEASES ? true : false}>
@@ -198,13 +212,16 @@ const EditRelease = ({ session, releaseId }: Props) => {
                             <EditClearingDetails />
                         </div>
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.ECC_DETAILS ? true : false}>
-                            <EditECCDetails />
+                            <EditECCDetails
+                                releasePayload={releasePayload}
+                                setReleasePayload={setReleasePayload}
+                            />
                         </div>
                         {/* <div className='row' hidden={selectedTab != CommonTabIds.ATTACHMENTS ? true : false}>
                             <EditAttachments session={session} />
                         </div> */}
                         <div className='row' hidden={selectedTab != ReleaseTabIds.COMMERCIAL_DETAILS ? true : false}>
-                            <EditCommercialDetails session={session}/>
+                            <EditCommercialDetails session={session} />
                         </div>
                     </div>
                 </div>

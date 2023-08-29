@@ -17,32 +17,23 @@ import Repository from '@/object-types/Repository'
 import ReleasePayload from '@/object-types/ReleasePayload'
 
 interface Props {
-    // releaseData?: ReleasePayload
-    // setReleaseData?:React.Dispatch<React.SetStateAction<ReleasePayload>>
     releasePayload?: ReleasePayload
     setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
-    setReleaseRepository?: React.Dispatch<React.SetStateAction<Repository>>
-    releaseRepository?: Repository
 }
 
 const ReleaseRepository = ({
-    releaseRepository,
-    setReleaseRepository,
     releasePayload,
     setReleasePayload,
-    // releaseData,
-    // setReleaseData,
 }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
 
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-        setReleaseRepository({
-            ...releaseRepository,
-            [e.target.name]: e.target.value,
-        })
         setReleasePayload({
             ...releasePayload,
-            repository: releaseRepository,
+            repository: {
+                ...releasePayload.repository,
+                [e.target.name]: e.target.value,
+            },
         })
     }
 
@@ -63,7 +54,7 @@ const ReleaseRepository = ({
                             id='repository_type'
                             required
                             name='repositorytype'
-                            value={releaseRepository.repositorytype ?? ''}
+                            value={releasePayload.repository?.repositorytype ?? ''}
                             onChange={(e) => handleInputChange(e)}
                         >
                             <option value='UNKNOWN'>{t('Unknown')}</option>
@@ -104,7 +95,7 @@ const ReleaseRepository = ({
                             aria-describedby='version'
                             required
                             name='url'
-                            value={releaseRepository.url ?? ''}
+                            value={releasePayload.repository?.url ?? ''}
                             onChange={(e) => handleInputChange(e)}
                         />
                     </div>

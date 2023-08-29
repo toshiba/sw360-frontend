@@ -14,6 +14,13 @@ import styles from './EditECCDetails.module.css'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { BiInfoCircle } from 'react-icons/bi'
+import React from 'react'
+import ReleasePayload from '@/object-types/ReleasePayload'
+
+interface Props {
+    releasePayload?: ReleasePayload
+    setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
+}
 
 const ShowInfoOnHover = ({ text }: { text: string }) => {
     return (
@@ -27,8 +34,18 @@ const ShowInfoOnHover = ({ text }: { text: string }) => {
     )
 }
 
-const EditECCDetails = () => {
+const EditECCDetails = ({ releasePayload, setReleasePayload }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
+    const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+        setReleasePayload({
+            ...releasePayload,
+            eccInformation: {
+                ...releasePayload.eccInformation,
+                [e.target.name]: e.target.value,
+            },
+        })
+    }
+
     return (
         <>
             <div className='container' style={{ maxWidth: '98vw', marginTop: '10px', fontSize: '0.875rem' }}>
@@ -47,7 +64,9 @@ const EditECCDetails = () => {
                                     aria-label='component_type'
                                     id='ECC_Status'
                                     required
-                                    name='ECC_Status'
+                                    name='eccStatus'
+                                    value={releasePayload.eccInformation?.eccStatus ?? ''}
+                                    onChange={updateField}
                                 >
                                     <option value='OPEN'>{t('OPEN')}</option>
                                     <option value='IN_PROGRESS'> {t('IN_PROGRESS')}</option>
@@ -70,7 +89,9 @@ const EditECCDetails = () => {
                                     id='ECC_comment'
                                     aria-describedby='version'
                                     required
-                                    name='ECC_comment'
+                                    name='eccComment'
+                                    value={releasePayload.eccInformation?.eccComment ?? ''}
+                                    onChange={updateField}
                                 />
                             </div>
                         </div>
@@ -86,7 +107,9 @@ const EditECCDetails = () => {
                                     placeholder='Enter AL'
                                     id='ausfuhrliste'
                                     aria-describedby='ausfuhrliste'
-                                    name='ausfuhrliste'
+                                    name='al'
+                                    value={releasePayload.eccInformation?.al ?? ''}
+                                    onChange={updateField}
                                 />
                             </div>
                             <div className='col-lg-4'>
@@ -100,6 +123,8 @@ const EditECCDetails = () => {
                                     id='eccn'
                                     aria-describedby='eccn'
                                     name='eccn'
+                                    value={releasePayload.eccInformation?.eccn ?? ''}
+                                    onChange={updateField}
                                 />
                             </div>
                             <div className='col-lg-4'>
@@ -112,7 +137,9 @@ const EditECCDetails = () => {
                                     placeholder='Enter material index number'
                                     id='material_index_number'
                                     aria-describedby='material_index_number'
-                                    name='material_index_number'
+                                    name='materialIndexNumber'
+                                    value={releasePayload.eccInformation?.materialIndexNumber ?? ''}
+                                    onChange={updateField}
                                 />
                             </div>
                         </div>
@@ -128,8 +155,9 @@ const EditECCDetails = () => {
                                     placeholder='Will be set automatically'
                                     id='assessor_contact_person'
                                     aria-describedby='assessor_contact_person'
-                                    name='assessor_contact_person'
+                                    name='assessorContactPerson'
                                     readOnly={true}
+                                    value={releasePayload.eccInformation?.assessorContactPerson ?? ''}
                                 />
                             </div>
                             <div className='col-lg-4'>
@@ -142,8 +170,9 @@ const EditECCDetails = () => {
                                     placeholder='Will be set automatically'
                                     id='assessor_department'
                                     aria-describedby='assessor_department'
-                                    name='assessor_department'
+                                    name='assessorDepartment'
                                     readOnly={true}
+                                    value={releasePayload.eccInformation?.assessorDepartment ?? ''}
                                 />
                             </div>
                             <div className='col-lg-4'>
@@ -159,7 +188,8 @@ const EditECCDetails = () => {
                                     id='assessment_date'
                                     aria-describedby='assessment_date'
                                     readOnly={true}
-                                    name='assessment_date'
+                                    name='assessmentDate'
+                                    value={releasePayload.eccInformation?.assessmentDate ?? ''}
                                 />
                             </div>
                         </div>
@@ -170,4 +200,4 @@ const EditECCDetails = () => {
     )
 }
 
-export default EditECCDetails
+export default React.memo(EditECCDetails)

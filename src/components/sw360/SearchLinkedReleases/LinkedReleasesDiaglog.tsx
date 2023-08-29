@@ -34,7 +34,16 @@ interface Props {
     setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
 }
 
-const LinkedReleasesDiaglog = ({ show, setShow, session, onReRender, releaseLinks, setReleaseLinks,releasePayload , setReleasePayload }: Props) => {
+const LinkedReleasesDiaglog = ({
+    show,
+    setShow,
+    session,
+    onReRender,
+    releaseLinks,
+    setReleaseLinks,
+    releasePayload,
+    setReleasePayload,
+}: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [data, setData] = useState()
     const [linkedReleases, setLinkedReleases] = useState([])
@@ -67,7 +76,7 @@ const LinkedReleasesDiaglog = ({ show, setShow, session, onReRender, releaseLink
             ) {
                 const data = users['_embedded']['sw360:releases'].map((item: any) => [
                     item,
-                    item.vendor ? item.vendor.fullName : " ",
+                    item.vendor ? item.vendor.fullName : ' ',
                     item.name,
                     item.version,
                     item.clearingState,
@@ -79,9 +88,9 @@ const LinkedReleasesDiaglog = ({ show, setShow, session, onReRender, releaseLink
     }, [])
 
     const handleClickSelectLinkedReleases = () => {
-        linkedReleasesResponse.forEach((linkedRelease: LinkedRelease)=> {
+        linkedReleasesResponse.forEach((linkedRelease: LinkedRelease) => {
             releaseLinks.push(linkedRelease)
-        });
+        })
         const mapReleaseRelationship = new Map<string, string>()
         releaseLinks.forEach((item) => {
             mapReleaseRelationship.set(item.id, item.releaseRelationship)
@@ -96,7 +105,10 @@ const LinkedReleasesDiaglog = ({ show, setShow, session, onReRender, releaseLink
         onReRender()
     }
 
-    const getLinkedReleases: (releaseLink: LinkedRelease[]) => void = useCallback((releaseLink: LinkedRelease[]) => setLinkedReleasesResponse(releaseLink), [])
+    const getLinkedReleases: (releaseLink: LinkedRelease[]) => void = useCallback(
+        (releaseLink: LinkedRelease[]) => setLinkedReleasesResponse(releaseLink),
+        []
+    )
 
     return (
         <Modal show={show} onHide={handleCloseDialog} backdrop='static' centered size='lg'>
@@ -125,7 +137,11 @@ const LinkedReleasesDiaglog = ({ show, setShow, session, onReRender, releaseLink
                         </div>
                     </div>
                     <div className='row mt-3'>
-                        <SelectTableLinkedReleases releases={releases} setLinkedReleases={getLinkedReleases} linkedReleases={linkedReleases} />
+                        <SelectTableLinkedReleases
+                            releases={releases}
+                            setLinkedReleases={getLinkedReleases}
+                            linkedReleases={linkedReleases}
+                        />
                     </div>
                 </div>
             </Modal.Body>

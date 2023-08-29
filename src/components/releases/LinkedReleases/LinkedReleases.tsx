@@ -54,12 +54,10 @@ const LinkedReleases = ({ session, releasePayload, setReleasePayload, release }:
         ) {
             const linkedReleases: LinkedRelease[] = []
 
-            release['_embedded']['sw360:releaseLinks'].map((item: any) => [
-                linkedReleases.push(item)
-            ])
+            release['_embedded']['sw360:releaseLinks'].map((item: any) => [linkedReleases.push(item)])
             setReleaseLinks(linkedReleases)
         }
-      }, [])
+    }, [])
 
     return (
         <>
@@ -74,7 +72,10 @@ const LinkedReleases = ({ session, releasePayload, setReleasePayload, release }:
                     releasePayload={releasePayload}
                     setReleasePayload={setReleasePayload}
                 />
-                <div className={`row ${styles['attachment-table']}`} style={{ padding: '25px',fontSize: '0.875rem', paddingTop: '1px' }}>
+                <div
+                    className={`row ${styles['attachment-table']}`}
+                    style={{ padding: '25px', fontSize: '0.875rem', paddingTop: '1px' }}
+                >
                     <TitleLinkedReleases />
                     <TableLinkedReleases
                         releaseLinks={releaseLinks}
