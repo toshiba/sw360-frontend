@@ -21,20 +21,24 @@ import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
 import SelectTableLinkedReleases from './SelectTableLinkedReleases'
 import LinkedRelease from '@/object-types/LinkedRelease'
+import ReleasePayload from '@/object-types/ReleasePayload'
 
 interface Props {
     show: boolean
     setShow: React.Dispatch<React.SetStateAction<boolean>>
     session: Session
-    selectLinkedReleases: any
     onReRender: () => void
+    releaseLinks: LinkedRelease[]
+    setReleaseLinks: React.Dispatch<React.SetStateAction<LinkedRelease[]>>
+    releasePayload?: ReleasePayload
+    setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
 }
 
-const LinkedReleasesDiaglog = ({ show, setShow, session, selectLinkedReleases, onReRender }: Props) => {
+const LinkedReleasesDiaglog = ({ show, setShow, session, onReRender, releaseLinks, setReleaseLinks,releasePayload , setReleasePayload }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [data, setData] = useState()
     const [linkedReleases, setLinkedReleases] = useState([])
-    const [linkedReleasesResponse, setLinkedReleasesResponse] = useState<LinkedRelease>()
+    const [linkedReleasesResponse, setLinkedReleasesResponse] = useState<LinkedRelease[]>()
     const [releases, setReleases] = useState([])
 
     const handleCloseDialog = () => {
@@ -75,12 +79,24 @@ const LinkedReleasesDiaglog = ({ show, setShow, session, selectLinkedReleases, o
     }, [])
 
     const handleClickSelectLinkedReleases = () => {
-        selectLinkedReleases(linkedReleasesResponse)
+        linkedReleasesResponse.forEach((linkedRelease: LinkedRelease)=> {
+            releaseLinks.push(linkedRelease)
+        });
+        const mapReleaseRelationship = new Map<string, string>()
+        releaseLinks.forEach((item) => {
+            mapReleaseRelationship.set(item.id, item.releaseRelationship)
+        })
+        const obj = Object.fromEntries(mapReleaseRelationship)
+        setReleasePayload({
+            ...releasePayload,
+            releaseIdToRelationship: obj,
+        })
+        setReleaseLinks(releaseLinks)
         setShow(!show)
         onReRender()
     }
 
-    const getLinkedReleases: (releaseLink: LinkedRelease) => void = useCallback((releaseLink: LinkedRelease) => setLinkedReleasesResponse(releaseLink), [])
+    const getLinkedReleases: (releaseLink: LinkedRelease[]) => void = useCallback((releaseLink: LinkedRelease[]) => setLinkedReleasesResponse(releaseLink), [])
 
     return (
         <Modal show={show} onHide={handleCloseDialog} backdrop='static' centered size='lg'>

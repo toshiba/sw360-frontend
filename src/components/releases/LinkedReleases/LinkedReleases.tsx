@@ -33,21 +33,11 @@ const LinkedReleases = ({ session, releasePayload, setReleasePayload, release }:
     const t = useTranslations(COMMON_NAMESPACE)
     const [reRender, setReRender] = useState(false)
     const [releaseLinks, setReleaseLinks] = useState<LinkedRelease[]>([])
-    const [data, setData] = useState([])
     const handleReRender = () => {
         setReRender(!reRender)
     }
     const [linkedReleasesDiaglog, setLinkedReleasesDiaglog] = useState(false)
     const handleClickSelectLinkedReleases = useCallback(() => setLinkedReleasesDiaglog(true), [])
-
-    const selectLinkedReleases = (releaseLinks: LinkedRelease[]) => {
-        const mapReleaseRelationship = new Map<string, string>()
-        releaseLinks.forEach((item) => {
-            mapReleaseRelationship.set(item.id, item.releaseRelationship)
-        })
-        setReleaseLinks(releaseLinks)
-        setReleaseIdToRelationshipsToReleasePayLoad(mapReleaseRelationship)
-    }
 
     const setReleaseIdToRelationshipsToReleasePayLoad = (releaseIdToRelationships: Map<string, string>) => {
         const obj = Object.fromEntries(releaseIdToRelationships)
@@ -77,9 +67,12 @@ const LinkedReleases = ({ session, releasePayload, setReleasePayload, release }:
                 <LinkedReleasesDiaglog
                     session={session}
                     show={linkedReleasesDiaglog}
+                    releaseLinks={releaseLinks}
+                    setReleaseLinks={setReleaseLinks}
                     setShow={setLinkedReleasesDiaglog}
-                    selectLinkedReleases={selectLinkedReleases}
                     onReRender={handleReRender}
+                    releasePayload={releasePayload}
+                    setReleasePayload={setReleasePayload}
                 />
                 <div className={`row ${styles['attachment-table']}`} style={{ padding: '25px',fontSize: '0.875rem', paddingTop: '1px' }}>
                     <TitleLinkedReleases />
