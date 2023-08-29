@@ -17,11 +17,11 @@ interface Context {
   params: { id: string }
 }
 
-const ReleaseAddPage = async ({ params }: Context) => {
+const ReleaseEditPage = async ({ params }: Context) => {
   const session: Session = await getServerSession(authOptions);
   const releaseId = params.id;
 
   return <EditRelease session={session} releaseId={releaseId} />
 }
 
-export default ReleaseAddPage
+export default ReleaseEditPage

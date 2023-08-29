@@ -45,10 +45,6 @@ export default function AddAdditionalRolesComponent({ documentType, setDataRoles
             : setRoles([...roles, { key: 'Stakeholder', value: '' }])
     }
 
-    const defaultValue = () => {
-        return documentType === DocumentTypes.COMPONENT ? 'Commiter' : 'Stakeholder'
-    }
-
     return (
         <>
             <div className={`${styles['header']} mb-2`}>
@@ -65,7 +61,6 @@ export default function AddAdditionalRolesComponent({ documentType, setDataRoles
                                     name='key'
                                     value={elem.key}
                                     aria-label='additional role'
-                                    defaultValue={defaultValue()}
                                     onChange={(e) => handleInputChange(e, index)}
                                 >
                                     {documentType === DocumentTypes.COMPONENT ? (

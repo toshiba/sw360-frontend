@@ -29,6 +29,7 @@ import HttpStatus from '@/object-types/enums/HttpStatus'
 import ApiUtils from '@/utils/api/api.util'
 interface Props {
     session?: Session
+    release?: any
     releaseId?: string
     actionType?: string
     releasePayload?: ReleasePayload
@@ -49,6 +50,7 @@ interface Props {
 
 export default function ReleaseEditSummary({
     session,
+    release,
     releaseId,
     actionType,
     releasePayload,
@@ -218,9 +220,6 @@ export default function ReleaseEditSummary({
 
 
     useEffect(() => {
-        fetchData(`releases/${releaseId}`).then((release: any) => {
-
-            console.log(release)
             if (typeof release.roles !== 'undefined') {
                 setRoles(convertObjectToMapRoles(release.roles))
             }
@@ -301,7 +300,6 @@ export default function ReleaseEditSummary({
                 releaseIdToRelationship: release.releaseIdToRelationship,
             }
             setReleasePayload(releasePayload)
-        })
     }, [releaseId, fetchData])
 
     return (

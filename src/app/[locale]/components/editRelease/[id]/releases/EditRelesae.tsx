@@ -34,6 +34,7 @@ import HttpStatus from '@/object-types/enums/HttpStatus'
 import ReleaseEditSummary from './ReleaseEditSummary'
 import { signOut } from 'next-auth/react'
 import ActionType from '@/object-types/enums/ActionType'
+import CommonUtils from '@/utils/common.utils'
 
 interface Props {
     session?: Session
@@ -45,6 +46,31 @@ const EditRelease = ({ session, releaseId }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [tabList, setTabList] = useState(ReleaseEditTabs.WITH_COMMERCIAL_DETAILS)
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
+    const [release, setRelease] = useState<any>(undefined)
+
+
+    const fetchData: any = useCallback(
+        async (url: string) => {
+            const response = await ApiUtils.GET(url, session.user.access_token)
+            if (response.status == HttpStatus.OK) {
+                const data = await response.json()
+                return data
+            } else if (response.status == HttpStatus.UNAUTHORIZED) {
+                signOut()
+            } else {
+                return null
+            }
+        },
+        [session.user.access_token]
+    )
+
+    useEffect(() => {
+        fetchData(`releases/${releaseId}`)
+            .then((release: any) => {
+                setRelease(release)
+            })
+    }, [releaseId])
+
     const [releasePayload, setReleasePayload] = useState<ReleasePayload>({
         name: '',
         cpeid: '',
@@ -105,6 +131,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
     const submit = async () => {
         console.log("---------------------------------")
         console.log(releaseId)
+        console.log(releasePayload)
         // const response = await ApiUtils.POST('releases', releasePayload, session.user.access_token)
         // if (response.status == HttpStatus.CREATED) {
         //     const data = await response.json()
@@ -118,7 +145,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
         // }
     }
     const headerButtons = {
-        'Update Release': { link:  '' + releaseId, type: 'primary', onclick: submit },
+        'Update Release': { link:  '', type: 'primary', onClick: submit },
         'Delete Release': {
             link: '/releases/detail/' + releaseId,
             type: 'danger',
@@ -127,7 +154,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
     }
 
     return (
-        <>
+        release && (
             <div className='container' style={{ maxWidth: '98vw', marginTop: '10px' }}>
                 <div className='row'>
                     <div className='col-2 sidebar'>
@@ -135,11 +162,12 @@ const EditRelease = ({ session, releaseId }: Props) => {
                     </div>
                     <div className='col'>
                         <div className='row' style={{ marginBottom: '20px' }}>
-                            <PageButtonHeader buttons={headerButtons}></PageButtonHeader>
+                            <PageButtonHeader buttons={headerButtons} title={release.name}></PageButtonHeader>
                         </div>
                         <div className='row' hidden={selectedTab !== CommonTabIds.SUMMARY ? true : false}>
                             <ReleaseEditSummary
                                 session={session}
+                                release={release}
                                 releaseId={releaseId}
                                 actionType={ActionType.EDIT}
                                 releasePayload={releasePayload}
@@ -158,11 +186,10 @@ const EditRelease = ({ session, releaseId }: Props) => {
                                 setReleaseRepository={setReleaseRepository}
                             />
                         </div>
-                        <div className='row' hidden={selectedTab != ReleaseTabIds.LINKED_RELEASES ? true : false}>
+                        <div className='row' hidden={selectedTab !== ReleaseTabIds.LINKED_RELEASES ? true : false}>
                             <LinkedReleases
                                 session={session}
-                                // releaseData={releaseData}
-                                // setReleaseData={setReleaseData}
+                                release={release}
                                 releasePayload={releasePayload}
                                 setReleasePayload={setReleasePayload}
                             />
@@ -173,16 +200,16 @@ const EditRelease = ({ session, releaseId }: Props) => {
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.ECC_DETAILS ? true : false}>
                             <EditECCDetails />
                         </div>
-                        <div className='row' hidden={selectedTab != CommonTabIds.ATTACHMENTS ? true : false}>
-                            {/* <EditAttachments session={session} /> */}
-                        </div>
+                        {/* <div className='row' hidden={selectedTab != CommonTabIds.ATTACHMENTS ? true : false}>
+                            <EditAttachments session={session} />
+                        </div> */}
                         <div className='row' hidden={selectedTab != ReleaseTabIds.COMMERCIAL_DETAILS ? true : false}>
                             <EditCommercialDetails session={session}/>
                         </div>
                     </div>
                 </div>
             </div>
-        </>
+        )
     )
 }
 

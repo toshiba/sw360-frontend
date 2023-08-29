@@ -15,22 +15,25 @@ import styles from '../../Attachments/Attachment.module.css'
 import TableLinkedReleases from './TableLinkedReleases/TableLinkedReleases'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import LinkedReleasesDiaglog from '@/components/sw360/SearchLinkedReleases/LinkedReleasesDiaglog'
 import { Session } from '@/object-types/Session'
 import LinkedRelease from '@/object-types/LinkedRelease'
 import ReleasePayload from '@/object-types/ReleasePayload'
+import CommonUtils from '@/utils/common.utils'
 
 interface Props {
     session?: Session
+    release?: any
     releasePayload?: ReleasePayload
     setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
 }
 
-const LinkedReleases = ({ session, releasePayload, setReleasePayload }: Props) => {
+const LinkedReleases = ({ session, releasePayload, setReleasePayload, release }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [reRender, setReRender] = useState(false)
     const [releaseLinks, setReleaseLinks] = useState<LinkedRelease[]>([])
+    const [data, setData] = useState([])
     const handleReRender = () => {
         setReRender(!reRender)
     }
@@ -53,6 +56,20 @@ const LinkedReleases = ({ session, releasePayload, setReleasePayload }: Props) =
             releaseIdToRelationship: obj,
         })
     }
+
+    useEffect(() => {
+        if (
+            !CommonUtils.isNullOrUndefined(release['_embedded']) &&
+            !CommonUtils.isNullOrUndefined(release['_embedded']['sw360:releaseLinks'])
+        ) {
+            const linkedReleases: LinkedRelease[] = []
+
+            release['_embedded']['sw360:releaseLinks'].map((item: any) => [
+                linkedReleases.push(item)
+            ])
+            setReleaseLinks(linkedReleases)
+        }
+      }, [])
 
     return (
         <>
