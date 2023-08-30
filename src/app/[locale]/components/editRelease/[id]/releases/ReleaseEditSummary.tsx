@@ -28,6 +28,7 @@ import { notFound } from 'next/navigation'
 import HttpStatus from '@/object-types/enums/HttpStatus'
 import ApiUtils from '@/utils/api/api.util'
 import ECCInformation from '@/object-types/ECCInformation'
+import ClearingInformation from '@/object-types/ClearingInformation'
 interface Props {
     session?: Session
     release?: any
@@ -48,6 +49,7 @@ interface Props {
     releaseRepository?: Repository
     setReleaseRepository?: React.Dispatch<React.SetStateAction<Repository>>
     eccInformation: ECCInformation
+    clearingInformation: ClearingInformation
 }
 
 export default function ReleaseEditSummary({
@@ -67,9 +69,8 @@ export default function ReleaseEditSummary({
     setContributor,
     moderator,
     setModerator,
-    // releaseRepository,
-    // setReleaseRepository,
-    eccInformation
+    eccInformation,
+    clearingInformation
 }: Props) {
     const t = useTranslations(COMMON_NAMESPACE)
     const [roles, setRoles] = useState<Input[]>([])
@@ -83,17 +84,6 @@ export default function ReleaseEditSummary({
             additionalData: obj,
         })
     }
-
-    // const setDataRepository = (releaseRepository: Repository) => {
-    //     setReleasePayload({
-    //         ...releasePayload,
-    //         repository: releaseRepository,
-    //     })
-    //             // setReleasePayload({
-    //     //     ...releasePayload,
-    //     //     repository: releaseRepository,
-    //     // })
-    // }
 
     const setDataExternalIds = (externalIds: Map<string, string>) => {
         const obj = Object.fromEntries(externalIds)
@@ -277,14 +267,6 @@ export default function ReleaseEditSummary({
                 componentId = handleId(release['_links']['sw360:component']['href'])
             }
 
-            // if (typeof release.repository !== 'undefined') {
-            //     const repository: Repository = {
-            //         repositorytype: release.repository.repositorytype,
-            //         url: release.repository.url
-            //     }
-            //     setReleaseRepository(repository)
-            // }
-
             const releasePayload: ReleasePayload = {
                 name: release.name,
                 cpeid: release.cpeId,
@@ -312,7 +294,8 @@ export default function ReleaseEditSummary({
                 binaryDownloadurl: release.binaryDownloadurl,
                 repository: release.repository,
                 releaseIdToRelationship: release.releaseIdToRelationship,
-                eccInformation: eccInformation
+                eccInformation: eccInformation,
+                clearingInformation: clearingInformation
             }
             setReleasePayload(releasePayload)
     }, [releaseId, fetchData])

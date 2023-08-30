@@ -10,11 +10,29 @@
 
 'use client'
 
-import { COMMON_NAMESPACE } from "@/object-types/Constants"
-import { useTranslations } from "next-intl"
+import { COMMON_NAMESPACE } from '@/object-types/Constants'
+import { useTranslations } from 'next-intl'
 import styles from './ClearingDetails.module.css'
-const RequestInformation = () => {
+import ReleasePayload from '@/object-types/ReleasePayload'
+
+interface Props {
+    releasePayload?: ReleasePayload
+    setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
+}
+
+const RequestInformation = ({ releasePayload, setReleasePayload }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
+
+    const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setReleasePayload({
+            ...releasePayload,
+            clearingInformation: {
+                ...releasePayload.clearingInformation,
+                [e.target.name]: e.target.value,
+            },
+        })
+    }
+
     return (
         <>
             <div className='col' style={{ padding: '0px 12px' }}>
@@ -34,7 +52,9 @@ const RequestInformation = () => {
                                 id='request_id'
                                 aria-describedby='version'
                                 required
-                                name='request_id'
+                                name='requestID'
+                                value={releasePayload.clearingInformation?.requestID ?? ''}
+                                onChange={updateField}
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -48,7 +68,9 @@ const RequestInformation = () => {
                                 id='additional_request_info'
                                 aria-describedby='version'
                                 required
-                                name='additional_request_info'
+                                name='additionalRequestInfo'
+                                value={releasePayload.clearingInformation?.additionalRequestInfo ?? ''}
+                                onChange={updateField}
                             />
                         </div>
                     </div>
@@ -65,7 +87,9 @@ const RequestInformation = () => {
                                 id='evaluation_start'
                                 aria-describedby='version'
                                 required
-                                name='evaluation_start'
+                                name='procStart'
+                                value={releasePayload.clearingInformation?.procStart ?? ''}
+                                onChange={updateField}
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -79,7 +103,9 @@ const RequestInformation = () => {
                                 id='evaluation_end'
                                 aria-describedby='version'
                                 required
-                                name='evaluation_end'
+                                name='evaluated'
+                                value={releasePayload.clearingInformation?.evaluated ?? ''}
+                                onChange={updateField}
                             />
                         </div>
                     </div>

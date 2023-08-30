@@ -34,6 +34,8 @@ import ReleaseEditSummary from './ReleaseEditSummary'
 import { signOut } from 'next-auth/react'
 import ActionType from '@/object-types/enums/ActionType'
 import ECCInformation from '@/object-types/ECCInformation'
+import ClearingInformation from '@/object-types/ClearingInformation'
+import { clear } from 'console'
 
 interface Props {
     session?: Session
@@ -73,11 +75,39 @@ const EditRelease = ({ session, releaseId }: Props) => {
                 assessorDepartment: release.eccInformation.assessorDepartment,
                 eccComment: release.eccInformation.eccComment,
                 materialIndexNumber: release.eccInformation.materialIndexNumber,
-                assessmentDate: release.eccInformation.assessmentDate
+                assessmentDate: release.eccInformation.assessmentDate,
             }
             setEccInformation(eccInformation)
-        })
 
+            const clearingInformation: ClearingInformation = {
+                externalSupplierID: release.clearingInformation.externalSupplierID,
+                additionalRequestInfo: release.clearingInformation.additionalRequestInfo,
+                evaluated: release.clearingInformation.evaluated,
+                procStart: release.clearingInformation.procStart,
+                requestID: release.clearingInformation.requestID,
+                binariesOriginalFromCommunity: release.clearingInformation.binariesOriginalFromCommunity,
+                binariesSelfMade: release.clearingInformation.binariesSelfMade,
+                componentLicenseInformation: release.clearingInformation.componentLicenseInformation,
+                sourceCodeDelivery: release.clearingInformation.sourceCodeDelivery,
+                sourceCodeOriginalFromCommunity: release.clearingInformation.sourceCodeOriginalFromCommunity,
+                sourceCodeToolMade: release.clearingInformation.sourceCodeToolMade,
+                sourceCodeSelfMade: release.clearingInformation.sourceCodeSelfMade,
+                sourceCodeCotsAvailable: release.clearingInformation.sourceCodeCotsAvailable,
+                screenshotOfWebSite: release.clearingInformation.screenshotOfWebSite,
+                finalizedLicenseScanReport: release.clearingInformation.finalizedLicenseScanReport,
+                licenseScanReportResult: release.clearingInformation.licenseScanReportResult,
+                legalEvaluation: release.clearingInformation.legalEvaluation,
+                licenseAgreement: release.clearingInformation.licenseAgreement,
+                scanned: release.clearingInformation.scanned,
+                componentClearingReport: release.clearingInformation.componentClearingReport,
+                clearingStandard: release.clearingInformation.clearingStandard,
+                readmeOssAvailable: release.clearingInformation.readmeOssAvailable,
+                comment: release.clearingInformation.comment,
+                countOfSecurityVn: release.clearingInformation.countOfSecurityVn,
+                externalUrl: release.clearingInformation.externalUrl,
+            }
+            setClearingInformation(clearingInformation)
+        })
     }, [releaseId])
 
     const [releasePayload, setReleasePayload] = useState<ReleasePayload>({
@@ -106,7 +136,8 @@ const EditRelease = ({ session, releaseId }: Props) => {
         binaryDownloadurl: '',
         repository: null,
         releaseIdToRelationship: null,
-        eccInformation: null
+        eccInformation: null,
+        clearingInformation: null
     })
 
     const [vendor, setVendor] = useState<Vendor>({
@@ -142,8 +173,36 @@ const EditRelease = ({ session, releaseId }: Props) => {
         assessorDepartment: '',
         eccComment: '',
         materialIndexNumber: '',
-        assessmentDate: ''
-    });
+        assessmentDate: '',
+    })
+
+    const [clearingInformation, setClearingInformation] = useState<ClearingInformation>({
+        externalSupplierID: '',
+        additionalRequestInfo: '',
+        evaluated: '',
+        procStart: '',
+        requestID: '',
+        binariesOriginalFromCommunity: false,
+        binariesSelfMade: false,
+        componentLicenseInformation: false,
+        sourceCodeDelivery: false,
+        sourceCodeOriginalFromCommunity: false,
+        sourceCodeToolMade: false,
+        sourceCodeSelfMade: false,
+        sourceCodeCotsAvailable: false,
+        screenshotOfWebSite: false,
+        finalizedLicenseScanReport: false,
+        licenseScanReportResult: false,
+        legalEvaluation: false,
+        licenseAgreement: false,
+        scanned: '',
+        componentClearingReport: false,
+        clearingStandard: '',
+        readmeOssAvailable: false,
+        comment: '',
+        countOfSecurityVn: 0,
+        externalUrl: '',
+    })
     const submit = async () => {
         console.log('---------------------------------')
         console.log(releasePayload)
@@ -198,6 +257,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
                                 moderator={moderator}
                                 setModerator={setModerator}
                                 eccInformation={eccInformation}
+                                clearingInformation={clearingInformation}
                             />
                         </div>
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.LINKED_RELEASES ? true : false}>
@@ -209,13 +269,13 @@ const EditRelease = ({ session, releaseId }: Props) => {
                             />
                         </div>
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.CLEARING_DETAILS ? true : false}>
-                            <EditClearingDetails />
-                        </div>
-                        <div className='row' hidden={selectedTab !== ReleaseTabIds.ECC_DETAILS ? true : false}>
-                            <EditECCDetails
+                            <EditClearingDetails
                                 releasePayload={releasePayload}
                                 setReleasePayload={setReleasePayload}
                             />
+                        </div>
+                        <div className='row' hidden={selectedTab !== ReleaseTabIds.ECC_DETAILS ? true : false}>
+                            <EditECCDetails releasePayload={releasePayload} setReleasePayload={setReleasePayload} />
                         </div>
                         {/* <div className='row' hidden={selectedTab != CommonTabIds.ATTACHMENTS ? true : false}>
                             <EditAttachments session={session} />

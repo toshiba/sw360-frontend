@@ -10,19 +10,25 @@
 
 'use client'
 
+import ReleasePayload from '@/object-types/ReleasePayload'
 import ClearingDetails from './ClearingDetails'
 import RequestInformation from './RequestInformation'
 import SupplementalInformation from './SupplementalInformation'
 
-const EditClearingDetails = () => {
+interface Props {
+    releasePayload?: ReleasePayload
+    setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
+}
+
+const EditClearingDetails = ({ releasePayload, setReleasePayload }: Props) => {
     return (
         <>
-            <div className='container' style={{ maxWidth: '98vw', marginTop: '10px', fontSize: '0.875rem'}}>
-                <ClearingDetails />
+            <div className='container' style={{ maxWidth: '98vw', marginTop: '10px', fontSize: '0.875rem' }}>
+                <ClearingDetails releasePayload={releasePayload} setReleasePayload={setReleasePayload} />
 
-                <RequestInformation />
+                <RequestInformation releasePayload={releasePayload} setReleasePayload={setReleasePayload} />
 
-                <SupplementalInformation />
+                <SupplementalInformation releasePayload={releasePayload} setReleasePayload={setReleasePayload} />
             </div>
         </>
     )

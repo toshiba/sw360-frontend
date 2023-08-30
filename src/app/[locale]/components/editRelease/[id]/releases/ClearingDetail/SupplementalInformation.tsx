@@ -12,9 +12,26 @@
 import { useTranslations } from 'next-intl'
 import styles from './ClearingDetails.module.css'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
+import ReleasePayload from '@/object-types/ReleasePayload'
 
-const SupplementalInformation = () => {
+interface Props {
+    releasePayload?: ReleasePayload
+    setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
+}
+
+const SupplementalInformation = ({ releasePayload, setReleasePayload }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
+
+    const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setReleasePayload({
+            ...releasePayload,
+            clearingInformation: {
+                ...releasePayload.clearingInformation,
+                [e.target.name]: e.target.value,
+            },
+        })
+    }
+
     return (
         <>
             <div className='col' style={{ padding: '0px 12px' }}>
@@ -34,7 +51,9 @@ const SupplementalInformation = () => {
                                 id='external_supplier_id'
                                 aria-describedby='version'
                                 required
-                                name='external_supplier_id'
+                                name='externalSupplierID'
+                                value={releasePayload.clearingInformation?.externalSupplierID ?? ''}
+                                onChange={updateField}
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -48,7 +67,9 @@ const SupplementalInformation = () => {
                                 id='count_security_vulnerabilities'
                                 aria-describedby='version'
                                 required
-                                name='count_security_vulnerabilities'
+                                name='countOfSecurityVn'
+                                value={releasePayload.clearingInformation?.countOfSecurityVn ?? ''}
+                                onChange={updateField}
                             />
                         </div>
                     </div>

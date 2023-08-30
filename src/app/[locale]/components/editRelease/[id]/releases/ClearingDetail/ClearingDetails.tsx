@@ -13,8 +13,36 @@
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
 import { useTranslations } from 'next-intl'
 import styles from './ClearingDetails.module.css'
-const ClearingDetails = () => {
+import ReleasePayload from '@/object-types/ReleasePayload'
+
+interface Props {
+    releasePayload?: ReleasePayload
+    setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
+}
+
+const ClearingDetails = ({ releasePayload, setReleasePayload }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
+
+    const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setReleasePayload({
+            ...releasePayload,
+            clearingInformation: {
+                ...releasePayload.clearingInformation,
+                [e.target.name]: e.target.value,
+            },
+        })
+    }
+
+    const updateFieldChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setReleasePayload({
+            ...releasePayload,
+            clearingInformation: {
+                ...releasePayload.clearingInformation,
+                [e.target.name]: e.target.checked,
+            },
+        })
+    }
+
     return (
         <>
             <div className='col' style={{ padding: '0px 12px' }}>
@@ -25,7 +53,14 @@ const ClearingDetails = () => {
                     <div className='row'>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_original_from_community' type='checkbox' className='form-check-input' name='' />
+                                <input
+                                    id='binaries_original_from_community'
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    name='binariesOriginalFromCommunity'
+                                    checked={releasePayload.clearingInformation?.binariesOriginalFromCommunity ?? false}
+                                    onChange={updateFieldChecked}
+                                />
                                 <label className='form-label fw-bold' htmlFor='binaries_original_from_community'>
                                     {t('Binaries Original from Community')}
                                 </label>
@@ -33,7 +68,14 @@ const ClearingDetails = () => {
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='binaries_self_made' type='checkbox' className='form-check-input' name='' />
+                                <input
+                                    id='binaries_self_made'
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    name='binariesSelfMade'
+                                    checked={releasePayload.clearingInformation?.binariesSelfMade ?? false}
+                                    onChange={updateFieldChecked}
+                                />
                                 <label className='form-label fw-bold' htmlFor='binaries_self_made'>
                                     {t('Binaries Self-Made')}
                                 </label>
@@ -41,7 +83,14 @@ const ClearingDetails = () => {
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='component_license_information' type='checkbox' className='form-check-input' name='' />
+                                <input
+                                    id='component_license_information'
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    name='componentLicenseInformation'
+                                    checked={releasePayload.clearingInformation?.componentLicenseInformation ?? false}
+                                    onChange={updateFieldChecked}
+                                />
                                 <label className='form-label fw-bold' htmlFor='component_license_information'>
                                     {t('Component License Information')}
                                 </label>
@@ -52,7 +101,14 @@ const ClearingDetails = () => {
                     <div className='row'>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='source_code_delivery' type='checkbox' className='form-check-input' name='' />
+                                <input
+                                    id='source_code_delivery'
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    name='sourceCodeDelivery'
+                                    checked={releasePayload.clearingInformation?.sourceCodeDelivery ?? false}
+                                    onChange={updateFieldChecked}
+                                />
                                 <label className='form-label fw-bold' htmlFor='source_code_delivery'>
                                     {t('Source Code Delivery')}
                                 </label>
@@ -60,7 +116,14 @@ const ClearingDetails = () => {
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='source_code_community' type='checkbox' className='form-check-input' name='' />
+                                <input
+                                    id='source_code_community'
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    name='sourceCodeOriginalFromCommunity'
+                                    checked={releasePayload.clearingInformation?.sourceCodeOriginalFromCommunity ?? false}
+                                    onChange={updateFieldChecked}
+                                />
                                 <label className='form-label fw-bold' htmlFor='source_code_community'>
                                     {t('Source Code Original from Community')}
                                 </label>
@@ -68,7 +131,14 @@ const ClearingDetails = () => {
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='source_code_tool_made' type='checkbox' className='form-check-input' name='' />
+                                <input
+                                    id='source_code_tool_made'
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    name='sourceCodeToolMade'
+                                    checked={releasePayload.clearingInformation?.sourceCodeToolMade ?? false}
+                                    onChange={updateFieldChecked}
+                                />
                                 <label className='form-label fw-bold' htmlFor='source_code_tool_made'>
                                     {t('Source Code Tool-Made')}
                                 </label>
@@ -79,7 +149,14 @@ const ClearingDetails = () => {
                     <div className='row'>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='source_code_self_made' type='checkbox' className='form-check-input' name='' />
+                                <input
+                                    id='source_code_self_made'
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    name='sourceCodeSelfMade'
+                                    checked={releasePayload.clearingInformation?.sourceCodeSelfMade ?? false}
+                                    onChange={updateFieldChecked}
+                                />
                                 <label className='form-label fw-bold' htmlFor='source_code_self_made'>
                                     {t('Source Code Self-Made')}
                                 </label>
@@ -87,16 +164,29 @@ const ClearingDetails = () => {
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='screenshot_website' type='checkbox' className='form-check-input' name='' />
+                                <input
+                                    id='screenshot_website'
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    name='screenshotOfWebSite'
+                                    checked={releasePayload.clearingInformation?.screenshotOfWebSite ?? false}
+                                    onChange={updateFieldChecked}
+                                />
                                 <label className='form-label fw-bold' htmlFor='screenshot_website'>
-                                    
                                     {t('Screenshot of Website')}
                                 </label>
                             </div>
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='finalized_license_scan_report' type='checkbox' className='form-check-input' name='' />
+                                <input
+                                    id='finalized_license_scan_report'
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    name='finalizedLicenseScanReport'
+                                    checked={releasePayload.clearingInformation?.finalizedLicenseScanReport ?? false}
+                                    onChange={updateFieldChecked}
+                                />
                                 <label className='form-label fw-bold' htmlFor='finalized_license_scan_report'>
                                     {t('Finalized License Scan Report')}
                                 </label>
@@ -107,7 +197,14 @@ const ClearingDetails = () => {
                     <div className='row'>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='license_scan_report_result' type='checkbox' className='form-check-input' name='' />
+                                <input
+                                    id='license_scan_report_result'
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    name='licenseScanReportResult'
+                                    checked={releasePayload.clearingInformation?.licenseScanReportResult ?? false}
+                                    onChange={updateFieldChecked}
+                                />
                                 <label className='form-label fw-bold' htmlFor='license_scan_report_result'>
                                     {t('License Scan Report Result')}
                                 </label>
@@ -115,7 +212,14 @@ const ClearingDetails = () => {
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='legal_evaluation' type='checkbox' className='form-check-input' name='' />
+                                <input
+                                    id='legal_evaluation'
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    name='legalEvaluation'
+                                    checked={releasePayload.clearingInformation?.legalEvaluation ?? false}
+                                    onChange={updateFieldChecked}
+                                />
                                 <label className='form-label fw-bold' htmlFor='legal_evaluation'>
                                     {t('Legal Evaluation')}
                                 </label>
@@ -123,7 +227,14 @@ const ClearingDetails = () => {
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='license_agreement' type='checkbox' className='form-check-input' name='' />
+                                <input
+                                    id='license_agreement'
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    name='licenseAgreement'
+                                    checked={releasePayload.clearingInformation?.licenseAgreement ?? false}
+                                    onChange={updateFieldChecked}
+                                />
                                 <label className='form-label fw-bold' htmlFor='license_agreement'>
                                     {t('License Agreement')}
                                 </label>
@@ -143,11 +254,20 @@ const ClearingDetails = () => {
                                 id='scanned'
                                 aria-describedby='scanned'
                                 name='scanned'
+                                value={releasePayload.clearingInformation?.scanned ?? ''}
+                                onChange={updateField}
                             />
                         </div>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='component_clearing_report' type='checkbox' className='form-check-input' name='' />
+                                <input
+                                    id='component_clearing_report'
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    name='componentClearingReport'
+                                    checked={releasePayload.clearingInformation?.componentClearingReport ?? false}
+                                    onChange={updateFieldChecked}
+                                />
                                 <label className='form-label fw-bold' htmlFor='component_clearing_report'>
                                     {t('Component Clearing Report')}
                                 </label>
@@ -163,7 +283,9 @@ const ClearingDetails = () => {
                                 placeholder='Enter clearing standard'
                                 id='clearing_standard'
                                 aria-describedby='Tag'
-                                name='clearing_standard'
+                                name='clearingStandard'
+                                value={releasePayload.clearingInformation?.clearingStandard ?? ''}
+                                onChange={updateField}
                             />
                         </div>
                     </div>
@@ -179,7 +301,9 @@ const ClearingDetails = () => {
                                 placeholder='Enter URL'
                                 id='external_url'
                                 aria-describedby='external_url'
-                                name='external_url'
+                                name='externalUrl'
+                                value={releasePayload.clearingInformation?.externalUrl ?? ''}
+                                onChange={updateField}
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -193,6 +317,8 @@ const ClearingDetails = () => {
                                 id='comment'
                                 aria-describedby='comment'
                                 name='comment'
+                                value={releasePayload.clearingInformation?.comment ?? ''}
+                                onChange={updateField}
                             />
                         </div>
                     </div>
