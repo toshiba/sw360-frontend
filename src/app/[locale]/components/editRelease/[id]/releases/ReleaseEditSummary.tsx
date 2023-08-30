@@ -29,6 +29,7 @@ import HttpStatus from '@/object-types/enums/HttpStatus'
 import ApiUtils from '@/utils/api/api.util'
 import ECCInformation from '@/object-types/ECCInformation'
 import ClearingInformation from '@/object-types/ClearingInformation'
+import COTSDetails from '@/object-types/COTSDetails'
 interface Props {
     session?: Session
     release?: any
@@ -50,6 +51,7 @@ interface Props {
     setReleaseRepository?: React.Dispatch<React.SetStateAction<Repository>>
     eccInformation: ECCInformation
     clearingInformation: ClearingInformation
+    cotsDetails: COTSDetails
 }
 
 export default function ReleaseEditSummary({
@@ -70,7 +72,8 @@ export default function ReleaseEditSummary({
     moderator,
     setModerator,
     eccInformation,
-    clearingInformation
+    clearingInformation,
+    cotsDetails
 }: Props) {
     const t = useTranslations(COMMON_NAMESPACE)
     const [roles, setRoles] = useState<Input[]>([])
@@ -295,7 +298,8 @@ export default function ReleaseEditSummary({
                 repository: release.repository,
                 releaseIdToRelationship: release.releaseIdToRelationship,
                 eccInformation: eccInformation,
-                clearingInformation: clearingInformation
+                clearingInformation: clearingInformation,
+                cotsDetails: cotsDetails
             }
             setReleasePayload(releasePayload)
     }, [releaseId, fetchData])

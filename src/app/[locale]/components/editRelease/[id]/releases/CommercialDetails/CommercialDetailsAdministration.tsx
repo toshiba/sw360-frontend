@@ -16,22 +16,54 @@ import ComponentOwnerDiaglog from '@/components/sw360/SearchComponentOwner/Compo
 import { useCallback, useState } from 'react'
 import ComponentOwner from '@/object-types/ComponentOwner'
 import { Session } from '@/object-types/Session'
+import ReleasePayload from '@/object-types/ReleasePayload'
 
 interface Props {
     session?: Session
+    releasePayload?: ReleasePayload
+    setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
+    cotsResponsible?: ComponentOwner
+    setCotsResponsible?: React.Dispatch<React.SetStateAction<ComponentOwner>>
 }
 
-const CommercialDetailsAdministration = ({session}: Props) => {
+const CommercialDetailsAdministration = ({ session, releasePayload, setReleasePayload, cotsResponsible, setCotsResponsible }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [dialogOpenComponentOwner, setDialogOpenComponentOwner] = useState(false)
     const handleClickSearchComponentOwner = useCallback(() => setDialogOpenComponentOwner(true), [])
 
-    const setComponentOwnerId = (componentOwnerResponse: ComponentOwner) => {
-        const releaseOwner: ComponentOwner = {
+    const setCotsResponsibleUser = (componentOwnerResponse: ComponentOwner) => {
+        const cotsResponsibleUser: ComponentOwner = {
             email: componentOwnerResponse.email,
             fullName: componentOwnerResponse.fullName,
         }
-        console.log(releaseOwner)
+        setCotsResponsible(cotsResponsibleUser)
+        setReleasePayload({
+            ...releasePayload,
+            cotsDetails: {
+                ...releasePayload.cotsDetails,
+                cotsResponsible: cotsResponsibleUser.email,
+            },
+        })
+    }
+
+    const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setReleasePayload({
+            ...releasePayload,
+            cotsDetails: {
+                ...releasePayload.cotsDetails,
+                [e.target.name]: e.target.value,
+            },
+        })
+    }
+
+    const updateFieldChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setReleasePayload({
+            ...releasePayload,
+            cotsDetails: {
+                ...releasePayload.cotsDetails,
+                [e.target.name]: e.target.checked,
+            },
+        })
     }
 
     return (
@@ -44,9 +76,16 @@ const CommercialDetailsAdministration = ({session}: Props) => {
                     <div className='row'>
                         <div className='col-lg-4'>
                             <div className='form-check'>
-                                <input id='COTS_clearing_deadline' type='checkbox' className='form-check-input' name='' />
+                                <input
+                                    id='COTS_clearing_deadline'
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    name='usageRightAvailable'
+                                    checked={releasePayload.cotsDetails?.usageRightAvailable ?? false}
+                                    onChange={updateFieldChecked}
+                                />
                                 <label className='form-label fw-bold' htmlFor='COTS_clearing_deadline'>
-                                {t('COTS Clearing Deadline')}
+                                    {t('Usage Right Available')}
                                 </label>
                             </div>
                         </div>
@@ -62,12 +101,14 @@ const CommercialDetailsAdministration = ({session}: Props) => {
                                 aria-describedby='COTS_responsible'
                                 onClick={handleClickSearchComponentOwner}
                                 name='COTS_responsible'
+                                value={cotsResponsible.fullName ?? ''}
+                                readOnly={true}
                             />
                             <ComponentOwnerDiaglog
                                 show={dialogOpenComponentOwner}
                                 setShow={setDialogOpenComponentOwner}
                                 session={session}
-                                selectComponentOwner={setComponentOwnerId}
+                                selectComponentOwner={setCotsResponsibleUser}
                             />
                         </div>
                         <div className='col-lg-4'>
@@ -80,7 +121,9 @@ const CommercialDetailsAdministration = ({session}: Props) => {
                                 placeholder='Enter material index number'
                                 id='COTS_clearing_deadline'
                                 aria-describedby='COTS_clearing_deadline'
-                                name='COTS_clearing_deadline'
+                                name='clearingDeadline'
+                                value={releasePayload.cotsDetails?.clearingDeadline ?? ''}
+                                onChange={updateField}
                             />
                         </div>
                     </div>
@@ -96,7 +139,9 @@ const CommercialDetailsAdministration = ({session}: Props) => {
                                 placeholder='Enter URL'
                                 id='COTS_clearing_report_url'
                                 aria-describedby='COTS_clearing_report_url'
-                                name='COTS_clearing_report_url'
+                                name='licenseClearingReportURL'
+                                value={releasePayload.cotsDetails?.licenseClearingReportURL ?? ''}
+                                onChange={updateField}
                             />
                         </div>
                     </div>

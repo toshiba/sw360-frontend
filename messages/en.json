@@ -414,6 +414,8 @@
         "Source Code Available": "Source Code Available",
         "IN_PROGRESS": "In Progress",
         "ECC_STATUS": "Open, In Progress, Approved, Rejected",
-        "COTS OSS Information": "COTS OSS Information"
+        "COTS OSS Information": "COTS OSS Information",
+        "Usage Right Available": "Usage Right Available",
+        "OSS Information URL": "OSS Information URL"
     }
 }

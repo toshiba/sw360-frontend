@@ -36,6 +36,8 @@ import ActionType from '@/object-types/enums/ActionType'
 import ECCInformation from '@/object-types/ECCInformation'
 import ClearingInformation from '@/object-types/ClearingInformation'
 import { clear } from 'console'
+import COTSDetails from '@/object-types/COTSDetails'
+import ComponentOwner from '@/object-types/ComponentOwner'
 
 interface Props {
     session?: Session
@@ -107,6 +109,26 @@ const EditRelease = ({ session, releaseId }: Props) => {
                 externalUrl: release.clearingInformation.externalUrl,
             }
             setClearingInformation(clearingInformation)
+
+            if (typeof release['_embedded']['sw360:cotsDetails'] !== 'undefined') {
+                const cotsDetails: COTSDetails = {
+                    usedLicense: release['_embedded']['sw360:cotsDetails'][0].usedLicense,
+                    licenseClearingReportURL: release['_embedded']['sw360:cotsDetails'][0].licenseClearingReportURL,
+                    containsOSS: release['_embedded']['sw360:cotsDetails'][0].containsOSS,
+                    ossContractSigned: release['_embedded']['sw360:cotsDetails'][0].ossContractSigned,
+                    ossInformationURL: release['_embedded']['sw360:cotsDetails'][0].ossInformationURL,
+                    usageRightAvailable: release['_embedded']['sw360:cotsDetails'][0].usageRightAvailable,
+                    cotsResponsible: release['_embedded']['sw360:cotsDetails'][0].cotsResponsible,
+                    clearingDeadline: release['_embedded']['sw360:cotsDetails'][0].clearingDeadline,
+                    sourceCodeAvailable: release['_embedded']['sw360:cotsDetails'][0].sourceCodeAvailable,
+                }
+                const cotsResponsible: ComponentOwner = {
+                    email: release['_embedded']['sw360:cotsDetails'][0]._embedded['sw360:cotsResponsible'].email,
+                    fullName: release['_embedded']['sw360:cotsDetails'][0]._embedded['sw360:cotsResponsible'].fullName
+                }
+                setCotsResponsible(cotsResponsible)
+                setCotsDetails(cotsDetails)
+            }
         })
     }, [releaseId])
 
@@ -137,7 +159,8 @@ const EditRelease = ({ session, releaseId }: Props) => {
         repository: null,
         releaseIdToRelationship: null,
         eccInformation: null,
-        clearingInformation: null
+        clearingInformation: null,
+        cotsDetails: null,
     })
 
     const [vendor, setVendor] = useState<Vendor>({
@@ -165,6 +188,10 @@ const EditRelease = ({ session, releaseId }: Props) => {
         fullName: '',
     })
 
+    const [cotsResponsible, setCotsResponsible] = useState<ComponentOwner>({
+        email: '',
+        fullName: '',
+    })
     const [eccInformation, setEccInformation] = useState<ECCInformation>({
         eccStatus: '',
         al: '',
@@ -203,6 +230,19 @@ const EditRelease = ({ session, releaseId }: Props) => {
         countOfSecurityVn: 0,
         externalUrl: '',
     })
+
+    const [cotsDetails, setCotsDetails] = useState<COTSDetails>({
+        usedLicense: '',
+        licenseClearingReportURL: '',
+        containsOSS: false,
+        ossContractSigned: false,
+        ossInformationURL: '',
+        usageRightAvailable: false,
+        cotsResponsible: '',
+        clearingDeadline: '',
+        sourceCodeAvailable: false,
+    })
+
     const submit = async () => {
         console.log('---------------------------------')
         console.log(releasePayload)
@@ -258,6 +298,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
                                 setModerator={setModerator}
                                 eccInformation={eccInformation}
                                 clearingInformation={clearingInformation}
+                                cotsDetails={cotsDetails}
                             />
                         </div>
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.LINKED_RELEASES ? true : false}>
@@ -281,7 +322,13 @@ const EditRelease = ({ session, releaseId }: Props) => {
                             <EditAttachments session={session} />
                         </div> */}
                         <div className='row' hidden={selectedTab != ReleaseTabIds.COMMERCIAL_DETAILS ? true : false}>
-                            <EditCommercialDetails session={session} />
+                            <EditCommercialDetails
+                                session={session}
+                                releasePayload={releasePayload}
+                                setReleasePayload={setReleasePayload}
+                                cotsResponsible={cotsResponsible}
+                                setCotsResponsible={setCotsResponsible}
+                            />
                         </div>
                     </div>
                 </div>
