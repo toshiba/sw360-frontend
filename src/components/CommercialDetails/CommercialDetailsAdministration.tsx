@@ -16,15 +16,12 @@ import ComponentOwnerDiaglog from '@/components/sw360/SearchComponentOwner/Compo
 import { useCallback, useState } from 'react'
 import ComponentOwner from '@/object-types/ComponentOwner'
 import { Session } from '@/object-types/Session'
-import COTSDetails from '@/object-types/COTSDetails'
 import ReleasePayload from '@/object-types/ReleasePayload'
 
 interface Props {
     session?: Session
     releasePayload?: ReleasePayload
     setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
-    cotsDetails?: COTSDetails
-    setCotsDetails?: React.Dispatch<React.SetStateAction<COTSDetails>>
     cotsResponsible?: ComponentOwner
     setCotsResponsible?: React.Dispatch<React.SetStateAction<ComponentOwner>>
 }
@@ -33,8 +30,6 @@ const CommercialDetailsAdministration = ({
     session,
     releasePayload,
     setReleasePayload,
-    cotsDetails,
-    setCotsDetails,
     cotsResponsible,
     setCotsResponsible,
 }: Props) => {
@@ -43,24 +38,24 @@ const CommercialDetailsAdministration = ({
     const handleClickSearchComponentOwner = useCallback(() => setDialogOpenComponentOwner(true), [])
 
     const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCotsDetails({
-            ...cotsDetails,
-            [e.target.name]: e.target.value,
-        })
+
         setReleasePayload({
             ...releasePayload,
-            cotsDetails: cotsDetails,
+            cotsDetails: {
+                ...releasePayload.cotsDetails,
+                [e.target.name]: e.target.value,
+            },
         })
     }
 
     const updateFieldChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCotsDetails({
-            ...cotsDetails,
-            [e.target.name]: e.target.checked,
-        })
+
         setReleasePayload({
             ...releasePayload,
-            cotsDetails: cotsDetails,
+            cotsDetails: {
+                ...releasePayload.cotsDetails,
+                [e.target.name]: e.target.checked,
+            },
         })
     }
 
@@ -70,13 +65,13 @@ const CommercialDetailsAdministration = ({
             fullName: cotsResponsible.fullName,
         }
         setCotsResponsible(cotsResponsibleUser)
-        setCotsDetails({
-            ...cotsDetails,
-            cotsResponsible: cotsResponsibleUser.email,
-        })
+
         setReleasePayload({
             ...releasePayload,
-            cotsDetails: cotsDetails,
+            cotsDetails: {
+                ...releasePayload.cotsDetails,
+                cotsResponsible: cotsResponsibleUser.email,
+            },
         })
     }
 

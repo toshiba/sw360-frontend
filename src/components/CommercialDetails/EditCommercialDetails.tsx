@@ -14,8 +14,6 @@ import { Session } from '@/object-types/Session'
 import COTSOSSInformation from './COTSOSSInformation'
 import CommercialDetailsAdministration from './CommercialDetailsAdministration'
 import ReleasePayload from '@/object-types/ReleasePayload'
-import { useState } from 'react'
-import COTSDetails from '@/object-types/COTSDetails'
 import ComponentOwner from '@/object-types/ComponentOwner'
 interface Props {
     session?: Session
@@ -31,17 +29,6 @@ const EditCommercialDetails = ({
     cotsResponsible,
     setCotsResponsible,
 }: Props) => {
-    const [cotsDetails, setCotsDetails] = useState<COTSDetails>({
-        usedLicense: '',
-        licenseClearingReportURL: '',
-        containsOSS: false,
-        ossContractSigned: false,
-        ossInformationURL: '',
-        usageRightAvailable: false,
-        cotsResponsible: '',
-        clearingDeadline: '',
-        sourceCodeAvailable: false,
-    })
     return (
         <>
             <div className='container' style={{ maxWidth: '98vw', marginTop: '10px', fontSize: '0.875rem' }}>
@@ -49,18 +36,11 @@ const EditCommercialDetails = ({
                     session={session}
                     releasePayload={releasePayload}
                     setReleasePayload={setReleasePayload}
-                    cotsDetails={cotsDetails}
-                    setCotsDetails={setCotsDetails}
                     cotsResponsible={cotsResponsible}
                     setCotsResponsible={setCotsResponsible}
                 />
 
-                <COTSOSSInformation
-                    releasePayload={releasePayload}
-                    setReleasePayload={setReleasePayload}
-                    cotsDetails={cotsDetails}
-                    setCotsDetails={setCotsDetails}
-                />
+                <COTSOSSInformation releasePayload={releasePayload} setReleasePayload={setReleasePayload} />
             </div>
         </>
     )

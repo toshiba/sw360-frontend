@@ -12,39 +12,33 @@
 import { useTranslations } from 'next-intl'
 import styles from './CommercialDetails.module.css'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
-import COTSDetails from '@/object-types/COTSDetails'
 import ReleasePayload from '@/object-types/ReleasePayload'
 
 interface Props {
     releasePayload?: ReleasePayload
     setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
-    cotsDetails?: COTSDetails
-    setCotsDetails?: React.Dispatch<React.SetStateAction<COTSDetails>>
 }
 
-const COTSOSSInformation = ({ cotsDetails, setCotsDetails, releasePayload, setReleasePayload }: Props) => {
+const COTSOSSInformation = ({ releasePayload, setReleasePayload }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
 
     const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCotsDetails({
-            ...cotsDetails,
-            [e.target.name]: e.target.value,
-        })
         setReleasePayload({
             ...releasePayload,
-            cotsDetails: cotsDetails,
+            cotsDetails: {
+                ...releasePayload.cotsDetails,
+                [e.target.name]: e.target.value,
+            },
         })
-        console.log(cotsDetails)
     }
 
     const updateFieldChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCotsDetails({
-            ...cotsDetails,
-            [e.target.name]: e.target.checked,
-        })
         setReleasePayload({
             ...releasePayload,
-            cotsDetails: cotsDetails,
+            cotsDetails: {
+                ...releasePayload.cotsDetails,
+                [e.target.name]: e.target.checked,
+            },
         })
     }
 

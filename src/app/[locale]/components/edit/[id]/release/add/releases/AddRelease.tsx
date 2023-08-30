@@ -23,7 +23,6 @@ import HttpStatus from '@/object-types/enums/HttpStatus'
 import Vendor from '@/object-types/Vendor'
 import Moderators from '@/object-types/Moderators'
 import Licenses from '@/object-types/Licenses'
-import Repository from '@/object-types/Repository'
 import { signOut } from 'next-auth/react'
 import { ToastContainer, TypeOptions, toast } from 'react-toastify'
 import { useTranslations } from 'next-intl'
@@ -32,10 +31,29 @@ import ReleaseAddSummary from './ReleaseAddSummary'
 import ReleaseAddTabs from './ReleaseAddTab'
 import EditCommercialDetails from '@/components/CommercialDetails/EditCommercialDetails'
 import ComponentOwner from '@/object-types/ComponentOwner'
+import Repository from '@/object-types/Repository'
+import COTSDetails from '@/object-types/COTSDetails'
 
 interface Props {
     session?: Session
     componentId?: string
+}
+
+const releaseRepository: Repository = {
+    repositorytype: 'UNKNOWN',
+    url: '',
+}
+
+const cotsDetails: COTSDetails = {
+    usedLicense: '',
+    licenseClearingReportURL: '',
+    containsOSS: false,
+    ossContractSigned: false,
+    ossInformationURL: '',
+    usageRightAvailable: false,
+    cotsResponsible: '',
+    clearingDeadline: '',
+    sourceCodeAvailable: false,
 }
 
 const AddRelease = ({ session, componentId }: Props) => {
@@ -63,9 +81,9 @@ const AddRelease = ({ session, componentId }: Props) => {
         softwarePlatforms: null,
         sourceCodeDownloadurl: '',
         binaryDownloadurl: '',
-        repository: null,
+        repository: releaseRepository,
         releaseIdToRelationship: null,
-        cotsDetails: null,
+        cotsDetails: cotsDetails,
     })
 
     const [vendor, setVendor] = useState<Vendor>({
@@ -91,11 +109,6 @@ const AddRelease = ({ session, componentId }: Props) => {
     const [moderator, setModerator] = useState<Moderators>({
         emails: null,
         fullName: '',
-    })
-
-    const [releaseRepository, setReleaseRepository] = useState<Repository>({
-        repositorytype: 'UNKNOWN',
-        url: '',
     })
 
     const [cotsResponsible, setCotsResponsible] = useState<ComponentOwner>({
@@ -142,17 +155,18 @@ const AddRelease = ({ session, componentId }: Props) => {
     }
 
     const submit = async () => {
-        const response = await ApiUtils.POST('releases', releasePayload, session.user.access_token)
-        if (response.status == HttpStatus.CREATED) {
-            const data = await response.json()
-            notify(t('Component is created'), 'success')
-            const releaseId: string = handleId(data._links.self.href)
-            router.push('/components/releases/detail/' + releaseId)
-        } else if (response.status == HttpStatus.CONFLICT) {
-            notify(t('Component is Duplicate'), 'warning')
-        } else {
-            notify(t('Create Component failed'), 'error')
-        }
+        console.log(releasePayload)
+        // const response = await ApiUtils.POST('releases', releasePayload, session.user.access_token)
+        // if (response.status == HttpStatus.CREATED) {
+        //     const data = await response.json()
+        //     notify(t('Component is created'), 'success')
+        //     const releaseId: string = handleId(data._links.self.href)
+        //     router.push('/components/releases/detail/' + releaseId)
+        // } else if (response.status == HttpStatus.CONFLICT) {
+        //     notify(t('Component is Duplicate'), 'warning')
+        // } else {
+        //     notify(t('Create Component failed'), 'error')
+        // }
     }
 
     const headerButtons = {
@@ -187,8 +201,6 @@ const AddRelease = ({ session, componentId }: Props) => {
                                 setContributor={setContributor}
                                 moderator={moderator}
                                 setModerator={setModerator}
-                                releaseRepository={releaseRepository}
-                                setReleaseRepository={setReleaseRepository}
                             />
                         </div>
                         <div className='row' hidden={selectedTab != ReleaseTabIds.LINKED_RELEASES ? true : false}>
