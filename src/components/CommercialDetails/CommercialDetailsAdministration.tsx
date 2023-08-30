@@ -38,7 +38,6 @@ const CommercialDetailsAdministration = ({
     const handleClickSearchComponentOwner = useCallback(() => setDialogOpenComponentOwner(true), [])
 
     const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
-
         setReleasePayload({
             ...releasePayload,
             cotsDetails: {
@@ -49,7 +48,6 @@ const CommercialDetailsAdministration = ({
     }
 
     const updateFieldChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
-
         setReleasePayload({
             ...releasePayload,
             cotsDetails: {
@@ -65,7 +63,6 @@ const CommercialDetailsAdministration = ({
             fullName: cotsResponsible.fullName,
         }
         setCotsResponsible(cotsResponsibleUser)
-
         setReleasePayload({
             ...releasePayload,
             cotsDetails: {

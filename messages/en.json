@@ -416,6 +416,9 @@
         "ECC_STATUS": "Open, In Progress, Approved, Rejected",
         "COTS OSS Information": "COTS OSS Information",
         "OSS Information URL": "OSS Information URL",
-        "Usage Right Available": "Usage Right Available"
+        "Usage Right Available": "Usage Right Available",
+        "Release is created": "Release is created",
+        "Release is Duplicate": "Release is Duplicate",
+        "Create Release failed": "Create Release failed"
     }
 }

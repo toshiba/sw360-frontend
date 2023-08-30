@@ -24,7 +24,6 @@ import Vendor from '@/object-types/Vendor'
 import Moderators from '@/object-types/Moderators'
 import Licenses from '@/object-types/Licenses'
 import { signOut } from 'next-auth/react'
-import { ToastContainer, TypeOptions, toast } from 'react-toastify'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
 import ReleaseAddSummary from './ReleaseAddSummary'
@@ -33,6 +32,9 @@ import EditCommercialDetails from '@/components/CommercialDetails/EditCommercial
 import ComponentOwner from '@/object-types/ComponentOwner'
 import Repository from '@/object-types/Repository'
 import COTSDetails from '@/object-types/COTSDetails'
+import ToastMessage from '@/components/sw360/ToastContainer/Toast'
+import { ToastContainer } from 'react-bootstrap'
+import ToastData from '@/object-types/ToastData'
 
 interface Props {
     session?: Session
@@ -116,6 +118,22 @@ const AddRelease = ({ session, componentId }: Props) => {
         fullName: '',
     })
 
+    const [toastData, setToastData] = useState<ToastData>({
+        show: false,
+        type: '',
+        message: '',
+        contextual: ''
+    })
+
+    const alert = (show_data: boolean, status_type: string, message: string, contextual: string) => {
+        setToastData({
+            show: show_data,
+            type: status_type,
+            message: message,
+            contextual: contextual
+        })
+    }
+
     const fetchData: any = useCallback(
         async (url: string) => {
             const response = await ApiUtils.GET(url, session.user.access_token)
@@ -143,30 +161,23 @@ const AddRelease = ({ session, componentId }: Props) => {
         })
     }, [componentId, fetchData])
 
-    const notify = (text: string, type: TypeOptions) =>
-        toast(text, {
-            type,
-            position: toast.POSITION.TOP_LEFT,
-            theme: 'colored',
-        })
-
     const handleId = (id: string): string => {
         return id.split('/').at(-1)
     }
 
     const submit = async () => {
         console.log(releasePayload)
-        // const response = await ApiUtils.POST('releases', releasePayload, session.user.access_token)
-        // if (response.status == HttpStatus.CREATED) {
-        //     const data = await response.json()
-        //     notify(t('Component is created'), 'success')
-        //     const releaseId: string = handleId(data._links.self.href)
-        //     router.push('/components/releases/detail/' + releaseId)
-        // } else if (response.status == HttpStatus.CONFLICT) {
-        //     notify(t('Component is Duplicate'), 'warning')
-        // } else {
-        //     notify(t('Create Component failed'), 'error')
-        // }
+        const response = await ApiUtils.POST('releases', releasePayload, session.user.access_token)
+        if (response.status == HttpStatus.CREATED) {
+            const data = await response.json()
+            alert(true, 'Success', t('Release is created'), 'success')
+            const releaseId: string = handleId(data._links.self.href)
+            router.push('/components/releases/detail/' + releaseId)
+        } else if (response.status == HttpStatus.CONFLICT) {
+            alert(true, 'Duplicate', t('Release is Duplicate'), 'warning')
+        } else {
+            alert(true, 'Error', t('Create Release failed'), 'danger')
+        }
     }
 
     const headerButtons = {
@@ -185,7 +196,16 @@ const AddRelease = ({ session, componentId }: Props) => {
                         <div className='row' style={{ marginBottom: '20px' }}>
                             <PageButtonHeader buttons={headerButtons}></PageButtonHeader>
                         </div>
-                        <ToastContainer className='foo' style={{ width: '300px', height: '100px' }} />
+                        <ToastContainer position='top-start'>
+                            <ToastMessage
+                                show={toastData.show}
+                                type={toastData.type}
+                                message={toastData.message}
+                                contextual={toastData.contextual}
+                                onClose={() => setToastData({ ...toastData, show: false })}
+                                setShowToast={setToastData}
+                            />
+                        </ToastContainer>
                         <div className='row' hidden={selectedTab !== CommonTabIds.SUMMARY ? true : false}>
                             <ReleaseAddSummary
                                 session={session}
