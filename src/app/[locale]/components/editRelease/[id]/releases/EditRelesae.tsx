@@ -321,6 +321,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
                         </div>
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.LINKED_RELEASES ? true : false}>
                             <LinkedReleases
+                                actionType={ActionType.EDIT}
                                 session={session}
                                 release={release}
                                 releasePayload={releasePayload}

@@ -21,15 +21,17 @@ import { Session } from '@/object-types/Session'
 import LinkedRelease from '@/object-types/LinkedRelease'
 import ReleasePayload from '@/object-types/ReleasePayload'
 import CommonUtils from '@/utils/common.utils'
+import ActionType from '@/object-types/enums/ActionType'
 
 interface Props {
     session?: Session
     release?: any
     releasePayload?: ReleasePayload
     setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
+    actionType?: string
 }
 
-const LinkedReleases = ({ session, releasePayload, setReleasePayload, release }: Props) => {
+const LinkedReleases = ({ session, releasePayload, setReleasePayload, release, actionType }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [reRender, setReRender] = useState(false)
     const [releaseLinks, setReleaseLinks] = useState<LinkedRelease[]>([])
@@ -48,14 +50,16 @@ const LinkedReleases = ({ session, releasePayload, setReleasePayload, release }:
     }
 
     useEffect(() => {
-        if (
-            !CommonUtils.isNullOrUndefined(release['_embedded']) &&
-            !CommonUtils.isNullOrUndefined(release['_embedded']['sw360:releaseLinks'])
-        ) {
-            const linkedReleases: LinkedRelease[] = []
+        if (actionType === ActionType.EDIT) {
+            if (
+                !CommonUtils.isNullOrUndefined(release['_embedded']) &&
+                !CommonUtils.isNullOrUndefined(release['_embedded']['sw360:releaseLinks'])
+            ) {
+                const linkedReleases: LinkedRelease[] = []
 
-            release['_embedded']['sw360:releaseLinks'].map((item: any) => [linkedReleases.push(item)])
-            setReleaseLinks(linkedReleases)
+                release['_embedded']['sw360:releaseLinks'].map((item: any) => [linkedReleases.push(item)])
+                setReleaseLinks(linkedReleases)
+            }
         }
     }, [])
 
