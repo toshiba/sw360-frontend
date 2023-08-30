@@ -30,6 +30,7 @@ import ApiUtils from '@/utils/api/api.util'
 import ECCInformation from '@/object-types/ECCInformation'
 import ClearingInformation from '@/object-types/ClearingInformation'
 import COTSDetails from '@/object-types/COTSDetails'
+import AttachmentDetail from '@/object-types/AttachmentDetail'
 interface Props {
     session?: Session
     release?: any
@@ -52,6 +53,7 @@ interface Props {
     eccInformation: ECCInformation
     clearingInformation: ClearingInformation
     cotsDetails: COTSDetails
+    attachmentData?: AttachmentDetail[]
 }
 
 export default function ReleaseEditSummary({
@@ -73,7 +75,8 @@ export default function ReleaseEditSummary({
     setModerator,
     eccInformation,
     clearingInformation,
-    cotsDetails
+    cotsDetails,
+    attachmentData
 }: Props) {
     const t = useTranslations(COMMON_NAMESPACE)
     const [roles, setRoles] = useState<Input[]>([])
@@ -299,7 +302,8 @@ export default function ReleaseEditSummary({
                 releaseIdToRelationship: release.releaseIdToRelationship,
                 eccInformation: eccInformation,
                 clearingInformation: clearingInformation,
-                cotsDetails: cotsDetails
+                cotsDetails: cotsDetails,
+                attachmentDTOs: attachmentData,
             }
             setReleasePayload(releasePayload)
     }, [releaseId, fetchData])

@@ -7,6 +7,7 @@
 // SPDX-License-Identifier?: EPL-2.0
 // License-Filename?: LICENSE
 
+import AttachmentDetail from "./AttachmentDetail"
 import COTSDetails from "./COTSDetails"
 import ClearingInformation from "./ClearingInformation"
 import ECCInformation from "./ECCInformation"
@@ -41,5 +42,6 @@ export default interface ReleasePayload {
     releaseIdToRelationship?: any
     eccInformation?: ECCInformation
     clearingInformation?: ClearingInformation
-    cotsDetails: COTSDetails
+    cotsDetails?: COTSDetails
+    attachmentDTOs?: AttachmentDetail[]
 }

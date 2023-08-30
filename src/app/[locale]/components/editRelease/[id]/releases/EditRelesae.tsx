@@ -38,6 +38,9 @@ import ClearingInformation from '@/object-types/ClearingInformation'
 import { clear } from 'console'
 import COTSDetails from '@/object-types/COTSDetails'
 import ComponentOwner from '@/object-types/ComponentOwner'
+import DocumentTypes from '@/object-types/enums/DocumentTypes'
+import AttachmentDetail from '@/object-types/AttachmentDetail'
+import CommonUtils from '@/utils/common.utils'
 
 interface Props {
     session?: Session
@@ -50,6 +53,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
     const [tabList, setTabList] = useState(ReleaseEditTabs.WITH_COMMERCIAL_DETAILS)
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
     const [release, setRelease] = useState<any>(undefined)
+    const [attachmentData, setAttachmentData] = useState<AttachmentDetail[]>([])
 
     const fetchData: any = useCallback(
         async (url: string) => {
@@ -124,10 +128,22 @@ const EditRelease = ({ session, releaseId }: Props) => {
                 }
                 const cotsResponsible: ComponentOwner = {
                     email: release['_embedded']['sw360:cotsDetails'][0]._embedded['sw360:cotsResponsible'].email,
-                    fullName: release['_embedded']['sw360:cotsDetails'][0]._embedded['sw360:cotsResponsible'].fullName
+                    fullName: release['_embedded']['sw360:cotsDetails'][0]._embedded['sw360:cotsResponsible'].fullName,
                 }
                 setCotsResponsible(cotsResponsible)
                 setCotsDetails(cotsDetails)
+            }
+        })
+        fetchData(`releases/${releaseId}/attachments`).then((attachments: any) => {
+            if (
+                !CommonUtils.isNullOrUndefined(attachments['_embedded']) &&
+                !CommonUtils.isNullOrUndefined(attachments['_embedded']['sw360:attachmentDTOes'])
+            ) {
+                const attachmentDetails: AttachmentDetail[] = []
+                attachments['_embedded']['sw360:attachmentDTOes'].map((item: any) => {
+                    attachmentDetails.push(item)
+                })
+                setAttachmentData(attachmentDetails)
             }
         })
     }, [releaseId])
@@ -161,6 +177,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
         eccInformation: null,
         clearingInformation: null,
         cotsDetails: null,
+        attachmentDTOs: null
     })
 
     const [vendor, setVendor] = useState<Vendor>({
@@ -299,6 +316,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
                                 eccInformation={eccInformation}
                                 clearingInformation={clearingInformation}
                                 cotsDetails={cotsDetails}
+                                attachmentData={attachmentData}
                             />
                         </div>
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.LINKED_RELEASES ? true : false}>
@@ -318,9 +336,15 @@ const EditRelease = ({ session, releaseId }: Props) => {
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.ECC_DETAILS ? true : false}>
                             <EditECCDetails releasePayload={releasePayload} setReleasePayload={setReleasePayload} />
                         </div>
-                        {/* <div className='row' hidden={selectedTab != CommonTabIds.ATTACHMENTS ? true : false}>
-                            <EditAttachments session={session} />
-                        </div> */}
+                        <div className='row' hidden={selectedTab != CommonTabIds.ATTACHMENTS ? true : false}>
+                            <EditAttachments
+                                session={session}
+                                documentId={releaseId}
+                                documentType={DocumentTypes.RELEASE}
+                                releasePayload={releasePayload}
+                                setReleasePayload={setReleasePayload}
+                            />
+                        </div>
                         <div className='row' hidden={selectedTab != ReleaseTabIds.COMMERCIAL_DETAILS ? true : false}>
                             <EditCommercialDetails
                                 session={session}

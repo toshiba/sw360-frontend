@@ -123,6 +123,7 @@ const EditComponent = ({ session, componentId }: Props) => {
         })
 
     const submit = async () => {
+        console.log(componentData)
         const response = await ApiUtils.PATCH(`components/${componentId}`, componentData, session.user.access_token)
         if (response.status == HttpStatus.OK) {
             notify(`Success:Component  ${componentData.name}  updated successfully!`, 'success')
