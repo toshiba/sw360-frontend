@@ -28,16 +28,6 @@ interface Props {
     session?: Session
     releasePayload: ReleasePayload
     setReleasePayload: React.Dispatch<React.SetStateAction<ReleasePayload>>
-    vendor?: Vendor
-    setVendor?: React.Dispatch<React.SetStateAction<Vendor>>
-    mainLicensesId?: Licenses
-    setMainLicensesId?: React.Dispatch<React.SetStateAction<Licenses>>
-    otherLicensesId?: Licenses
-    setOtherLicensesId?: React.Dispatch<React.SetStateAction<Licenses>>
-    contributor?: Moderators
-    setContributor?: React.Dispatch<React.SetStateAction<Moderators>>
-    moderator?: Moderators
-    setModerator?: React.Dispatch<React.SetStateAction<Moderators>>
 }
 
 const getDate = () => {
@@ -52,16 +42,6 @@ const ReleaseSummary = ({
     session,
     releasePayload,
     setReleasePayload,
-    vendor,
-    setVendor,
-    mainLicensesId,
-    setMainLicensesId,
-    otherLicensesId,
-    setOtherLicensesId,
-    contributor,
-    setContributor,
-    moderator,
-    setModerator,
 }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [dialogOpenVendor, setDialogOpenVendor] = useState(false)
@@ -75,6 +55,31 @@ const ReleaseSummary = ({
     const [dialogOpenModerators, setDialogOpenModerators] = useState(false)
     const handleClickSearchModerators = useCallback(() => setDialogOpenModerators(true), [])
     const [currentDate, setCurrentDate] = useState(getDate())
+
+    const [vendor, setVendor] = useState<Vendor>({
+        id: '',
+        fullName: '',
+    })
+
+    const [mainLicensesId, setMainLicensesId] = useState<Licenses>({
+        id: null,
+        fullName: '',
+    })
+
+    const [otherLicensesId, setOtherLicensesId] = useState<Licenses>({
+        id: null,
+        fullName: '',
+    })
+
+    const [contributor, setContributor] = useState<Moderators>({
+        emails: null,
+        fullName: '',
+    })
+
+    const [moderator, setModerator] = useState<Moderators>({
+        emails: null,
+        fullName: '',
+    })
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         setReleasePayload({

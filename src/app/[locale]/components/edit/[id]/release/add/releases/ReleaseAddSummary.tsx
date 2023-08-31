@@ -16,47 +16,19 @@ import DocumentTypes from '@/object-types/enums/DocumentTypes'
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
-import Repository from '@/object-types/Repository'
 import ReleasePayload from '@/object-types/ReleasePayload'
-import Licenses from '@/object-types/Licenses'
-import Vendor from '@/object-types/Vendor'
-import Moderators from '@/object-types/Moderators'
 import ReleaseSummary from '@/components/releases/ReleaseSummary'
 import ReleaseRepository from '@/components/releases/ReleaseRepository'
 interface Props {
     session?: Session
     releasePayload?: ReleasePayload
     setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
-    vendor?: Vendor
-    setVendor?: React.Dispatch<React.SetStateAction<Vendor>>
-    mainLicensesId?: Licenses
-    setMainLicensesId?: React.Dispatch<React.SetStateAction<Licenses>>
-    otherLicensesId?: Licenses
-    setOtherLicensesId?: React.Dispatch<React.SetStateAction<Licenses>>
-    contributor?: Moderators
-    setContributor?: React.Dispatch<React.SetStateAction<Moderators>>
-    moderator?: Moderators
-    setModerator?: React.Dispatch<React.SetStateAction<Moderators>>
-    // releaseRepository?: Repository
-    // setReleaseRepository?: React.Dispatch<React.SetStateAction<Repository>>
 }
 
 export default function ReleaseAddSummary({
     session,
     releasePayload,
     setReleasePayload,
-    vendor,
-    setVendor,
-    mainLicensesId,
-    setMainLicensesId,
-    otherLicensesId,
-    setOtherLicensesId,
-    contributor,
-    setContributor,
-    moderator,
-    setModerator,
-    // releaseRepository,
-    // setReleaseRepository
 }: Props) {
     const t = useTranslations(COMMON_NAMESPACE)
     const [roles, setRoles] = useState<Input[]>([])
@@ -125,16 +97,6 @@ export default function ReleaseAddSummary({
                                 session={session}
                                 releasePayload={releasePayload}
                                 setReleasePayload={setReleasePayload}
-                                vendor={vendor}
-                                setVendor={setVendor}
-                                mainLicensesId={mainLicensesId}
-                                setMainLicensesId={setMainLicensesId}
-                                otherLicensesId={otherLicensesId}
-                                setOtherLicensesId={setOtherLicensesId}
-                                contributor={contributor}
-                                setContributor={setContributor}
-                                moderator={moderator}
-                                setModerator={setModerator}
                             />
                             <div className='row mb-4'>
                                 <AddAdditionalRolesComponent

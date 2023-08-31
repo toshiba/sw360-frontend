@@ -88,31 +88,6 @@ const AddRelease = ({ session, componentId }: Props) => {
         cotsDetails: cotsDetails,
     })
 
-    const [vendor, setVendor] = useState<Vendor>({
-        id: '',
-        fullName: '',
-    })
-
-    const [mainLicensesId, setMainLicensesId] = useState<Licenses>({
-        id: null,
-        fullName: '',
-    })
-
-    const [otherLicensesId, setOtherLicensesId] = useState<Licenses>({
-        id: null,
-        fullName: '',
-    })
-
-    const [contributor, setContributor] = useState<Moderators>({
-        emails: null,
-        fullName: '',
-    })
-
-    const [moderator, setModerator] = useState<Moderators>({
-        emails: null,
-        fullName: '',
-    })
-
     const [cotsResponsible, setCotsResponsible] = useState<ComponentOwner>({
         email: '',
         fullName: '',
@@ -211,16 +186,6 @@ const AddRelease = ({ session, componentId }: Props) => {
                                 session={session}
                                 releasePayload={releasePayload}
                                 setReleasePayload={setReleasePayload}
-                                vendor={vendor}
-                                setVendor={setVendor}
-                                mainLicensesId={mainLicensesId}
-                                setMainLicensesId={setMainLicensesId}
-                                otherLicensesId={otherLicensesId}
-                                setOtherLicensesId={setOtherLicensesId}
-                                contributor={contributor}
-                                setContributor={setContributor}
-                                moderator={moderator}
-                                setModerator={setModerator}
                             />
                         </div>
                         <div className='row' hidden={selectedTab != ReleaseTabIds.LINKED_RELEASES ? true : false}>
