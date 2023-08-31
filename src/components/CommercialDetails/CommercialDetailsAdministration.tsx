@@ -22,21 +22,20 @@ interface Props {
     session?: Session
     releasePayload?: ReleasePayload
     setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
-    cotsResponsible?: ComponentOwner
-    setCotsResponsible?: React.Dispatch<React.SetStateAction<ComponentOwner>>
 }
 
 const CommercialDetailsAdministration = ({
     session,
     releasePayload,
     setReleasePayload,
-    cotsResponsible,
-    setCotsResponsible,
 }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [dialogOpenComponentOwner, setDialogOpenComponentOwner] = useState(false)
     const handleClickSearchComponentOwner = useCallback(() => setDialogOpenComponentOwner(true), [])
-
+    const [cotsResponsible, setCotsResponsible] = useState<ComponentOwner>({
+        email: '',
+        fullName: '',
+    })
     const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
         setReleasePayload({
             ...releasePayload,

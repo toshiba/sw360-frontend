@@ -88,11 +88,6 @@ const AddRelease = ({ session, componentId }: Props) => {
         cotsDetails: cotsDetails,
     })
 
-    const [cotsResponsible, setCotsResponsible] = useState<ComponentOwner>({
-        email: '',
-        fullName: '',
-    })
-
     const [toastData, setToastData] = useState<ToastData>({
         show: false,
         type: '',
@@ -198,8 +193,6 @@ const AddRelease = ({ session, componentId }: Props) => {
                         <div className='row' hidden={selectedTab != ReleaseTabIds.COMMERCIAL_DETAILS ? true : false}>
                             <EditCommercialDetails
                                 session={session}
-                                cotsResponsible={cotsResponsible}
-                                setCotsResponsible={setCotsResponsible}
                                 releasePayload={releasePayload}
                                 setReleasePayload={setReleasePayload}
                             />
