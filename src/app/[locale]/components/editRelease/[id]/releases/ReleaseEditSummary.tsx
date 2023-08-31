@@ -228,7 +228,6 @@ export default function ReleaseEditSummary({
         return id.split('/').at(-1)
     }
 
-
     useEffect(() => {
             if (typeof release.roles !== 'undefined') {
                 setRoles(convertObjectToMapRoles(release.roles))
@@ -250,9 +249,11 @@ export default function ReleaseEditSummary({
                 setContributor(handlerContributor(release['_embedded']['sw360:contributors']))
             }
 
+            let vendorId = ''
             if (typeof release['_embedded']['sw360:vendors'] !== 'undefined') {
+                vendorId = handleId(release['_embedded']['sw360:vendors'][0]._links.self.href)
                 const vendor: Vendor = {
-                    id: handleId(release['_embedded']['sw360:vendors'][0]._links.self.href),
+                    id: vendorId,
                     fullName: release['_embedded']['sw360:vendors'][0].fullName,
                 }
                 setVendor(vendor)
@@ -292,7 +293,7 @@ export default function ReleaseEditSummary({
                 roles:convertRoles(convertObjectToMapRoles(release.roles)),
                 mainLicenseIds: release.mainLicenseIds,
                 otherLicenseIds: release.otherLicenseIds,
-                vendorId: handleId(release['_embedded']['sw360:vendors'][0]._links.self.href),
+                vendorId: vendorId,
                 languages: release.languages,
                 operatingSystems: release.operatingSystems,
                 softwarePlatforms: release.softwarePlatforms,
