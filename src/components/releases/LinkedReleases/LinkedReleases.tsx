@@ -56,7 +56,6 @@ const LinkedReleases = ({ session, releasePayload, setReleasePayload, release, a
                 !CommonUtils.isNullOrUndefined(release['_embedded']['sw360:releaseLinks'])
             ) {
                 const linkedReleases: LinkedRelease[] = []
-
                 release['_embedded']['sw360:releaseLinks'].map((item: any) => [linkedReleases.push(item)])
                 setReleaseLinks(linkedReleases)
             }

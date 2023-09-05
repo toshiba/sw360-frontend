@@ -141,17 +141,17 @@ const AddRelease = ({ session, componentId }: Props) => {
 
     const submit = async () => {
         console.log(releasePayload)
-        // const response = await ApiUtils.POST('releases', releasePayload, session.user.access_token)
-        // if (response.status == HttpStatus.CREATED) {
-        //     const data = await response.json()
-        //     notify(t('Component is created'), 'success')
-        //     const releaseId: string = handleId(data._links.self.href)
-        //     router.push('/components/releases/detail/' + releaseId)
-        // } else if (response.status == HttpStatus.CONFLICT){
-        //     notify(t('Component is Duplicate'), 'warning')
-        // } else {
-        //     notify(t('Create Component failed'), 'error')
-        // }
+        const response = await ApiUtils.POST('releases', releasePayload, session.user.access_token)
+        if (response.status == HttpStatus.CREATED) {
+            const data = await response.json()
+            notify(t('Component is created'), 'success')
+            const releaseId: string = handleId(data._links.self.href)
+            router.push('/components/releases/detail/' + releaseId)
+        } else if (response.status == HttpStatus.CONFLICT){
+            notify(t('Component is Duplicate'), 'warning')
+        } else {
+            notify(t('Create Component failed'), 'error')
+        }
     }
 
     const headerButtons = {

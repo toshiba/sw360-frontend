@@ -73,46 +73,50 @@ const EditRelease = ({ session, releaseId }: Props) => {
     useEffect(() => {
         fetchData(`releases/${releaseId}`).then((release: any) => {
             setRelease(release)
-            const eccInformation: ECCInformation = {
-                eccStatus: release.eccInformation.eccStatus,
-                al: release.eccInformation.al,
-                eccn: release.eccInformation.eccn,
-                assessorContactPerson: release.eccInformation.assessorContactPerson,
-                assessorDepartment: release.eccInformation.assessorDepartment,
-                eccComment: release.eccInformation.eccComment,
-                materialIndexNumber: release.eccInformation.materialIndexNumber,
-                assessmentDate: release.eccInformation.assessmentDate,
+            if (typeof release.eccInformation !== 'undefined') {
+                const eccInformation: ECCInformation = {
+                    eccStatus: release.eccInformation.eccStatus,
+                    al: release.eccInformation.al,
+                    eccn: release.eccInformation.eccn,
+                    assessorContactPerson: release.eccInformation.assessorContactPerson,
+                    assessorDepartment: release.eccInformation.assessorDepartment,
+                    eccComment: release.eccInformation.eccComment,
+                    materialIndexNumber: release.eccInformation.materialIndexNumber,
+                    assessmentDate: release.eccInformation.assessmentDate,
+                }
+                setEccInformation(eccInformation)
             }
-            setEccInformation(eccInformation)
 
-            const clearingInformation: ClearingInformation = {
-                externalSupplierID: release.clearingInformation.externalSupplierID,
-                additionalRequestInfo: release.clearingInformation.additionalRequestInfo,
-                evaluated: release.clearingInformation.evaluated,
-                procStart: release.clearingInformation.procStart,
-                requestID: release.clearingInformation.requestID,
-                binariesOriginalFromCommunity: release.clearingInformation.binariesOriginalFromCommunity,
-                binariesSelfMade: release.clearingInformation.binariesSelfMade,
-                componentLicenseInformation: release.clearingInformation.componentLicenseInformation,
-                sourceCodeDelivery: release.clearingInformation.sourceCodeDelivery,
-                sourceCodeOriginalFromCommunity: release.clearingInformation.sourceCodeOriginalFromCommunity,
-                sourceCodeToolMade: release.clearingInformation.sourceCodeToolMade,
-                sourceCodeSelfMade: release.clearingInformation.sourceCodeSelfMade,
-                sourceCodeCotsAvailable: release.clearingInformation.sourceCodeCotsAvailable,
-                screenshotOfWebSite: release.clearingInformation.screenshotOfWebSite,
-                finalizedLicenseScanReport: release.clearingInformation.finalizedLicenseScanReport,
-                licenseScanReportResult: release.clearingInformation.licenseScanReportResult,
-                legalEvaluation: release.clearingInformation.legalEvaluation,
-                licenseAgreement: release.clearingInformation.licenseAgreement,
-                scanned: release.clearingInformation.scanned,
-                componentClearingReport: release.clearingInformation.componentClearingReport,
-                clearingStandard: release.clearingInformation.clearingStandard,
-                readmeOssAvailable: release.clearingInformation.readmeOssAvailable,
-                comment: release.clearingInformation.comment,
-                countOfSecurityVn: release.clearingInformation.countOfSecurityVn,
-                externalUrl: release.clearingInformation.externalUrl,
+            if (typeof release.clearingInformation !== 'undefined') {
+                const clearingInformation: ClearingInformation = {
+                    externalSupplierID: release.clearingInformation.externalSupplierID,
+                    additionalRequestInfo: release.clearingInformation.additionalRequestInfo,
+                    evaluated: release.clearingInformation.evaluated,
+                    procStart: release.clearingInformation.procStart,
+                    requestID: release.clearingInformation.requestID,
+                    binariesOriginalFromCommunity: release.clearingInformation.binariesOriginalFromCommunity,
+                    binariesSelfMade: release.clearingInformation.binariesSelfMade,
+                    componentLicenseInformation: release.clearingInformation.componentLicenseInformation,
+                    sourceCodeDelivery: release.clearingInformation.sourceCodeDelivery,
+                    sourceCodeOriginalFromCommunity: release.clearingInformation.sourceCodeOriginalFromCommunity,
+                    sourceCodeToolMade: release.clearingInformation.sourceCodeToolMade,
+                    sourceCodeSelfMade: release.clearingInformation.sourceCodeSelfMade,
+                    sourceCodeCotsAvailable: release.clearingInformation.sourceCodeCotsAvailable,
+                    screenshotOfWebSite: release.clearingInformation.screenshotOfWebSite,
+                    finalizedLicenseScanReport: release.clearingInformation.finalizedLicenseScanReport,
+                    licenseScanReportResult: release.clearingInformation.licenseScanReportResult,
+                    legalEvaluation: release.clearingInformation.legalEvaluation,
+                    licenseAgreement: release.clearingInformation.licenseAgreement,
+                    scanned: release.clearingInformation.scanned,
+                    componentClearingReport: release.clearingInformation.componentClearingReport,
+                    clearingStandard: release.clearingInformation.clearingStandard,
+                    readmeOssAvailable: release.clearingInformation.readmeOssAvailable,
+                    comment: release.clearingInformation.comment,
+                    countOfSecurityVn: release.clearingInformation.countOfSecurityVn,
+                    externalUrl: release.clearingInformation.externalUrl,
+                }
+                setClearingInformation(clearingInformation)
             }
-            setClearingInformation(clearingInformation)
 
             if (typeof release['_embedded']['sw360:cotsDetails'] !== 'undefined') {
                 const cotsDetails: COTSDetails = {
@@ -135,15 +139,17 @@ const EditRelease = ({ session, releaseId }: Props) => {
             }
         })
         fetchData(`releases/${releaseId}/attachments`).then((attachments: any) => {
-            if (
-                !CommonUtils.isNullOrUndefined(attachments['_embedded']) &&
-                !CommonUtils.isNullOrUndefined(attachments['_embedded']['sw360:attachmentDTOes'])
-            ) {
-                const attachmentDetails: AttachmentDetail[] = []
-                attachments['_embedded']['sw360:attachmentDTOes'].map((item: any) => {
-                    attachmentDetails.push(item)
-                })
-                setAttachmentData(attachmentDetails)
+            if (attachments != null) {
+                if (
+                    !CommonUtils.isNullOrUndefined(attachments['_embedded']) &&
+                    !CommonUtils.isNullOrUndefined(attachments['_embedded']['sw360:attachmentDTOes'])
+                ) {
+                    const attachmentDetails: AttachmentDetail[] = []
+                    attachments['_embedded']['sw360:attachmentDTOes'].map((item: any) => {
+                        attachmentDetails.push(item)
+                    })
+                    setAttachmentData(attachmentDetails)
+                }
             }
         })
     }, [releaseId])
@@ -177,7 +183,7 @@ const EditRelease = ({ session, releaseId }: Props) => {
         eccInformation: null,
         clearingInformation: null,
         cotsDetails: null,
-        attachmentDTOs: null
+        attachmentDTOs: null,
     })
 
     const [vendor, setVendor] = useState<Vendor>({

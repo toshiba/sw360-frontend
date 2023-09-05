@@ -100,6 +100,7 @@ const LinkedReleasesDiaglog = ({
             ...releasePayload,
             releaseIdToRelationship: obj,
         })
+        releaseLinks = releaseLinks.filter((v,index,a)=>a.findIndex(v2=>(v2.id===v.id))===index)
         setReleaseLinks(releaseLinks)
         setShow(!show)
         onReRender()

@@ -78,7 +78,7 @@ const EditAttachments = ({
             } else if (response.status == HttpStatus.UNAUTHORIZED) {
                 signOut()
             } else {
-                notFound()
+                return []
             }
         },
         [session.user.access_token]
