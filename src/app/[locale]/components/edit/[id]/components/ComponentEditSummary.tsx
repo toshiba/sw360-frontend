@@ -26,19 +26,17 @@ import Vendor from '@/object-types/Vendor'
 import ComponentOwner from '@/object-types/ComponentOwner'
 import Moderators from '@/object-types/Moderators'
 import AttachmentDetail from '@/object-types/AttachmentDetail'
-import ActionType from '@/object-types/enums/ActionType'
-import SearchUsersModalComponent from '@/components/sw360/SearchUsersModal/SearchUsersModal'
 import GeneralInfoComponent from '@/components/components/GeneralInfoComponent'
 import RolesInformation from '@/components/components/RolesInformation'
 interface Props {
     session?: Session
     componentId?: string
-    componentData?: ComponentPayload
+    componentPayload?: ComponentPayload
     attachmentData?: AttachmentDetail[]
-    setComponentData?: React.Dispatch<React.SetStateAction<ComponentPayload>>
+    setComponentPayload?: React.Dispatch<React.SetStateAction<ComponentPayload>>
 }
 
-export default function ComponentEditSummary({ session, componentId, componentData, setComponentData, attachmentData }: Props) {
+export default function ComponentEditSummary({ session, componentId, componentPayload, setComponentPayload, attachmentData }: Props) {
     const t = useTranslations(COMMON_NAMESPACE)
     const [roles, setRoles] = useState<Input[]>([])
     const [externalIds, setExternalIds] = useState<Input[]>([])
@@ -56,29 +54,6 @@ export default function ComponentEditSummary({ session, componentId, componentDa
     const [moderator, setModerator] = useState<Moderators>({
         emails: null,
         fullName: '',
-    })
-    const [componentPayload, setComponentPayload] = useState<ComponentPayload>({
-        name: '',
-        createBy: '',
-        description: '',
-        componentType: '',
-        moderators: null,
-        modifiedBy: '',
-        modifiedOn: '',
-        componentOwner: '',
-        ownerAccountingUnit: '',
-        ownerGroup: '',
-        ownerCountry: '',
-        roles: null,
-        externalIds: null,
-        additionalData: null,
-        defaultVendorId: '',
-        categories: null,
-        homepage: '',
-        mailinglist: '',
-        wiki: '',
-        blog: '',
-        attachmentDTOs: attachmentData,
     })
 
     const fetchData: any = useCallback(
@@ -157,6 +132,30 @@ export default function ComponentEditSummary({ session, componentId, componentDa
         return inputRoles
     }
 
+    const convertRoles = (datas: Input[]) => {
+        if (datas === null) {
+            return null;
+        }
+        const contributors: string[] = []
+        const commiters: string[] = []
+        const expecters: string[] = []
+        datas.forEach((data) => {
+            if (data.key === 'Contributor') {
+                contributors.push(data.value)
+            } else if (data.key === 'Committer') {
+                commiters.push(data.value)
+            } else if (data.key === 'Expert') {
+                expecters.push(data.value)
+            }
+        })
+        const roles = {
+            Contributor: contributors,
+            Committer: commiters,
+            Expert: expecters,
+        }
+        return roles
+    }
+
     useEffect(() => {
         fetchData(`components/${componentId}`).then((component: any) => {
             if (typeof component.roles !== 'undefined') {
@@ -230,7 +229,6 @@ export default function ComponentEditSummary({ session, componentId, componentDa
                 attachmentDTOs: attachmentData,
             }
             setComponentPayload(componentPayloadData)
-            setComponentData(componentPayloadData)
         })
     }, [componentId, fetchData])
 
@@ -238,10 +236,6 @@ export default function ComponentEditSummary({ session, componentId, componentDa
         const obj = Object.fromEntries(additionalDatas)
         setComponentPayload({
             ...componentPayload,
-            additionalData: obj,
-        })
-        setComponentData({
-            ...componentData,
             additionalData: obj,
         })
     }
@@ -252,10 +246,6 @@ export default function ComponentEditSummary({ session, componentId, componentDa
             ...componentPayload,
             externalIds: obj,
         })
-        setComponentData({
-            ...componentData,
-            externalIds: obj,
-        })
     }
 
     const setDataRoles = (roles: Input[]) => {
@@ -264,39 +254,10 @@ export default function ComponentEditSummary({ session, componentId, componentDa
             ...componentPayload,
             roles: roleDatas,
         })
-        setComponentData({
-            ...componentData,
-            roles: roleDatas,
-        })
-    }
-
-    const convertRoles = (datas: Input[]) => {
-        if (datas === null) {
-            return null;
-        }
-        const contributors: string[] = []
-        const commiters: string[] = []
-        const expecters: string[] = []
-        datas.forEach((data) => {
-            if (data.key === 'Contributor') {
-                contributors.push(data.value)
-            } else if (data.key === 'Committer') {
-                commiters.push(data.value)
-            } else if (data.key === 'Expert') {
-                expecters.push(data.value)
-            }
-        })
-        const roles = {
-            Contributor: contributors,
-            Committer: commiters,
-            Expert: expecters,
-        }
-        return roles
     }
 
     return (
         <>
-            <SearchUsersModalComponent />
             <form
                 action=''
                 id='form_submit'
@@ -311,25 +272,19 @@ export default function ComponentEditSummary({ session, componentId, componentDa
                             <div className='col'>
                                 <GeneralInfoComponent
                                     session={session}
-                                    actionType={ActionType.EDIT}
                                     vendor={vendor}
                                     setVendor={setVendor}
                                     componentPayload={componentPayload}
                                     setComponentPayload={setComponentPayload}
-                                    componentData={componentData}
-                                    setComponentData={setComponentData}
                                 />
                                 <RolesInformation
                                     session={session}
-                                    actionType={ActionType.EDIT}
                                     componentOwner={componentOwner}
                                     setComponentOwner={setComponentOwner}
                                     moderator={moderator}
                                     setModerator={setModerator}
                                     componentPayload={componentPayload}
                                     setComponentPayload={setComponentPayload}
-                                    componentData={componentData}
-                                    setComponentData={setComponentData}
                                 />
                                 <div className='row mb-4'>
                                     <AddAdditionalRolesComponent

@@ -57,8 +57,6 @@ const ReleaseSummary = ({
     actionType,
     releasePayload,
     setReleasePayload,
-    // releaseData,
-    // setReleaseData,
     vendor,
     setVendor,
     mainLicensesId,

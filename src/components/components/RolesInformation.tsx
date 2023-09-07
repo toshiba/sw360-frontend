@@ -21,7 +21,6 @@ import ModeratorsDiaglog from '@/components/sw360/SearchModerators/ModeratorsDia
 import ComponentPayload from '@/object-types/ComponentPayLoad'
 import { useTranslations } from 'next-intl'
 import { COMMON_NAMESPACE } from '@/object-types/Constants'
-import ActionType from '@/object-types/enums/ActionType'
 interface Props {
     session?: Session
     componentPayload?: ComponentPayload
@@ -30,9 +29,6 @@ interface Props {
     setComponentOwner?: React.Dispatch<React.SetStateAction<ComponentOwner>>
     moderator?: Moderators
     setModerator?: React.Dispatch<React.SetStateAction<Moderators>>
-    componentData?: ComponentPayload
-    setComponentData?: React.Dispatch<React.SetStateAction<ComponentPayload>>
-    actionType?: string
 }
 
 const RolesInformation = ({
@@ -42,10 +38,7 @@ const RolesInformation = ({
     componentOwner,
     setComponentOwner,
     moderator,
-    setModerator,
-    componentData,
-    setComponentData,
-    actionType
+    setModerator
 }: Props) => {
     const t = useTranslations(COMMON_NAMESPACE)
     const [dialogOpenComponentOwner, setDialogOpenComponentOwner] = useState(false)
@@ -56,11 +49,6 @@ const RolesInformation = ({
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         setComponentPayload({
             ...componentPayload,
-            [e.target.name]: e.target.value,
-        })
-        actionType === ActionType.EDIT &&
-        setComponentData({
-            ...componentData,
             [e.target.name]: e.target.value,
         })
     }
@@ -75,11 +63,6 @@ const RolesInformation = ({
             ...componentPayload,
             componentOwner: componentOwnerResponse.email,
         })
-        actionType === ActionType.EDIT &&
-        setComponentData({
-            ...componentData,
-            componentOwner: componentOwnerResponse.email,
-        })
     }
 
     const setModerators = (moderatorsResponse: Moderators) => {
@@ -90,11 +73,6 @@ const RolesInformation = ({
         setModerator(moderator)
         setComponentPayload({
             ...componentPayload,
-            moderators: moderatorsResponse.emails,
-        })
-        actionType === ActionType.EDIT &&
-        setComponentData({
-            ...componentData,
             moderators: moderatorsResponse.emails,
         })
     }

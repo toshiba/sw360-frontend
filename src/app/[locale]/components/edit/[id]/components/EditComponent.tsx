@@ -58,7 +58,7 @@ const EditComponent = ({ session, componentId }: Props) => {
     const [component, setComponent] = useState<any>(undefined)
     const [attachmentData, setAttachmentData] = useState<AttachmentDetail[]>([])
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-    const [componentData, setComponentData] = useState<ComponentPayload>({
+    const [componentPayload, setComponentPayload] = useState<ComponentPayload>({
         name: '',
         createBy: '',
         description: '',
@@ -123,10 +123,10 @@ const EditComponent = ({ session, componentId }: Props) => {
         })
 
     const submit = async () => {
-        console.log(componentData)
-        const response = await ApiUtils.PATCH(`components/${componentId}`, componentData, session.user.access_token)
+        console.log(componentPayload)
+        const response = await ApiUtils.PATCH(`components/${componentId}`, componentPayload, session.user.access_token)
         if (response.status == HttpStatus.OK) {
-            notify(`Success:Component  ${componentData.name}  updated successfully!`, 'success')
+            notify(`Success:Component  ${componentPayload.name}  updated successfully!`, 'success')
             router.push('/components/detail/' + componentId)
         } else {
             notify(t('Edit Component Fail'), 'error')
@@ -170,8 +170,8 @@ const EditComponent = ({ session, componentId }: Props) => {
                                 attachmentData={attachmentData}
                                 session={session}
                                 componentId={componentId}
-                                componentData={componentData}
-                                setComponentData={setComponentData}
+                                componentPayload={componentPayload}
+                                setComponentPayload={setComponentPayload}
                             />
                         </div>
                         <div className='row' hidden={selectedTab !== CommonTabIds.RELEASES ? true : false}>
@@ -182,8 +182,8 @@ const EditComponent = ({ session, componentId }: Props) => {
                                 session={session}
                                 documentId={componentId}
                                 documentType={DocumentTypes.COMPONENT}
-                                componentData={componentData}
-                                setComponentData={setComponentData}
+                                componentPayload={componentPayload}
+                                setComponentPayload={setComponentPayload}
                             />
                         </div>
                     </div>

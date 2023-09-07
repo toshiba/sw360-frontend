@@ -31,8 +31,8 @@ interface Props {
     documentId?: string
     session?: Session
     documentType?: string
-    componentData?: ComponentPayload
-    setComponentData?: React.Dispatch<React.SetStateAction<ComponentPayload>>
+    componentPayload?: ComponentPayload
+    setComponentPayload?: React.Dispatch<React.SetStateAction<ComponentPayload>>
     releasePayload?: ReleasePayload
     setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
 }
@@ -41,8 +41,8 @@ const EditAttachments = ({
     documentId,
     session,
     documentType,
-    componentData,
-    setComponentData,
+    componentPayload,
+    setComponentPayload,
     releasePayload,
     setReleasePayload,
 }: Props) => {
@@ -56,8 +56,8 @@ const EditAttachments = ({
     const handleClickSelectAttachment = useCallback(() => setDialogOpenSelectAttachment(true), [])
 
     const setAttachmentToComponentData = (attachmentDatas: AttachmentDetail[]) => {
-        setComponentData({
-            ...componentData,
+        setComponentPayload({
+            ...componentPayload,
             attachmentDTOs: attachmentDatas,
         })
     }
@@ -96,8 +96,8 @@ const EditAttachments = ({
                 })
                 setAttachmentData(attachmentDetails)
                 if (documentType === DocumentTypes.COMPONENT) {
-                    setComponentData({
-                        ...componentData,
+                    setComponentPayload({
+                        ...componentPayload,
                         attachmentDTOs: attachmentDetails,
                     })
                 }
@@ -108,8 +108,8 @@ const EditAttachments = ({
     return (
         <>
             <SelectAttachment
-                componentData={componentData}
-                setComponentData={setComponentData}
+                componentPayload={componentPayload}
+                setComponentPayload={setComponentPayload}
                 attachmentUpload={attachmentData}
                 setAttachmentFromUpload={setAttachmentData}
                 show={dialogOpenSelectAttachment}

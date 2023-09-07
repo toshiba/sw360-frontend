@@ -54,9 +54,7 @@ export default function ReleaseAddSummary({
     contributor,
     setContributor,
     moderator,
-    setModerator,
-    releaseRepository,
-    setReleaseRepository,
+    setModerator
 }: Props) {
     const t = useTranslations(COMMON_NAMESPACE)
     const [roles, setRoles] = useState<Input[]>([])
@@ -161,8 +159,6 @@ export default function ReleaseAddSummary({
                         />
                     </div>
                     <ReleaseRepository
-                        releaseRepository={releaseRepository}
-                        setReleaseRepository={setReleaseRepository}
                         releasePayload={releasePayload}
                         setReleasePayload={setReleasePayload}
                     />
