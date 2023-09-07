@@ -30,8 +30,6 @@ interface Props {
     actionType?: string
     releasePayload?: ReleasePayload
     setReleasePayload?: React.Dispatch<React.SetStateAction<ReleasePayload>>
-    // releaseData?: ReleasePayload
-    // setReleaseData?: React.Dispatch<React.SetStateAction<ReleasePayload>>
     vendor?: Vendor
     setVendor?: React.Dispatch<React.SetStateAction<Vendor>>
     mainLicensesId?: Licenses

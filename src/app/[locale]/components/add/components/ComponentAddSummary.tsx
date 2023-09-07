@@ -30,6 +30,7 @@ import ComponentOwner from '@/object-types/ComponentOwner'
 import Moderators from '@/object-types/Moderators'
 import GeneralInfoComponent from '@/components/components/GeneralInfoComponent'
 import RolesInformation from '@/components/components/RolesInformation'
+import CommonUtils from '@/utils/common.utils'
 interface Props {
     session: Session
 }
@@ -100,7 +101,7 @@ export default function ComponentAddSummary({ session }: Props) {
     }
 
     const setDataRoles = (roles: Input[]) => {
-        const roleDatas = convertRoles(roles)
+        const roleDatas = CommonUtils.convertRoles(roles)
         setComponentPayload({
             ...componentPayload,
             roles: roleDatas,
@@ -109,27 +110,6 @@ export default function ComponentAddSummary({ session }: Props) {
 
     const handleCancelClick = () => {
         router.push('/components')
-    }
-
-    const convertRoles = (datas: any[]) => {
-        const contributors: string[] = []
-        const commiters: string[] = []
-        const expecters: string[] = []
-        datas.forEach((data) => {
-            if (data.key === 'Contributor') {
-                contributors.push(data.value)
-            } else if (data.key === 'Committer') {
-                commiters.push(data.value)
-            } else if (data.key === 'Expert') {
-                expecters.push(data.value)
-            }
-        })
-        const roles = {
-            Contributor: contributors,
-            Committer: commiters,
-            Expert: expecters,
-        }
-        return roles
     }
 
     const notify = (text: string, type: TypeOptions) =>
