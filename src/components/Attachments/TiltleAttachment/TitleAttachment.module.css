@@ -13,11 +13,16 @@
 .div-title {
     border: 1px solid #969696;
     background-color: #5d8ea9;
+    padding: 0px 12px;
 }
 
 .div-title-first {
-    height: 30px;
+    height: 45px;
     border: 1px;
+    border-bottom: 1px solid #f3eeee!important;
+    text-align: left;
+    color: white;
+    padding-top: 0.75rem;
 }
 
 .div-title-second {
@@ -70,12 +75,15 @@
     float: left;
     color: white;
     left: 20px;
+    padding-top: 0.75rem;
+    border-bottom: 1px solid #f3eeee!important;
 }
 
 .div-upload-second {
     height: 45px;
     width: 470px;
     float: left;
+    padding-top: 0.75rem;
 }
 
 .div-approval {
@@ -89,12 +97,15 @@
     width: 600px;
     float: left;
     color: white;
+    padding-top: 0.75rem;
+    border-bottom: 1px solid #f3eeee!important;
 }
 
 .div-approval-second {
     height: 45px;
     width: 600px;
     float: left;
+    padding-top: 0.75rem;
 }
 
 .div-status {

@@ -120,7 +120,7 @@ const EditAttachments = ({
                 releasePayload={releasePayload}
                 setReleasePayload={setReleasePayload}
             />
-            <div className={`row ${styles['attachment-table']}`} style={{ padding: '25px' }}>
+            <div className={`row ${styles['attachment-table']}`} style={{ paddingLeft: '25px' }}>
                 <TitleAttachment />
                 <TableAttachment
                     data={attachmentData}

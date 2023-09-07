@@ -19,7 +19,8 @@ export default function TitleAttachment() {
         <>
             <div className={`${styles['div-title']}`}>
                 <div className={`${styles['div-title-first']}`}>
-                    <p className={`${styles['p-attachment']}`}>{t('Attachments')}</p>
+                    {/* <p className={`${styles['p-attachment']}`}>{t('Attachments')}</p> */}
+                    {t('Attachments')}
                 </div>
                 <div className={`${styles['div-title-second']}`}>
                     <div className={`${styles['div-filename']}`}>
