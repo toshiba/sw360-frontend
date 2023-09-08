@@ -50,7 +50,7 @@ interface Props {
 const EditRelease = ({ session, releaseId }: Props) => {
     const router = useRouter()
     const t = useTranslations(COMMON_NAMESPACE)
-    const [tabList, setTabList] = useState(ReleaseEditTabs.WITH_COMMERCIAL_DETAILS)
+    const [tabList, setTabList] = useState(ReleaseEditTabs.WITHOUT_COMMERCIAL_DETAILS)
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
     const [release, setRelease] = useState<any>(undefined)
     const [attachmentData, setAttachmentData] = useState<AttachmentDetail[]>([])
@@ -73,6 +73,9 @@ const EditRelease = ({ session, releaseId }: Props) => {
     useEffect(() => {
         fetchData(`releases/${releaseId}`).then((release: any) => {
             setRelease(release)
+            if (release.componentType === 'COTS') {
+                setTabList(ReleaseEditTabs.WITH_COMMERCIAL_DETAILS)
+            }
             if (typeof release.eccInformation !== 'undefined') {
                 const eccInformation: ECCInformation = {
                     eccStatus: release.eccInformation.eccStatus,
