@@ -14,11 +14,11 @@ import { useTranslations } from 'next-intl'
 
 import { useCallback, useState } from 'react'
 
+import ComponentOwnerDiaglog from '@/components/sw360/SearchComponentOwner/ComponentOwnerDialog'
 import { Session } from '@/object-types'
 import ComponentOwner from '@/object-types/ComponentOwner'
-import ComponentOwnerDiaglog from '@/components/sw360/SearchComponentOwner/ComponentOwnerDialog'
 import ReleasePayload from '@/object-types/ReleasePayload'
-import styles from './CommercialDetails.module.css'
+import styles from '../AddRelease.module.css'
 
 interface Props {
     session?: Session

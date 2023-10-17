@@ -145,6 +145,9 @@ const getEmailsModerators = (users: EmbeddedUser[]) => {
  * @returns An array of key-value pairs.
  */
 const convertObjectToMap = (data: { [k: string]: string }) => {
+    if (data === undefined) {
+        return []
+    }
     const map = new Map(Object.entries(data))
     const inputs: InputKeyValue[] = []
     map.forEach((value, key) => {
@@ -163,6 +166,9 @@ const convertObjectToMap = (data: { [k: string]: string }) => {
  * @returns An array of key-value pairs.
  */
 const convertObjectToMapRoles = (data: { [k: string]: Array<string> }) => {
+    if (data === undefined) {
+        return []
+    }
     const inputRoles: InputKeyValue[] = []
     const mapRoles = new Map(Object.entries(data))
     mapRoles.forEach((value, key) => {

@@ -10,21 +10,21 @@
 
 'use client'
 
-import { GiCancel } from 'react-icons/gi'
 import { useTranslations } from 'next-intl'
 import React, { useCallback, useState } from 'react'
+import { GiCancel } from 'react-icons/gi'
 
+import ContributorsDialog from '@/components/sw360/SearchContributors/ContributorsDialog'
+import MainLicensesDialog from '@/components/sw360/SearchMainLicenses/MainLicensesDialog'
+import ModeratorsDialog from '@/components/sw360/SearchModerators/ModeratorsDialog'
+import OtherLicensesDialog from '@/components/sw360/SearchOtherLicenses/OtherLicensesDialog'
 import { Licenses, Session } from '@/object-types'
-import { ShowInfoOnHover, VendorDialog } from 'next-sw360'
-import ActionType from '@/object-types/enums/ActionType'
-import ContributorsDialog from '../sw360/SearchContributors/ContributorsDialog'
-import MainLicensesDiaglog from '../sw360/SearchMainLicenses/MainLicensesDialog'
 import Moderators from '@/object-types/Moderators'
-import ModeratorsDialog from '../sw360/SearchModerators/ModeratorsDialog'
-import OtherLicensesDialog from '../sw360/SearchOtherLicenses/OtherLicensesDialog'
 import ReleasePayload from '@/object-types/ReleasePayload'
-import styles from './ReleaseSummary.module.css'
 import Vendor from '@/object-types/Vendor'
+import ActionType from '@/object-types/enums/ActionType'
+import { ShowInfoOnHover, VendorDialog } from 'next-sw360'
+import styles from '../AddRelease.module.css'
 
 interface Props {
     session?: Session
@@ -358,7 +358,7 @@ const ReleaseSummary = ({
                                 value={mainLicensesId.fullName ?? ''}
                                 onClick={handleClickSearchMainLicenses}
                             />
-                            <MainLicensesDiaglog
+                            <MainLicensesDialog
                                 show={dialogOpenMainLicenses}
                                 setShow={setDialogOpenMainLicenses}
                                 session={session}

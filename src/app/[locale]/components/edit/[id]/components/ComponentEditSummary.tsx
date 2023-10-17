@@ -10,24 +10,22 @@
 
 'use client'
 
-import { notFound } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
-import { useTranslations } from 'next-intl'
 import { signOut } from 'next-auth/react'
+import { useTranslations } from 'next-intl'
+import { useCallback, useEffect, useState } from 'react'
 
-import AddKeyValueComponent from '@/components/AddKeyValue'
 import AddAdditionalRolesComponent from '@/components/AddAdditionalRoles'
-import ComponentPayload from '@/object-types/ComponentPayLoad'
-import { Component, InputKeyValue, HttpStatus, Session } from '@/object-types'
-import { ApiUtils, CommonUtils } from '@/utils'
-import DocumentTypes from '@/object-types/enums/DocumentTypes'
-import Vendor from '@/object-types/Vendor'
-import ComponentOwner from '@/object-types/ComponentOwner'
-import Moderators from '@/object-types/Moderators'
+import AddKeyValueComponent from '@/components/AddKeyValue'
+import { Component, HttpStatus, InputKeyValue, Session } from '@/object-types'
 import AttachmentDetail from '@/object-types/AttachmentDetail'
-import GeneralInfoComponent from '@/components/GeneralInfoComponent/GeneralInfoComponent'
-import RolesInformation from '@/components/RolesInformationComponent/RolesInformation'
-
+import ComponentOwner from '@/object-types/ComponentOwner'
+import ComponentPayload from '@/object-types/ComponentPayLoad'
+import Moderators from '@/object-types/Moderators'
+import Vendor from '@/object-types/Vendor'
+import DocumentTypes from '@/object-types/enums/DocumentTypes'
+import { ApiUtils, CommonUtils } from '@/utils'
+import GeneralInfoComponent from '../../../add/components/GeneralInfoComponent'
+import RolesInformation from '../../../add/components/RolesInformation'
 interface Props {
     session?: Session
     componentId?: string
@@ -71,7 +69,7 @@ export default function ComponentEditSummary({
             } else if (response.status == HttpStatus.UNAUTHORIZED) {
                 return signOut()
             } else {
-                notFound()
+                return undefined
             }
         },
         [session.user.access_token]

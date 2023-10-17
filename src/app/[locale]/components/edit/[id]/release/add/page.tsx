@@ -12,7 +12,7 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import { getServerSession } from 'next-auth/next'
 
 import { Session } from '@/object-types'
-import AddRelease from './releases/AddRelease'
+import AddRelease from './component/AddRelease'
 
 interface Context {
     params: { id: string }

@@ -34,12 +34,12 @@ const WITH_COMMERCIAL_DETAILS = [
     {
         id: ReleaseTabIds.COMMERCIAL_DETAILS,
         name: 'Commercial Details',
-    }
+    },
 ]
 
 const ReleaseAddTabs = {
     WITHOUT_COMMERCIAL_DETAILS,
-    WITH_COMMERCIAL_DETAILS
+    WITH_COMMERCIAL_DETAILS,
 }
 
 export default ReleaseAddTabs

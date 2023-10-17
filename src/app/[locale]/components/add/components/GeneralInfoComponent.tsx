@@ -10,14 +10,14 @@
 
 'use client'
 
-import React, { useCallback, useState } from 'react'
 import { useTranslations } from 'next-intl'
+import React, { useCallback, useState } from 'react'
 
 import { Session } from '@/object-types'
-import { ShowInfoOnHover, VendorDialog } from 'next-sw360'
 import ComponentPayload from '@/object-types/ComponentPayLoad'
-import styles from './SummaryComponent.module.css'
 import Vendor from '@/object-types/Vendor'
+import { ShowInfoOnHover, VendorDialog } from 'next-sw360'
+import styles from '../AddComponents.module.css'
 
 interface Props {
     session?: Session

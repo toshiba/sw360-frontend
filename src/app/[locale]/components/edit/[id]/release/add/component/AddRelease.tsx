@@ -11,29 +11,29 @@
 'use client'
 
 import { signOut } from 'next-auth/react'
-import { ToastContainer } from 'react-bootstrap'
-import { useCallback, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
+import { ToastContainer } from 'react-bootstrap'
 
-import { ApiUtils, CommonUtils } from '@/utils'
-import { EmbeddedComponent, Licenses, HttpStatus, Session } from '@/object-types'
-import { SideBar, PageButtonHeader } from '@/components/sw360'
-import AddCommercialDetails from '@/components/CommercialDetails/AddCommercialDetails'
-import CommonTabIds from '@/object-types/enums/CommonTabsIds'
-import ComponentOwner from '@/object-types/ComponentOwner'
-import COTSDetails from '@/object-types/COTSDetails'
 import LinkedReleases from '@/components/LinkedReleases/LinkedReleases'
+import { PageButtonHeader, SideBar } from '@/components/sw360'
+import ToastMessage from '@/components/sw360/ToastContainer/Toast'
+import { EmbeddedComponent, HttpStatus, Licenses, Session } from '@/object-types'
+import COTSDetails from '@/object-types/COTSDetails'
+import ComponentOwner from '@/object-types/ComponentOwner'
 import Moderators from '@/object-types/Moderators'
-import ReleaseAddSummary from './ReleaseAddSummary'
-import ReleaseAddTabs from './ReleaseAddTab'
 import ReleaseDetail from '@/object-types/ReleaseDetail'
 import ReleasePayload from '@/object-types/ReleasePayload'
-import ReleaseTabIds from '@/object-types/enums/ReleaseTabIds'
 import Repository from '@/object-types/Repository'
 import ToastData from '@/object-types/ToastData'
-import ToastMessage from '@/components/sw360/ToastContainer/Toast'
 import Vendor from '@/object-types/Vendor'
+import CommonTabIds from '@/object-types/enums/CommonTabsIds'
+import ReleaseTabIds from '@/object-types/enums/ReleaseTabIds'
+import { ApiUtils, CommonUtils } from '@/utils'
+import AddCommercialDetails from './AddCommercialDetails'
+import ReleaseAddSummary from './ReleaseAddSummary'
+import ReleaseAddTabs from './ReleaseAddTab'
 
 interface Props {
     session?: Session
@@ -158,7 +158,7 @@ const AddRelease = ({ session, componentId }: Props) => {
                 setTabList(ReleaseAddTabs.WITH_COMMERCIAL_DETAILS)
             }
         })
-    }, [componentId, fetchData, releasePayload])
+    }, [componentId, fetchData])
 
     const submit = async () => {
         const response = await ApiUtils.POST('releases', releasePayload, session.user.access_token)

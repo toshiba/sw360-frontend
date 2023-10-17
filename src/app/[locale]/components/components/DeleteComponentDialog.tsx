@@ -10,17 +10,16 @@
 
 'use client'
 
-import { useSession } from 'next-auth/react'
-import { Alert, Button, Form, Modal } from 'react-bootstrap'
-import { useEffect, useState, useCallback } from 'react'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
+import { Alert, Button, Form, Modal } from 'react-bootstrap'
 
-import { ApiUtils, CommonUtils } from '@/utils'
-import ActionType from '@/object-types/enums/ActionType'
 import { HttpStatus, Session } from '@/object-types'
 import Component from '@/object-types/Component'
+import ActionType from '@/object-types/enums/ActionType'
+import { ApiUtils, CommonUtils } from '@/utils'
 
 const DEFAULT_COMPONENT_INFO: Component = { name: '', _embedded: { 'sw360:releases': [] } }
 
@@ -97,7 +96,6 @@ const DeleteComponentDialog = ({ componentId, show, setShow, actionType }: Props
                 )
                 if (componentsResponse.status == HttpStatus.OK) {
                     const component = (await componentsResponse.json()) as Component
-                    console.log(component.name)
                     setComponent(component)
                 } else if (componentsResponse.status == HttpStatus.UNAUTHORIZED) {
                     await signOut()

@@ -10,31 +10,31 @@
 
 'use client'
 
-import { ToastContainer } from 'react-bootstrap'
-import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { ToastContainer } from 'react-bootstrap'
 
-import { ApiUtils, CommonUtils } from '@/utils'
-import { Component, InputKeyValue, HttpStatus, Session } from '@/object-types'
-import { SearchUsersModal, SideBar } from 'next-sw360'
 import AddAdditionalRolesComponent from '@/components/AddAdditionalRoles'
 import AddKeyValueComponent from '@/components/AddKeyValue'
-import CommonTabIds from '@/object-types/enums/CommonTabsIds'
+import ToastMessage from '@/components/sw360/ToastContainer/Toast'
+import { Component, HttpStatus, InputKeyValue, Session } from '@/object-types'
 import ComponentOwner from '@/object-types/ComponentOwner'
 import ComponentPayload from '@/object-types/ComponentPayLoad'
-import DocumentTypes from '@/object-types/enums/DocumentTypes'
-import GeneralInfoComponent from '@/components/GeneralInfoComponent/GeneralInfoComponent'
 import Moderators from '@/object-types/Moderators'
-import RolesInformation from '@/components/RolesInformationComponent/RolesInformation'
 import ToastData from '@/object-types/ToastData'
-import ToastMessage from '@/components/sw360/ToastContainer/Toast'
 import Vendor from '@/object-types/Vendor'
+import CommonTabIds from '@/object-types/enums/CommonTabsIds'
+import DocumentTypes from '@/object-types/enums/DocumentTypes'
+import { ApiUtils, CommonUtils } from '@/utils'
+import { SearchUsersModal, SideBar } from 'next-sw360'
+import GeneralInfoComponent from './GeneralInfoComponent'
+import RolesInformation from './RolesInformation'
 interface Props {
     session: Session
 }
 
-export default function ComponentAddSummary({ session }: Props) {
+export default function AddComponent({ session }: Props) {
     const t = useTranslations('default')
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
     const [externalIds, setExternalIds] = useState<InputKeyValue[]>([])

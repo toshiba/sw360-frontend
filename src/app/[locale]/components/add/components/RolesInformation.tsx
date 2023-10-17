@@ -12,15 +12,15 @@
 
 import React, { useCallback, useState } from 'react'
 
-import { Session } from '@/object-types'
-import { useTranslations } from 'next-intl'
-import ComponentOwner from '@/object-types/ComponentOwner'
 import ComponentOwnerDialog from '@/components/sw360/SearchComponentOwner/ComponentOwnerDialog'
+import ModeratorsDialog from '@/components/sw360/SearchModerators/ModeratorsDialog'
+import { Session } from '@/object-types'
+import ComponentOwner from '@/object-types/ComponentOwner'
 import ComponentPayload from '@/object-types/ComponentPayLoad'
 import Moderators from '@/object-types/Moderators'
-import ModeratorsDialog from '../sw360/SearchModerators/ModeratorsDialog'
+import { useTranslations } from 'next-intl'
 import { SelectCountry } from 'next-sw360'
-import styles from '../GeneralInfoComponent/SummaryComponent.module.css'
+import styles from '../AddComponents.module.css'
 interface Props {
     session?: Session
     componentPayload?: ComponentPayload

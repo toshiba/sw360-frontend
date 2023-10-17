@@ -10,20 +10,20 @@
 
 'use client'
 
-import { useState } from 'react'
 import { useTranslations } from 'next-intl'
+import { useState } from 'react'
 
-import { CommonUtils } from '@/utils'
-import { Licenses, Session } from '@/object-types'
 import AddAdditionalRolesComponent from '@/components/AddAdditionalRoles'
 import AddKeyValueComponent from '@/components/AddKeyValue'
-import DocumentTypes from '@/object-types/enums/DocumentTypes'
+import { Licenses, Session } from '@/object-types'
 import InputKeyValue from '@/object-types/InputKeyValue'
 import Moderators from '@/object-types/Moderators'
 import ReleasePayload from '@/object-types/ReleasePayload'
-import ReleaseRepository from '@/components/ReleaseRepository/ReleaseRepository'
-import ReleaseSummary from '@/components/ReleaseSummary/ReleaseSummary'
 import Vendor from '@/object-types/Vendor'
+import DocumentTypes from '@/object-types/enums/DocumentTypes'
+import { CommonUtils } from '@/utils'
+import ReleaseRepository from './ReleaseRepository'
+import ReleaseSummary from './ReleaseSummary'
 
 interface Props {
     session?: Session

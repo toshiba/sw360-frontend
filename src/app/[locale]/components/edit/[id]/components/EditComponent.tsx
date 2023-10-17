@@ -10,28 +10,28 @@
 
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
-import { ToastContainer } from 'react-bootstrap'
 import { signOut } from 'next-auth/react'
-import { notFound, useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
+import { ToastContainer } from 'react-bootstrap'
 
-import { ApiUtils, CommonUtils } from '@/utils'
+import EditAttachments from '@/components/Attachments/EditAttachments'
+import { PageButtonHeader, SideBar } from '@/components/sw360'
+import ToastMessage from '@/components/sw360/ToastContainer/Toast'
 import { Component, HttpStatus, Session } from '@/object-types'
-import { SideBar, PageButtonHeader } from '@/components/sw360'
-import ActionType from '@/object-types/enums/ActionType'
 import Attachment from '@/object-types/Attachment'
 import AttachmentDetail from '@/object-types/AttachmentDetail'
-import CommonTabIds from '@/object-types/enums/CommonTabsIds'
-import ComponentEditSummary from './ComponentEditSummary'
 import ComponentPayload from '@/object-types/ComponentPayLoad'
-import DeleteComponentDialog from '../../../components/DeleteComponentDialog'
-import DocumentTypes from '@/object-types/enums/DocumentTypes'
-import EditAttachments from '@/components/Attachments/EditAttachments'
 import EmbeddedAttachments from '@/object-types/EmbeddedAttachments'
-import Releases from './Releases'
 import ToastData from '@/object-types/ToastData'
-import ToastMessage from '@/components/sw360/ToastContainer/Toast'
+import ActionType from '@/object-types/enums/ActionType'
+import CommonTabIds from '@/object-types/enums/CommonTabsIds'
+import DocumentTypes from '@/object-types/enums/DocumentTypes'
+import { ApiUtils, CommonUtils } from '@/utils'
+import DeleteComponentDialog from '../../../components/DeleteComponentDialog'
+import ComponentEditSummary from './ComponentEditSummary'
+import Releases from './Releases'
 
 interface Props {
     session?: Session
@@ -109,28 +109,32 @@ const EditComponent = ({ session, componentId }: Props) => {
             } else if (response.status == HttpStatus.UNAUTHORIZED) {
                 return signOut()
             } else {
-                notFound()
+                return undefined
             }
         },
         [session.user.access_token]
     )
 
     useEffect(() => {
-        void fetchData(`components/${componentId}`).then((component: Component) => {
-            setComponent(component)
-        })
-        void fetchData(`components/${componentId}/attachments`).then((attachments: EmbeddedAttachments) => {
-            if (
-                !CommonUtils.isNullOrUndefined(attachments._embedded) &&
-                !CommonUtils.isNullOrUndefined(attachments._embedded['sw360:attachmentDTOes'])
-            ) {
-                const attachmentDetails: AttachmentDetail[] = []
-                attachments._embedded['sw360:attachmentDTOes'].forEach((item: Attachment) => {
-                    attachmentDetails.push(item)
-                })
-                setAttachmentData(attachmentDetails)
-            }
-        })
+        void fetchData(`components/${componentId}`)
+            .then((component: Component) => {
+                setComponent(component)
+            })
+            .catch((err) => console.error(err))
+        void fetchData(`components/${componentId}/attachments`)
+            .then((attachments: EmbeddedAttachments) => {
+                if (
+                    !CommonUtils.isNullOrUndefined(attachments._embedded) &&
+                    !CommonUtils.isNullOrUndefined(attachments._embedded['sw360:attachmentDTOes'])
+                ) {
+                    const attachmentDetails: AttachmentDetail[] = []
+                    attachments._embedded['sw360:attachmentDTOes'].forEach((item: Attachment) => {
+                        attachmentDetails.push(item)
+                    })
+                    setAttachmentData(attachmentDetails)
+                }
+            })
+            .catch((err) => console.error(err))
     }, [componentId, fetchData])
 
     const submit = async () => {

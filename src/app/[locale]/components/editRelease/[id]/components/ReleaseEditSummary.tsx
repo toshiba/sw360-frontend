@@ -13,20 +13,20 @@
 import { useTranslations } from 'next-intl'
 import { useEffect, useState } from 'react'
 
-import { CommonUtils } from '@/utils'
-import { Licenses, InputKeyValue, Session } from '@/object-types'
 import AddAdditionalRolesComponent from '@/components/AddAdditionalRoles'
 import AddKeyValueComponent from '@/components/AddKeyValue'
-import ClearingInformation from '@/object-types/ClearingInformation'
+import { InputKeyValue, Licenses, Session } from '@/object-types'
 import COTSDetails from '@/object-types/COTSDetails'
-import DocumentTypes from '@/object-types/enums/DocumentTypes'
+import ClearingInformation from '@/object-types/ClearingInformation'
 import ECCInformation from '@/object-types/ECCInformation'
 import Moderators from '@/object-types/Moderators'
 import ReleaseDetail from '@/object-types/ReleaseDetail'
 import ReleasePayload from '@/object-types/ReleasePayload'
-import ReleaseRepository from '@/components/ReleaseRepository/ReleaseRepository'
-import ReleaseSummary from '@/components/ReleaseSummary/ReleaseSummary'
 import Vendor from '@/object-types/Vendor'
+import DocumentTypes from '@/object-types/enums/DocumentTypes'
+import { CommonUtils } from '@/utils'
+import ReleaseRepository from '../../../edit/[id]/release/add/component/ReleaseRepository'
+import ReleaseSummary from '../../../edit/[id]/release/add/component/ReleaseSummary'
 
 interface Props {
     session?: Session

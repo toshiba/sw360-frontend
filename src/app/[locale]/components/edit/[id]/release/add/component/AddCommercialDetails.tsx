@@ -11,10 +11,10 @@
 'use client'
 
 import { Session } from '@/object-types'
-import CommercialDetailsAdministration from './CommercialDetailsAdministration'
 import ComponentOwner from '@/object-types/ComponentOwner'
-import COTSOSSInformation from './COTSOSSInformation'
 import ReleasePayload from '@/object-types/ReleasePayload'
+import COTSOSSInformation from './COTSOSSInformation'
+import CommercialDetailsAdministration from './CommercialDetailsAdministration'
 
 interface Props {
     session?: Session
