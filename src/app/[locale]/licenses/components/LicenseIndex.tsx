@@ -9,7 +9,8 @@
 
 'use client'
 
-import { signOut, useSession } from 'next-auth/react'
+import { Session } from '@/object-types'
+import { signOut } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -26,13 +27,16 @@ const headerButtons = {
     'Export Spreadsheet': { link: '/licenses/export', type: 'secondary' },
 }
 
-function LicensesPage() {
+interface Props {
+    session?: Session
+}
+
+const LicensesPage = ({ session }: Props) => {
     const params = useSearchParams()
     const t = useTranslations('default')
     const [search, setSearch] = useState({})
     const [loading, setLoading] = useState(true)
     const [licenseData, setLicenseData] = useState([])
-    const { data: session } = useSession()
 
     const fetchData: any = useCallback(
         async (queryUrl: string, signal: unknown) => {
@@ -61,7 +65,7 @@ function LicensesPage() {
                 setLicenseData(
                     licenses['_embedded']['sw360:licenses'].map(
                         (item: { _links: { self: { href: string } }; fullName: string; checked: boolean }) => [
-                            _(<Link href={item._links.self.href}>{item._links.self.href.split('/').pop()}</Link>),
+                            item._links.self.href.split('/').pop(),
                             item.fullName,
                             _(
                                 <center>
@@ -86,7 +90,16 @@ function LicensesPage() {
     }, [fetchData, params])
 
     const columns = [
-        { name: t('License Shortname'), width: '25%' },
+        {
+            name: t('License Shortname'),
+            formatter: (id: string) =>
+                _(
+                    <Link href={'/licenses/detail/' + id} className='link'>
+                        {id}
+                    </Link>
+                ),
+            sort: true,
+        },
         { name: t('License Fullname'), width: '45%' },
         { name: t('Is Checked'), width: '10%' },
         { name: t('License Type'), width: '15%' },
