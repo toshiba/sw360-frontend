@@ -22,6 +22,7 @@ import LicenseDetail from '@/object-types/LicenseDetail'
 import LicenseTabIds from '@/object-types/enums/LicenseTabIds'
 import { ApiUtils, CommonUtils } from '@/utils'
 import Detail from './Detail'
+import Text from './Text'
 
 interface Props {
     session?: Session
@@ -136,6 +137,9 @@ const LicenseDetailOverview = ({ session, licenseId }: Props) => {
                         </div>
                         <div className='row' hidden={selectedTab !== LicenseTabIds.DETAILS ? true : false}>
                             <Detail license={license} />
+                        </div>
+                        <div className='row' hidden={selectedTab !== LicenseTabIds.TEXT ? true : false}>
+                            <Text license={license} />
                         </div>
                         <div className='row' hidden={selectedTab != LicenseTabIds.CHANGE_LOG ? true : false}>
                             <div className='col'>
