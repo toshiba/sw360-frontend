@@ -114,7 +114,7 @@ function EditComponent({ componentId }: Props) {
                 notFound()
             }
         },
-        [session.user.access_token]
+        [session]
     )
 
     useEffect(() => {

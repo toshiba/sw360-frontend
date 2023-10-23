@@ -36,6 +36,7 @@ import EmbeddedVulnerabilities from './EmbeddedVulnerabilities'
 import FossologyProcessInfo from './FossologyProcessInfo'
 import FossologyProcessStatus from './FossologyProcessStatus'
 import InputKeyValue from './InputKeyValue'
+import LicenseDetail from './LicenseDetail'
 import Licenses from './Licenses'
 import LicensesType from './LicensesType'
 import LinkedAttachments from './LinkedAttachments'
@@ -45,6 +46,7 @@ import Moderators from './Moderators'
 import ModeratorsType from './ModeratorsType'
 import NodeData from './NodeData'
 import OAuthClient from './OAuthClient'
+import Obligation from './Obligation'
 import ProjectPayload from './ProjectPayload'
 import ReleaseDetail from './ReleaseDetail'
 import ReleaseLink from './ReleaseLink'
@@ -95,6 +97,7 @@ export type {
     FossologyProcessInfo,
     FossologyProcessStatus,
     InputKeyValue,
+    LicenseDetail,
     Licenses,
     LicensesType,
     LinkedAttachments,
@@ -104,6 +107,7 @@ export type {
     ModeratorsType,
     NodeData,
     OAuthClient,
+    Obligation,
     ProjectPayload,
     ReleaseDetail,
     ReleaseLink,
@@ -133,6 +137,7 @@ import CommonTabIds from './enums/CommonTabsIds'
 import ComponentTabIds from './enums/ComponentTabIds'
 import DocumentTypes from './enums/DocumentTypes'
 import HttpStatus from './enums/HttpStatus'
+import LicenseTabIds from './enums/LicenseTabIds'
 import ReleaseTabIds from './enums/ReleaseTabIds'
 import VulnerabilitiesVerificationState from './enums/VulnerabilitiesVerificationState'
 
@@ -143,6 +148,7 @@ export {
     ComponentTabIds,
     DocumentTypes,
     HttpStatus,
+    LicenseTabIds,
     ReleaseTabIds,
     VulnerabilitiesVerificationState,
 }

@@ -8,7 +8,7 @@
 // License-Filename: LICENSE
 
 import { Metadata } from 'next'
-import LicenseIndex from './LicenseIndex'
+import LicenseIndex from './components/LicenseIndex'
 
 export const metadata: Metadata = {
     title: 'Licenses',
