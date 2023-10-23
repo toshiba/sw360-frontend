@@ -731,6 +731,7 @@
         "(n/a)": "(n/a)",
         "Note": "Note",
         "License Detail": "License Detail",
-        "License Text": "License Text"
+        "License Text": "License Text",
+        "SUCCESS": "SUCCESS"
     }
 }

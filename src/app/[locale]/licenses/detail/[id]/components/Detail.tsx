@@ -9,10 +9,13 @@
 // License-Filename: LICENSE
 
 'use client'
-import { LicenseDetail } from '@/object-types'
+import { HttpStatus, LicenseDetail, ToastData } from '@/object-types'
+import { SW360_API_URL } from '@/utils/env'
+import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
+import { ToastMessage } from 'next-sw360'
 import { Dispatch, SetStateAction, useState } from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, ToastContainer } from 'react-bootstrap'
 import { XCircle } from 'react-bootstrap-icons'
 import { FiCheckCircle } from 'react-icons/fi'
 import styles from '../detail.module.css'
@@ -25,6 +28,7 @@ interface Props {
 const Detail = ({ license, setLicense }: Props) => {
     const t = useTranslations('default')
     const [toggle, setToggle] = useState(false)
+    const { data: session } = useSession()
 
     const hanldeExternalLicenseLink = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLicense({
@@ -33,22 +37,50 @@ const Detail = ({ license, setLicense }: Props) => {
         })
     }
 
-    const updateExternalLicenseLink = async () => {
-        console.log(license.externalLicenseLink)
-        // const response = await ApiUtils.POST('projects', projectPayload, session.user.access_token)
+    const [toastData, setToastData] = useState<ToastData>({
+        show: false,
+        type: '',
+        message: '',
+        contextual: '',
+    })
 
-        // if (response.status == HttpStatus.CREATED) {
-        //     await response.json()
-        //     alert(true, 'success', t('Your project is created'), 'success')
-        //     // router.push('/projects')
-        // } else {
-        //     alert(true, 'error', t('There are some errors while creating project'), 'danger')
-        //     // router.push('/projects')
-        // }
+    const alert = (show_data: boolean, status_type: string, message: string, contextual: string) => {
+        setToastData({
+            show: show_data,
+            type: status_type,
+            message: message,
+            contextual: contextual,
+        })
+    }
+
+    const updateExternalLicenseLink = async () => {
+        const url =
+            SW360_API_URL +
+            `/resource/api/licenses/${license.shortName}/externalLink/?externalLicenseLink=${license.externalLicenseLink}`
+        fetch(url, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${session.user.access_token}`,
+            },
+        }).then((response) => {
+            if (response.status == HttpStatus.OK) {
+                alert(true, 'success', t('SUCCESS'), 'success')
+            }
+        })
     }
 
     return (
         <div className='col'>
+            <ToastContainer position='top-start'>
+                <ToastMessage
+                    show={toastData.show}
+                    type={toastData.type}
+                    message={toastData.message}
+                    contextual={toastData.contextual}
+                    onClose={() => setToastData({ ...toastData, show: false })}
+                    setShowToast={setToastData}
+                />
+            </ToastContainer>
             <table className={`table label-value-table ${styles['summary-table']}`}>
                 <thead
                     title='Click to expand or collapse'
