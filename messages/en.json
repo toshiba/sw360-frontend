@@ -732,6 +732,22 @@
         "Note": "Note",
         "License Detail": "License Detail",
         "License Text": "License Text",
-        "SUCCESS": "SUCCESS"
+        "SUCCESS": "SUCCESS",
+        "Obligation": "Obligation",
+        "Obligation Type": "Obligation Type",
+        "Further properties": "Further properties",
+        "Edit Whitelist": "Edit Whitelist",
+        "Create License": "Create License",
+        "License": "License",
+        "Linked Obligations": "Linked Obligations",
+        "License Details": "License Details",
+        "No type selected": "No type selected",
+        "yes": "yes",
+        "Obligation Title": "Obligation Title",
+        "Add Obligation": "Add Obligation",
+        "Select License Obligations to be added": "Select License Obligations to be added.",
+        "Add": "Add",
+        "License is Duplicate": "License is Duplicate",
+        "License is created": "License is created"
     }
 }

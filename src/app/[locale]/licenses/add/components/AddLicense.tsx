@@ -1,0 +1,162 @@
+// Copyright (C) TOSHIBA CORPORATION, 2023. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2023. Part of the SW360 Frontend Project.
+
+// This program and the accompanying materials are made
+// available under the terms of the Eclipse Public License 2.0
+// which is available at https://www.eclipse.org/legal/epl-2.0/
+
+// SPDX-License-Identifier: EPL-2.0
+// License-Filename: LICENSE
+
+'use client'
+
+import { signOut, useSession } from 'next-auth/react'
+import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
+import { useCallback, useState } from 'react'
+import { Button, ToastContainer } from 'react-bootstrap'
+
+import LinkedObligations from '@/components/LinkedObligations/LinkedObligations'
+import LinkedObligationsDialog from '@/components/sw360/SearchObligations/LinkedObligationsDialog'
+import { ApiUtils } from '@/utils'
+import { PageButtonHeader, SideBar, ToastMessage } from 'next-sw360'
+import LicenseDetail from '../../../../../object-types/LicenseDetail'
+import LicensePayload from '../../../../../object-types/LicensePayload'
+import Obligation from '../../../../../object-types/Obligation'
+import ToastData from '../../../../../object-types/ToastData'
+import HttpStatus from '../../../../../object-types/enums/HttpStatus'
+import LicenseTabIds from '../../../../../object-types/enums/LicenseTabIds'
+import AddLicenseSummary from './AddLicenseSummary'
+
+export default function AddLicense() {
+    const t = useTranslations('default')
+    const { data: session, status } = useSession()
+    const [selectedTab, setSelectedTab] = useState<string>(LicenseTabIds.DETAILS)
+    const [obligationLinks, setObligationLinks] = useState<Obligation[]>([])
+    const [reRender, setReRender] = useState(false)
+    const handleReRender = () => {
+        setReRender(!reRender)
+    }
+    const [addObligationDiaglog, setAddObligationDiaglog] = useState(false)
+    const handleClickAddObligations = useCallback(() => setAddObligationDiaglog(true), [])
+
+    const router = useRouter()
+    const [licensePayload, setLicensePayload] = useState<LicensePayload>({
+        shortName: '',
+        fullName: '',
+        note: '',
+        OSIApproved: 'NA',
+        FSFLibre: 'NA',
+        obligationDatabaseIds: [],
+        text: '',
+        checked: false,
+        licenseTypeDatabaseId: '',
+    })
+
+    const tabList = [
+        {
+            id: LicenseTabIds.DETAILS,
+            name: 'License',
+        },
+        {
+            id: LicenseTabIds.OBLIGATIONS,
+            name: 'Linked Obligations',
+        },
+    ]
+
+    const [toastData, setToastData] = useState<ToastData>({
+        show: false,
+        type: '',
+        message: '',
+        contextual: '',
+    })
+
+    const alert = (show_data: boolean, status_type: string, message: string, contextual: string) => {
+        setToastData({
+            show: show_data,
+            type: status_type,
+            message: message,
+            contextual: contextual,
+        })
+    }
+
+    const submit = async () => {
+        const response = await ApiUtils.POST('licenses', licensePayload, session.user.access_token)
+        if (response.status == HttpStatus.CREATED) {
+            const data = (await response.json()) as LicenseDetail
+            alert(true, 'Success', t('License is created'), 'success')
+            router.push('/licenses/detail/' + data.shortName)
+        } else {
+            alert(true, 'Duplicate', t('License is Duplicate'), 'danger')
+        }
+    }
+
+    const headerButtons = {
+        'Create License': { link: '', type: 'primary', onClick: submit, name: t('Create License') },
+        Cancel: { link: '/licenses', type: 'secondary', name: t('Cancel') },
+    }
+
+    if (status === 'unauthenticated') {
+        signOut()
+    } else {
+        return (
+            <>
+                <div className='container' style={{ maxWidth: '98vw', marginTop: '10px' }}>
+                    <div className='row'>
+                        <div className='col-2 sidebar'>
+                            <SideBar selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabList={tabList} />
+                        </div>
+                        <div className='col'>
+                            <div className='row' style={{ marginBottom: '20px' }}>
+                                <PageButtonHeader buttons={headerButtons}>
+                                    {selectedTab === LicenseTabIds.OBLIGATIONS && (
+                                        <div
+                                            className='nav nav-pills justify-content-center bg-light font-weight-bold'
+                                            id='pills-tab'
+                                            role='tablist'
+                                        >
+                                            <Button onClick={handleClickAddObligations}>{t('Add Obligation')}</Button>
+                                        </div>
+                                    )}
+                                </PageButtonHeader>
+                            </div>
+                            <ToastContainer position='top-start'>
+                                <ToastMessage
+                                    show={toastData.show}
+                                    type={toastData.type}
+                                    message={toastData.message}
+                                    contextual={toastData.contextual}
+                                    onClose={() => setToastData({ ...toastData, show: false })}
+                                    setShowToast={setToastData}
+                                />
+                            </ToastContainer>
+                            <div className='row' hidden={selectedTab !== LicenseTabIds.DETAILS ? true : false}>
+                                <AddLicenseSummary
+                                    licensePayload={licensePayload}
+                                    setLicensePayload={setLicensePayload}
+                                />
+                            </div>
+                            <div className='row' hidden={selectedTab != LicenseTabIds.OBLIGATIONS ? true : false}>
+                                <LinkedObligationsDialog
+                                    show={addObligationDiaglog}
+                                    obligationLinks={obligationLinks}
+                                    setObligationLinks={setObligationLinks}
+                                    setShow={setAddObligationDiaglog}
+                                    onReRender={handleReRender}
+                                    licensePayload={licensePayload}
+                                    setLicensePayload={setLicensePayload}
+                                />
+                                <LinkedObligations
+                                    obligationLinks={obligationLinks}
+                                    setObligationLinks={setObligationLinks}
+                                    licensePayload={licensePayload}
+                                    setLicensePayload={setLicensePayload}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
+    }
+}

@@ -34,6 +34,7 @@ const SelectTableLinkedReleases = ({ releases, setLinkedReleases, linkedReleases
         }
         const releaseLinks: LinkedRelease[] = []
         linkedReleases.forEach((item: any) => {
+            console.log(item)
             const releaseLink: LinkedRelease = {
                 id: CommonUtils.getIdFromUrl(item._links.self.href),
                 name: item.name,

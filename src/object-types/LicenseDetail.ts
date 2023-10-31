@@ -19,8 +19,8 @@ export default interface LicenseDetail {
     externalIds?: {
         externalId?: string
     }
-    OSIApproved?: boolean
-    FSFLibre?: boolean
+    OSIApproved?: string
+    FSFLibre?: string
     obligations?: Array<Obligation>
     obligationDatabaseIds?: Array<string>
     text?: string

@@ -19,7 +19,9 @@ import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { notFound, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { Button } from 'react-bootstrap'
 import Detail from './Detail'
+import Obligations from './Obligations'
 import Text from './Text'
 
 interface Props {
@@ -106,6 +108,10 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
         return () => controller.abort()
     }, [params, session, licenseId])
 
+    const handleEditWhitelist = () => {
+        console.log('--handleEditWhitelist---')
+    }
+
     if (status === 'unauthenticated') {
         signOut()
     } else {
@@ -147,6 +153,15 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
                                             </a>
                                         </div>
                                     )}
+                                    {selectedTab === LicenseTabIds.OBLIGATIONS && (
+                                        <div
+                                            className='nav nav-pills justify-content-center bg-light font-weight-bold'
+                                            id='pills-tab'
+                                            role='tablist'
+                                        >
+                                            <Button onClick={handleEditWhitelist}>{t('Edit Whitelist')}</Button>
+                                        </div>
+                                    )}
                                 </PageButtonHeader>
                             </div>
                             <div className='row' hidden={selectedTab !== LicenseTabIds.DETAILS ? true : false}>
@@ -154,6 +169,9 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
                             </div>
                             <div className='row' hidden={selectedTab !== LicenseTabIds.TEXT ? true : false}>
                                 <Text license={license} />
+                            </div>
+                            <div className='row' hidden={selectedTab !== LicenseTabIds.OBLIGATIONS ? true : false}>
+                                <Obligations licenseId={licenseId} />
                             </div>
                             <div className='row' hidden={selectedTab != LicenseTabIds.CHANGE_LOG ? true : false}>
                                 <div className='col'>

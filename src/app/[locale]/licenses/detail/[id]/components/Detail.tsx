@@ -124,7 +124,7 @@ const Detail = ({ license, setLicense }: Props) => {
                         <td>{t('OSI Approved?')}:</td>
                         <td>
                             {' '}
-                            {license && license.OSIApproved == true ? (
+                            {license && license.OSIApproved == 'YES' ? (
                                 <span style={{ color: '#287d3c' }}>
                                     <FiCheckCircle /> {t('Yes')}
                                 </span>
@@ -139,7 +139,7 @@ const Detail = ({ license, setLicense }: Props) => {
                         <td>{t('FSF Free/Libre?')}:</td>
                         <td>
                             {' '}
-                            {license && license.FSFLibre == true ? (
+                            {license && license.FSFLibre == 'YES' ? (
                                 <span style={{ color: '#287d3c' }}>
                                     <FiCheckCircle /> {t('Yes')}
                                 </span>

@@ -7,18 +7,22 @@
 
 // SPDX-License-Identifier?: EPL-2.0
 // License-Filename?: LICENSE
+import Obligation from './Obligation'
 
-export default interface Obligation {
-    id?: string
-    type?: string
+export default interface LicensePayload {
+    shortName?: string
+    fullName?: string
+    externalLicenseLink?: string
+    note?: string
+    OSIApproved?: string
+    FSFLibre?: string
+    obligations?: Array<Obligation>
+    obligationDatabaseIds?: Array<string>
     text?: string
-    whitelist?: Array<string>
-    development?: string
-    distribution?: string
-    title?: string
-    obligationLevel?: string
-    obligationType?: string
-    node?: string
-    issetBitfield?: number
-    customPropertyToValue?: Map<string, string>
+    checked?: boolean
+    licenseType?: {
+        id: string
+        licenseType: string
+    }
+    licenseTypeDatabaseId?: string
 }
