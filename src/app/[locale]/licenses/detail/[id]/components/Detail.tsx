@@ -10,10 +10,11 @@
 
 'use client'
 import { HttpStatus, LicenseDetail, ToastData } from '@/object-types'
-import { SW360_API_URL } from '@/utils/env'
+import { ApiUtils } from '@/utils/index'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { ToastMessage } from 'next-sw360'
+import { useRouter } from 'next/navigation'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { Button, ToastContainer } from 'react-bootstrap'
 import { XCircle } from 'react-bootstrap-icons'
@@ -29,6 +30,7 @@ const Detail = ({ license, setLicense }: Props) => {
     const t = useTranslations('default')
     const [toggle, setToggle] = useState(false)
     const { data: session } = useSession()
+    const router = useRouter()
 
     const hanldeExternalLicenseLink = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLicense({
@@ -54,19 +56,14 @@ const Detail = ({ license, setLicense }: Props) => {
     }
 
     const updateExternalLicenseLink = async () => {
-        const url =
-            SW360_API_URL +
-            `/resource/api/licenses/${license.shortName}/externalLink/?externalLicenseLink=${license.externalLicenseLink}`
-        fetch(url, {
-            method: 'PATCH',
-            headers: {
-                Authorization: `Bearer ${session.user.access_token}`,
-            },
-        }).then((response) => {
-            if (response.status == HttpStatus.OK) {
-                alert(true, 'success', t('SUCCESS'), 'success')
-            }
-        })
+        const response = await ApiUtils.PATCH(`licenses/${license.shortName}`, license, session.user.access_token)
+        if (response.status == HttpStatus.OK) {
+            const data = (await response.json()) as LicenseDetail
+            alert(true, 'Success', t('Update External Link Success'), 'success')
+            router.push('/licenses/detail/' + data.shortName)
+        } else {
+            alert(true, 'Fail', t('Update External Link Failed'), 'danger')
+        }
     }
 
     return (

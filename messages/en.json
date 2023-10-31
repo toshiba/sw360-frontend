@@ -748,6 +748,8 @@
         "Select License Obligations to be added": "Select License Obligations to be added.",
         "Add": "Add",
         "License is Duplicate": "License is Duplicate",
-        "License is created": "License is created"
+        "License is created": "License is created",
+        "Update External Link Success": "Update External Link Success",
+        "Update External Link Failed": "Update External Link Failed"
     }
 }
