@@ -18,6 +18,7 @@ import { Spinner } from 'react-bootstrap'
 import { Check2Circle, XCircle } from 'react-bootstrap-icons'
 
 import { HttpStatus } from '@/object-types'
+import DownloadService from '@/services/download.service'
 import { ApiUtils, CommonUtils } from '@/utils'
 import { PageButtonHeader, QuickFilter, Table, _ } from 'next-sw360'
 
@@ -29,9 +30,18 @@ function LicensesPage() {
     const [licenseData, setLicenseData] = useState([])
     const { data: session, status } = useSession()
 
+    const handleExportLicense = () => {
+        DownloadService.download(`reports?reports?module=licenses`, session, `Licenses.xlsx`)
+    }
+
     const headerButtons = {
         'Add License': { link: '/licenses/add', type: 'primary', name: t('Add License') },
-        'Export Spreadsheet': { link: '/licenses/export', type: 'secondary', name: t('Export Spreadsheet') },
+        'Export Spreadsheet': {
+            link: '/licenses',
+            onClick: handleExportLicense,
+            type: 'secondary',
+            name: t('Export Spreadsheet'),
+        },
     }
 
     useEffect(() => {
