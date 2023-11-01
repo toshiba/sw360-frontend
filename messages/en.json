@@ -750,6 +750,8 @@
         "License is Duplicate": "License is Duplicate",
         "License is created": "License is created",
         "Update External Link Success": "Update External Link Success",
-        "Update External Link Failed": "Update External Link Failed"
+        "Update External Link Failed": "Update External Link Failed",
+        "Update License": "Update License",
+        "Delete License": "Delete License"
     }
 }

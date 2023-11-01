@@ -10,7 +10,7 @@
 
 'use client'
 import { useTranslations } from 'next-intl'
-import LicensePayload from '../../../../../object-types/LicensePayload'
+import LicensePayload from '../../../../../../object-types/LicensePayload'
 import styles from './LicenseDetails.module.css'
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
 }
 
-const AddLicenseText = ({ licensePayload, setLicensePayload }: Props) => {
+const EditLicenseText = ({ licensePayload, setLicensePayload }: Props) => {
     const t = useTranslations('default')
 
     const updateField = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -53,4 +53,4 @@ const AddLicenseText = ({ licensePayload, setLicensePayload }: Props) => {
     )
 }
 
-export default AddLicenseText
+export default EditLicenseText

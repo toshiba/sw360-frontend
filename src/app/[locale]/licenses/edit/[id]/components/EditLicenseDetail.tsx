@@ -14,8 +14,8 @@ import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { notFound, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import LicensePayload from '../../../../../object-types/LicensePayload'
-import HttpStatus from '../../../../../object-types/enums/HttpStatus'
+import LicensePayload from '../../../../../../object-types/LicensePayload'
+import HttpStatus from '../../../../../../object-types/enums/HttpStatus'
 import styles from './LicenseDetails.module.css'
 
 interface Props {
@@ -23,7 +23,7 @@ interface Props {
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
 }
 
-const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
+const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
     const t = useTranslations('default')
     const params = useSearchParams()
     const { data: session } = useSession()
@@ -110,6 +110,7 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                         />
                     </div>
                     <div className='col-lg-4'>
+                        {/* <SelectLicenseTypes licenseTypes={licenseTypes} value={licensePayload.licenseType.licenseType ?? ''} selectTypes={updateField} /> */}
                         <label htmlFor='licenseTypeDatabaseId' className='form-label fw-bold'>
                             {t('License Type')}{' '}
                         </label>
@@ -117,10 +118,9 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                             className='form-select'
                             aria-label='licenseTypeDatabaseId'
                             id='licenseTypeDatabaseId'
-                            required
                             name='licenseTypeDatabaseId'
                             onChange={updateField}
-                            // value={licensePayload.licenseType.licenseType ?? ''}
+                            defaultValue={licensePayload.licenseType?.licenseType ?? ''}
                         >
                             <option value=''>{t('No type selected')}</option>
                             {licenseTypes.map((item) => (
@@ -207,4 +207,4 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
     )
 }
 
-export default AddLicenseDetail
+export default EditLicenseDetail
