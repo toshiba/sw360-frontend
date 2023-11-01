@@ -14,18 +14,21 @@ import { HttpStatus, Obligation } from '@/object-types'
 import { ApiUtils } from '@/utils/index'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
-import { Table } from 'next-sw360'
+import { Table, _ } from 'next-sw360'
 import { notFound, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { Form } from 'react-bootstrap'
 
 interface Props {
-    licenseId: string
+    licenseId?: string
+    isEditWhitelist?: boolean
 }
 
-const Obligations = ({ licenseId }: Props) => {
+const Obligations = ({ licenseId, isEditWhitelist }: Props) => {
     const t = useTranslations('default')
     const { data: session } = useSession()
     const [data, setData] = useState([])
+    const [dataEditWhitelist, setDataEditWhitelist] = useState([])
     const params = useSearchParams()
 
     useEffect(() => {
@@ -42,14 +45,25 @@ const Obligations = ({ licenseId }: Props) => {
                 }
 
                 const license = await response.json()
-                const data = license.obligations.map((item: Obligation) => [
-                    item.id,
-                    item.title,
-                    item.obligationType,
-                    item.customPropertyToValue,
-                    item.text,
-                ])
+                const data = license.obligations
+                    .map((item: Obligation) => [
+                        item.id,
+                        item.title,
+                        item.obligationType,
+                        item.customPropertyToValue,
+                        item.text,
+                        item.whitelist,
+                    ])
+                    .filter((item: any) => item[5].length !== 0)
+
                 setData(data)
+                console.log(data)
+                const dataEditWhitelist = license.obligations.map((item: any) => [
+                    item,
+                    item.text,
+                    item.customPropertyToValue,
+                ])
+                setDataEditWhitelist(dataEditWhitelist)
             } catch (e) {
                 console.error(e)
             }
@@ -85,10 +99,66 @@ const Obligations = ({ licenseId }: Props) => {
         },
     ]
 
+    const handlerRadioButton = (item: string) => {
+        console.log(item)
+        // console.log(item)
+        // if (linkObligations.includes(item)) {
+        //     const index = linkObligations.indexOf(item)
+        //     linkObligations.splice(index, 1)
+        // } else {
+        //     linkObligations.push(item)
+        // }
+        // const linkObligation: Obligation[] = []
+        // linkObligations.forEach((item: any) => {
+        //     const obligationLink: Obligation = {
+        //         id: CommonUtils.getIdFromUrl(item._links.self.href),
+        //         title: item.title,
+        //         obligationType: item.obligationType,
+        //         text: item.text,
+        //     }
+        //     linkObligation.push(obligationLink)
+        // })
+        // setObligations(linkObligation)
+    }
+
+    const columnEditWhitelists = [
+        {
+            id: 'obligationId',
+            name: 'whitelist',
+            formatter: (item: string) =>
+                _(
+                    <Form.Check
+                        name='obligationId'
+                        type='checkbox'
+                        onClick={() => {
+                            handlerRadioButton(item)
+                        }}
+                    ></Form.Check>
+                ),
+            width: '40%',
+        },
+        {
+            id: 'text',
+            name: 'obligation',
+            sort: true,
+            width: '30%',
+        },
+        {
+            id: 'Further properties',
+            name: 'Further properties',
+            sort: true,
+            width: '10%',
+        },
+    ]
+
     return (
         <>
             <div className='row'>
-                <Table data={data} search={true} columns={columns} selector={true} />
+                {isEditWhitelist ? (
+                    <Table data={dataEditWhitelist} search={true} columns={columnEditWhitelists} selector={true} />
+                ) : (
+                    <Table data={data} search={true} columns={columns} selector={true} />
+                )}
             </div>
         </>
     )

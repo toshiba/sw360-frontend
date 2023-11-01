@@ -54,9 +54,9 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
     const [changeLogIndex, setChangeLogIndex] = useState(-1)
     const [license, setLicenseDetail] = useState<LicenseDetail>(undefined)
     const [changeLogList, setChangeLogList] = useState<Array<Changelogs>>([])
+    const [isEditWhitelist, setIsEditWhitelist] = useState(false)
     const { data: session, status } = useSession()
     const params = useSearchParams()
-
     const headerButtons = {
         'Edit License': { link: `/licenses/edit/${licenseId}`, type: 'primary', name: t('Edit License') },
     }
@@ -109,7 +109,14 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
     }, [params, session, licenseId])
 
     const handleEditWhitelist = () => {
-        console.log('--handleEditWhitelist---')
+        setIsEditWhitelist(true)
+    }
+    const handleCancel = () => {
+        setIsEditWhitelist(false)
+    }
+
+    const handleUpdateWhitelist = () => {
+        console.log('Update whitelist')
     }
 
     if (status === 'unauthenticated') {
@@ -159,7 +166,16 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
                                             id='pills-tab'
                                             role='tablist'
                                         >
-                                            <Button onClick={handleEditWhitelist}>{t('Edit Whitelist')}</Button>
+                                            {isEditWhitelist ? (
+                                                <>
+                                                    <Button onClick={handleUpdateWhitelist}>
+                                                        {t('Update Whitelist')}
+                                                    </Button>
+                                                    <Button onClick={handleCancel}>{t('Cancel')}</Button>
+                                                </>
+                                            ) : (
+                                                <Button onClick={handleEditWhitelist}>{t('Edit Whitelist')}</Button>
+                                            )}
                                         </div>
                                     )}
                                 </PageButtonHeader>
@@ -171,7 +187,7 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
                                 <Text license={license} />
                             </div>
                             <div className='row' hidden={selectedTab !== LicenseTabIds.OBLIGATIONS ? true : false}>
-                                <Obligations licenseId={licenseId} />
+                                <Obligations licenseId={licenseId} isEditWhitelist={isEditWhitelist} />
                             </div>
                             <div className='row' hidden={selectedTab != LicenseTabIds.CHANGE_LOG ? true : false}>
                                 <div className='col'>
