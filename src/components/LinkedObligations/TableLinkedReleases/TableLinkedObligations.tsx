@@ -12,6 +12,7 @@ import React from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 
 import { Obligation } from '@/object-types'
+import CommonUtils from '@/utils/common.utils'
 import styles from './TableLinkedObligations.module.css'
 
 interface Props {
@@ -29,8 +30,8 @@ export default function TableLinkedObligations({
         const list: Obligation[] = [...obligationLinks]
         list.splice(index, 1)
         const obligationIds: string[] = []
-        list.forEach((item) => {
-            obligationIds.push(item.id)
+        list.forEach((item: any) => {
+            obligationIds.push(CommonUtils.getIdFromUrl(item['_links'].self.href))
         })
         setObligationLinks(list)
         setObligationIdToLicensePayLoad(obligationIds)

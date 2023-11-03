@@ -17,7 +17,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 
 import { HttpStatus, Obligation } from '@/object-types'
-import { ApiUtils } from '@/utils'
+import { ApiUtils, CommonUtils } from '@/utils'
 import LicensePayload from '../../../object-types/LicensePayload'
 import SelectTableLinkedObligations from './SelectTableLinkedObligations'
 
@@ -92,15 +92,19 @@ const LinkedObligationsDialog = ({
         linkedObligationsResponse.forEach((linkedObligations: Obligation) => {
             obligationLinks.push(linkedObligations)
         })
+        obligationLinks = obligationLinks.filter((v, index, a) => a.findIndex((v2) => v2.title === v.title) === index)
         const obligationIds: string[] = []
-        obligationLinks.forEach((item) => {
-            obligationIds.push(item.id)
+        obligationLinks.forEach((item: any) => {
+            if (CommonUtils.isNullEmptyOrUndefinedString(item.id)) {
+                obligationIds.push(CommonUtils.getIdFromUrl(item['_links'].self.href))
+            } else {
+                obligationIds.push(item.id)
+            }
         })
         setLicensePayload({
             ...licensePayload,
             obligationDatabaseIds: obligationIds,
         })
-        obligationLinks = obligationLinks.filter((v, index, a) => a.findIndex((v2) => v2.id === v.id) === index)
         setObligationLinks(obligationLinks)
         setShow(!show)
         onReRender()

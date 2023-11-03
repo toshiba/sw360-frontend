@@ -133,6 +133,7 @@ export default function EditLicense({ licenseId }: Props) {
 
     const submit = async () => {
         console.log(licensePayload)
+        console.log(JSON.stringify(licensePayload))
         const response = await ApiUtils.PATCH(`licenses/${licenseId}`, licensePayload, session.user.access_token)
         if (response.status == HttpStatus.OK) {
             const data = (await response.json()) as LicensePayload
@@ -153,7 +154,7 @@ export default function EditLicense({ licenseId }: Props) {
         signOut()
     } else {
         return (
-            <>
+            licensePayload && (
                 <div className='container' style={{ maxWidth: '98vw', marginTop: '10px' }}>
                     <div className='row'>
                         <div className='col-2 sidebar'>
@@ -210,7 +211,7 @@ export default function EditLicense({ licenseId }: Props) {
                         </div>
                     </div>
                 </div>
-            </>
+            )
         )
     }
 }
