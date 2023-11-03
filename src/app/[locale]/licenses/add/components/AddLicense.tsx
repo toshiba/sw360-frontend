@@ -18,14 +18,9 @@ import { Button, ToastContainer } from 'react-bootstrap'
 
 import LinkedObligations from '@/components/LinkedObligations/LinkedObligations'
 import LinkedObligationsDialog from '@/components/sw360/SearchObligations/LinkedObligationsDialog'
+import { HttpStatus, LicenseDetail, LicensePayload, LicenseTabIds, Obligation, ToastData } from '@/object-types'
 import { ApiUtils } from '@/utils'
 import { PageButtonHeader, SideBar, ToastMessage } from 'next-sw360'
-import LicenseDetail from '../../../../../object-types/LicenseDetail'
-import LicensePayload from '../../../../../object-types/LicensePayload'
-import Obligation from '../../../../../object-types/Obligation'
-import ToastData from '../../../../../object-types/ToastData'
-import HttpStatus from '../../../../../object-types/enums/HttpStatus'
-import LicenseTabIds from '../../../../../object-types/enums/LicenseTabIds'
 import AddLicenseSummary from './AddLicenseSummary'
 
 export default function AddLicense() {

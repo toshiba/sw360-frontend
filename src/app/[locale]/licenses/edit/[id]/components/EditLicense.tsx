@@ -18,13 +18,9 @@ import { Button, ToastContainer } from 'react-bootstrap'
 
 import LinkedObligations from '@/components/LinkedObligations/LinkedObligations'
 import LinkedObligationsDialog from '@/components/sw360/SearchObligations/LinkedObligationsDialog'
+import { HttpStatus, LicensePayload, LicenseTabIds, Obligation, ToastData } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils'
 import { PageButtonHeader, SideBar, ToastMessage } from 'next-sw360'
-import LicensePayload from '../../../../../../object-types/LicensePayload'
-import Obligation from '../../../../../../object-types/Obligation'
-import ToastData from '../../../../../../object-types/ToastData'
-import HttpStatus from '../../../../../../object-types/enums/HttpStatus'
-import LicenseTabIds from '../../../../../../object-types/enums/LicenseTabIds'
 import EditLicenseSummary from './EditLicenseSummary'
 
 interface Props {
@@ -138,7 +134,7 @@ export default function EditLicense({ licenseId }: Props) {
     const submit = async () => {
         console.log(licensePayload)
         const response = await ApiUtils.PATCH(`licenses/${licenseId}`, licensePayload, session.user.access_token)
-        if (response.status == HttpStatus.CREATED) {
+        if (response.status == HttpStatus.OK) {
             const data = (await response.json()) as LicensePayload
             alert(true, 'Success', t('License is created'), 'success')
             router.push('/licenses/detail/' + data.shortName)

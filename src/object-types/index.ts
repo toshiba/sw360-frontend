@@ -37,6 +37,7 @@ import FossologyProcessInfo from './FossologyProcessInfo'
 import FossologyProcessStatus from './FossologyProcessStatus'
 import InputKeyValue from './InputKeyValue'
 import LicenseDetail from './LicenseDetail'
+import LicensePayload from './LicensePayload'
 import Licenses from './Licenses'
 import LicensesType from './LicensesType'
 import LinkedAttachments from './LinkedAttachments'
@@ -98,6 +99,7 @@ export type {
     FossologyProcessStatus,
     InputKeyValue,
     LicenseDetail,
+    LicensePayload,
     Licenses,
     LicensesType,
     LinkedAttachments,

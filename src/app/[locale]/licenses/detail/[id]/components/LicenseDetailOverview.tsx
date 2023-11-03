@@ -13,7 +13,7 @@
 import ChangeLogDetail from '@/components/ChangeLog/ChangeLogDetail/ChangeLogDetail'
 import ChangeLogList from '@/components/ChangeLog/ChangeLogList/ChangeLogList'
 import { PageButtonHeader, SideBar } from '@/components/sw360'
-import { Changelogs, HttpStatus, LicenseDetail, LicenseTabIds } from '@/object-types'
+import { Changelogs, HttpStatus, LicensePayload, LicenseTabIds } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
@@ -52,7 +52,7 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
     const [selectedTab, setSelectedTab] = useState<string>(LicenseTabIds.DETAILS)
     const [changesLogTab, setChangesLogTab] = useState('list-change')
     const [changeLogIndex, setChangeLogIndex] = useState(-1)
-    const [license, setLicenseDetail] = useState<LicenseDetail>(undefined)
+    const [license, setLicenseDetail] = useState<LicensePayload>(undefined)
     const [changeLogList, setChangeLogList] = useState<Array<Changelogs>>([])
     const [isEditWhitelist, setIsEditWhitelist] = useState(false)
     const { data: session, status } = useSession()

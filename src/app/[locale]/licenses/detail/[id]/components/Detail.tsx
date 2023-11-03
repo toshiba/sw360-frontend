@@ -9,7 +9,7 @@
 // License-Filename: LICENSE
 
 'use client'
-import { HttpStatus, LicenseDetail, ToastData } from '@/object-types'
+import { HttpStatus, LicenseDetail, LicensePayload, ToastData } from '@/object-types'
 import { ApiUtils } from '@/utils/index'
 import { useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
@@ -22,8 +22,8 @@ import { FiCheckCircle } from 'react-icons/fi'
 import styles from '../detail.module.css'
 
 interface Props {
-    license: LicenseDetail
-    setLicense: Dispatch<SetStateAction<LicenseDetail>>
+    license: LicensePayload
+    setLicense: Dispatch<SetStateAction<LicensePayload>>
 }
 
 const Detail = ({ license, setLicense }: Props) => {
@@ -115,7 +115,7 @@ const Detail = ({ license, setLicense }: Props) => {
                     </tr>
                     <tr>
                         <td>{t('Type')}:</td>
-                        <td>{license.type ?? ''}</td>
+                        <td>{license.licenseType.licenseType ?? ''}</td>
                     </tr>
                     <tr>
                         <td>{t('OSI Approved?')}:</td>
