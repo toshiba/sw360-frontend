@@ -18,18 +18,54 @@ import { Table, _ } from 'next-sw360'
 import { notFound, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Form } from 'react-bootstrap'
-
+import styles from '../detail.module.css'
 interface Props {
     licenseId?: string
     isEditWhitelist?: boolean
+    whitelist?: Map<string, boolean>
 }
 
-const Obligations = ({ licenseId, isEditWhitelist }: Props) => {
+const Obligations = ({ licenseId, isEditWhitelist, whitelist }: Props) => {
     const t = useTranslations('default')
     const { data: session } = useSession()
     const [data, setData] = useState([])
     const [dataEditWhitelist, setDataEditWhitelist] = useState([])
     const params = useSearchParams()
+
+    const buildAttachmentDetail = (item: any) => {
+        return (event: React.MouseEvent<HTMLElement>) => {
+            if ((event.target as HTMLElement).className == styles.expand) {
+                ;(event.target as HTMLElement).className = styles.collapse
+            } else {
+                ;(event.target as HTMLElement).className = styles.expand
+            }
+
+            const attachmentDetail = document.getElementById(item.title)
+            if (!attachmentDetail) {
+                const parent = (event.target as HTMLElement).parentElement.parentElement.parentElement
+                const html = `<td colspan="10">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                            <td>${item.text ?? ''}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>`
+                const tr = document.createElement('tr')
+                tr.id = item.title
+                tr.innerHTML = html
+
+                parent.parentNode.insertBefore(tr, parent.nextSibling)
+            } else {
+                if (attachmentDetail.hidden == true) {
+                    attachmentDetail.hidden = false
+                } else {
+                    attachmentDetail.hidden = true
+                }
+            }
+        }
+    }
 
     useEffect(() => {
         const controller = new AbortController()
@@ -47,7 +83,7 @@ const Obligations = ({ licenseId, isEditWhitelist }: Props) => {
                 const license = await response.json()
                 const data = license.obligations
                     .map((item: Obligation) => [
-                        item.id,
+                        item,
                         item.title,
                         item.obligationType,
                         item.customPropertyToValue,
@@ -55,11 +91,10 @@ const Obligations = ({ licenseId, isEditWhitelist }: Props) => {
                         item.whitelist,
                     ])
                     .filter((item: any) => item[5].length !== 0)
-
-                setData(data)
                 console.log(data)
-                const dataEditWhitelist = license.obligations.map((item: any) => [
-                    item,
+                setData(data)
+                const dataEditWhitelist = license._embedded['sw360:obligations'].map((item: any) => [
+                    item._links.self.href.split('/').pop(),
                     item.text,
                     item.customPropertyToValue,
                 ])
@@ -73,9 +108,11 @@ const Obligations = ({ licenseId, isEditWhitelist }: Props) => {
 
     const columns = [
         {
-            id: '',
+            id: 'check',
             name: '',
-            sort: true,
+            formatter: (item: any) => _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
+            sort: false,
+            width: '5%',
         },
         {
             id: 'obligation',
@@ -92,33 +129,52 @@ const Obligations = ({ licenseId, isEditWhitelist }: Props) => {
             name: t('Further properties'),
             sort: true,
         },
-        {
-            id: 'text',
-            name: t('Text'),
-            sort: true,
-        },
+        // {
+        //     id: 'text',
+        //     name: t('Text'),
+        //     sort: true,
+        // },
     ]
 
-    const handlerRadioButton = (item: string) => {
-        console.log(item)
-        // console.log(item)
-        // if (linkObligations.includes(item)) {
-        //     const index = linkObligations.indexOf(item)
-        //     linkObligations.splice(index, 1)
+    const handlerRadioButton = (id: string) => {
+        const obligationIds: Array<string> = []
+
+        dataEditWhitelist.forEach((item: any) => {
+            obligationIds.push(item[0])
+        })
+
+        obligationIds.forEach((id: string) => {
+            whitelist.set(id, false)
+        })
+
+        whitelist.forEach((value: boolean, key: string) => {
+            if (key === id && value === false) {
+                whitelist.set(key, true)
+            }
+        })
+
+        // console.log("--obligationIds---1111111111");
+        // console.log(obligationIds);
+
+        // if (!obligationIds.includes(id)) {
+        //     const index = obligationIds.indexOf(id)
+        //     obligationIds.splice(index, 1)
         // } else {
-        //     linkObligations.push(item)
+        //     obligationIds.push(id)
         // }
-        // const linkObligation: Obligation[] = []
-        // linkObligations.forEach((item: any) => {
-        //     const obligationLink: Obligation = {
-        //         id: CommonUtils.getIdFromUrl(item._links.self.href),
-        //         title: item.title,
-        //         obligationType: item.obligationType,
-        //         text: item.text,
+        // console.log("--obligationIds---22222222222222222");
+        // console.log(obligationIds);
+        // console.log(dataEditWhitelist)
+        // console.log(id)
+        // // const obligationIds = new Map<string, boolean>()
+        // dataEditWhitelist.forEach((item: any) => {
+        //     console.log(item)
+        //     if(item[0] == id) {
+        //         whitelist.set(id, true);
         //     }
-        //     linkObligation.push(obligationLink)
         // })
-        // setObligations(linkObligation)
+        // console.log(obligationIds)
+        // setWhitelist(obligationIds);
     }
 
     const columnEditWhitelists = [
@@ -152,15 +208,14 @@ const Obligations = ({ licenseId, isEditWhitelist }: Props) => {
     ]
 
     return (
-        <>
-            <div className='row'>
-                {isEditWhitelist ? (
-                    <Table data={dataEditWhitelist} search={true} columns={columnEditWhitelists} selector={true} />
-                ) : (
-                    <Table data={data} search={true} columns={columns} selector={true} />
-                )}
-            </div>
-        </>
+        <div className='row'>
+            {isEditWhitelist ? (
+                // <EditWhitelist licenseId={licenseId} />
+                <Table data={dataEditWhitelist} search={true} columns={columnEditWhitelists} selector={true} />
+            ) : (
+                <Table data={data} search={true} columns={columns} selector={true} />
+            )}
+        </div>
     )
 }
 

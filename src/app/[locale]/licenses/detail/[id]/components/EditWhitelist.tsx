@@ -13,26 +13,17 @@
 import { HttpStatus, Obligation } from '@/object-types'
 import { ApiUtils } from '@/utils/index'
 import { signOut, useSession } from 'next-auth/react'
-import { useTranslations } from 'next-intl'
-import { Table, _ } from 'next-sw360'
 import { notFound, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Form } from 'react-bootstrap'
 
 interface Props {
     licenseId: string
 }
 
 const EditWhitelist = ({ licenseId }: Props) => {
-    const t = useTranslations('default')
     const { data: session } = useSession()
     const [data, setData] = useState([])
     const params = useSearchParams()
-
-    const handlerCheckBoxButton = (item: any) => {
-        console.log('handlerCheckBoxButton')
-        console.log(item)
-    }
 
     useEffect(() => {
         const controller = new AbortController()
@@ -48,14 +39,18 @@ const EditWhitelist = ({ licenseId }: Props) => {
                 }
 
                 const license = await response.json()
-                const data = license.obligationDatabaseIds.map((item: Obligation) => [
-                    item.id,
-                    item.title,
-                    item.obligationType,
-                    item.customPropertyToValue,
-                    item.text,
-                ])
-                setData(data)
+                const dataObligations: Array<Obligation> = []
+                const data = license._embedded['sw360:obligations'].forEach((item: any) => {
+                    const obligation: Obligation = {
+                        id: item._links.self.href.split('/').pop(),
+                        text: item.text,
+                        title: item.title,
+                    }
+                    dataObligations.push(obligation)
+                })
+
+                setData(dataObligations)
+                console.log(data)
             } catch (e) {
                 console.error(e)
             }
@@ -63,31 +58,31 @@ const EditWhitelist = ({ licenseId }: Props) => {
         return () => controller.abort()
     }, [params, session, licenseId])
 
-    const columns = [
-        {
-            id: 'id',
-            name: 'Whitelist',
-            formatter: (item: any) =>
-                _(<Form.Check type='radio' name='VendorId' onChange={() => handlerCheckBoxButton(item)}></Form.Check>),
-        },
-        {
-            id: 'text',
-            name: t('Obligation'),
-            sort: true,
-        },
-        {
-            id: 'furtherProperties',
-            name: t('Further properties'),
-            sort: true,
-        },
-    ]
+    const updateFieldChecked = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log('------updateFieldChecked-------' + e.target.checked)
+    }
 
     return (
-        <>
-            <div className='row'>
-                <Table data={data} search={true} columns={columns} selector={true} />
-            </div>
-        </>
+        <div className='row'>
+            {data.map((item: Obligation, index: number) => {
+                return (
+                    <div key={index}>
+                        <div>
+                            <input
+                                name='ObligationId'
+                                type='checkbox'
+                                // checked={item ?? false}
+                                onChange={updateFieldChecked}
+                                placeholder='Enter Comment'
+                            />
+                            <label>{item.text ?? ''}</label>
+                            <label>{item.customPropertyToValue ?? ''}</label>
+                        </div>
+                        <hr />
+                    </div>
+                )
+            })}
+        </div>
     )
 }
 

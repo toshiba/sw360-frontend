@@ -16,9 +16,8 @@ import { notFound, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 
-import { HttpStatus, Obligation } from '@/object-types'
+import { HttpStatus, LicensePayload, Obligation } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils'
-import LicensePayload from '../../../object-types/LicensePayload'
 import SelectTableLinkedObligations from './SelectTableLinkedObligations'
 
 interface Props {
