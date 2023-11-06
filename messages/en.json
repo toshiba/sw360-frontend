@@ -754,6 +754,7 @@
         "Update License": "Update License",
         "Delete License": "Delete License",
         "Update Whitelist": "Update Whitelist",
-        "License updated successfully!": "License updated successfully!"
+        "License updated successfully!": "License updated successfully!",
+        "License updated failed!": "License updated failed!"
     }
 }

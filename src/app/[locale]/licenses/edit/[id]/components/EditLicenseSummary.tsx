@@ -10,23 +10,20 @@
 
 'use client'
 
-import LicensePayload from '../../../../../../object-types/LicensePayload'
+import { LicensePayload } from '@/object-types'
 import EditLicenseDetail from './EditLicenseDetail'
 import EditLicenseText from './EditLicenseText'
 
 interface Props {
-    licenseId?: string
     licensePayload?: LicensePayload
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
 }
 
 export default function EditLicenseSummary({ licensePayload, setLicensePayload }: Props) {
     return (
-        <>
-            <div className='col' style={{ padding: '0px 12px' }}>
-                <EditLicenseDetail licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
-                <EditLicenseText licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
-            </div>
-        </>
+        <div className='col' style={{ padding: '0px 12px' }}>
+            <EditLicenseDetail licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
+            <EditLicenseText licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
+        </div>
     )
 }

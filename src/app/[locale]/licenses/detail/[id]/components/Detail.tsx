@@ -115,7 +115,7 @@ const Detail = ({ license, setLicense }: Props) => {
                     </tr>
                     <tr>
                         <td>{t('Type')}:</td>
-                        <td>{license.licenseType.licenseType ?? ''}</td>
+                        <td>{license.licenseType?.licenseType ?? ''}</td>
                     </tr>
                     <tr>
                         <td>{t('OSI Approved?')}:</td>

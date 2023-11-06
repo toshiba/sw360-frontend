@@ -18,7 +18,7 @@ import { Button, ToastContainer } from 'react-bootstrap'
 
 import LinkedObligations from '@/components/LinkedObligations/LinkedObligations'
 import LinkedObligationsDialog from '@/components/sw360/SearchObligations/LinkedObligationsDialog'
-import { HttpStatus, LicenseDetail, LicensePayload, LicenseTabIds, Obligation, ToastData } from '@/object-types'
+import { HttpStatus, LicenseDetail, LicensePayload, LicenseTabIds, ToastData } from '@/object-types'
 import { ApiUtils } from '@/utils'
 import { PageButtonHeader, SideBar, ToastMessage } from 'next-sw360'
 import AddLicenseSummary from './AddLicenseSummary'
@@ -27,7 +27,7 @@ export default function AddLicense() {
     const t = useTranslations('default')
     const { data: session, status } = useSession()
     const [selectedTab, setSelectedTab] = useState<string>(LicenseTabIds.DETAILS)
-    const [obligationLinks, setObligationLinks] = useState<Obligation[]>([])
+    const [data, setData] = useState([])
     const [reRender, setReRender] = useState(false)
     const handleReRender = () => {
         setReRender(!reRender)
@@ -130,16 +130,16 @@ export default function AddLicense() {
                         <div className='row' hidden={selectedTab != LicenseTabIds.OBLIGATIONS ? true : false}>
                             <LinkedObligationsDialog
                                 show={addObligationDiaglog}
-                                obligationLinks={obligationLinks}
-                                setObligationLinks={setObligationLinks}
+                                data={data}
+                                setData={setData}
                                 setShow={setAddObligationDiaglog}
                                 onReRender={handleReRender}
                                 licensePayload={licensePayload}
                                 setLicensePayload={setLicensePayload}
                             />
                             <LinkedObligations
-                                obligationLinks={obligationLinks}
-                                setObligationLinks={setObligationLinks}
+                                data={data}
+                                setData={setData}
                                 licensePayload={licensePayload}
                                 setLicensePayload={setLicensePayload}
                             />

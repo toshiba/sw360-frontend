@@ -134,11 +134,6 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
             name: t('Further properties'),
             sort: true,
         },
-        // {
-        //     id: 'text',
-        //     name: t('Text'),
-        //     sort: true,
-        // },
     ]
 
     const handlerRadioButton = (item: any) => {

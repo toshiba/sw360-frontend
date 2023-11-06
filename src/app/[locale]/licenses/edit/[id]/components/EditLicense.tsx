@@ -33,8 +33,6 @@ export default function EditLicense({ licenseId }: Props) {
     const [selectedTab, setSelectedTab] = useState<string>(LicenseTabIds.DETAILS)
     const [data, setData] = useState([])
     const [reRender, setReRender] = useState(false)
-    // const [license, setLicense] = useState<LicensePayload>()
-    // const [licenseTypes, setLicenseTypes] = useState([])
     const params = useSearchParams()
     const handleReRender = () => {
         setReRender(!reRender)
@@ -53,10 +51,6 @@ export default function EditLicense({ licenseId }: Props) {
         text: '',
         checked: false,
         licenseTypeDatabaseId: '',
-        licenseType: {
-            id: '',
-            licenseType: '',
-        },
     })
 
     useEffect(() => {
@@ -88,20 +82,6 @@ export default function EditLicense({ licenseId }: Props) {
                 console.error(e)
             }
         })()
-        // ;(async () => {
-        //     try {
-        //         const response = await ApiUtils.GET(`licenseTypes`, session.user.access_token, signal)
-        //         if (response.status === HttpStatus.UNAUTHORIZED) {
-        //             return signOut()
-        //         } else if (response.status !== HttpStatus.OK) {
-        //             return notFound()
-        //         }
-        //         const licenses = await response.json()
-        //         setLicenseTypes(licenses._embedded['sw360:licenseTypes'])
-        //     } catch (e) {
-        //         console.error(e)
-        //     }
-        // })()
         return () => controller.abort()
     }, [params, session, licenseId])
 
@@ -133,15 +113,13 @@ export default function EditLicense({ licenseId }: Props) {
     }
 
     const submit = async () => {
-        console.log(licensePayload)
-        console.log(JSON.stringify(licensePayload))
         const response = await ApiUtils.PATCH(`licenses/${licenseId}`, licensePayload, session.user.access_token)
         if (response.status == HttpStatus.OK) {
             const data = (await response.json()) as LicensePayload
-            alert(true, 'Success', t('License is created'), 'success')
+            alert(true, 'Success', t('License updated successfully!'), 'success')
             router.push('/licenses/detail/' + data.shortName)
         } else {
-            alert(true, 'Duplicate', t('License is Duplicate'), 'danger')
+            alert(true, 'Failed', t('License updated failed!'), 'danger')
         }
     }
 
@@ -187,7 +165,6 @@ export default function EditLicense({ licenseId }: Props) {
                             </ToastContainer>
                             <div className='row' hidden={selectedTab !== LicenseTabIds.DETAILS ? true : false}>
                                 <EditLicenseSummary
-                                    licenseId={licenseId}
                                     licensePayload={licensePayload}
                                     setLicensePayload={setLicensePayload}
                                 />
