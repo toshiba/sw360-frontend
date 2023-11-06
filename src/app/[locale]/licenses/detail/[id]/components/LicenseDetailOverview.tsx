@@ -12,14 +12,14 @@
 
 import ChangeLogDetail from '@/components/ChangeLog/ChangeLogDetail/ChangeLogDetail'
 import ChangeLogList from '@/components/ChangeLog/ChangeLogList/ChangeLogList'
-import { PageButtonHeader, SideBar } from '@/components/sw360'
-import { Changelogs, HttpStatus, LicensePayload, LicenseTabIds } from '@/object-types'
+import { PageButtonHeader, SideBar, ToastMessage } from '@/components/sw360'
+import { Changelogs, HttpStatus, LicensePayload, LicenseTabIds, ToastData } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { notFound, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, ToastContainer } from 'react-bootstrap'
 import Detail from './Detail'
 import Obligations from './Obligations'
 import Text from './Text'
@@ -55,6 +55,7 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
     const [license, setLicenseDetail] = useState<LicensePayload>(undefined)
     const [changeLogList, setChangeLogList] = useState<Array<Changelogs>>([])
     const [isEditWhitelist, setIsEditWhitelist] = useState(false)
+    const [whitelist, setWhitelist] = useState<Map<string, boolean>>()
     const { data: session, status } = useSession()
     const params = useSearchParams()
     const headerButtons = {
@@ -115,8 +116,35 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
         setIsEditWhitelist(false)
     }
 
-    const handleUpdateWhitelist = () => {
-        console.log('Update whitelist')
+    const [toastData, setToastData] = useState<ToastData>({
+        show: false,
+        type: '',
+        message: '',
+        contextual: '',
+    })
+
+    const alert = (show_data: boolean, status_type: string, message: string, contextual: string) => {
+        setToastData({
+            show: show_data,
+            type: status_type,
+            message: message,
+            contextual: contextual,
+        })
+    }
+
+    const handleUpdateWhitelist = async () => {
+        const whitelistObj = Object.fromEntries(whitelist)
+        const response = await ApiUtils.PATCH(
+            `licenses/${licenseId}/whitelist`,
+            whitelistObj,
+            session.user.access_token
+        )
+        if (response.status == HttpStatus.OK) {
+            alert(true, 'Success', t('License updated successfully!'), 'success')
+            window.location.reload()
+        } else {
+            alert(true, 'Failed', t('License updated failed!'), 'danger')
+        }
     }
 
     if (status === 'unauthenticated') {
@@ -126,6 +154,16 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
             license && (
                 <div className='container' style={{ maxWidth: '98vw', marginTop: '10px' }}>
                     <div className='row'>
+                        <ToastContainer position='top-start'>
+                            <ToastMessage
+                                show={toastData.show}
+                                type={toastData.type}
+                                message={toastData.message}
+                                contextual={toastData.contextual}
+                                onClose={() => setToastData({ ...toastData, show: false })}
+                                setShowToast={setToastData}
+                            />
+                        </ToastContainer>
                         <div className='col-2 sidebar'>
                             <SideBar selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabList={tabList} />
                         </div>
@@ -187,7 +225,12 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
                                 <Text license={license} />
                             </div>
                             <div className='row' hidden={selectedTab !== LicenseTabIds.OBLIGATIONS ? true : false}>
-                                <Obligations licenseId={licenseId} isEditWhitelist={isEditWhitelist} />
+                                <Obligations
+                                    licenseId={licenseId}
+                                    isEditWhitelist={isEditWhitelist}
+                                    whitelist={whitelist}
+                                    setWhitelist={setWhitelist}
+                                />
                             </div>
                             <div className='row' hidden={selectedTab != LicenseTabIds.CHANGE_LOG ? true : false}>
                                 <div className='col'>

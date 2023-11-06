@@ -753,6 +753,7 @@
         "Update External Link Failed": "Update External Link Failed",
         "Update License": "Update License",
         "Delete License": "Delete License",
-        "Update Whitelist": "Update Whitelist"
+        "Update Whitelist": "Update Whitelist",
+        "License updated successfully!": "License updated successfully!"
     }
 }

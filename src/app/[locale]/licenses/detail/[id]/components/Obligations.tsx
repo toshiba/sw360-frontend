@@ -11,7 +11,7 @@
 'use client'
 
 import { HttpStatus, Obligation } from '@/object-types'
-import { ApiUtils } from '@/utils/index'
+import { ApiUtils, CommonUtils } from '@/utils/index'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { Table, _ } from 'next-sw360'
@@ -22,10 +22,11 @@ import styles from '../detail.module.css'
 interface Props {
     licenseId?: string
     isEditWhitelist?: boolean
-    whitelist?: Map<string, boolean>
+    whitelist: Map<string, boolean>
+    setWhitelist: React.Dispatch<React.SetStateAction<Map<string, boolean>>>
 }
 
-const Obligations = ({ licenseId, isEditWhitelist, whitelist }: Props) => {
+const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Props) => {
     const t = useTranslations('default')
     const { data: session } = useSession()
     const [data, setData] = useState([])
@@ -81,7 +82,7 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist }: Props) => {
                 }
 
                 const license = await response.json()
-                const data = license.obligations
+                const data = license._embedded['sw360:obligations']
                     .map((item: Obligation) => [
                         item,
                         item.title,
@@ -91,9 +92,14 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist }: Props) => {
                         item.whitelist,
                     ])
                     .filter((item: any) => item[5].length !== 0)
+                const whitelist = new Map<string, boolean>()
+                data.forEach((element: any) => {
+                    whitelist.set(CommonUtils.getIdFromUrl(element[0]._links.self.href), true)
+                })
+                setWhitelist(whitelist)
                 setData(data)
                 const dataEditWhitelist = license._embedded['sw360:obligations'].map((item: any) => [
-                    item._links.self.href.split('/').pop(),
+                    item,
                     item.text,
                     item.customPropertyToValue,
                 ])
@@ -135,56 +141,26 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist }: Props) => {
         // },
     ]
 
-    const handlerRadioButton = (id: string) => {
-        const obligationIds: Array<string> = []
-
-        dataEditWhitelist.forEach((item: any) => {
-            obligationIds.push(item[0])
-        })
-
-        obligationIds.forEach((id: string) => {
+    const handlerRadioButton = (item: any) => {
+        const id: string = CommonUtils.getIdFromUrl(item._links.self.href)
+        if (whitelist.has(id)) {
             whitelist.set(id, false)
-        })
-
-        whitelist.forEach((value: boolean, key: string) => {
-            if (key === id && value === false) {
-                whitelist.set(key, true)
-            }
-        })
-
-        // console.log("--obligationIds---1111111111");
-        // console.log(obligationIds);
-
-        // if (!obligationIds.includes(id)) {
-        //     const index = obligationIds.indexOf(id)
-        //     obligationIds.splice(index, 1)
-        // } else {
-        //     obligationIds.push(id)
-        // }
-        // console.log("--obligationIds---22222222222222222");
-        // console.log(obligationIds);
-        // console.log(dataEditWhitelist)
-        // console.log(id)
-        // // const obligationIds = new Map<string, boolean>()
-        // dataEditWhitelist.forEach((item: any) => {
-        //     console.log(item)
-        //     if(item[0] == id) {
-        //         whitelist.set(id, true);
-        //     }
-        // })
-        // console.log(obligationIds)
-        // setWhitelist(obligationIds);
+        } else {
+            whitelist.set(id, true)
+        }
+        setWhitelist(whitelist)
     }
 
     const columnEditWhitelists = [
         {
             id: 'obligationId',
             name: 'whitelist',
-            formatter: (item: string) =>
+            formatter: (item: any) =>
                 _(
                     <Form.Check
                         name='obligationId'
                         type='checkbox'
+                        defaultChecked={!CommonUtils.isNullEmptyOrUndefinedArray(item.whitelist) ?? true}
                         onClick={() => {
                             handlerRadioButton(item)
                         }}
@@ -209,7 +185,6 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist }: Props) => {
     return (
         <div className='row'>
             {isEditWhitelist ? (
-                // <EditWhitelist licenseId={licenseId} />
                 <Table data={dataEditWhitelist} search={true} columns={columnEditWhitelists} selector={true} />
             ) : (
                 <Table data={data} search={true} columns={columns} selector={true} />
