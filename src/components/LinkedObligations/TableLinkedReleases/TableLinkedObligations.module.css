@@ -8,43 +8,27 @@
   License-Filename: LICENSE
 */
 
-.input-field {
-    width: 329px;
-    font-size: 1rem;
-    height: 2.5rem;
-    font-family: inherit;
-    padding-bottom: 0.4375rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-top: 0.4375rem;
-    color: #272833;
-    border-radius: 0.25rem;
-    background-color: #fff;
+.expand:before {
+    content: '▼';
 }
 
-.select-relation {
-    width: 340px;
-    font-size: 1rem;
-    height: 2.5rem;
-    font-family: inherit;
-    border-color: #e7e7ed;
-    border-style: solid;
-    padding-bottom: 0.4375rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-top: 0.4375rem;
-    color: #272833;
-    border-radius: 0.25rem;
-    background-color: #fff;
+.collapse:before {
+    content: '►';
 }
 
-.hr {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+.expand:hover {
+    cursor: pointer;
 }
 
-.div-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px 2px 2px 2px;
+.collapse:hover {
+    cursor: pointer;
+}
+
+.attachment-table table:first-child tr td:first-child div {
+    text-align: center;
+}
+
+.download-btn:hover {
+    color: #f7941e;
+    cursor: pointer;
 }

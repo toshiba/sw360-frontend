@@ -31,7 +31,7 @@ export default function EditLicense({ licenseId }: Props) {
     const t = useTranslations('default')
     const { data: session, status } = useSession()
     const [selectedTab, setSelectedTab] = useState<string>(LicenseTabIds.DETAILS)
-    const [obligationLinks, setObligationLinks] = useState<Obligation[]>([])
+    const [data, setData] = useState([])
     const [reRender, setReRender] = useState(false)
     // const [license, setLicense] = useState<LicensePayload>()
     // const [licenseTypes, setLicenseTypes] = useState([])
@@ -74,19 +74,20 @@ export default function EditLicense({ licenseId }: Props) {
                 }
                 const license = await response.json()
                 setLicensePayload(license)
-                console.log(licensePayload)
-                if (!CommonUtils.isNullOrUndefined(license['_embedded']['sw360:obligations'])) {
-                    const obligations: Obligation[] = []
-                    license['_embedded']['sw360:obligations'].map((item: Obligation) => {
-                        obligations.push(item)
-                    })
-                    setObligationLinks(obligations)
+                if (!CommonUtils.isNullEmptyOrUndefinedString(license._embedded['sw360:obligations'])) {
+                    const data = license._embedded['sw360:obligations'].map((item: Obligation) => [
+                        item,
+                        item.title,
+                        item.obligationType,
+                        item.customPropertyToValue,
+                        item,
+                    ])
+                    setData(data)
                 }
             } catch (e) {
                 console.error(e)
             }
         })()
-
         // ;(async () => {
         //     try {
         //         const response = await ApiUtils.GET(`licenseTypes`, session.user.access_token, signal)
@@ -194,16 +195,16 @@ export default function EditLicense({ licenseId }: Props) {
                             <div className='row' hidden={selectedTab != LicenseTabIds.OBLIGATIONS ? true : false}>
                                 <LinkedObligationsDialog
                                     show={addObligationDiaglog}
-                                    obligationLinks={obligationLinks}
-                                    setObligationLinks={setObligationLinks}
+                                    data={data}
+                                    setData={setData}
                                     setShow={setAddObligationDiaglog}
                                     onReRender={handleReRender}
                                     licensePayload={licensePayload}
                                     setLicensePayload={setLicensePayload}
                                 />
                                 <LinkedObligations
-                                    obligationLinks={obligationLinks}
-                                    setObligationLinks={setObligationLinks}
+                                    data={data}
+                                    setData={setData}
                                     licensePayload={licensePayload}
                                     setLicensePayload={setLicensePayload}
                                 />

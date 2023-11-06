@@ -95,63 +95,58 @@ export default function AddLicense() {
         signOut()
     } else {
         return (
-            <>
-                <div className='container' style={{ maxWidth: '98vw', marginTop: '10px' }}>
-                    <div className='row'>
-                        <div className='col-2 sidebar'>
-                            <SideBar selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabList={tabList} />
+            <div className='container' style={{ maxWidth: '98vw', marginTop: '10px' }}>
+                <div className='row'>
+                    <div className='col-2 sidebar'>
+                        <SideBar selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabList={tabList} />
+                    </div>
+                    <div className='col'>
+                        <div className='row' style={{ marginBottom: '20px' }}>
+                            <PageButtonHeader buttons={headerButtons}>
+                                {selectedTab === LicenseTabIds.OBLIGATIONS && (
+                                    <div
+                                        className='nav nav-pills justify-content-center bg-light font-weight-bold'
+                                        id='pills-tab'
+                                        role='tablist'
+                                    >
+                                        <Button onClick={handleClickAddObligations}>{t('Add Obligation')}</Button>
+                                    </div>
+                                )}
+                            </PageButtonHeader>
                         </div>
-                        <div className='col'>
-                            <div className='row' style={{ marginBottom: '20px' }}>
-                                <PageButtonHeader buttons={headerButtons}>
-                                    {selectedTab === LicenseTabIds.OBLIGATIONS && (
-                                        <div
-                                            className='nav nav-pills justify-content-center bg-light font-weight-bold'
-                                            id='pills-tab'
-                                            role='tablist'
-                                        >
-                                            <Button onClick={handleClickAddObligations}>{t('Add Obligation')}</Button>
-                                        </div>
-                                    )}
-                                </PageButtonHeader>
-                            </div>
-                            <ToastContainer position='top-start'>
-                                <ToastMessage
-                                    show={toastData.show}
-                                    type={toastData.type}
-                                    message={toastData.message}
-                                    contextual={toastData.contextual}
-                                    onClose={() => setToastData({ ...toastData, show: false })}
-                                    setShowToast={setToastData}
-                                />
-                            </ToastContainer>
-                            <div className='row' hidden={selectedTab !== LicenseTabIds.DETAILS ? true : false}>
-                                <AddLicenseSummary
-                                    licensePayload={licensePayload}
-                                    setLicensePayload={setLicensePayload}
-                                />
-                            </div>
-                            <div className='row' hidden={selectedTab != LicenseTabIds.OBLIGATIONS ? true : false}>
-                                <LinkedObligationsDialog
-                                    show={addObligationDiaglog}
-                                    obligationLinks={obligationLinks}
-                                    setObligationLinks={setObligationLinks}
-                                    setShow={setAddObligationDiaglog}
-                                    onReRender={handleReRender}
-                                    licensePayload={licensePayload}
-                                    setLicensePayload={setLicensePayload}
-                                />
-                                <LinkedObligations
-                                    obligationLinks={obligationLinks}
-                                    setObligationLinks={setObligationLinks}
-                                    licensePayload={licensePayload}
-                                    setLicensePayload={setLicensePayload}
-                                />
-                            </div>
+                        <ToastContainer position='top-start'>
+                            <ToastMessage
+                                show={toastData.show}
+                                type={toastData.type}
+                                message={toastData.message}
+                                contextual={toastData.contextual}
+                                onClose={() => setToastData({ ...toastData, show: false })}
+                                setShowToast={setToastData}
+                            />
+                        </ToastContainer>
+                        <div className='row' hidden={selectedTab !== LicenseTabIds.DETAILS ? true : false}>
+                            <AddLicenseSummary licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
+                        </div>
+                        <div className='row' hidden={selectedTab != LicenseTabIds.OBLIGATIONS ? true : false}>
+                            <LinkedObligationsDialog
+                                show={addObligationDiaglog}
+                                obligationLinks={obligationLinks}
+                                setObligationLinks={setObligationLinks}
+                                setShow={setAddObligationDiaglog}
+                                onReRender={handleReRender}
+                                licensePayload={licensePayload}
+                                setLicensePayload={setLicensePayload}
+                            />
+                            <LinkedObligations
+                                obligationLinks={obligationLinks}
+                                setObligationLinks={setObligationLinks}
+                                licensePayload={licensePayload}
+                                setLicensePayload={setLicensePayload}
+                            />
                         </div>
                     </div>
                 </div>
-            </>
+            </div>
         )
     }
 }

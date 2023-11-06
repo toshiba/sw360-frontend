@@ -24,8 +24,8 @@ interface Props {
     show?: boolean
     setShow?: React.Dispatch<React.SetStateAction<boolean>>
     onReRender?: () => void
-    obligationLinks?: Obligation[]
-    setObligationLinks?: React.Dispatch<React.SetStateAction<Obligation[]>>
+    data: any[]
+    setData: any
     licensePayload?: LicensePayload
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
 }
@@ -34,16 +34,16 @@ const LinkedObligationsDialog = ({
     show,
     setShow,
     onReRender,
-    obligationLinks,
-    setObligationLinks,
+    data,
+    setData,
     licensePayload,
     setLicensePayload,
 }: Props) => {
     const t = useTranslations('default')
     const { data: session } = useSession()
-    const [data, setData] = useState()
+    const [dataSearch, setDataSearch] = useState()
     const [linkObligations] = useState([])
-    const [linkedObligationsResponse, setLinkedObligationsResponse] = useState<Obligation[]>()
+    const [linkedObligationsResponse, setLinkedObligationsResponse] = useState([])
     const [obligations, setObligations] = useState([])
 
     const handleCloseDialog = () => {
@@ -51,7 +51,7 @@ const LinkedObligationsDialog = ({
     }
 
     const searchLinkedObligations = () => {
-        setObligations(data)
+        setObligations(dataSearch)
     }
 
     const params = useSearchParams()
@@ -73,13 +73,16 @@ const LinkedObligationsDialog = ({
                 }
 
                 const obligations = await response.json()
-                const data = obligations._embedded['sw360:obligations'].map((item: any) => [
-                    item,
-                    item.title,
-                    item.obligationType,
-                    item.text,
-                ])
-                setData(data)
+                if (!CommonUtils.isNullEmptyOrUndefinedString(obligations._embedded['sw360:obligations'])) {
+                    const data = obligations._embedded['sw360:obligations'].map((item: any) => [
+                        item,
+                        item,
+                        item.title,
+                        item.obligationType,
+                        item.text,
+                    ])
+                    setDataSearch(data)
+                }
             } catch (e) {
                 console.error(e)
             }
@@ -88,23 +91,32 @@ const LinkedObligationsDialog = ({
     }, [params, session])
 
     const handleClickSelectObligations = () => {
-        linkedObligationsResponse.forEach((linkedObligations: Obligation) => {
-            obligationLinks.push(linkedObligations)
+        const linkedObligationsResponseData = linkedObligationsResponse.map((item: Obligation) => [
+            item,
+            item.title,
+            item.obligationType,
+            item.customPropertyToValue,
+            item,
+        ])
+        linkedObligationsResponseData.forEach((linkedObligations: any) => {
+            data.push(linkedObligations)
         })
-        obligationLinks = obligationLinks.filter((v, index, a) => a.findIndex((v2) => v2.title === v.title) === index)
+        console.log(linkedObligationsResponse)
+        console.log(data)
+        data = data.filter((v, index, a) => a.findIndex((v2) => v2[0].title === v[0].title) === index)
+        console.log(data)
         const obligationIds: string[] = []
-        obligationLinks.forEach((item: any) => {
-            if (CommonUtils.isNullEmptyOrUndefinedString(item.id)) {
-                obligationIds.push(CommonUtils.getIdFromUrl(item['_links'].self.href))
-            } else {
-                obligationIds.push(item.id)
+        data.forEach((item: any) => {
+            if (!CommonUtils.isNullEmptyOrUndefinedString(item[0])) {
+                obligationIds.push(CommonUtils.getIdFromUrl(item[0]['_links'].self.href))
             }
         })
+        console.log(obligationIds)
         setLicensePayload({
             ...licensePayload,
             obligationDatabaseIds: obligationIds,
         })
-        setObligationLinks(obligationLinks)
+        setData(data)
         setShow(!show)
         onReRender()
     }

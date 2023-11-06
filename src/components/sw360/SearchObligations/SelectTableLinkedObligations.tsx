@@ -14,8 +14,8 @@ import React from 'react'
 import { Form } from 'react-bootstrap'
 
 import { Obligation } from '@/object-types'
-import CommonUtils from '@/utils/common.utils'
 import { _ } from 'next-sw360'
+import styles from './LinkedObligations.module.css'
 import LinkedObligationsTable from './LinkedObligationsTable'
 
 interface Props {
@@ -34,18 +34,54 @@ const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligat
         }
         const linkObligation: Obligation[] = []
         linkObligations.forEach((item: any) => {
-            const obligationLink: Obligation = {
-                id: CommonUtils.getIdFromUrl(item._links.self.href),
-                title: item.title,
-                obligationType: item.obligationType,
-                text: item.text,
-            }
-            linkObligation.push(obligationLink)
+            linkObligation.push(item)
         })
         setObligations(linkObligation)
     }
 
+    const buildAttachmentDetail = (item: any) => {
+        return (event: React.MouseEvent<HTMLElement>) => {
+            if ((event.target as HTMLElement).className == styles.expand) {
+                ;(event.target as HTMLElement).className = styles.collapse
+            } else {
+                ;(event.target as HTMLElement).className = styles.expand
+            }
+
+            const attachmentDetail = document.getElementById(item.title)
+            if (!attachmentDetail) {
+                const parent = (event.target as HTMLElement).parentElement.parentElement.parentElement
+                const html = `<td colspan="10">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                            <td>${item.text ?? ''}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>`
+                const tr = document.createElement('tr')
+                tr.id = item.title
+                tr.innerHTML = html
+
+                parent.parentNode.insertBefore(tr, parent.nextSibling)
+            } else {
+                if (attachmentDetail.hidden == true) {
+                    attachmentDetail.hidden = false
+                } else {
+                    attachmentDetail.hidden = true
+                }
+            }
+        }
+    }
+
     const columns = [
+        {
+            id: 'check',
+            name: '',
+            formatter: (item: any) => _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
+            sort: false,
+            width: '5%',
+        },
         {
             id: 'obligationId',
             name: '',
@@ -74,11 +110,9 @@ const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligat
     ]
 
     return (
-        <>
-            <div className='row'>
-                <LinkedObligationsTable data={obligations} columns={columns} />
-            </div>
-        </>
+        <div className='row'>
+            <LinkedObligationsTable data={obligations} columns={columns} />
+        </div>
     )
 }
 

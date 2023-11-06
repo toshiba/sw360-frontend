@@ -13,55 +13,108 @@ import { FaTrashAlt } from 'react-icons/fa'
 
 import { Obligation } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
+import { useTranslations } from 'next-intl'
+import { Table, _ } from 'next-sw360'
 import styles from './TableLinkedObligations.module.css'
 
 interface Props {
+    data: any[]
+    setData: any
     obligationLinks?: Obligation[]
     setObligationLinks?: React.Dispatch<React.SetStateAction<Obligation[]>>
     setObligationIdToLicensePayLoad?: (releaseIdToRelationships: Array<string>) => void
 }
 
-export default function TableLinkedObligations({
-    obligationLinks,
-    setObligationLinks,
-    setObligationIdToLicensePayLoad,
-}: Props) {
-    const handleClickDelete = (index: number) => {
-        const list: Obligation[] = [...obligationLinks]
-        list.splice(index, 1)
-        const obligationIds: string[] = []
-        list.forEach((item: any) => {
-            obligationIds.push(CommonUtils.getIdFromUrl(item['_links'].self.href))
+export default function TableLinkedObligations({ data, setData, setObligationIdToLicensePayLoad }: Props) {
+    const t = useTranslations('default')
+
+    const handleClickDelete = (item: any) => {
+        let obligations: any[] = []
+        data.forEach((element) => {
+            obligations.push(element)
         })
-        setObligationLinks(list)
+        obligations = obligations.filter((element) => element[1] !== item.title)
+        setData(obligations)
+        const obligationIds: string[] = []
+        obligations.forEach((item: any) => {
+            obligationIds.push(CommonUtils.getIdFromUrl(item[0]['_links'].self.href))
+        })
         setObligationIdToLicensePayLoad(obligationIds)
     }
 
+    const buildAttachmentDetail = (item: any) => {
+        return (event: React.MouseEvent<HTMLElement>) => {
+            if ((event.target as HTMLElement).className == styles.expand) {
+                ;(event.target as HTMLElement).className = styles.collapse
+            } else {
+                ;(event.target as HTMLElement).className = styles.expand
+            }
+
+            const attachmentDetail = document.getElementById(item.title)
+            if (!attachmentDetail) {
+                const parent = (event.target as HTMLElement).parentElement.parentElement.parentElement
+                const html = `<td colspan="10">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                            <td>${item.text ?? ''}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>`
+                const tr = document.createElement('tr')
+                tr.id = item.title
+                tr.innerHTML = html
+
+                parent.parentNode.insertBefore(tr, parent.nextSibling)
+            } else {
+                if (attachmentDetail.hidden == true) {
+                    attachmentDetail.hidden = false
+                } else {
+                    attachmentDetail.hidden = true
+                }
+            }
+        }
+    }
+
+    const columns = [
+        {
+            id: 'check',
+            name: '',
+            formatter: (item: any) => _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
+            sort: false,
+            width: '5%',
+        },
+        {
+            id: 'obligation',
+            name: t('Obligation'),
+            sort: true,
+        },
+        {
+            id: 'obligationType',
+            name: t('Obligation Type'),
+            sort: true,
+        },
+        {
+            id: 'furtherProperties',
+            name: t('Further properties'),
+            sort: true,
+        },
+        {
+            id: 'action',
+            name: t('Actions'),
+            formatter: (item: any) =>
+                _(
+                    <span>
+                        <FaTrashAlt className={styles['delete-btn']} onClick={() => handleClickDelete(item)} />
+                    </span>
+                ),
+        },
+    ]
+
     return (
-        <>
-            <div className='row'>
-                {obligationLinks.map((item: Obligation, index: number) => {
-                    return (
-                        <div key={item.id}>
-                            <div className={`${styles['div-row']}`}>
-                                <label className={`${styles['idObligations']}`}></label>
-                                <label className={`${styles['input-field']}`}>{item.title ?? ''}</label>
-                                <label className={`${styles['input-field']}`}>{item.obligationType ?? ''}</label>
-                                <label className={`${styles['input-field']}`}>{item.text ?? ''}</label>
-                                <button
-                                    type='button'
-                                    onClick={() => handleClickDelete(index)}
-                                    style={{ border: 'none' }}
-                                    className={`fw-bold btn btn-secondary`}
-                                >
-                                    <FaTrashAlt className='bi bi-trash3-fill' />
-                                </button>
-                            </div>
-                            <hr className={`${styles['hr']}`} />
-                        </div>
-                    )
-                })}
-            </div>
-        </>
+        <div className='row'>
+            <Table data={data} search={true} columns={columns} selector={true} />
+        </div>
     )
 }

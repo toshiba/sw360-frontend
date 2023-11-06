@@ -9,21 +9,19 @@
 // License-Filename: LICENSE
 
 'use client'
-
-import { Obligation } from '@/object-types'
 import LicensePayload from '../../object-types/LicensePayload'
 import styles from './LinkedObligations.module.css'
 import TableLinkedObligations from './TableLinkedReleases/TableLinkedObligations'
-import TitleLinkedObligations from './TitleLinkedReleases/TitleLinkedObligations'
+// import TitleLinkedObligations from './TitleLinkedReleases/TitleLinkedObligations'
 
 interface Props {
-    obligationLinks?: Obligation[]
-    setObligationLinks?: React.Dispatch<React.SetStateAction<Obligation[]>>
+    data: any[]
+    setData: any
     licensePayload?: LicensePayload
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
 }
 
-const LinkedObligations = ({ obligationLinks, setObligationLinks, licensePayload, setLicensePayload }: Props) => {
+const LinkedObligations = ({ data, setData, licensePayload, setLicensePayload }: Props) => {
     const setObligationIdToLicensePayLoad = (obligationIds: Array<string>) => {
         setLicensePayload({
             ...licensePayload,
@@ -32,21 +30,18 @@ const LinkedObligations = ({ obligationLinks, setObligationLinks, licensePayload
     }
 
     return (
-        <>
-            <div className='col' style={{ fontSize: '0.875rem' }}>
-                <div
-                    className={`row ${styles['attachment-table']}`}
-                    style={{ padding: '25px', fontSize: '0.875rem', paddingTop: '1px' }}
-                >
-                    <TitleLinkedObligations />
-                    <TableLinkedObligations
-                        obligationLinks={obligationLinks}
-                        setObligationLinks={setObligationLinks}
-                        setObligationIdToLicensePayLoad={setObligationIdToLicensePayLoad}
-                    />
-                </div>
+        <div className='col' style={{ fontSize: '0.875rem' }}>
+            <div
+                className={`row ${styles['attachment-table']}`}
+                style={{ padding: '25px', fontSize: '0.875rem', paddingTop: '1px' }}
+            >
+                <TableLinkedObligations
+                    data={data}
+                    setData={setData}
+                    setObligationIdToLicensePayLoad={setObligationIdToLicensePayLoad}
+                />
             </div>
-        </>
+        </div>
     )
 }
 

@@ -91,7 +91,6 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist }: Props) => {
                         item.whitelist,
                     ])
                     .filter((item: any) => item[5].length !== 0)
-                console.log(data)
                 setData(data)
                 const dataEditWhitelist = license._embedded['sw360:obligations'].map((item: any) => [
                     item._links.self.href.split('/').pop(),
