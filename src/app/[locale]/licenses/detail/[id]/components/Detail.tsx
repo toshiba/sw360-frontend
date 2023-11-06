@@ -163,6 +163,7 @@ const Detail = ({ license, setLicense }: Props) => {
                                     onChange={hanldeExternalLicenseLink}
                                 />
                                 <Button
+                                    variant='secondary'
                                     style={{ marginLeft: '20px', backgroundColor: 'white' }}
                                     type='submit'
                                     onClick={updateExternalLicenseLink}

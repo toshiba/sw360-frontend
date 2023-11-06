@@ -208,14 +208,22 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
                                             role='tablist'
                                         >
                                             {isEditWhitelist ? (
-                                                <>
-                                                    <Button onClick={handleUpdateWhitelist}>
+                                                <div style={{ display: 'flex' }}>
+                                                    <Button variant='secondary' onClick={handleUpdateWhitelist}>
                                                         {t('Update Whitelist')}
                                                     </Button>
-                                                    <Button onClick={handleCancel}>{t('Cancel')}</Button>
-                                                </>
+                                                    <Button
+                                                        variant='secondary'
+                                                        style={{ marginLeft: '10px' }}
+                                                        onClick={handleCancel}
+                                                    >
+                                                        {t('Cancel')}
+                                                    </Button>
+                                                </div>
                                             ) : (
-                                                <Button onClick={handleEditWhitelist}>{t('Edit Whitelist')}</Button>
+                                                <Button variant='secondary' onClick={handleEditWhitelist}>
+                                                    {t('Edit Whitelist')}
+                                                </Button>
                                             )}
                                         </div>
                                     )}
