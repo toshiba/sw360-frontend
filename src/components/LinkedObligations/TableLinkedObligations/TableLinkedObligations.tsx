@@ -11,7 +11,6 @@
 import React from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 
-import { Obligation } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
 import { useTranslations } from 'next-intl'
 import { Table, _ } from 'next-sw360'
@@ -20,8 +19,6 @@ import styles from './TableLinkedObligations.module.css'
 interface Props {
     data: any[]
     setData: any
-    obligationLinks?: Obligation[]
-    setObligationLinks?: React.Dispatch<React.SetStateAction<Obligation[]>>
     setObligationIdToLicensePayLoad?: (releaseIdToRelationships: Array<string>) => void
 }
 

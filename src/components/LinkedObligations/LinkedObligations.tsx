@@ -10,9 +10,7 @@
 
 'use client'
 import LicensePayload from '../../object-types/LicensePayload'
-import styles from './LinkedObligations.module.css'
-import TableLinkedObligations from './TableLinkedReleases/TableLinkedObligations'
-// import TitleLinkedObligations from './TitleLinkedReleases/TitleLinkedObligations'
+import TableLinkedObligations from './TableLinkedObligations/TableLinkedObligations'
 
 interface Props {
     data: any[]
@@ -31,10 +29,7 @@ const LinkedObligations = ({ data, setData, licensePayload, setLicensePayload }:
 
     return (
         <div className='col' style={{ fontSize: '0.875rem' }}>
-            <div
-                className={`row ${styles['attachment-table']}`}
-                style={{ padding: '25px', fontSize: '0.875rem', paddingTop: '1px' }}
-            >
+            <div>
                 <TableLinkedObligations
                     data={data}
                     setData={setData}
