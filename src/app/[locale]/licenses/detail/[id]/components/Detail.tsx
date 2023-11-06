@@ -150,18 +150,26 @@ const Detail = ({ license, setLicense }: Props) => {
                     <tr>
                         <td>{t('External link for more information')}:</td>
                         <td>
-                            <input
-                                type='text'
-                                placeholder={t('Enter Name')}
-                                id='name'
-                                name='externalLicenseLink'
-                                aria-describedby='name'
-                                value={license.externalLicenseLink ?? ''}
-                                onChange={hanldeExternalLicenseLink}
-                            />
-                            <Button type='submit' onClick={updateExternalLicenseLink}>
-                                Save
-                            </Button>
+                            <div style={{ display: 'flex' }}>
+                                <input
+                                    style={{ width: 'auto' }}
+                                    type='text'
+                                    className='form-control'
+                                    placeholder={t('Enter Name')}
+                                    id='name'
+                                    name='externalLicenseLink'
+                                    aria-describedby='name'
+                                    value={license.externalLicenseLink ?? ''}
+                                    onChange={hanldeExternalLicenseLink}
+                                />
+                                <Button
+                                    style={{ marginLeft: '20px', backgroundColor: 'white' }}
+                                    type='submit'
+                                    onClick={updateExternalLicenseLink}
+                                >
+                                    Save
+                                </Button>
+                            </div>
                         </td>
                     </tr>
                     <tr>
