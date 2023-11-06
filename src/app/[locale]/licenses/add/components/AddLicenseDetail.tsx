@@ -65,145 +65,143 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
     }, [params, session])
 
     return (
-        <>
-            <div className='row mb-4'>
-                <div className={`${styles['header']} mb-2`}>
-                    <p className='fw-bold mt-3'>{t('License Details')}</p>
-                </div>
-                <div className='row'>
-                    <div className='col-lg-4'>
-                        <label htmlFor='used_license' className='form-label fw-bold'>
-                            {t('Fullname')}
-                            <span className='text-red' style={{ color: '#F7941E' }}>
-                                *
-                            </span>
-                        </label>
-
-                        <input
-                            type='text'
-                            className='form-control'
-                            placeholder='Enter fullName'
-                            id='fullName'
-                            aria-describedby='fullName'
-                            name='fullName'
-                            value={licensePayload.fullName ?? ''}
-                            onChange={updateField}
-                        />
-                    </div>
-                    <div className='col-lg-4'>
-                        <label htmlFor='shortname' className='form-label fw-bold'>
-                            {t('Shortname')}
-                            <span className='text-red' style={{ color: '#F7941E' }}>
-                                *
-                            </span>
-                        </label>
-
-                        <input
-                            type='text'
-                            className='form-control'
-                            placeholder='Enter shortName'
-                            id='shortName'
-                            aria-describedby='shortName'
-                            name='shortName'
-                            value={licensePayload.shortName ?? ''}
-                            onChange={updateField}
-                        />
-                    </div>
-                    <div className='col-lg-4'>
-                        <label htmlFor='licenseTypeDatabaseId' className='form-label fw-bold'>
-                            {t('License Type')}{' '}
-                        </label>
-                        <select
-                            className='form-select'
-                            aria-label='licenseTypeDatabaseId'
-                            id='licenseTypeDatabaseId'
-                            required
-                            name='licenseTypeDatabaseId'
-                            onChange={updateField}
-                            // value={licensePayload.licenseType.licenseType ?? ''}
-                        >
-                            <option value=''>{t('No type selected')}</option>
-                            {licenseTypes.map((item) => (
-                                <option key={item.id} value={item.id}>
-                                    {item.licenseType}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-                <hr className='my-2' />
-                <div className='row'>
-                    <div className='col-lg-4'>
-                        <label htmlFor='OSIApproved' className='form-label fw-bold'>
-                            {t('OSI Approved?')}{' '}
-                        </label>
-                        <select
-                            className='form-select'
-                            aria-label='OSIApproved'
-                            id='OSIApproved'
-                            required
-                            name='OSIApproved'
-                            onChange={updateField}
-                            value={licensePayload.OSIApproved ?? ''}
-                        >
-                            <option value='NA'>{t('(n/a)')}</option>
-                            <option value='YES'>{t('yes')}</option>
-                        </select>
-                    </div>
-                    <div className='col-lg-4'>
-                        <label htmlFor='FSFLibre' className='form-label fw-bold'>
-                            {t('FSF Free/Libre?')}{' '}
-                        </label>
-                        <select
-                            className='form-select'
-                            aria-label='FSFLibre'
-                            id='FSFLibre'
-                            required
-                            name='FSFLibre'
-                            value={licensePayload.FSFLibre ?? ''}
-                            onChange={updateField}
-                        >
-                            <option value='NA'>{t('(n/a)')}</option>
-                            <option value='YES'>{t('yes')}</option>
-                        </select>
-                    </div>
-                    <div className='col-lg-4'>
-                        <div className='form-check'>
-                            <input
-                                id='isChecked'
-                                type='checkbox'
-                                className='form-check-input'
-                                name='checked'
-                                checked={licensePayload.checked ?? false}
-                                onChange={updateFieldChecked}
-                            />
-                            <label className='form-label fw-bold' htmlFor='isChecked'>
-                                {t('Is checked')}
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <hr className='my-2' />
-                <div className='row'>
-                    <div className='col-lg-4'>
-                        <label htmlFor='note' className='form-label fw-bold'>
-                            {t('Note')}
-                        </label>
-                        <input
-                            type='text'
-                            className='form-control'
-                            placeholder='Enter Note'
-                            id='note'
-                            aria-describedby='note'
-                            name='note'
-                            value={licensePayload.note ?? ''}
-                            onChange={updateField}
-                        />
-                    </div>
-                </div>
-                <hr className='my-2' />
+        <div className='row mb-4'>
+            <div className={`${styles['header']} mb-2`}>
+                <p className='fw-bold mt-3'>{t('License Details')}</p>
             </div>
-        </>
+            <div className='row'>
+                <div className='col-lg-4'>
+                    <label htmlFor='used_license' className='form-label fw-bold'>
+                        {t('Fullname')}
+                        <span className='text-red' style={{ color: '#F7941E' }}>
+                            *
+                        </span>
+                    </label>
+
+                    <input
+                        type='text'
+                        className='form-control'
+                        placeholder='Enter fullName'
+                        id='fullName'
+                        aria-describedby='fullName'
+                        name='fullName'
+                        value={licensePayload.fullName ?? ''}
+                        onChange={updateField}
+                    />
+                </div>
+                <div className='col-lg-4'>
+                    <label htmlFor='shortname' className='form-label fw-bold'>
+                        {t('Shortname')}
+                        <span className='text-red' style={{ color: '#F7941E' }}>
+                            *
+                        </span>
+                    </label>
+
+                    <input
+                        type='text'
+                        className='form-control'
+                        placeholder='Enter shortName'
+                        id='shortName'
+                        aria-describedby='shortName'
+                        name='shortName'
+                        value={licensePayload.shortName ?? ''}
+                        onChange={updateField}
+                    />
+                </div>
+                <div className='col-lg-4'>
+                    <label htmlFor='licenseTypeDatabaseId' className='form-label fw-bold'>
+                        {t('License Type')}{' '}
+                    </label>
+                    <select
+                        className='form-select'
+                        aria-label='licenseTypeDatabaseId'
+                        id='licenseTypeDatabaseId'
+                        required
+                        name='licenseTypeDatabaseId'
+                        onChange={updateField}
+                        // value={licensePayload.licenseType.licenseType ?? ''}
+                    >
+                        <option value=''>{t('No type selected')}</option>
+                        {licenseTypes.map((item) => (
+                            <option key={item.id} value={item.id}>
+                                {item.licenseType}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+            <hr className='my-2' />
+            <div className='row'>
+                <div className='col-lg-4'>
+                    <label htmlFor='OSIApproved' className='form-label fw-bold'>
+                        {t('OSI Approved?')}{' '}
+                    </label>
+                    <select
+                        className='form-select'
+                        aria-label='OSIApproved'
+                        id='OSIApproved'
+                        required
+                        name='OSIApproved'
+                        onChange={updateField}
+                        value={licensePayload.OSIApproved ?? ''}
+                    >
+                        <option value='NA'>{t('(n/a)')}</option>
+                        <option value='YES'>{t('yes')}</option>
+                    </select>
+                </div>
+                <div className='col-lg-4'>
+                    <label htmlFor='FSFLibre' className='form-label fw-bold'>
+                        {t('FSF Free/Libre?')}{' '}
+                    </label>
+                    <select
+                        className='form-select'
+                        aria-label='FSFLibre'
+                        id='FSFLibre'
+                        required
+                        name='FSFLibre'
+                        value={licensePayload.FSFLibre ?? ''}
+                        onChange={updateField}
+                    >
+                        <option value='NA'>{t('(n/a)')}</option>
+                        <option value='YES'>{t('yes')}</option>
+                    </select>
+                </div>
+                <div className='col-lg-4'>
+                    <div className='form-check'>
+                        <input
+                            id='isChecked'
+                            type='checkbox'
+                            className='form-check-input'
+                            name='checked'
+                            checked={licensePayload.checked ?? false}
+                            onChange={updateFieldChecked}
+                        />
+                        <label className='form-label fw-bold' htmlFor='isChecked'>
+                            {t('Is checked')}
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <hr className='my-2' />
+            <div className='row'>
+                <div className='col-lg-4'>
+                    <label htmlFor='note' className='form-label fw-bold'>
+                        {t('Note')}
+                    </label>
+                    <input
+                        type='text'
+                        className='form-control'
+                        placeholder='Enter Note'
+                        id='note'
+                        aria-describedby='note'
+                        name='note'
+                        value={licensePayload.note ?? ''}
+                        onChange={updateField}
+                    />
+                </div>
+            </div>
+            <hr className='my-2' />
+        </div>
     )
 }
 

@@ -93,23 +93,11 @@ function LicensesPage() {
             name: t('License Shortname'),
             formatter: (id: string) =>
                 _(
-                    <Link href={'/licenses/detail/' + id} className='link'>
+                    <Link href={`/licenses/detail/${id}`} className='link'>
                         {id}
                     </Link>
                 ),
             sort: true,
-            // id: 'License Shortname',
-            // name: t('License Shortname'),
-            // width: '15%',
-            // formatter: ({ shortName }: { shortName: string}) =>
-            //     _(
-            //         <>
-            //             <Link href={`/licenses/detail/${shortName}`} className='text-link'>
-            //                 {shortName}
-            //             </Link>
-            //         </>
-            //     ),
-            // sort: true,
         },
         { name: t('License Fullname'), width: '45%' },
         { name: t('Is Checked'), width: '10%' },
@@ -135,7 +123,7 @@ function LicensesPage() {
                                     buttons={headerButtons}
                                     title={`${t('Licenses')} (${licenseData.length})`}
                                 />
-                                {loading == false ? (
+                                {!loading ? (
                                     <Table
                                         data={licenseData}
                                         columns={columns}

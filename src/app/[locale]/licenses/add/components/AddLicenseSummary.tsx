@@ -21,11 +21,9 @@ interface Props {
 
 export default function AddLicenseSummary({ licensePayload, setLicensePayload }: Props) {
     return (
-        <>
-            <div className='col' style={{ padding: '0px 12px' }}>
-                <AddLicenseDetail licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
-                <AddLicenseText licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
-            </div>
-        </>
+        <div className='col' style={{ padding: '0px 12px' }}>
+            <AddLicenseDetail licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
+            <AddLicenseText licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
+        </div>
     )
 }

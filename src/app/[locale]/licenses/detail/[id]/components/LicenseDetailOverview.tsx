@@ -59,13 +59,16 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
     const { data: session, status } = useSession()
     const params = useSearchParams()
     const headerButtons = {
-        'Edit License': { link: `/licenses/edit/${licenseId}`, type: 'primary', name: t('Edit License') },
+        'Edit License': {
+            link: `/licenses/edit/${encodeURIComponent(licenseId)}`,
+            type: 'primary',
+            name: t('Edit License'),
+        },
     }
 
     useEffect(() => {
         const controller = new AbortController()
         const signal = controller.signal
-
         ;(async () => {
             try {
                 const response = await ApiUtils.GET(`licenses/${licenseId}`, session.user.access_token, signal)
