@@ -758,6 +758,7 @@
         "License updated failed!": "License updated failed!",
         "Create License Failed!": "Create License Failed!",
         "Require!": "Require!",
-        "Fullname, shortname not null or Empty!": "Fullname, shortname not null or Empty!"
+        "Fullname, shortname not null or Empty!": "Fullname, shortname not null or Empty!",
+        "Fullname not null or empty!": "Fullname not null or empty!"
     }
 }

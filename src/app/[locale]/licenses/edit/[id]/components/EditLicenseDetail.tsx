@@ -80,7 +80,7 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                     <input
                         type='text'
                         className='form-control'
-                        placeholder='Enter fullName'
+                        placeholder='Enter Fullname'
                         required
                         id='fullName'
                         aria-describedby='fullName'
@@ -100,9 +100,9 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                     <input
                         type='text'
                         className='form-control'
-                        placeholder='Enter shortName'
+                        placeholder='Enter Shortname'
                         id='shortName'
-                        required
+                        readOnly
                         aria-describedby='shortName'
                         name='shortName'
                         value={licensePayload.shortName ?? ''}

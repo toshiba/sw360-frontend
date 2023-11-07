@@ -113,13 +113,17 @@ export default function EditLicense({ licenseId }: Props) {
     }
 
     const submit = async () => {
-        const response = await ApiUtils.PATCH(`licenses/${licenseId}`, licensePayload, session.user.access_token)
-        if (response.status == HttpStatus.OK) {
-            const data = (await response.json()) as LicensePayload
-            alert(true, 'Success', t('License updated successfully!'), 'success')
-            router.push('/licenses/detail/' + data.shortName)
+        if (CommonUtils.isNullEmptyOrUndefinedString(licensePayload.fullName)) {
+            alert(true, 'Require!', t('Fullname not null or empty!'), 'danger')
         } else {
-            alert(true, 'Failed', t('License updated failed!'), 'danger')
+            const response = await ApiUtils.PATCH(`licenses/${licenseId}`, licensePayload, session.user.access_token)
+            if (response.status == HttpStatus.OK) {
+                const data = (await response.json()) as LicensePayload
+                alert(true, 'Success', t('License updated successfully!'), 'success')
+                router.push('/licenses/detail/' + data.shortName)
+            } else {
+                alert(true, 'Failed', t('License updated failed!'), 'danger')
+            }
         }
     }
 
