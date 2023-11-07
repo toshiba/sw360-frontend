@@ -90,7 +90,6 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
             name: '',
             formatter: (item: any) => _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
             sort: false,
-            width: '5%',
         },
         {
             id: 'obligation',

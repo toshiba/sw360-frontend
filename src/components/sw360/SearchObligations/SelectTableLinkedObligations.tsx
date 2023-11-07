@@ -80,7 +80,6 @@ const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligat
             name: '',
             formatter: (item: any) => _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
             sort: false,
-            width: '5%',
         },
         {
             id: 'obligationId',
@@ -95,7 +94,6 @@ const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligat
                         }}
                     ></Form.Check>
                 ),
-            width: '7%',
         },
         {
             id: 'Obligation Title',

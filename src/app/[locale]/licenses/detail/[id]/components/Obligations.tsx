@@ -117,7 +117,6 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
             name: '',
             formatter: (item: any) => _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
             sort: false,
-            width: '5%',
         },
         {
             id: 'obligation',
@@ -161,7 +160,6 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
                         }}
                     ></Form.Check>
                 ),
-            width: '40%',
         },
         {
             id: 'text',
