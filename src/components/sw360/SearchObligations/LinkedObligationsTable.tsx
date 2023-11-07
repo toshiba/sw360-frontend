@@ -20,8 +20,18 @@ const compare = (preState: any, nextState: any) => {
     return Object.entries(preState.data).sort().toString() === Object.entries(nextState.data).sort().toString()
 }
 
+const style = {
+    th: {
+        'text-align': 'center',
+        'font-size': '14px',
+    },
+    td: {
+        'text-align': 'center',
+    },
+}
+
 const LinkedObligationsTable = memo(function LinkedObligationsTable({ columns, data }: Props) {
-    return <Table columns={columns} data={data} />
+    return <Table columns={columns} data={data} style={style} search={true} />
 }, compare)
 
 export default LinkedObligationsTable

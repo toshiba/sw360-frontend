@@ -41,17 +41,24 @@ const LinkedObligationsDialog = ({
 }: Props) => {
     const t = useTranslations('default')
     const { data: session } = useSession()
-    const [dataSearch, setDataSearch] = useState()
+    const [dataSearch, setDataSearch] = useState([])
     const [linkObligations] = useState([])
     const [linkedObligationsResponse, setLinkedObligationsResponse] = useState([])
     const [obligations, setObligations] = useState([])
+    const [key, setKey] = useState('')
 
     const handleCloseDialog = () => {
         setShow(!show)
     }
 
     const searchLinkedObligations = () => {
-        setObligations(dataSearch)
+        CommonUtils.isNullEmptyOrUndefinedString(key)
+            ? setObligations(dataSearch)
+            : setObligations(dataSearch.filter((item) => item[2].includes(key)))
+    }
+
+    const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setKey(e.target.value)
     }
 
     const params = useSearchParams()
@@ -140,6 +147,8 @@ const LinkedObligationsDialog = ({
                                 className='form-control'
                                 placeholder={t('Enter search text')}
                                 aria-describedby='Link Releases'
+                                onChange={updateField}
+                                value={key}
                             />
                         </div>
                         <div className='col-lg-4'>
