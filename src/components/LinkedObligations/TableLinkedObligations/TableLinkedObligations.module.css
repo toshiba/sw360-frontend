@@ -28,7 +28,10 @@
     text-align: center;
 }
 
-.download-btn:hover {
-    color: #f7941e;
+.delete-btn {
+    color: black;
+}
+
+.delete-btn:hover {
     cursor: pointer;
 }

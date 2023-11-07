@@ -74,6 +74,16 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
         }
     }
 
+    const style = {
+        th: {
+            'text-align': 'center',
+            'font-size': '14px',
+        },
+        td: {
+            'text-align': 'center',
+        },
+    }
+
     const columns = [
         {
             id: 'check',
@@ -111,7 +121,7 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
 
     return (
         <div className='row'>
-            <Table data={data} search={true} columns={columns} selector={true} />
+            <Table data={data} search={true} columns={columns} selector={true} style={style} />
         </div>
     )
 }

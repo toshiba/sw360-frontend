@@ -41,8 +41,8 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
                 ;(event.target as HTMLElement).className = styles.expand
             }
 
-            const attachmentDetail = document.getElementById(item.title)
-            if (!attachmentDetail) {
+            const obligationDetail = document.getElementById(item.title)
+            if (!obligationDetail) {
                 const parent = (event.target as HTMLElement).parentElement.parentElement.parentElement
                 const html = `<td colspan="10">
                     <table class="table table-borderless">
@@ -59,10 +59,10 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
 
                 parent.parentNode.insertBefore(tr, parent.nextSibling)
             } else {
-                if (attachmentDetail.hidden == true) {
-                    attachmentDetail.hidden = false
+                if (obligationDetail.hidden == true) {
+                    obligationDetail.hidden = false
                 } else {
-                    attachmentDetail.hidden = true
+                    obligationDetail.hidden = true
                 }
             }
         }
@@ -176,13 +176,28 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
             width: '10%',
         },
     ]
+    const style = {
+        th: {
+            'text-align': 'center',
+            'font-size': '14px',
+        },
+        td: {
+            'text-align': 'center',
+        },
+    }
 
     return (
         <div className='row'>
             {isEditWhitelist ? (
-                <Table data={dataEditWhitelist} search={true} columns={columnEditWhitelists} selector={true} />
+                <Table
+                    data={dataEditWhitelist}
+                    search={true}
+                    columns={columnEditWhitelists}
+                    selector={true}
+                    style={style}
+                />
             ) : (
-                <Table data={data} search={true} columns={columns} selector={true} />
+                <Table data={data} search={true} columns={columns} selector={true} style={style} />
             )}
         </div>
     )

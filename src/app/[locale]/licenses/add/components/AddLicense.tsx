@@ -19,7 +19,7 @@ import { Button, ToastContainer } from 'react-bootstrap'
 import LinkedObligations from '@/components/LinkedObligations/LinkedObligations'
 import LinkedObligationsDialog from '@/components/sw360/SearchObligations/LinkedObligationsDialog'
 import { HttpStatus, LicenseDetail, LicensePayload, LicenseTabIds, ToastData } from '@/object-types'
-import { ApiUtils } from '@/utils'
+import { ApiUtils, CommonUtils } from '@/utils'
 import { PageButtonHeader, SideBar, ToastMessage } from 'next-sw360'
 import AddLicenseSummary from './AddLicenseSummary'
 
@@ -75,14 +75,28 @@ export default function AddLicense() {
         })
     }
 
+    const validateLicense = (licensePayload: LicensePayload) => {
+        if (
+            CommonUtils.isNullEmptyOrUndefinedString(licensePayload.fullName) ||
+            CommonUtils.isNullEmptyOrUndefinedString(licensePayload.shortName)
+        ) {
+            return true
+        }
+        return false
+    }
+
     const submit = async () => {
-        const response = await ApiUtils.POST('licenses', licensePayload, session.user.access_token)
-        if (response.status == HttpStatus.CREATED) {
-            const data = (await response.json()) as LicenseDetail
-            alert(true, 'Success', t('License is created'), 'success')
-            router.push('/licenses/detail/' + data.shortName)
+        if (validateLicense(licensePayload)) {
+            alert(true, 'Require!', t('Fullname, shortname not null or Empty!'), 'danger')
         } else {
-            alert(true, 'Duplicate', t('License is Duplicate'), 'danger')
+            const response = await ApiUtils.POST('licenses', licensePayload, session.user.access_token)
+            if (response.status == HttpStatus.CREATED) {
+                const data = (await response.json()) as LicenseDetail
+                alert(true, 'Success', t('License is created!'), 'success')
+                router.push('/licenses/detail/' + data.shortName)
+            } else {
+                alert(true, 'Failed', t('Create License Failed!'), 'danger')
+            }
         }
     }
 
@@ -109,7 +123,9 @@ export default function AddLicense() {
                                         id='pills-tab'
                                         role='tablist'
                                     >
-                                        <Button onClick={handleClickAddObligations}>{t('Add Obligation')}</Button>
+                                        <Button variant='secondary' onClick={handleClickAddObligations}>
+                                            {t('Add Obligation')}
+                                        </Button>
                                     </div>
                                 )}
                             </PageButtonHeader>

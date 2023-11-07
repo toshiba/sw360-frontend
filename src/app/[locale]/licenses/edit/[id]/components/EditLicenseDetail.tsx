@@ -81,6 +81,7 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                         type='text'
                         className='form-control'
                         placeholder='Enter fullName'
+                        required
                         id='fullName'
                         aria-describedby='fullName'
                         name='fullName'
@@ -101,6 +102,7 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                         className='form-control'
                         placeholder='Enter shortName'
                         id='shortName'
+                        required
                         aria-describedby='shortName'
                         name='shortName'
                         value={licensePayload.shortName ?? ''}

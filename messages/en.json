@@ -748,13 +748,16 @@
         "Select License Obligations to be added": "Select License Obligations to be added.",
         "Add": "Add",
         "License is Duplicate": "License is Duplicate",
-        "License is created": "License is created",
+        "License is created!": "License is created",
         "Update External Link Success": "Update External Link Success",
         "Update External Link Failed": "Update External Link Failed",
         "Update License": "Update License",
         "Delete License": "Delete License",
         "Update Whitelist": "Update Whitelist",
         "License updated successfully!": "License updated successfully!",
-        "License updated failed!": "License updated failed!"
+        "License updated failed!": "License updated failed!",
+        "Create License Failed!": "Create License Failed!",
+        "Require!": "Require!",
+        "Fullname, shortname not null or Empty!": "Fullname, shortname not null or Empty!"
     }
 }

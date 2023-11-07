@@ -74,6 +74,16 @@ const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligat
         }
     }
 
+    const style = {
+        th: {
+            'text-align': 'center',
+            'font-size': '14px',
+        },
+        td: {
+            'text-align': 'center',
+        },
+    }
+
     const columns = [
         {
             id: 'check',
@@ -111,7 +121,7 @@ const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligat
 
     return (
         <div className='row'>
-            <LinkedObligationsTable data={obligations} columns={columns} />
+            <LinkedObligationsTable data={obligations} columns={columns} style={style} />
         </div>
     )
 }

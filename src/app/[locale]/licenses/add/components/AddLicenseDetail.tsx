@@ -77,12 +77,12 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                             *
                         </span>
                     </label>
-
                     <input
                         type='text'
                         className='form-control'
                         placeholder='Enter fullName'
                         id='fullName'
+                        required
                         aria-describedby='fullName'
                         name='fullName'
                         value={licensePayload.fullName ?? ''}
@@ -102,6 +102,7 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                         className='form-control'
                         placeholder='Enter shortName'
                         id='shortName'
+                        required
                         aria-describedby='shortName'
                         name='shortName'
                         value={licensePayload.shortName ?? ''}

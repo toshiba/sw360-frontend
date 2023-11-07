@@ -126,7 +126,7 @@ export default function EditLicense({ licenseId }: Props) {
     const headerButtons = {
         'Update License': { link: '', type: 'primary', onClick: submit, name: t('Update License') },
         'Delete License': { link: '', type: 'danger', onClick: submit, name: t('Delete License') },
-        Cancel: { link: '/licenses', type: 'secondary', name: t('Cancel') },
+        Cancel: { link: `/licenses/detail/${licenseId}`, type: 'secondary', name: t('Cancel') },
     }
 
     if (status === 'unauthenticated') {
@@ -148,7 +148,9 @@ export default function EditLicense({ licenseId }: Props) {
                                             id='pills-tab'
                                             role='tablist'
                                         >
-                                            <Button onClick={handleClickAddObligations}>{t('Add Obligation')}</Button>
+                                            <Button variant='secondary' onClick={handleClickAddObligations}>
+                                                {t('Add Obligation')}
+                                            </Button>
                                         </div>
                                     )}
                                 </PageButtonHeader>
