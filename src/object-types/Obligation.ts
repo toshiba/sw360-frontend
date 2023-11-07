@@ -21,4 +21,9 @@ export default interface Obligation {
     node?: string
     issetBitfield?: number
     customPropertyToValue?: Map<string, string>
+    _links?: {
+        self: {
+            href: string
+        }
+    }
 }

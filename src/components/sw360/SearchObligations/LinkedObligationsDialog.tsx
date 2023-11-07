@@ -24,8 +24,8 @@ interface Props {
     show?: boolean
     setShow?: React.Dispatch<React.SetStateAction<boolean>>
     onReRender?: () => void
-    data: any[]
-    setData: any
+    data: Array<any>
+    setData: (data: Array<any>) => void
     licensePayload?: LicensePayload
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
 }
@@ -81,7 +81,7 @@ const LinkedObligationsDialog = ({
 
                 const obligations = await response.json()
                 if (!CommonUtils.isNullEmptyOrUndefinedString(obligations._embedded['sw360:obligations'])) {
-                    const data = obligations._embedded['sw360:obligations'].map((item: any) => [
+                    const data = obligations._embedded['sw360:obligations'].map((item: Obligation) => [
                         item,
                         item,
                         item.title,
@@ -109,9 +109,7 @@ const LinkedObligationsDialog = ({
             data.push(linkedObligations)
         })
         console.log(linkedObligationsResponse)
-        console.log(data)
         data = data.filter((v, index, a) => a.findIndex((v2) => v2[0].title === v[0].title) === index)
-        console.log(data)
         const obligationIds: string[] = []
         data.forEach((item: any) => {
             if (!CommonUtils.isNullEmptyOrUndefinedString(item[0])) {
@@ -128,8 +126,8 @@ const LinkedObligationsDialog = ({
         onReRender()
     }
 
-    const getLinkObligations: (obligationsLink: any[]) => void = useCallback(
-        (obligationsLink: any[]) => setLinkedObligationsResponse(obligationsLink),
+    const getLinkObligations: (obligationsLink: Array<Obligation>) => void = useCallback(
+        (obligationsLink: Array<Obligation>) => setLinkedObligationsResponse(obligationsLink),
         []
     )
 

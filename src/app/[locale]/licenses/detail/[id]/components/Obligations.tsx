@@ -33,7 +33,7 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
     const [dataEditWhitelist, setDataEditWhitelist] = useState([])
     const params = useSearchParams()
 
-    const buildAttachmentDetail = (item: any) => {
+    const buildAttachmentDetail = (item: Obligation) => {
         return (event: React.MouseEvent<HTMLElement>) => {
             if ((event.target as HTMLElement).className == styles.expand) {
                 ;(event.target as HTMLElement).className = styles.collapse
@@ -98,7 +98,7 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
                 })
                 setWhitelist(whitelist)
                 setData(data)
-                const dataEditWhitelist = license._embedded['sw360:obligations'].map((item: any) => [
+                const dataEditWhitelist = license._embedded['sw360:obligations'].map((item: Obligation) => [
                     item,
                     item.text,
                     item.customPropertyToValue,
@@ -115,7 +115,8 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
         {
             id: 'check',
             name: '',
-            formatter: (item: any) => _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
+            formatter: (item: Obligation) =>
+                _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
             sort: false,
         },
         {

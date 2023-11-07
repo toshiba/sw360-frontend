@@ -20,12 +20,12 @@ import LinkedObligationsTable from './LinkedObligationsTable'
 
 interface Props {
     obligations?: any[]
-    setObligations?: any
+    setObligations?: (obligationsLink: Array<Obligation>) => void
     linkObligations?: Obligation[]
 }
 
 const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligations }: Props) => {
-    const handlerRadioButton = (item: any) => {
+    const handlerRadioButton = (item: Obligation) => {
         if (linkObligations.includes(item)) {
             const index = linkObligations.indexOf(item)
             linkObligations.splice(index, 1)
@@ -33,7 +33,7 @@ const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligat
             linkObligations.push(item)
         }
         const linkObligation: Obligation[] = []
-        linkObligations.forEach((item: any) => {
+        linkObligations.forEach((item: Obligation) => {
             linkObligation.push(item)
         })
         setObligations(linkObligation)
@@ -78,13 +78,14 @@ const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligat
         {
             id: 'check',
             name: '',
-            formatter: (item: any) => _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
+            formatter: (item: Obligation) =>
+                _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
             sort: false,
         },
         {
             id: 'obligationId',
             name: '',
-            formatter: (item: string) =>
+            formatter: (item: Obligation) =>
                 _(
                     <Form.Check
                         name='obligationId'

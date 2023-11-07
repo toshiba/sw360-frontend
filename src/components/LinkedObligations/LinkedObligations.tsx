@@ -13,8 +13,8 @@ import LicensePayload from '../../object-types/LicensePayload'
 import TableLinkedObligations from './TableLinkedObligations/TableLinkedObligations'
 
 interface Props {
-    data: any[]
-    setData: any
+    data: Array<any>
+    setData: (data: Array<any>) => void
     licensePayload?: LicensePayload
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
 }

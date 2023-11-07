@@ -14,19 +14,20 @@ import { FaTrashAlt } from 'react-icons/fa'
 import CommonUtils from '@/utils/common.utils'
 import { useTranslations } from 'next-intl'
 import { Table, _ } from 'next-sw360'
+import Obligation from '../../../object-types/Obligation'
 import styles from './TableLinkedObligations.module.css'
 
 interface Props {
-    data: any[]
-    setData: any
+    data: Array<any>
+    setData: (data: Array<any>) => void
     setObligationIdToLicensePayLoad?: (releaseIdToRelationships: Array<string>) => void
 }
 
 export default function TableLinkedObligations({ data, setData, setObligationIdToLicensePayLoad }: Props) {
     const t = useTranslations('default')
 
-    const handleClickDelete = (item: any) => {
-        let obligations: any[] = []
+    const handleClickDelete = (item: Obligation) => {
+        let obligations: Array<any> = []
         data.forEach((element) => {
             obligations.push(element)
         })
@@ -39,7 +40,7 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
         setObligationIdToLicensePayLoad(obligationIds)
     }
 
-    const buildAttachmentDetail = (item: any) => {
+    const buildAttachmentDetail = (item: Obligation) => {
         return (event: React.MouseEvent<HTMLElement>) => {
             if ((event.target as HTMLElement).className == styles.expand) {
                 ;(event.target as HTMLElement).className = styles.collapse
@@ -88,7 +89,8 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
         {
             id: 'check',
             name: '',
-            formatter: (item: any) => _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
+            formatter: (item: Obligation) =>
+                _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
             sort: false,
         },
         {
@@ -109,7 +111,7 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
         {
             id: 'action',
             name: t('Actions'),
-            formatter: (item: any) =>
+            formatter: (item: Obligation) =>
                 _(
                     <span>
                         <FaTrashAlt className={styles['delete-btn']} onClick={() => handleClickDelete(item)} />

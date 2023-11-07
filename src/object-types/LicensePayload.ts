@@ -25,4 +25,9 @@ export default interface LicensePayload {
         licenseType: string
     }
     licenseTypeDatabaseId?: string
+    _links?: {
+        self: {
+            href: string
+        }
+    }
 }

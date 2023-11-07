@@ -40,7 +40,7 @@ const AddLicenseText = ({ licensePayload, setLicensePayload }: Props) => {
                         className='form-control'
                         placeholder='Enter the license-text here...'
                         id='text'
-                        aria-describedby='fullnatextme'
+                        aria-describedby='text'
                         name='text'
                         value={licensePayload.text ?? ''}
                         onChange={updateField}
