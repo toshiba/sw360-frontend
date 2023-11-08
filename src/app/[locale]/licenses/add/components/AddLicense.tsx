@@ -93,7 +93,7 @@ export default function AddLicense() {
             if (response.status == HttpStatus.CREATED) {
                 const data = (await response.json()) as LicenseDetail
                 alert(true, 'Success', t('License is created!'), 'success')
-                router.push('/licenses/detail/' + data.shortName)
+                router.push('/licenses/detail?id=' + data.shortName)
             } else {
                 alert(true, 'Failed', t('Create License Failed!'), 'danger')
             }

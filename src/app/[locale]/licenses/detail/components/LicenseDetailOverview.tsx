@@ -60,7 +60,7 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
     const params = useSearchParams()
     const headerButtons = {
         'Edit License': {
-            link: `/licenses/edit/${encodeURIComponent(licenseId)}`,
+            link: `/licenses/edit?id=${encodeURIComponent(licenseId)}`,
             type: 'primary',
             name: t('Edit License'),
         },

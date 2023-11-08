@@ -9,8 +9,8 @@
 // License-Filename: LICENSE
 
 'use client'
+import { LicensePayload } from '@/object-types'
 import { useTranslations } from 'next-intl'
-import LicensePayload from '../../../../../../object-types/LicensePayload'
 import styles from './LicenseDetails.module.css'
 
 interface Props {
@@ -29,27 +29,25 @@ const EditLicenseText = ({ licensePayload, setLicensePayload }: Props) => {
     }
 
     return (
-        <>
-            <div className='row mb-4'>
-                <div className={`${styles['header']} mb-2`}>
-                    <p className='fw-bold mt-3'>{t('License Text')}</p>
-                </div>
-                <div className='row'>
-                    <div className='col-lg-4'>
-                        <textarea
-                            style={{ height: '500px', width: '1480px' }}
-                            className='form-control'
-                            placeholder='Enter the license-text here...'
-                            id='text'
-                            aria-describedby='fullnatextme'
-                            name='text'
-                            value={licensePayload.text ?? ''}
-                            onChange={updateField}
-                        />
-                    </div>
+        <div className='row mb-4'>
+            <div className={`${styles['header']} mb-2`}>
+                <p className='fw-bold mt-3'>{t('License Text')}</p>s
+            </div>
+            <div className='row'>
+                <div className='col-lg-4'>
+                    <textarea
+                        style={{ height: '500px', width: '1480px' }}
+                        className='form-control'
+                        placeholder='Enter the license-text here...'
+                        id='text'
+                        aria-describedby='fullnatextme'
+                        name='text'
+                        value={licensePayload.text ?? ''}
+                        onChange={updateField}
+                    />
                 </div>
             </div>
-        </>
+        </div>
     )
 }
 

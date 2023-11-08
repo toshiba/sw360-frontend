@@ -7,15 +7,13 @@
 
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
-
+'use client'
+import { useSearchParams } from 'next/navigation'
 import LicenseDetailOverview from './components/LicenseDetailOverview'
 
-interface Context {
-    params: { id: string }
-}
-
-const Detail = async ({ params }: Context) => {
-    const licenseId = params.id
+const Detail = () => {
+    const searchParams = useSearchParams()
+    const licenseId = searchParams.get('id')
     return <LicenseDetailOverview licenseId={licenseId} />
 }
 

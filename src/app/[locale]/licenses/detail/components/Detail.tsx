@@ -60,7 +60,7 @@ const Detail = ({ license, setLicense }: Props) => {
         if (response.status == HttpStatus.OK) {
             const data = (await response.json()) as LicenseDetail
             alert(true, 'Success', t('Update External Link Success'), 'success')
-            router.push('/licenses/detail/' + data.shortName)
+            router.push('/licenses/detail?id=' + data.shortName)
         } else {
             alert(true, 'Fail', t('Update External Link Failed'), 'danger')
         }

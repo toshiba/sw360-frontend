@@ -91,7 +91,7 @@ function LicensesPage() {
             name: t('License Shortname'),
             formatter: (id: string) =>
                 _(
-                    <Link href={`/licenses/detail/${id}`} className='link'>
+                    <Link href={`/licenses/detail?id=${id}`} className='link'>
                         {id}
                     </Link>
                 ),
