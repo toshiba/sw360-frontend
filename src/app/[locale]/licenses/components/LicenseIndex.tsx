@@ -9,18 +9,17 @@
 
 'use client'
 
+import { HttpStatus, LicensePayload } from '@/object-types'
+import DownloadService from '@/services/download.service'
+import { ApiUtils, CommonUtils } from '@/utils'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
+import { PageButtonHeader, QuickFilter, Table, _ } from 'next-sw360'
 import Link from 'next/link'
 import { notFound, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { Spinner } from 'react-bootstrap'
 import { Check2Circle, XCircle } from 'react-bootstrap-icons'
-
-import { HttpStatus } from '@/object-types'
-import DownloadService from '@/services/download.service'
-import { ApiUtils, CommonUtils } from '@/utils'
-import { PageButtonHeader, QuickFilter, Table, _ } from 'next-sw360'
 
 function LicensesPage() {
     const params = useSearchParams()
@@ -62,21 +61,20 @@ function LicensesPage() {
 
                 if (!CommonUtils.isNullOrUndefined(licenses['_embedded']['sw360:licenses'])) {
                     setLicenseData(
-                        licenses['_embedded']['sw360:licenses'].map(
-                            (item: { _links: { self: { href: string } }; fullName: string; checked: boolean }) => [
-                                item._links.self.href.split('/').pop(),
-                                item.fullName,
-                                _(
-                                    <center>
-                                        {item.checked ? (
-                                            <Check2Circle color='#287d3c' size='16' />
-                                        ) : (
-                                            <XCircle color='red' />
-                                        )}
-                                    </center>
-                                ),
-                            ]
-                        )
+                        licenses['_embedded']['sw360:licenses'].map((item: LicensePayload) => [
+                            item._links.self.href.split('/').pop(),
+                            item.fullName,
+                            _(
+                                <center>
+                                    {item.checked ? (
+                                        <Check2Circle color='#287d3c' size='16' />
+                                    ) : (
+                                        <XCircle color='red' />
+                                    )}
+                                </center>
+                            ),
+                            _(<>{item.licenseType ? item.licenseType.licenseType : '--'}</>),
+                        ])
                     )
                     setLoading(false)
                 }
