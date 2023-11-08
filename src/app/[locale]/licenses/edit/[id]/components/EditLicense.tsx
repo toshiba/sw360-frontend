@@ -21,6 +21,7 @@ import LinkedObligationsDialog from '@/components/sw360/SearchObligations/Linked
 import { HttpStatus, LicensePayload, LicenseTabIds, Obligation, ToastData } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils'
 import { PageButtonHeader, SideBar, ToastMessage } from 'next-sw360'
+import DeleteLicenseDialog from '../../../components/DeleteLicenseDialog'
 import EditLicenseSummary from './EditLicenseSummary'
 
 interface Props {
@@ -39,6 +40,7 @@ export default function EditLicense({ licenseId }: Props) {
     }
     const [addObligationDiaglog, setAddObligationDiaglog] = useState(false)
     const handleClickAddObligations = useCallback(() => setAddObligationDiaglog(true), [])
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
     const router = useRouter()
     const [licensePayload, setLicensePayload] = useState<LicensePayload>({
@@ -127,9 +129,13 @@ export default function EditLicense({ licenseId }: Props) {
         }
     }
 
+    const deleteLicense = () => {
+        setDeleteDialogOpen(true)
+    }
+
     const headerButtons = {
         'Update License': { link: '', type: 'primary', onClick: submit, name: t('Update License') },
-        'Delete License': { link: '', type: 'danger', onClick: submit, name: t('Delete License') },
+        'Delete License': { link: '', type: 'danger', onClick: deleteLicense, name: t('Delete License') },
         Cancel: { link: `/licenses/detail/${licenseId}`, type: 'secondary', name: t('Cancel') },
     }
 
@@ -143,6 +149,11 @@ export default function EditLicense({ licenseId }: Props) {
                         <div className='col-2 sidebar'>
                             <SideBar selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabList={tabList} />
                         </div>
+                        <DeleteLicenseDialog
+                            licenseId={licenseId}
+                            show={deleteDialogOpen}
+                            setShow={setDeleteDialogOpen}
+                        />
                         <div className='col'>
                             <div className='row' style={{ marginBottom: '20px' }}>
                                 <PageButtonHeader buttons={headerButtons}>

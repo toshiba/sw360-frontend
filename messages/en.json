@@ -759,6 +759,8 @@
         "Create License Failed!": "Create License Failed!",
         "Require!": "Require!",
         "Fullname, shortname not null or Empty!": "Fullname, shortname not null or Empty!",
-        "Fullname not null or empty!": "Fullname not null or empty!"
+        "Fullname not null or empty!": "Fullname not null or empty!",
+        "Do you really want to delete the license?": "Do you really want to delete the license: <strong>{name}</strong>?",
+        "Delete License success!": "Delete License success!"
     }
 }
