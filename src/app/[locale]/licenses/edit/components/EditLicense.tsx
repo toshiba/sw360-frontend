@@ -136,7 +136,7 @@ export default function EditLicense({ licenseId }: Props) {
     const headerButtons = {
         'Update License': { link: '', type: 'primary', onClick: submit, name: t('Update License') },
         'Delete License': { link: '', type: 'danger', onClick: deleteLicense, name: t('Delete License') },
-        Cancel: { link: `/licenses/detail/${licenseId}`, type: 'secondary', name: t('Cancel') },
+        Cancel: { link: `/licenses/detail?id=${licenseId}`, type: 'secondary', name: t('Cancel') },
     }
 
     if (status === 'unauthenticated') {

@@ -88,6 +88,8 @@ export default function AddLicense() {
     const submit = async () => {
         if (validateLicense(licensePayload)) {
             alert(true, 'Require!', t('Fullname, shortname not null or Empty!'), 'danger')
+        } else if (!licensePayload.shortName.match(/^[A-Za-z0-9\-.+]*$/)) {
+            alert(true, 'True!', t('Fullnam!'), 'danger')
         } else {
             const response = await ApiUtils.POST('licenses', licensePayload, session.user.access_token)
             if (response.status == HttpStatus.CREATED) {
