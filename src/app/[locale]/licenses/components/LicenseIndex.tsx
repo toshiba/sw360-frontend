@@ -30,7 +30,7 @@ function LicensesPage() {
     const { data: session, status } = useSession()
 
     const handleExportLicense = () => {
-        DownloadService.download(`reports?reports?module=licenses`, session, `Licenses.xlsx`)
+        DownloadService.download(`reports?module=licenses`, session, `Licenses.xlsx`)
     }
 
     const headerButtons = {
@@ -98,7 +98,7 @@ function LicensesPage() {
             sort: true,
         },
         { name: t('License Fullname'), width: '45%' },
-        { name: t('Is Checked'), width: '10%' },
+        { name: t('Is Checked?'), width: '10%' },
         { name: t('License Type'), width: '15%' },
     ]
 

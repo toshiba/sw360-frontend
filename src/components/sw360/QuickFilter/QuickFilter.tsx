@@ -9,13 +9,12 @@
 
 'use client'
 
-import React from 'react'
 import { Form } from 'react-bootstrap'
 import { QuickFilterProps } from './QuickFilter.types'
 
 function QuickFilter({ id, searchFunction, title = 'Quick Filter' }: QuickFilterProps) {
     return (
-        <div className='card-deck'>
+        <div className='card-deck' style={{ width: '232px', height: '76px', marginRight: '0px', marginLeft: 'auto' }}>
             <div id='component-quickfilter' className='card'>
                 <div className='card-header'>{title}</div>
                 <div className='card-body'>
