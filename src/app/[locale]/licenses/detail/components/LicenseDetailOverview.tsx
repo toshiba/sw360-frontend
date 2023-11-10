@@ -80,7 +80,6 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
 
                 const licenses = await response.json()
                 setLicenseDetail(licenses)
-                console.log(license.checked)
             } catch (e) {
                 console.error(e)
             }
@@ -212,23 +211,29 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
                                             id='pills-tab'
                                             role='tablist'
                                         >
-                                            {isEditWhitelist ? (
-                                                <div style={{ display: 'flex' }}>
-                                                    <Button variant='secondary' onClick={handleUpdateWhitelist}>
-                                                        {t('Update Whitelist')}
-                                                    </Button>
-                                                    <Button
-                                                        variant='secondary'
-                                                        style={{ marginLeft: '10px' }}
-                                                        onClick={handleCancel}
-                                                    >
-                                                        {t('Cancel')}
-                                                    </Button>
-                                                </div>
-                                            ) : (
-                                                <Button variant='secondary' onClick={handleEditWhitelist}>
-                                                    {t('Edit Whitelist')}
-                                                </Button>
+                                            {!CommonUtils.isNullEmptyOrUndefinedArray(
+                                                license.obligationDatabaseIds
+                                            ) && (
+                                                <>
+                                                    {isEditWhitelist ? (
+                                                        <div style={{ display: 'flex' }}>
+                                                            <Button variant='secondary' onClick={handleUpdateWhitelist}>
+                                                                {t('Update Whitelist')}
+                                                            </Button>
+                                                            <Button
+                                                                variant='secondary'
+                                                                style={{ marginLeft: '10px' }}
+                                                                onClick={handleCancel}
+                                                            >
+                                                                {t('Cancel')}
+                                                            </Button>
+                                                        </div>
+                                                    ) : (
+                                                        <Button variant='secondary' onClick={handleEditWhitelist}>
+                                                            {t('Edit Whitelist')}
+                                                        </Button>
+                                                    )}
+                                                </>
                                             )}
                                         </div>
                                     )}

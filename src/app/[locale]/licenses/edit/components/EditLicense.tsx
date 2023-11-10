@@ -14,7 +14,7 @@ import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { notFound, useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
-import { Button, ToastContainer } from 'react-bootstrap'
+import { ToastContainer } from 'react-bootstrap'
 
 import LinkedObligations from '@/components/LinkedObligations/LinkedObligations'
 import LinkedObligationsDialog from '@/components/sw360/SearchObligations/LinkedObligationsDialog'
@@ -139,6 +139,18 @@ export default function EditLicense({ licenseId }: Props) {
         Cancel: { link: `/licenses/detail?id=${licenseId}`, type: 'secondary', name: t('Cancel') },
     }
 
+    const headerButtonAddObligations = {
+        'Update License': { link: '', type: 'primary', onClick: submit, name: t('Update License') },
+        'Delete License': { link: '', type: 'danger', onClick: deleteLicense, name: t('Delete License') },
+        'Add Obligation': {
+            link: '',
+            type: 'secondary',
+            onClick: handleClickAddObligations,
+            name: t('Add Obligation'),
+        },
+        Cancel: { link: `/licenses/detail?id=${licenseId}`, type: 'secondary', name: t('Cancel') },
+    }
+
     if (status === 'unauthenticated') {
         signOut()
     } else {
@@ -156,23 +168,19 @@ export default function EditLicense({ licenseId }: Props) {
                         />
                         <div className='col'>
                             <div className='row' style={{ marginBottom: '20px' }}>
-                                <PageButtonHeader
-                                    title={`${licensePayload.fullName} (${licensePayload.shortName})`}
-                                    buttons={headerButtons}
-                                    checked={licensePayload.checked}
-                                >
-                                    {selectedTab === LicenseTabIds.OBLIGATIONS && (
-                                        <div
-                                            className='nav nav-pills justify-content-center bg-light font-weight-bold'
-                                            id='pills-tab'
-                                            role='tablist'
-                                        >
-                                            <Button variant='secondary' onClick={handleClickAddObligations}>
-                                                {t('Add Obligation')}
-                                            </Button>
-                                        </div>
-                                    )}
-                                </PageButtonHeader>
+                                {selectedTab === LicenseTabIds.OBLIGATIONS ? (
+                                    <PageButtonHeader
+                                        title={`${licensePayload.fullName} (${licensePayload.shortName})`}
+                                        buttons={headerButtonAddObligations}
+                                        checked={licensePayload.checked}
+                                    ></PageButtonHeader>
+                                ) : (
+                                    <PageButtonHeader
+                                        title={`${licensePayload.fullName} (${licensePayload.shortName})`}
+                                        buttons={headerButtons}
+                                        checked={licensePayload.checked}
+                                    ></PageButtonHeader>
+                                )}
                             </div>
                             <ToastContainer position='top-start'>
                                 <ToastMessage
