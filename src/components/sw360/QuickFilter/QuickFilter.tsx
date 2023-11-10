@@ -25,7 +25,7 @@ function QuickFilter({ id, searchFunction, title = 'Quick Filter' }: QuickFilter
                                 type='text'
                                 size='sm'
                                 name={title}
-                                onKeyUp={searchFunction}
+                                onInput={searchFunction}
                             />
                         </Form.Group>
                     </Form>

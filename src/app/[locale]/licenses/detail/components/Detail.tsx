@@ -78,6 +78,11 @@ const Detail = ({ license, setLicense }: Props) => {
                     setShowToast={setToastData}
                 />
             </ToastContainer>
+            {!license.checked && (
+                <div className='alert alert-danger'>
+                    This license is <b>UNCHECKED</b>
+                </div>
+            )}
             <table className={`table label-value-table ${styles['summary-table']}`}>
                 <thead
                     title='Click to expand or collapse'

@@ -44,7 +44,7 @@ export default function AddLicense() {
         FSFLibre: 'NA',
         obligationDatabaseIds: [],
         text: '',
-        checked: false,
+        checked: true,
         licenseTypeDatabaseId: '',
     })
 
@@ -118,7 +118,7 @@ export default function AddLicense() {
                     </div>
                     <div className='col'>
                         <div className='row' style={{ marginBottom: '20px' }}>
-                            <PageButtonHeader buttons={headerButtons}>
+                            <PageButtonHeader buttons={headerButtons} title='()' checked={licensePayload.checked}>
                                 {selectedTab === LicenseTabIds.OBLIGATIONS && (
                                     <div
                                         className='nav nav-pills justify-content-center bg-light font-weight-bold'

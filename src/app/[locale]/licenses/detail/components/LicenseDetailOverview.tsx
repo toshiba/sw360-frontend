@@ -80,6 +80,7 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
 
                 const licenses = await response.json()
                 setLicenseDetail(licenses)
+                console.log(license.checked)
             } catch (e) {
                 console.error(e)
             }
@@ -172,7 +173,11 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
                         </div>
                         <div className='col'>
                             <div className='row' style={{ marginBottom: '20px' }}>
-                                <PageButtonHeader title={license.shortName} buttons={headerButtons}>
+                                <PageButtonHeader
+                                    title={`${license.fullName} (${license.shortName})`}
+                                    buttons={headerButtons}
+                                    checked={license.checked}
+                                >
                                     {selectedTab === LicenseTabIds.CHANGE_LOG && (
                                         <div
                                             className='nav nav-pills justify-content-center bg-light font-weight-bold'

@@ -95,7 +95,7 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
         },
         {
             id: 'obligation',
-            name: t('Obligation'),
+            name: t('Obligation Title'),
             sort: true,
         },
         {
@@ -104,13 +104,8 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
             sort: true,
         },
         {
-            id: 'furtherProperties',
-            name: t('Further properties'),
-            sort: true,
-        },
-        {
             id: 'action',
-            name: t('Actions'),
+            name: t('Action'),
             formatter: (item: Obligation) =>
                 _(
                     <span>

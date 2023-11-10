@@ -156,7 +156,11 @@ export default function EditLicense({ licenseId }: Props) {
                         />
                         <div className='col'>
                             <div className='row' style={{ marginBottom: '20px' }}>
-                                <PageButtonHeader buttons={headerButtons}>
+                                <PageButtonHeader
+                                    title={`${licensePayload.fullName} (${licensePayload.shortName})`}
+                                    buttons={headerButtons}
+                                    checked={licensePayload.checked}
+                                >
                                     {selectedTab === LicenseTabIds.OBLIGATIONS && (
                                         <div
                                             className='nav nav-pills justify-content-center bg-light font-weight-bold'

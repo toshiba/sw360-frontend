@@ -29,7 +29,7 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
     const { data: session } = useSession()
     const [licenseTypes, setLicenseTypes] = useState([])
 
-    const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+    const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         setLicensePayload({
             ...licensePayload,
             [e.target.name]: e.target.value,
@@ -80,7 +80,7 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                     <input
                         type='text'
                         className='form-control'
-                        placeholder='Enter fullName'
+                        placeholder='Enter Fullname'
                         id='fullName'
                         required
                         aria-describedby='fullName'
@@ -100,7 +100,7 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                     <input
                         type='text'
                         className='form-control'
-                        placeholder='Enter shortName'
+                        placeholder='Enter Shortname'
                         id='shortName'
                         required
                         aria-describedby='shortName'
@@ -189,8 +189,7 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                     <label htmlFor='note' className='form-label fw-bold'>
                         {t('Note')}
                     </label>
-                    <input
-                        type='text'
+                    <textarea
                         className='form-control'
                         placeholder='Enter Note'
                         id='note'
@@ -201,7 +200,6 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                     />
                 </div>
             </div>
-            <hr className='my-2' />
         </div>
     )
 }

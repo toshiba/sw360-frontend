@@ -38,7 +38,7 @@ const AddLicenseText = ({ licensePayload, setLicensePayload }: Props) => {
                     <textarea
                         style={{ height: '500px', width: '1480px' }}
                         className='form-control'
-                        placeholder='Enter the license-text here...'
+                        placeholder='Enter the License-Text here...'
                         id='text'
                         aria-describedby='text'
                         name='text'

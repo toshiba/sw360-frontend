@@ -14,7 +14,7 @@ import Link from 'next-intl/link'
 import { PageButtonHeaderProps } from './PageButtonHeader.types'
 import styles from './pagebuttonheader.module.css'
 
-function PageButtonHeader({ title, buttons, children }: PageButtonHeaderProps) {
+function PageButtonHeader({ title, buttons, children, checked }: PageButtonHeaderProps) {
     let buttonList: JSX.Element[] = []
     if (buttons) {
         buttonList = Object.entries(buttons).map(([key, value]) => {
@@ -35,6 +35,8 @@ function PageButtonHeader({ title, buttons, children }: PageButtonHeaderProps) {
         })
     }
 
+    console.log()
+
     return (
         <div className={`row ${styles['buttonheader-toolbar']}`}>
             <div className='col-auto'>
@@ -45,7 +47,24 @@ function PageButtonHeader({ title, buttons, children }: PageButtonHeaderProps) {
                     </div>
                 </div>
             </div>
-            {title && <div className={`col text-truncate ${styles['buttonheader-title']}`}>{title}</div>}
+            {title && (
+                <div className={`col text-truncate ${styles['buttonheader-title']}`}>
+                    {title}
+                    {checked != undefined && (
+                        <>
+                            {checked ? (
+                                <span className='badge bg-success' style={{ fontSize: '40%' }}>
+                                    CHECKED
+                                </span>
+                            ) : (
+                                <span className='badge bg-danger' style={{ fontSize: '40%' }}>
+                                    UNCHECKED
+                                </span>
+                            )}
+                        </>
+                    )}
+                </div>
+            )}
         </div>
     )
 }
