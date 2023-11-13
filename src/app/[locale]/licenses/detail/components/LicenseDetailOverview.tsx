@@ -19,7 +19,7 @@ import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { notFound, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { Button, ToastContainer } from 'react-bootstrap'
+import { ToastContainer } from 'react-bootstrap'
 import Detail from './Detail'
 import Obligations from './Obligations'
 import Text from './Text'
@@ -58,13 +58,6 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
     const [whitelist, setWhitelist] = useState<Map<string, boolean>>()
     const { data: session, status } = useSession()
     const params = useSearchParams()
-    const headerButtons = {
-        'Edit License': {
-            link: `/licenses/edit?id=${encodeURIComponent(licenseId)}`,
-            type: 'primary',
-            name: t('Edit License'),
-        },
-    }
 
     useEffect(() => {
         const controller = new AbortController()
@@ -150,6 +143,28 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
         }
     }
 
+    const headerButtons = {
+        'Edit License': {
+            link: `/licenses/edit?id=${encodeURIComponent(licenseId)}`,
+            type: 'primary',
+            name: t('Edit License'),
+        },
+    }
+
+    const headerButtonsEditWhitelist = {
+        'Edit License': {
+            link: `/licenses/edit?id=${encodeURIComponent(licenseId)}`,
+            type: 'primary',
+            name: t('Edit License'),
+        },
+        'Edit Whitelist': { link: '', type: 'primary', onClick: handleEditWhitelist, name: t('Edit Whitelist') },
+    }
+
+    const headerButtonsUpdateWhitelist = {
+        'Update Whitelist': { link: '', type: 'primary', onClick: handleUpdateWhitelist, name: t('Update Whitelist') },
+        Cancel: { link: '', type: 'secondary', onClick: handleCancel, name: t('Cancel') },
+    }
+
     if (status === 'unauthenticated') {
         signOut()
     } else {
@@ -172,72 +187,77 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
                         </div>
                         <div className='col'>
                             <div className='row' style={{ marginBottom: '20px' }}>
-                                <PageButtonHeader
-                                    title={`${license.fullName} (${license.shortName})`}
-                                    buttons={headerButtons}
-                                    checked={license.checked}
-                                >
-                                    {selectedTab === LicenseTabIds.CHANGE_LOG && (
-                                        <div
-                                            className='nav nav-pills justify-content-center bg-light font-weight-bold'
-                                            id='pills-tab'
-                                            role='tablist'
-                                        >
-                                            <a
-                                                className={`nav-item nav-link ${
-                                                    changesLogTab == 'list-change' ? 'active' : ''
-                                                }`}
-                                                onClick={() => setChangesLogTab('list-change')}
-                                                style={{ color: '#F7941E', fontWeight: 'bold' }}
-                                            >
-                                                {t('Change Log')}
-                                            </a>
-                                            <a
-                                                className={`nav-item nav-link ${
-                                                    changesLogTab == 'view-log' ? 'active' : ''
-                                                }`}
-                                                onClick={() => {
-                                                    changeLogIndex !== -1 && setChangesLogTab('view-log')
-                                                }}
-                                                style={{ color: '#F7941E', fontWeight: 'bold' }}
-                                            >
-                                                {t('Changes')}
-                                            </a>
-                                        </div>
-                                    )}
-                                    {selectedTab === LicenseTabIds.OBLIGATIONS && (
-                                        <div
-                                            className='nav nav-pills justify-content-center bg-light font-weight-bold'
-                                            id='pills-tab'
-                                            role='tablist'
-                                        >
-                                            {!CommonUtils.isNullEmptyOrUndefinedArray(
-                                                license.obligationDatabaseIds
-                                            ) && (
-                                                <>
-                                                    {isEditWhitelist ? (
-                                                        <div style={{ display: 'flex' }}>
-                                                            <Button variant='secondary' onClick={handleUpdateWhitelist}>
-                                                                {t('Update Whitelist')}
-                                                            </Button>
-                                                            <Button
-                                                                variant='secondary'
-                                                                style={{ marginLeft: '10px' }}
-                                                                onClick={handleCancel}
+                                {selectedTab === LicenseTabIds.OBLIGATIONS ? (
+                                    <>
+                                        {!CommonUtils.isNullEmptyOrUndefinedArray(license.obligationDatabaseIds) && (
+                                            <>
+                                                {isEditWhitelist ? (
+                                                    <PageButtonHeader
+                                                        title={`${license.fullName} (${license.shortName})`}
+                                                        buttons={headerButtonsUpdateWhitelist}
+                                                        checked={license.checked}
+                                                    ></PageButtonHeader>
+                                                ) : (
+                                                    <PageButtonHeader
+                                                        title={`${license.fullName} (${license.shortName})`}
+                                                        buttons={headerButtonsEditWhitelist}
+                                                        checked={license.checked}
+                                                    ></PageButtonHeader>
+                                                )}
+                                            </>
+                                        )}
+                                    </>
+                                ) : (
+                                    <>
+                                        {!CommonUtils.isNullEmptyOrUndefinedArray(license.obligationDatabaseIds) && (
+                                            <>
+                                                {isEditWhitelist ? (
+                                                    <PageButtonHeader
+                                                        title={`${license.fullName} (${license.shortName})`}
+                                                        buttons={headerButtonsUpdateWhitelist}
+                                                        checked={license.checked}
+                                                    ></PageButtonHeader>
+                                                ) : (
+                                                    <PageButtonHeader
+                                                        title={`${license.fullName} (${license.shortName})`}
+                                                        buttons={headerButtons}
+                                                        checked={license.checked}
+                                                    >
+                                                        {selectedTab === LicenseTabIds.CHANGE_LOG && (
+                                                            <div
+                                                                className='nav nav-pills justify-content-center bg-light font-weight-bold'
+                                                                id='pills-tab'
+                                                                role='tablist'
                                                             >
-                                                                {t('Cancel')}
-                                                            </Button>
-                                                        </div>
-                                                    ) : (
-                                                        <Button variant='secondary' onClick={handleEditWhitelist}>
-                                                            {t('Edit Whitelist')}
-                                                        </Button>
-                                                    )}
-                                                </>
-                                            )}
-                                        </div>
-                                    )}
-                                </PageButtonHeader>
+                                                                <a
+                                                                    className={`nav-item nav-link ${
+                                                                        changesLogTab == 'list-change' ? 'active' : ''
+                                                                    }`}
+                                                                    onClick={() => setChangesLogTab('list-change')}
+                                                                    style={{ color: '#F7941E', fontWeight: 'bold' }}
+                                                                >
+                                                                    {t('Change Log')}
+                                                                </a>
+                                                                <a
+                                                                    className={`nav-item nav-link ${
+                                                                        changesLogTab == 'view-log' ? 'active' : ''
+                                                                    }`}
+                                                                    onClick={() => {
+                                                                        changeLogIndex !== -1 &&
+                                                                            setChangesLogTab('view-log')
+                                                                    }}
+                                                                    style={{ color: '#F7941E', fontWeight: 'bold' }}
+                                                                >
+                                                                    {t('Changes')}
+                                                                </a>
+                                                            </div>
+                                                        )}
+                                                    </PageButtonHeader>
+                                                )}
+                                            </>
+                                        )}
+                                    </>
+                                )}
                             </div>
                             <div className='row' hidden={selectedTab !== LicenseTabIds.DETAILS ? true : false}>
                                 <Detail license={license} setLicense={setLicenseDetail} />
