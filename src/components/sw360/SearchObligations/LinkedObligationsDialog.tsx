@@ -48,6 +48,7 @@ const LinkedObligationsDialog = ({
 
     const handleCloseDialog = () => {
         setShow(!show)
+        setKey('')
     }
 
     const searchLinkedObligations = () => {
@@ -83,6 +84,7 @@ const LinkedObligationsDialog = ({
         })
         setData(data)
         setShow(!show)
+        setKey('')
         onReRender()
     }
 
