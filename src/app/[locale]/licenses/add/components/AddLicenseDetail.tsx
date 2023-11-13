@@ -9,7 +9,7 @@
 // License-Filename: LICENSE
 
 'use client'
-import { ApiUtils } from '@/utils/index'
+import { ApiUtils, CommonUtils } from '@/utils/index'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { notFound, useSearchParams } from 'next/navigation'
@@ -24,12 +24,30 @@ interface Props {
 }
 
 const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
+    const [error, setError] = useState('')
+    const [regexError, setRegexError] = useState('')
     const t = useTranslations('default')
     const params = useSearchParams()
     const { data: session } = useSession()
     const [licenseTypes, setLicenseTypes] = useState([])
 
+    const validateInput = (value: string) => {
+        return CommonUtils.isNullEmptyOrUndefinedString(value) ? 'Input not blank or not null' : ''
+    }
+
+    const validateShortName = (value: string) => {
+        return value.match(/^[A-Za-z0-9\-.+]*$/) ? '' : 'ShortName not contains character special!'
+    }
+
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+        if (e.target.name === 'shortName') {
+            const value = e.target.value
+            const validationRegexShortname = validateShortName(value)
+            setRegexError(validationRegexShortname)
+        }
+        const value = e.target.value
+        const validationError = validateInput(value)
+        setError(validationError)
         setLicensePayload({
             ...licensePayload,
             [e.target.name]: e.target.value,
@@ -88,6 +106,7 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                         value={licensePayload.fullName ?? ''}
                         onChange={updateField}
                     />
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
                 </div>
                 <div className='col-lg-4'>
                     <label htmlFor='shortname' className='form-label fw-bold'>
@@ -108,6 +127,8 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                         value={licensePayload.shortName ?? ''}
                         onChange={updateField}
                     />
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {regexError && <p style={{ color: 'red' }}>{regexError}</p>}
                 </div>
                 <div className='col-lg-4'>
                     <label htmlFor='licenseTypeDatabaseId' className='form-label fw-bold'>
