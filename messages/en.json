@@ -763,6 +763,7 @@
         "Do you really want to delete the license?": "Do you really want to delete the license: <strong>{name}</strong>?",
         "Delete License success!": "Delete License success!",
         "Delete Obligation": "Delete Obligation",
-        "Do you really want to delete the Obligation?": "Do you really want to delete the obligation: <strong>{name}</strong>?"
+        "Do you really want to delete the Obligation?": "Do you really want to delete the obligation: <strong>{name}</strong>?",
+        "License shortname is already taken!": "License shortname is already taken."
     }
 }
