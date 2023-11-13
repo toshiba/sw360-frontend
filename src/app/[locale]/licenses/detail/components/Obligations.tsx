@@ -82,7 +82,6 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
                 }
 
                 const license = await response.json()
-                console.log(license._embedded)
                 if (license._embedded === undefined) {
                     setData([])
                 } else {

@@ -65,7 +65,6 @@ const LinkedObligationsDialog = ({
             item,
             item.title,
             item.obligationType,
-            item.customPropertyToValue,
             item,
         ])
         linkedObligationsResponseData.forEach((linkedObligations: any) => {

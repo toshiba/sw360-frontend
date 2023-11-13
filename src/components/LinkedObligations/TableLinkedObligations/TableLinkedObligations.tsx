@@ -8,10 +8,10 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import React from 'react'
+import React, { useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 
-import CommonUtils from '@/utils/common.utils'
+import DeleteObligationDialog from '@/app/[locale]/licenses/components/DeleteObligationDialog'
 import { useTranslations } from 'next-intl'
 import { Table, _ } from 'next-sw360'
 import Obligation from '../../../object-types/Obligation'
@@ -25,18 +25,11 @@ interface Props {
 
 export default function TableLinkedObligations({ data, setData, setObligationIdToLicensePayLoad }: Props) {
     const t = useTranslations('default')
-    const handleClickDelete = (item: Obligation) => {
-        let obligations: Array<any> = []
-        data.forEach((element) => {
-            obligations.push(element)
-        })
-        obligations = obligations.filter((element) => element[1] !== item.title)
-        setData(obligations)
-        const obligationIds: string[] = []
-        obligations.forEach((item: any) => {
-            obligationIds.push(CommonUtils.getIdFromUrl(item[0]['_links'].self.href))
-        })
-        setObligationIdToLicensePayLoad(obligationIds)
+    const [obligation, setObligation] = useState<Obligation>()
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+    const deleteObligation = (item: Obligation) => {
+        setObligation(item)
+        setDeleteDialogOpen(true)
     }
 
     const buildAttachmentDetail = (item: Obligation) => {
@@ -108,7 +101,7 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
             formatter: (item: Obligation) =>
                 _(
                     <span>
-                        <FaTrashAlt className={styles['delete-btn']} onClick={() => handleClickDelete(item)} />
+                        <FaTrashAlt className={styles['delete-btn']} onClick={() => deleteObligation(item)} />
                     </span>
                 ),
         },
@@ -116,6 +109,14 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
 
     return (
         <div className='row'>
+            <DeleteObligationDialog
+                data={data}
+                setData={setData}
+                setObligationIdToLicensePayLoad={setObligationIdToLicensePayLoad}
+                obligation={obligation}
+                show={deleteDialogOpen}
+                setShow={setDeleteDialogOpen}
+            />
             <Table data={data} search={true} columns={columns} selector={true} style={style} />
         </div>
     )
