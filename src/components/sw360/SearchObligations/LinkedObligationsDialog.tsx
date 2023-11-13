@@ -10,14 +10,12 @@
 
 'use client'
 
-import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
-import { notFound, useSearchParams } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
 
-import { HttpStatus, LicensePayload, Obligation } from '@/object-types'
-import { ApiUtils, CommonUtils } from '@/utils'
+import { LicensePayload, Obligation } from '@/object-types'
+import { CommonUtils } from '@/utils'
 import SelectTableLinkedObligations from './SelectTableLinkedObligations'
 
 interface Props {
@@ -26,6 +24,8 @@ interface Props {
     onReRender?: () => void
     data: Array<any>
     setData: (data: Array<any>) => void
+    obligations: Array<any>
+    setObligations: (data: Array<any>) => void
     licensePayload?: LicensePayload
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
 }
@@ -36,15 +36,14 @@ const LinkedObligationsDialog = ({
     onReRender,
     data,
     setData,
+    obligations,
+    setObligations,
     licensePayload,
     setLicensePayload,
 }: Props) => {
     const t = useTranslations('default')
-    const { data: session } = useSession()
-    const [dataSearch, setDataSearch] = useState([])
     const [linkObligations] = useState([])
     const [linkedObligationsResponse, setLinkedObligationsResponse] = useState([])
-    const [obligations, setObligations] = useState([])
     const [key, setKey] = useState('')
 
     const handleCloseDialog = () => {
@@ -53,49 +52,13 @@ const LinkedObligationsDialog = ({
 
     const searchLinkedObligations = () => {
         CommonUtils.isNullEmptyOrUndefinedString(key)
-            ? setObligations(dataSearch)
-            : setObligations(dataSearch.filter((item) => item[2].includes(key)))
+            ? setObligations(obligations)
+            : setObligations(obligations.filter((item) => item[2].includes(key)))
     }
 
     const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
         setKey(e.target.value)
     }
-
-    const params = useSearchParams()
-    useEffect(() => {
-        const controller = new AbortController()
-        const signal = controller.signal
-
-        ;(async () => {
-            try {
-                const response = await ApiUtils.GET(
-                    `obligations?obligationLevel=LICENSE_OBLIGATION`,
-                    session.user.access_token,
-                    signal
-                )
-                if (response.status === HttpStatus.UNAUTHORIZED) {
-                    return signOut()
-                } else if (response.status !== HttpStatus.OK) {
-                    return notFound()
-                }
-
-                const obligations = await response.json()
-                if (!CommonUtils.isNullEmptyOrUndefinedString(obligations._embedded['sw360:obligations'])) {
-                    const data = obligations._embedded['sw360:obligations'].map((item: Obligation) => [
-                        item,
-                        item,
-                        item.title,
-                        item.obligationType,
-                        item.text,
-                    ])
-                    setDataSearch(data)
-                }
-            } catch (e) {
-                console.error(e)
-            }
-        })()
-        return () => controller.abort()
-    }, [params, session])
 
     const handleClickSelectObligations = () => {
         const linkedObligationsResponseData = linkedObligationsResponse.map((item: Obligation) => [
@@ -108,7 +71,6 @@ const LinkedObligationsDialog = ({
         linkedObligationsResponseData.forEach((linkedObligations: any) => {
             data.push(linkedObligations)
         })
-        console.log(linkedObligationsResponse)
         data = data.filter((v, index, a) => a.findIndex((v2) => v2[0].title === v[0].title) === index)
         const obligationIds: string[] = []
         data.forEach((item: any) => {
@@ -116,7 +78,6 @@ const LinkedObligationsDialog = ({
                 obligationIds.push(CommonUtils.getIdFromUrl(item[0]['_links'].self.href))
             }
         })
-        console.log(obligationIds)
         setLicensePayload({
             ...licensePayload,
             obligationDatabaseIds: obligationIds,

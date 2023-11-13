@@ -25,7 +25,6 @@ interface Props {
 
 export default function TableLinkedObligations({ data, setData, setObligationIdToLicensePayLoad }: Props) {
     const t = useTranslations('default')
-
     const handleClickDelete = (item: Obligation) => {
         let obligations: Array<any> = []
         data.forEach((element) => {

@@ -82,28 +82,33 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
                 }
 
                 const license = await response.json()
-                const data = license._embedded['sw360:obligations']
-                    .map((item: Obligation) => [
+                console.log(license._embedded)
+                if (license._embedded === undefined) {
+                    setData([])
+                } else {
+                    const data = license._embedded['sw360:obligations']
+                        .map((item: Obligation) => [
+                            item,
+                            item.title,
+                            item.obligationType,
+                            item.customPropertyToValue,
+                            item.text,
+                            item.whitelist,
+                        ])
+                        .filter((item: any) => item[5].length !== 0)
+                    const whitelist = new Map<string, boolean>()
+                    data.forEach((element: any) => {
+                        whitelist.set(CommonUtils.getIdFromUrl(element[0]._links.self.href), true)
+                    })
+                    setWhitelist(whitelist)
+                    setData(data)
+                    const dataEditWhitelist = license._embedded['sw360:obligations'].map((item: Obligation) => [
                         item,
-                        item.title,
-                        item.obligationType,
-                        item.customPropertyToValue,
                         item.text,
-                        item.whitelist,
+                        item.customPropertyToValue,
                     ])
-                    .filter((item: any) => item[5].length !== 0)
-                const whitelist = new Map<string, boolean>()
-                data.forEach((element: any) => {
-                    whitelist.set(CommonUtils.getIdFromUrl(element[0]._links.self.href), true)
-                })
-                setWhitelist(whitelist)
-                setData(data)
-                const dataEditWhitelist = license._embedded['sw360:obligations'].map((item: Obligation) => [
-                    item,
-                    item.text,
-                    item.customPropertyToValue,
-                ])
-                setDataEditWhitelist(dataEditWhitelist)
+                    setDataEditWhitelist(dataEditWhitelist)
+                }
             } catch (e) {
                 console.error(e)
             }

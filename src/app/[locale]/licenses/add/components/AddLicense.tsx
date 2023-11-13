@@ -12,13 +12,13 @@
 
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
-import { useRouter } from 'next/navigation'
-import { useCallback, useState } from 'react'
+import { notFound, useRouter, useSearchParams } from 'next/navigation'
+import { useCallback, useEffect, useState } from 'react'
 import { ToastContainer } from 'react-bootstrap'
 
 import LinkedObligations from '@/components/LinkedObligations/LinkedObligations'
 import LinkedObligationsDialog from '@/components/sw360/SearchObligations/LinkedObligationsDialog'
-import { HttpStatus, LicenseDetail, LicensePayload, LicenseTabIds, ToastData } from '@/object-types'
+import { HttpStatus, LicenseDetail, LicensePayload, LicenseTabIds, Obligation, ToastData } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils'
 import { PageButtonHeader, SideBar, ToastMessage } from 'next-sw360'
 import AddLicenseSummary from './AddLicenseSummary'
@@ -32,9 +32,10 @@ export default function AddLicense() {
     const handleReRender = () => {
         setReRender(!reRender)
     }
+    const [obligations, setObligations] = useState([])
     const [addObligationDiaglog, setAddObligationDiaglog] = useState(false)
     const handleClickAddObligations = useCallback(() => setAddObligationDiaglog(true), [])
-
+    const params = useSearchParams()
     const router = useRouter()
     const [licensePayload, setLicensePayload] = useState<LicensePayload>({
         shortName: '',
@@ -58,6 +59,41 @@ export default function AddLicense() {
             name: 'Linked Obligations',
         },
     ]
+
+    useEffect(() => {
+        const controller = new AbortController()
+        const signal = controller.signal
+
+        ;(async () => {
+            try {
+                const response = await ApiUtils.GET(
+                    `obligations?obligationLevel=LICENSE_OBLIGATION`,
+                    session.user.access_token,
+                    signal
+                )
+                if (response.status === HttpStatus.UNAUTHORIZED) {
+                    return signOut()
+                } else if (response.status !== HttpStatus.OK) {
+                    return notFound()
+                }
+
+                const obligations = await response.json()
+                if (!CommonUtils.isNullEmptyOrUndefinedString(obligations._embedded['sw360:obligations'])) {
+                    const data = obligations._embedded['sw360:obligations'].map((item: Obligation) => [
+                        item,
+                        item,
+                        item.title,
+                        item.obligationType,
+                        item.text,
+                    ])
+                    setObligations(data)
+                }
+            } catch (e) {
+                console.error(e)
+            }
+        })()
+        return () => controller.abort()
+    }, [params, session])
 
     const [toastData, setToastData] = useState<ToastData>({
         show: false,
@@ -161,6 +197,8 @@ export default function AddLicense() {
                                 show={addObligationDiaglog}
                                 data={data}
                                 setData={setData}
+                                setObligations={setObligations}
+                                obligations={obligations}
                                 setShow={setAddObligationDiaglog}
                                 onReRender={handleReRender}
                                 licensePayload={licensePayload}

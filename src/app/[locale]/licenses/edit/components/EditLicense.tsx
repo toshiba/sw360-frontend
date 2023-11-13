@@ -41,7 +41,7 @@ export default function EditLicense({ licenseId }: Props) {
     const [addObligationDiaglog, setAddObligationDiaglog] = useState(false)
     const handleClickAddObligations = useCallback(() => setAddObligationDiaglog(true), [])
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-
+    const [obligations, setObligations] = useState([])
     const router = useRouter()
     const [licensePayload, setLicensePayload] = useState<LicensePayload>({
         shortName: '',
@@ -70,15 +70,42 @@ export default function EditLicense({ licenseId }: Props) {
                 }
                 const license = await response.json()
                 setLicensePayload(license)
-                if (!CommonUtils.isNullEmptyOrUndefinedString(license._embedded['sw360:obligations'])) {
+                if (license._embedded !== undefined) {
                     const data = license._embedded['sw360:obligations'].map((item: Obligation) => [
                         item,
                         item.title,
                         item.obligationType,
-                        item.customPropertyToValue,
                         item,
                     ])
                     setData(data)
+                }
+            } catch (e) {
+                console.error(e)
+            }
+        })()
+        ;(async () => {
+            try {
+                const response = await ApiUtils.GET(
+                    `obligations?obligationLevel=LICENSE_OBLIGATION`,
+                    session.user.access_token,
+                    signal
+                )
+                if (response.status === HttpStatus.UNAUTHORIZED) {
+                    return signOut()
+                } else if (response.status !== HttpStatus.OK) {
+                    return notFound()
+                }
+
+                const obligations = await response.json()
+                if (!CommonUtils.isNullEmptyOrUndefinedString(obligations._embedded['sw360:obligations'])) {
+                    const data = obligations._embedded['sw360:obligations'].map((item: Obligation) => [
+                        item,
+                        item,
+                        item.title,
+                        item.obligationType,
+                        item.text,
+                    ])
+                    setObligations(data)
                 }
             } catch (e) {
                 console.error(e)
@@ -203,6 +230,8 @@ export default function EditLicense({ licenseId }: Props) {
                                     show={addObligationDiaglog}
                                     data={data}
                                     setData={setData}
+                                    setObligations={setObligations}
+                                    obligations={obligations}
                                     setShow={setAddObligationDiaglog}
                                     onReRender={handleReRender}
                                     licensePayload={licensePayload}

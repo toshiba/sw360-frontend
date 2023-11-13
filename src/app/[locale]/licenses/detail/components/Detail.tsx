@@ -160,7 +160,6 @@ const Detail = ({ license, setLicense }: Props) => {
                                     style={{ width: 'auto' }}
                                     type='text'
                                     className='form-control'
-                                    placeholder={t('Enter Name')}
                                     id='name'
                                     name='externalLicenseLink'
                                     aria-describedby='name'
