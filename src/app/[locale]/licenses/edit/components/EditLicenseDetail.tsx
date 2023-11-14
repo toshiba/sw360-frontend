@@ -28,7 +28,7 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
     const { data: session } = useSession()
     const [licenseTypes, setLicenseTypes] = useState([])
 
-    const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+    const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         setLicensePayload({
             ...licensePayload,
             [e.target.name]: e.target.value,
@@ -70,7 +70,7 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
             </div>
             <div className='row'>
                 <div className='col-lg-4'>
-                    <label htmlFor='used_license' className='form-label fw-bold'>
+                    <label htmlFor='used_license' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
                         {t('Fullname')}
                         <span className='text-red' style={{ color: '#F7941E' }}>
                             *
@@ -90,7 +90,7 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                     />
                 </div>
                 <div className='col-lg-4'>
-                    <label htmlFor='shortname' className='form-label fw-bold'>
+                    <label htmlFor='shortname' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
                         {t('Shortname')}
                         <span className='text-red' style={{ color: '#F7941E' }}>
                             *
@@ -110,7 +110,7 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                     />
                 </div>
                 <div className='col-lg-4'>
-                    <label htmlFor='licenseTypeDatabaseId' className='form-label fw-bold'>
+                    <label htmlFor='licenseTypeDatabaseId' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
                         {t('License Type')}{' '}
                     </label>
                     <select
@@ -133,7 +133,7 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
             <hr className='my-2' />
             <div className='row'>
                 <div className='col-lg-4'>
-                    <label htmlFor='OSIApproved' className='form-label fw-bold'>
+                    <label htmlFor='OSIApproved' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
                         {t('OSI Approved?')}{' '}
                     </label>
                     <select
@@ -150,7 +150,7 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                     </select>
                 </div>
                 <div className='col-lg-4'>
-                    <label htmlFor='FSFLibre' className='form-label fw-bold'>
+                    <label htmlFor='FSFLibre' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
                         {t('FSF Free/Libre?')}{' '}
                     </label>
                     <select
@@ -176,7 +176,7 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                             checked={licensePayload.checked ?? false}
                             onChange={updateFieldChecked}
                         />
-                        <label className='form-label fw-bold' htmlFor='isChecked'>
+                        <label className='form-label fw-bold' htmlFor='isChecked' style={{ cursor: 'pointer' }}>
                             {t('Is checked')}
                         </label>
                     </div>
@@ -185,11 +185,10 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
             <hr className='my-2' />
             <div className='row'>
                 <div className='col-lg-4'>
-                    <label htmlFor='note' className='form-label fw-bold'>
+                    <label htmlFor='note' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
                         {t('Note')}
                     </label>
-                    <input
-                        type='text'
+                    <textarea
                         className='form-control'
                         placeholder='Enter Note'
                         id='note'
@@ -200,7 +199,6 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                     />
                 </div>
             </div>
-            <hr className='my-2' />
         </div>
     )
 }

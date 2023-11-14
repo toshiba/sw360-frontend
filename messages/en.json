@@ -748,7 +748,7 @@
         "Select License Obligations to be added": "Select License Obligations to be added.",
         "Add": "Add",
         "License is Duplicate": "License is Duplicate",
-        "License is created!": "License is created",
+        "License added successfully!": "License added successfully!",
         "Update External Link Success": "Update External Link Success",
         "Update External Link Failed": "Update External Link Failed",
         "Update License": "Update License",
@@ -764,6 +764,6 @@
         "Delete License success!": "Delete License success!",
         "Delete Obligation": "Delete Obligation",
         "Do you really want to delete the Obligation?": "Do you really want to delete the obligation: <strong>{name}</strong>?",
-        "License shortname is already taken!": "License shortname is already taken."
+        "License shortname is already taken!": "License shortname is already taken!"
     }
 }

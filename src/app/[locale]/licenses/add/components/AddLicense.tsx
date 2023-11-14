@@ -18,7 +18,7 @@ import { ToastContainer } from 'react-bootstrap'
 
 import LinkedObligations from '@/components/LinkedObligations/LinkedObligations'
 import LinkedObligationsDialog from '@/components/sw360/SearchObligations/LinkedObligationsDialog'
-import { HttpStatus, LicenseDetail, LicensePayload, LicenseTabIds, Obligation, ToastData } from '@/object-types'
+import { HttpStatus, LicensePayload, LicenseTabIds, Obligation, ToastData } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils'
 import { PageButtonHeader, SideBar, ToastMessage } from 'next-sw360'
 import AddLicenseSummary from './AddLicenseSummary'
@@ -128,14 +128,11 @@ export default function AddLicense() {
             alert(true, 'True!', t('Fullnam!'), 'danger')
         } else {
             const response = await ApiUtils.POST('licenses', licensePayload, session.user.access_token)
-            console.log(JSON.stringify(licensePayload))
-            console.log(response.status)
             if (response.status == HttpStatus.CREATED) {
-                const data = (await response.json()) as LicenseDetail
-                alert(true, 'Success', t('License is created!'), 'success')
-                router.push('/licenses/detail?id=' + data.shortName)
+                alert(true, 'Success', t('License added successfully!'), 'success')
+                router.push('/licenses')
             } else if (response.status == HttpStatus.CONFLICT) {
-                alert(true, 'Error', t('License shortname is already taken.'), 'danger')
+                alert(true, 'Error', t('License shortname is already taken!'), 'danger')
             } else {
                 alert(true, 'Failed', t('Create License Failed!'), 'danger')
             }

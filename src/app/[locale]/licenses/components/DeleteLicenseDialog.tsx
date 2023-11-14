@@ -16,16 +16,17 @@ import { useRouter } from 'next/navigation'
 import { useCallback, useState } from 'react'
 import { Alert, Button, Form, Modal } from 'react-bootstrap'
 
-import { HttpStatus } from '@/object-types'
+import { HttpStatus, LicensePayload } from '@/object-types'
 import { ApiUtils } from '@/utils'
+import { QuestionCircle } from 'react-bootstrap-icons'
 
 interface Props {
-    licenseId?: string
+    licensePayload?: LicensePayload
     show?: boolean
     setShow?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const DeleteLicenseDialog = ({ licenseId, show, setShow }: Props) => {
+const DeleteLicenseDialog = ({ licensePayload, show, setShow }: Props) => {
     const { data: session } = useSession()
     const t = useTranslations('default')
     const router = useRouter()
@@ -46,7 +47,7 @@ const DeleteLicenseDialog = ({ licenseId, show, setShow }: Props) => {
     }, [])
 
     const deleteLicense = async () => {
-        const response = await ApiUtils.DELETE(`licenses/${licenseId}`, session.user.access_token)
+        const response = await ApiUtils.DELETE(`licenses/${licensePayload.shortName}`, session.user.access_token)
         try {
             if (response.status == HttpStatus.OK) {
                 displayMessage('success', t('Delete License success!'))
@@ -79,31 +80,41 @@ const DeleteLicenseDialog = ({ licenseId, show, setShow }: Props) => {
     }
 
     return (
-        <Modal show={show} onHide={handleCloseDialog} backdrop='static' centered size='lg'>
-            <Modal.Header closeButton style={{ color: 'red' }}>
-                <Modal.Title>{t('Delete License')} ?</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Alert variant={variant} onClose={() => setShowMessage(false)} dismissible show={showMessage}>
-                    {message}
-                </Alert>
-                <Form>
-                    {t.rich('Do you really want to delete the license?', {
-                        name: licenseId,
-                        strong: (chunks) => <b>{chunks}</b>,
-                    })}
-                </Form>
-            </Modal.Body>
-            <Modal.Footer className='justify-content-end'>
-                <Button className='delete-btn' variant='light' onClick={handleCloseDialog}>
-                    {' '}
-                    {t('Close')}{' '}
-                </Button>
-                <Button className='login-btn' variant='danger' onClick={() => handleSubmit()} hidden={reloadPage}>
-                    {t('Delete License')}
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        licensePayload && (
+            <Modal show={show} onHide={handleCloseDialog} backdrop='static' centered size='lg'>
+                <Modal.Header
+                    closeButton
+                    style={{ backgroundColor: '#feefef', borderColor: '#f48989', color: '#da1414' }}
+                >
+                    <h5>
+                        <Modal.Title style={{ fontSize: '24px' }}>
+                            <QuestionCircle />
+                            &nbsp;
+                            {t('Delete License')} ?
+                        </Modal.Title>
+                    </h5>
+                </Modal.Header>
+                <Modal.Body>
+                    <Alert variant={variant} onClose={() => setShowMessage(false)} dismissible show={showMessage}>
+                        {message}
+                    </Alert>
+                    <Form>
+                        {t.rich('Do you really want to delete the license?', {
+                            name: `${licensePayload.fullName} (${licensePayload.shortName})`,
+                            strong: (chunks) => <b>{chunks}</b>,
+                        })}
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer className='justify-content-end'>
+                    <Button className='delete-btn' variant='light' onClick={handleCloseDialog}>
+                        {t('Cancel')}
+                    </Button>
+                    <Button className='login-btn' variant='danger' onClick={() => handleSubmit()} hidden={reloadPage}>
+                        {t('Delete License')}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+        )
     )
 }
 

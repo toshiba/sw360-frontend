@@ -89,7 +89,7 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
                         .map((item: Obligation) => [
                             item,
                             item.title,
-                            item.obligationType,
+                            item.obligationType.charAt(0) + item.obligationType.slice(1).toLowerCase(),
                             item.customPropertyToValue,
                             item.text,
                             item.whitelist,
@@ -157,6 +157,7 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
             formatter: (item: any) =>
                 _(
                     <Form.Check
+                        style={{ textAlign: 'center' }}
                         name='obligationId'
                         type='checkbox'
                         defaultChecked={!CommonUtils.isNullEmptyOrUndefinedArray(item.whitelist) ?? true}
@@ -189,6 +190,16 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
         },
     }
 
+    const styleEditWhiteList = {
+        th: {
+            'text-align': 'left',
+            'font-size': '14px',
+        },
+        td: {
+            'text-align': 'left',
+        },
+    }
+
     return (
         <div className='row'>
             {isEditWhitelist ? (
@@ -197,7 +208,7 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
                     search={true}
                     columns={columnEditWhitelists}
                     selector={true}
-                    style={style}
+                    style={styleEditWhiteList}
                 />
             ) : (
                 <Table data={data} search={true} columns={columns} selector={true} style={style} />

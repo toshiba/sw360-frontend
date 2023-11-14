@@ -16,6 +16,7 @@ import { Button, Form, Modal } from 'react-bootstrap'
 
 import { Obligation } from '@/object-types'
 import { CommonUtils } from '@/utils'
+import { QuestionCircle } from 'react-bootstrap-icons'
 
 interface Props {
     data: Array<any>
@@ -58,8 +59,17 @@ const DeleteObligationDialog = ({
     return (
         obligation && (
             <Modal show={show} onHide={handleCloseDialog} backdrop='static' centered size='lg'>
-                <Modal.Header closeButton style={{ color: 'red' }}>
-                    <Modal.Title>{t('Delete Obligation')} ?</Modal.Title>
+                <Modal.Header
+                    closeButton
+                    style={{ backgroundColor: '#feefef', borderColor: '#f48989', color: '#da1414' }}
+                >
+                    <h5>
+                        <Modal.Title style={{ fontSize: '24px' }}>
+                            <QuestionCircle />
+                            &nbsp;
+                            {t('Delete License')} ?
+                        </Modal.Title>
+                    </h5>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -71,8 +81,7 @@ const DeleteObligationDialog = ({
                 </Modal.Body>
                 <Modal.Footer className='justify-content-end'>
                     <Button className='delete-btn' variant='light' onClick={handleCloseDialog}>
-                        {' '}
-                        {t('Close')}{' '}
+                        {t('Cancel')}
                     </Button>
                     <Button className='login-btn' variant='danger' onClick={() => handleSubmit()}>
                         {t('Delete Obligation')}

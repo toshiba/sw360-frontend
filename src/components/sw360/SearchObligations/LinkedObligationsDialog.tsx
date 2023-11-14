@@ -16,6 +16,7 @@ import { Button, Modal } from 'react-bootstrap'
 
 import { LicensePayload, Obligation } from '@/object-types'
 import { CommonUtils } from '@/utils'
+import { CheckSquare } from 'react-bootstrap-icons'
 import SelectTableLinkedObligations from './SelectTableLinkedObligations'
 
 interface Props {
@@ -95,8 +96,14 @@ const LinkedObligationsDialog = ({
 
     return (
         <Modal show={show} onHide={handleCloseDialog} backdrop='static' centered size='lg'>
-            <Modal.Header closeButton>
-                <Modal.Title>{t('Select License Obligations to be added')}</Modal.Title>
+            <Modal.Header closeButton style={{ backgroundColor: '#eef2fa', borderColor: '#89a7e0', color: '#2e5aac' }}>
+                <h5>
+                    <Modal.Title style={{ fontSize: '16px' }}>
+                        <CheckSquare />
+                        &nbsp;
+                        {t('Select License Obligations to be added')}
+                    </Modal.Title>
+                </h5>
             </Modal.Header>
             <Modal.Body>
                 <div className='modal-body'>
@@ -131,15 +138,10 @@ const LinkedObligationsDialog = ({
                 </div>
             </Modal.Body>
             <Modal.Footer className='justify-content-end'>
-                <Button
-                    type='button'
-                    data-bs-dismiss='modal'
-                    className={`fw-bold btn btn-secondary`}
-                    onClick={handleCloseDialog}
-                >
+                <Button type='button' data-bs-dismiss='modal' variant='light' onClick={handleCloseDialog}>
                     {t('Cancel')}
                 </Button>
-                <Button type='button' className={`fw-bold btn btn-secondary`} onClick={handleClickSelectObligations}>
+                <Button type='button' variant='info' onClick={handleClickSelectObligations}>
                     {t('Add')}
                 </Button>
             </Modal.Footer>

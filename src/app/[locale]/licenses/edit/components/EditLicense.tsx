@@ -163,7 +163,7 @@ export default function EditLicense({ licenseId }: Props) {
     const headerButtons = {
         'Update License': { link: '', type: 'primary', onClick: submit, name: t('Update License') },
         'Delete License': { link: '', type: 'danger', onClick: deleteLicense, name: t('Delete License') },
-        Cancel: { link: `/licenses/detail?id=${licenseId}`, type: 'secondary', name: t('Cancel') },
+        Cancel: { link: `/licenses/detail?id=${licenseId}`, type: 'light', name: t('Cancel') },
     }
 
     const headerButtonAddObligations = {
@@ -175,7 +175,7 @@ export default function EditLicense({ licenseId }: Props) {
             onClick: handleClickAddObligations,
             name: t('Add Obligation'),
         },
-        Cancel: { link: `/licenses/detail?id=${licenseId}`, type: 'secondary', name: t('Cancel') },
+        Cancel: { link: `/licenses/detail?id=${licenseId}`, type: 'light', name: t('Cancel') },
     }
 
     if (status === 'unauthenticated') {
@@ -189,7 +189,7 @@ export default function EditLicense({ licenseId }: Props) {
                             <SideBar selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabList={tabList} />
                         </div>
                         <DeleteLicenseDialog
-                            licenseId={licenseId}
+                            licensePayload={licensePayload}
                             show={deleteDialogOpen}
                             setShow={setDeleteDialogOpen}
                         />

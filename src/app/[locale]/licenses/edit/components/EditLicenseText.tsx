@@ -31,7 +31,7 @@ const EditLicenseText = ({ licensePayload, setLicensePayload }: Props) => {
     return (
         <div className='row mb-4'>
             <div className={`${styles['header']} mb-2`}>
-                <p className='fw-bold mt-3'>{t('License Text')}</p>s
+                <p className='fw-bold mt-3'>{t('License Text')}</p>
             </div>
             <div className='row'>
                 <div className='col-lg-4'>
