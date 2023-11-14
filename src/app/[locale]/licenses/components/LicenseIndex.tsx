@@ -18,14 +18,12 @@ import { PageButtonHeader, QuickFilter, Table, _ } from 'next-sw360'
 import Link from 'next/link'
 import { notFound, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { Spinner } from 'react-bootstrap'
 import { Check2Circle, XCircle } from 'react-bootstrap-icons'
 
 function LicensesPage() {
     const params = useSearchParams()
     const t = useTranslations('default')
     const [search, setSearch] = useState({})
-    const [loading, setLoading] = useState(true)
     const [licenseData, setLicenseData] = useState([])
     const { data: session, status } = useSession()
 
@@ -76,7 +74,6 @@ function LicensesPage() {
                             _(<>{item.licenseType ? item.licenseType.licenseType : '--'}</>),
                         ])
                     )
-                    setLoading(false)
                 }
             } catch (e) {
                 console.error(e)
@@ -121,19 +118,14 @@ function LicensesPage() {
                                     buttons={headerButtons}
                                     title={`${t('Licenses')} (${licenseData.length})`}
                                 />
-                                {!loading ? (
-                                    <Table
-                                        data={licenseData}
-                                        columns={columns}
-                                        sort={true}
-                                        search={search}
-                                        selector={true}
-                                    />
-                                ) : (
-                                    <div className='col-12' style={{ textAlign: 'center' }}>
-                                        <Spinner className='spinner' />
-                                    </div>
-                                )}
+                                <Table
+                                    data={licenseData}
+                                    columns={columns}
+                                    sort={true}
+                                    search={search}
+                                    selector={true}
+                                />
+
                                 <div className='row mt-2'></div>
                             </div>
                         </div>

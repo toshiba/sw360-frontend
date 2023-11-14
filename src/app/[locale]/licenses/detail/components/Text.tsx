@@ -11,7 +11,6 @@
 'use client'
 import { LicenseDetail } from '@/object-types'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
 import styles from '../detail.module.css'
 
 interface Props {
@@ -20,21 +19,15 @@ interface Props {
 
 const Text = ({ license }: Props) => {
     const t = useTranslations('default')
-    const [toggle, setToggle] = useState(false)
     return (
         <div className='col'>
             <table className={`table label-value-table ${styles['summary-table']}`}>
-                <thead
-                    title='Click to expand or collapse'
-                    onClick={() => {
-                        setToggle(!toggle)
-                    }}
-                >
+                <thead>
                     <tr>
                         <th colSpan={2}>{t('License Text')}</th>
                     </tr>
                 </thead>
-                <tbody hidden={toggle}>
+                <tbody>
                     <tr>
                         <td>{license.text ?? ''}</td>
                     </tr>

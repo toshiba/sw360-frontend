@@ -104,7 +104,13 @@ const SideBar = ({ selectedTab, setSelectedTab, tabList, vulnerabilities, eccSta
     }
 
     return (
-        <div id='detailTab' className='list-group' data-initial-tab={selectedTab} role='tablist'>
+        <div
+            id='detailTab'
+            className='list-group'
+            data-initial-tab={selectedTab}
+            role='tablist'
+            style={{ width: '232px', height: '76px', marginRight: '0px', marginLeft: 'auto', fontSize: '14px' }}
+        >
             {createMenuBar()}
         </div>
     )

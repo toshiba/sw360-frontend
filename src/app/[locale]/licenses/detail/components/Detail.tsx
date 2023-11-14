@@ -28,7 +28,6 @@ interface Props {
 
 const Detail = ({ license, setLicense }: Props) => {
     const t = useTranslations('default')
-    const [toggle, setToggle] = useState(false)
     const { data: session } = useSession()
     const router = useRouter()
 
@@ -84,17 +83,12 @@ const Detail = ({ license, setLicense }: Props) => {
                 </div>
             )}
             <table className={`table label-value-table ${styles['summary-table']}`}>
-                <thead
-                    title='Click to expand or collapse'
-                    onClick={() => {
-                        setToggle(!toggle)
-                    }}
-                >
+                <thead>
                     <tr>
-                        <th colSpan={2}>{t('License Detail')}</th>
+                        <th colSpan={2}>{t('License Details')}</th>
                     </tr>
                 </thead>
-                <tbody hidden={toggle}>
+                <tbody>
                     <tr>
                         <td>{t('Fullname')}:</td>
                         <td>{license.fullName ?? ''}</td>
@@ -109,7 +103,7 @@ const Detail = ({ license, setLicense }: Props) => {
                             {' '}
                             {license && license.checked == true ? (
                                 <span style={{ color: '#287d3c' }}>
-                                    <FiCheckCircle /> {t('Yes')}
+                                    <FiCheckCircle />
                                 </span>
                             ) : (
                                 <span style={{ color: 'red' }}>
