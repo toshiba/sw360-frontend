@@ -38,28 +38,15 @@ const LinkedObligationsDialog = ({
     data,
     setData,
     obligations,
-    setObligations,
     licensePayload,
     setLicensePayload,
 }: Props) => {
     const t = useTranslations('default')
     const [linkObligations] = useState([])
     const [linkedObligationsResponse, setLinkedObligationsResponse] = useState([])
-    const [key, setKey] = useState('')
 
     const handleCloseDialog = () => {
         setShow(!show)
-        setKey('')
-    }
-
-    const searchLinkedObligations = () => {
-        CommonUtils.isNullEmptyOrUndefinedString(key)
-            ? setObligations(obligations)
-            : setObligations(obligations.filter((item) => item[2].includes(key)))
-    }
-
-    const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setKey(e.target.value)
     }
 
     const handleClickSelectObligations = () => {
@@ -85,7 +72,6 @@ const LinkedObligationsDialog = ({
         })
         setData(data)
         setShow(!show)
-        setKey('')
         onReRender()
     }
 
@@ -107,27 +93,6 @@ const LinkedObligationsDialog = ({
             </Modal.Header>
             <Modal.Body>
                 <div className='modal-body'>
-                    <div className='row'>
-                        <div className='col-lg-8'>
-                            <input
-                                type='text'
-                                className='form-control'
-                                placeholder={t('Enter search text')}
-                                aria-describedby='Link Releases'
-                                onChange={updateField}
-                                value={key}
-                            />
-                        </div>
-                        <div className='col-lg-4'>
-                            <button
-                                type='button'
-                                className={`fw-bold btn btn-secondary`}
-                                onClick={searchLinkedObligations}
-                            >
-                                {t('Search')}
-                            </button>
-                        </div>
-                    </div>
                     <div className='row mt-3'>
                         <SelectTableLinkedObligations
                             obligations={obligations}
@@ -141,7 +106,12 @@ const LinkedObligationsDialog = ({
                 <Button type='button' data-bs-dismiss='modal' variant='light' onClick={handleCloseDialog}>
                     {t('Cancel')}
                 </Button>
-                <Button type='button' variant='info' onClick={handleClickSelectObligations}>
+                <Button
+                    type='button'
+                    style={{ backgroundColor: '#2e5aac', borderColor: '#2e5aac', color: '#fff' }}
+                    variant='info'
+                    onClick={handleClickSelectObligations}
+                >
                     {t('Add')}
                 </Button>
             </Modal.Footer>

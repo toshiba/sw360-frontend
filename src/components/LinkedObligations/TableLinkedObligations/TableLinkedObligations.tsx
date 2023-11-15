@@ -15,6 +15,7 @@ import DeleteObligationDialog from '@/app/[locale]/licenses/components/DeleteObl
 import { useTranslations } from 'next-intl'
 import { Table, _ } from 'next-sw360'
 import Obligation from '../../../object-types/Obligation'
+import FilterSearch from './FilterSearch'
 import styles from './TableLinkedObligations.module.css'
 
 interface Props {
@@ -106,6 +107,10 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
                 ),
         },
     ]
+    const [search, setSearch] = useState({})
+    const doSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        setSearch({ keyword: event.currentTarget.value })
+    }
 
     return (
         <div className='row'>
@@ -117,7 +122,8 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
                 show={deleteDialogOpen}
                 setShow={setDeleteDialogOpen}
             />
-            <Table data={data} search={true} columns={columns} selector={true} style={style} />
+            <FilterSearch title={t('search')} searchFunction={doSearch} />
+            <Table data={data} search={search} columns={columns} selector={true} style={style} />
         </div>
     )
 }

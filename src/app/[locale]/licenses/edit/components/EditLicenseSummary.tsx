@@ -21,7 +21,7 @@ interface Props {
 
 export default function EditLicenseSummary({ licensePayload, setLicensePayload }: Props) {
     return (
-        <div className='col' style={{ padding: '0px 12px' }}>
+        <div className='col'>
             <EditLicenseDetail licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
             <EditLicenseText licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
         </div>

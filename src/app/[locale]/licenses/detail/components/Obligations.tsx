@@ -18,6 +18,7 @@ import { Table, _ } from 'next-sw360'
 import { notFound, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Form } from 'react-bootstrap'
+import Filter from '../../components/Filter'
 import styles from '../detail.module.css'
 interface Props {
     licenseId?: string
@@ -200,6 +201,11 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
         },
     }
 
+    const [search, setSearch] = useState({})
+    const doSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        setSearch({ keyword: event.currentTarget.value })
+    }
+
     return (
         <div className='row'>
             {isEditWhitelist ? (
@@ -211,7 +217,10 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
                     style={styleEditWhiteList}
                 />
             ) : (
-                <Table data={data} search={true} columns={columns} selector={true} style={style} />
+                <div>
+                    <Filter title={t('search')} searchFunction={doSearch} />
+                    <Table data={data} search={search} columns={columns} style={style} pagination={false} />
+                </div>
             )}
         </div>
     )

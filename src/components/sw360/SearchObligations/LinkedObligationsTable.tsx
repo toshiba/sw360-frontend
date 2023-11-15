@@ -9,11 +9,12 @@
 // License-Filename: LICENSE
 
 import { Table } from 'next-sw360'
-import { memo } from 'react'
+import { memo, useState } from 'react'
+import FilterObligation from './FilterObligation'
 
 interface Props {
-    data: any
-    columns: any
+    data?: any
+    columns?: any
 }
 
 const compare = (preState: any, nextState: any) => {
@@ -31,7 +32,16 @@ const style = {
 }
 
 const LinkedObligationsTable = memo(function LinkedObligationsTable({ columns, data }: Props) {
-    return <Table columns={columns} data={data} style={style} search={true} />
+    const [search, setSearch] = useState({})
+    const doSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        setSearch({ keyword: event.currentTarget.value })
+    }
+    return (
+        <>
+            <FilterObligation title='search' searchFunction={doSearch} />
+            <Table columns={columns} data={data} style={style} search={search} selector={true} />
+        </>
+    )
 }, compare)
 
 export default LinkedObligationsTable

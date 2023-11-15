@@ -188,6 +188,16 @@ export default function EditLicense({ licenseId }: Props) {
                         <div className='col-2 sidebar'>
                             <SideBar selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabList={tabList} />
                         </div>
+                        <ToastContainer position='top-start'>
+                            <ToastMessage
+                                show={toastData.show}
+                                type={toastData.type}
+                                message={toastData.message}
+                                contextual={toastData.contextual}
+                                onClose={() => setToastData({ ...toastData, show: false })}
+                                setShowToast={setToastData}
+                            />
+                        </ToastContainer>
                         <DeleteLicenseDialog
                             licensePayload={licensePayload}
                             show={deleteDialogOpen}
@@ -209,17 +219,11 @@ export default function EditLicense({ licenseId }: Props) {
                                     ></PageButtonHeader>
                                 )}
                             </div>
-                            <ToastContainer position='top-start'>
-                                <ToastMessage
-                                    show={toastData.show}
-                                    type={toastData.type}
-                                    message={toastData.message}
-                                    contextual={toastData.contextual}
-                                    onClose={() => setToastData({ ...toastData, show: false })}
-                                    setShowToast={setToastData}
-                                />
-                            </ToastContainer>
-                            <div className='row' hidden={selectedTab !== LicenseTabIds.DETAILS ? true : false}>
+                            <div
+                                className='row'
+                                style={{ fontSize: '14px' }}
+                                hidden={selectedTab !== LicenseTabIds.DETAILS ? true : false}
+                            >
                                 <EditLicenseSummary
                                     licensePayload={licensePayload}
                                     setLicensePayload={setLicensePayload}
