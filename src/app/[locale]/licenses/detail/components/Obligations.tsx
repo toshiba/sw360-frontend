@@ -170,7 +170,7 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
         },
         {
             id: 'text',
-            name: 'obligation',
+            name: 'Obligation',
             sort: true,
             width: '30%',
         },
@@ -213,8 +213,8 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
                     data={dataEditWhitelist}
                     search={true}
                     columns={columnEditWhitelists}
-                    selector={true}
                     style={styleEditWhiteList}
+                    pagination={false}
                 />
             ) : (
                 <div>
