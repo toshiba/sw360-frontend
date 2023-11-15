@@ -9,22 +9,24 @@
 
 'use client'
 
-import { HttpStatus, LicensePayload } from '@/object-types'
+import { Embedded, LicensePayload } from '@/object-types'
 import DownloadService from '@/services/download.service'
-import { ApiUtils, CommonUtils } from '@/utils'
+import { CommonUtils } from '@/utils'
+import { SW360_API_URL } from '@/utils/env'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { PageButtonHeader, QuickFilter, Table, _ } from 'next-sw360'
 import Link from 'next/link'
-import { notFound, useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import React, { useState } from 'react'
 import { Check2Circle, XCircle } from 'react-bootstrap-icons'
 
 function LicensesPage() {
     const params = useSearchParams()
+    const searchParams = Object.fromEntries(params)
     const t = useTranslations('default')
     const [search, setSearch] = useState({})
-    const [licenseData, setLicenseData] = useState([])
+    const [numberLicense, setNumberLicense] = useState(0)
     const { data: session, status } = useSession()
 
     const handleExportLicense = () => {
@@ -41,47 +43,24 @@ function LicensesPage() {
         },
     }
 
-    useEffect(() => {
-        const controller = new AbortController()
-        const signal = controller.signal
-
-        ;(async () => {
-            try {
-                const queryUrl = CommonUtils.createUrlWithParams('licenses', Object.fromEntries(params))
-                const response = await ApiUtils.GET(queryUrl, session.user.access_token, signal)
-                if (response.status === HttpStatus.UNAUTHORIZED) {
-                    return signOut()
-                } else if (response.status !== HttpStatus.OK) {
-                    return notFound()
-                }
-
-                const licenses = await response.json()
-
-                if (!CommonUtils.isNullOrUndefined(licenses['_embedded']['sw360:licenses'])) {
-                    setLicenseData(
-                        licenses['_embedded']['sw360:licenses'].map((item: LicensePayload) => [
-                            item._links.self.href.split('/').pop(),
-                            item.fullName,
-                            _(
-                                <center>
-                                    {item.checked ? (
-                                        <Check2Circle color='#287d3c' size='16' />
-                                    ) : (
-                                        <XCircle color='red' />
-                                    )}
-                                </center>
-                            ),
-                            _(<>{item.licenseType ? item.licenseType.licenseType : '--'}</>),
-                        ])
-                    )
-                }
-            } catch (e) {
-                console.error(e)
-            }
-        })()
-
-        return () => controller.abort()
-    }, [params, session])
+    const server = {
+        url: CommonUtils.createUrlWithParams(`${SW360_API_URL}/resource/api/licenses`, searchParams),
+        then: (data: Embedded<LicensePayload, 'sw360:licenses'>) => {
+            setNumberLicense(data.page.totalElements)
+            return data._embedded['sw360:licenses'].map((item: LicensePayload) => [
+                item._links.self.href.split('/').pop(),
+                item.fullName,
+                _(
+                    <center>
+                        {item.checked ? <Check2Circle color='#287d3c' size='16' /> : <XCircle color='red' />}
+                    </center>
+                ),
+                _(<>{item.licenseType ? item.licenseType.licenseType : '--'}</>),
+            ])
+        },
+        total: (data: Embedded<LicensePayload, 'sw360:licenses'>) => data.page.totalElements,
+        headers: { Authorization: `Bearer ${status === 'authenticated' ? session.user.access_token : ''}` },
+    }
 
     const columns = [
         {
@@ -116,15 +95,9 @@ function LicensesPage() {
                             <div className='row'>
                                 <PageButtonHeader
                                     buttons={headerButtons}
-                                    title={`${t('Licenses')} (${licenseData.length})`}
+                                    title={`${t('Licenses')} (${numberLicense})`}
                                 />
-                                <Table
-                                    data={licenseData}
-                                    columns={columns}
-                                    sort={true}
-                                    search={search}
-                                    selector={true}
-                                />
+                                <Table server={server} columns={columns} sort={true} search={search} selector={true} />
 
                                 <div className='row mt-2'></div>
                             </div>
