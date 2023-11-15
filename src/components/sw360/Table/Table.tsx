@@ -18,7 +18,7 @@ const defaultOptions = {
     pagination: { limit: 10 },
     search: false,
     selector: true,
-    sort: true,
+    sort: false,
 }
 type MessageFormat = (...args: []) => string
 type Message = string | MessageFormat
