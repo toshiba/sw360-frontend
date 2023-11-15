@@ -16,7 +16,7 @@ import { Button, Modal } from 'react-bootstrap'
 
 import { LicensePayload, Obligation } from '@/object-types'
 import { CommonUtils } from '@/utils'
-import { CheckSquare } from 'react-bootstrap-icons'
+import { Check2Square } from 'react-bootstrap-icons'
 import SelectTableLinkedObligations from './SelectTableLinkedObligations'
 
 interface Props {
@@ -84,22 +84,20 @@ const LinkedObligationsDialog = ({
         <Modal show={show} onHide={handleCloseDialog} backdrop='static' centered size='lg'>
             <Modal.Header closeButton style={{ backgroundColor: '#eef2fa', borderColor: '#89a7e0', color: '#2e5aac' }}>
                 <h5>
-                    <Modal.Title style={{ fontSize: '16px' }}>
-                        <CheckSquare />
+                    <Modal.Title style={{ fontSize: '1.25rem' }}>
+                        <Check2Square />
                         &nbsp;
                         {t('Select License Obligations to be added')}
                     </Modal.Title>
                 </h5>
             </Modal.Header>
             <Modal.Body>
-                <div className='modal-body'>
-                    <div className='row mt-3'>
-                        <SelectTableLinkedObligations
-                            obligations={obligations}
-                            setObligations={getLinkObligations}
-                            linkObligations={linkObligations}
-                        />
-                    </div>
+                <div className='row'>
+                    <SelectTableLinkedObligations
+                        obligations={obligations}
+                        setObligations={getLinkObligations}
+                        linkObligations={linkObligations}
+                    />
                 </div>
             </Modal.Body>
             <Modal.Footer className='justify-content-end'>

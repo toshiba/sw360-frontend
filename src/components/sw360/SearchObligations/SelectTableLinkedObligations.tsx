@@ -109,7 +109,7 @@ const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligat
     ]
 
     return (
-        <div className='row'>
+        <div className='row' style={{ fontSize: '14px' }}>
             <LinkedObligationsTable data={obligations} columns={columns} />
         </div>
     )

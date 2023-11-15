@@ -182,6 +182,9 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
         },
     ]
     const style = {
+        table: {
+            fontSize: '14px',
+        },
         th: {
             'text-align': 'center',
             'font-size': '14px',
@@ -192,6 +195,9 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
     }
 
     const styleEditWhiteList = {
+        table: {
+            fontSize: '14px',
+        },
         th: {
             'text-align': 'left',
             'font-size': '14px',

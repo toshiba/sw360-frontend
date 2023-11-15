@@ -69,6 +69,9 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
     }
 
     const style = {
+        table: {
+            fontSize: '14px',
+        },
         th: {
             'text-align': 'center',
             'font-size': '14px',

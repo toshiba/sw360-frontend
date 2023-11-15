@@ -89,7 +89,7 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
             </div>
             <div className='row'>
                 <div className='col-lg-4'>
-                    <label htmlFor='used_license' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
+                    <label htmlFor='fullName' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
                         {t('Fullname')}
                         <span className='text-red' style={{ color: '#F7941E' }}>
                             *
@@ -109,7 +109,7 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                     {error && <p style={{ color: 'red' }}>{error}</p>}
                 </div>
                 <div className='col-lg-4'>
-                    <label htmlFor='shortname' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
+                    <label htmlFor='shortName' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
                         {t('Shortname')}
                         <span className='text-red' style={{ color: '#F7941E' }}>
                             *

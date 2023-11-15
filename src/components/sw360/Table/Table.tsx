@@ -92,7 +92,7 @@ class Table extends Component<TableProps, unknown> {
         return (
             <>
                 {this.props.selector && (
-                    <div className='col-11 mt-3 mb-3' style={{ fontSize: '14px' }}>
+                    <div className='col-11 mt-1 mb-1' style={{ fontSize: '14px' }}>
                         <div className='dataTables_length'>
                             <span className='my-2'>Show</span>
                             <label style={{ marginLeft: '5px', marginRight: '5px' }}>
