@@ -73,9 +73,9 @@ function LicensesPage() {
                 ),
             sort: true,
         },
-        { name: t('License Fullname'), width: '45%' },
-        { name: t('Is Checked?'), width: '10%' },
-        { name: t('License Type'), width: '15%' },
+        { name: t('License Fullname'), width: '45%', sort: true },
+        { name: t('Is Checked?'), width: '10%', sort: true },
+        { name: t('License Type'), width: '15%', sort: true },
     ]
 
     const doSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -97,7 +97,7 @@ function LicensesPage() {
                                     buttons={headerButtons}
                                     title={`${t('Licenses')} (${numberLicense})`}
                                 />
-                                <Table server={server} columns={columns} sort={true} search={search} selector={true} />
+                                <Table server={server} columns={columns} search={search} selector={true} />
 
                                 <div className='row mt-2'></div>
                             </div>
