@@ -9,7 +9,7 @@
 // License-Filename: LICENSE
 
 'use client'
-import { ApiUtils, CommonUtils } from '@/utils/index'
+import { ApiUtils } from '@/utils/index'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { notFound, useSearchParams } from 'next/navigation'
@@ -21,20 +21,25 @@ import styles from './LicenseDetails.module.css'
 interface Props {
     licensePayload?: LicensePayload
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
+    errorShortName?: boolean
+    errorFullName?: boolean
+    setErrorShortName?: React.Dispatch<React.SetStateAction<boolean>>
+    setErrorFullName?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
-    const [error, setError] = useState('')
+const AddLicenseDetail = ({
+    licensePayload,
+    setLicensePayload,
+    errorShortName,
+    errorFullName,
+    setErrorShortName,
+    setErrorFullName,
+}: Props) => {
     const [regexError, setRegexError] = useState('')
     const t = useTranslations('default')
     const params = useSearchParams()
     const { data: session } = useSession()
     const [licenseTypes, setLicenseTypes] = useState([])
-
-    const validateInput = (value: string) => {
-        return CommonUtils.isNullEmptyOrUndefinedString(value) ? 'Input not blank or not null' : ''
-    }
-
     const validateShortName = (value: string) => {
         return value.match(/^[A-Za-z0-9\-.+]*$/) ? '' : 'ShortName not contains character special!'
     }
@@ -42,12 +47,13 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         if (e.target.name === 'shortName') {
             const value = e.target.value
+            setErrorShortName(false)
             const validationRegexShortname = validateShortName(value)
             setRegexError(validationRegexShortname)
         }
-        const value = e.target.value
-        const validationError = validateInput(value)
-        setError(validationError)
+        if (e.target.name === 'fullName') {
+            setErrorFullName(false)
+        }
         setLicensePayload({
             ...licensePayload,
             [e.target.name]: e.target.value,
@@ -99,7 +105,7 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                     </label>
                     <input
                         type='text'
-                        className='form-control'
+                        className={`form-control ${errorFullName ? 'is-invalid' : ''}`}
                         placeholder='Enter Fullname'
                         id='fullName'
                         required
@@ -108,7 +114,6 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                         value={licensePayload.fullName ?? ''}
                         onChange={updateField}
                     />
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
                 </div>
                 <div className='col-lg-4'>
                     <label htmlFor='shortName' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
@@ -120,7 +125,7 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
 
                     <input
                         type='text'
-                        className='form-control'
+                        className={`form-control ${errorShortName ? 'is-invalid' : ''}`}
                         placeholder='Enter Shortname'
                         id='shortName'
                         required
@@ -129,7 +134,6 @@ const AddLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                         value={licensePayload.shortName ?? ''}
                         onChange={updateField}
                     />
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
                     {regexError && <p style={{ color: 'red' }}>{regexError}</p>}
                 </div>
                 <div className='col-lg-4'>

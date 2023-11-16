@@ -17,12 +17,30 @@ import AddLicenseText from './AddLicenseText'
 interface Props {
     licensePayload?: LicensePayload
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
+    errorShortName?: boolean
+    errorFullName?: boolean
+    setErrorShortName?: React.Dispatch<React.SetStateAction<boolean>>
+    setErrorFullName?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function AddLicenseSummary({ licensePayload, setLicensePayload }: Props) {
+export default function AddLicenseSummary({
+    licensePayload,
+    setLicensePayload,
+    errorShortName,
+    errorFullName,
+    setErrorShortName,
+    setErrorFullName,
+}: Props) {
     return (
         <div className='col'>
-            <AddLicenseDetail licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
+            <AddLicenseDetail
+                licensePayload={licensePayload}
+                setLicensePayload={setLicensePayload}
+                errorShortName={errorShortName}
+                errorFullName={errorFullName}
+                setErrorShortName={setErrorShortName}
+                setErrorFullName={setErrorFullName}
+            />
             <AddLicenseText licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
         </div>
     )

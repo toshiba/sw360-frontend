@@ -37,6 +37,8 @@ export default function AddLicense() {
     const handleClickAddObligations = useCallback(() => setAddObligationDiaglog(true), [])
     const params = useSearchParams()
     const router = useRouter()
+    const [errorShortName, setErrorShortName] = useState(false)
+    const [errorFullName, setErrorFullName] = useState(false)
     const [licensePayload, setLicensePayload] = useState<LicensePayload>({
         shortName: '',
         fullName: '',
@@ -111,18 +113,24 @@ export default function AddLicense() {
         })
     }
 
-    const validateLicense = (licensePayload: LicensePayload) => {
-        if (
-            CommonUtils.isNullEmptyOrUndefinedString(licensePayload.fullName) ||
-            CommonUtils.isNullEmptyOrUndefinedString(licensePayload.shortName)
-        ) {
+    const validateLicenseShortName = (licensePayload: LicensePayload) => {
+        if (CommonUtils.isNullEmptyOrUndefinedString(licensePayload.shortName)) {
+            setErrorShortName(true)
+            return true
+        }
+        return false
+    }
+
+    const validateLicenseFullname = (licensePayload: LicensePayload) => {
+        if (CommonUtils.isNullEmptyOrUndefinedString(licensePayload.fullName)) {
+            setErrorFullName(true)
             return true
         }
         return false
     }
 
     const submit = async () => {
-        if (validateLicense(licensePayload)) {
+        if (validateLicenseShortName(licensePayload) || validateLicenseFullname(licensePayload)) {
             alert(true, 'Require!', t('Fullname, shortname not null or Empty!'), 'danger')
         } else if (!licensePayload.shortName.match(/^[A-Za-z0-9\-.+]*$/)) {
             alert(true, 'True!', t('Fullnam!'), 'danger')
@@ -191,7 +199,14 @@ export default function AddLicense() {
                             />
                         </ToastContainer>
                         <div className='row' hidden={selectedTab !== LicenseTabIds.DETAILS ? true : false}>
-                            <AddLicenseSummary licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
+                            <AddLicenseSummary
+                                errorShortName={errorShortName}
+                                setErrorShortName={setErrorShortName}
+                                errorFullName={errorFullName}
+                                setErrorFullName={setErrorFullName}
+                                licensePayload={licensePayload}
+                                setLicensePayload={setLicensePayload}
+                            />
                         </div>
                         <div className='row' hidden={selectedTab != LicenseTabIds.OBLIGATIONS ? true : false}>
                             <LinkedObligationsDialog
