@@ -35,21 +35,20 @@ const AddLicenseDetail = ({
     setErrorShortName,
     setErrorFullName,
 }: Props) => {
-    const [regexError, setRegexError] = useState('')
+    const [regexError, setRegexError] = useState(false)
     const t = useTranslations('default')
     const params = useSearchParams()
     const { data: session } = useSession()
     const [licenseTypes, setLicenseTypes] = useState([])
     const validateShortName = (value: string) => {
-        return value.match(/^[A-Za-z0-9\-.+]*$/) ? '' : 'ShortName not contains character special!'
+        return value.match(/^[A-Za-z0-9\-.+]*$/) ? false : true
     }
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         if (e.target.name === 'shortName') {
             const value = e.target.value
             setErrorShortName(false)
-            const validationRegexShortname = validateShortName(value)
-            setRegexError(validationRegexShortname)
+            setRegexError(validateShortName(value))
         }
         if (e.target.name === 'fullName') {
             setErrorFullName(false)
@@ -125,7 +124,9 @@ const AddLicenseDetail = ({
 
                     <input
                         type='text'
-                        className={`form-control ${errorShortName ? 'is-invalid' : ''}`}
+                        className={`form-control ${errorShortName ? 'is-invalid' : ''} ${
+                            regexError ? 'is-invalid' : ''
+                        }`}
                         placeholder='Enter Shortname'
                         id='shortName'
                         required
@@ -134,7 +135,7 @@ const AddLicenseDetail = ({
                         value={licensePayload.shortName ?? ''}
                         onChange={updateField}
                     />
-                    {regexError && <p style={{ color: 'red' }}>{regexError}</p>}
+                    {/* {regexError && <p style={{ color: 'red' }}>{regexError}</p>} */}
                 </div>
                 <div className='col-lg-4'>
                     <label htmlFor='licenseTypeDatabaseId' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
