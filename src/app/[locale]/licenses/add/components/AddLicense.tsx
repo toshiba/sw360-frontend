@@ -198,7 +198,6 @@ export default function AddLicense() {
                                 show={addObligationDiaglog}
                                 data={data}
                                 setData={setData}
-                                setObligations={setObligations}
                                 obligations={obligations}
                                 setShow={setAddObligationDiaglog}
                                 onReRender={handleReRender}

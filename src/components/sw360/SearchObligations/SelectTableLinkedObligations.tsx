@@ -10,41 +10,74 @@
 
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Form } from 'react-bootstrap'
 
 import { Obligation } from '@/object-types'
-import { _ } from 'next-sw360'
+import { Table, _ } from 'next-sw360'
+import FilterObligation from './FilterObligation'
 import styles from './LinkedObligations.module.css'
-import LinkedObligationsTable from './LinkedObligationsTable'
 
 interface Props {
     obligations?: any[]
     setObligations?: (obligationsLink: Array<Obligation>) => void
-    linkObligations?: Obligation[]
 }
 
-const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligations }: Props) => {
-    const handlerRadioButton = (item: Obligation) => {
-        if (linkObligations.includes(item)) {
-            const index = linkObligations.indexOf(item)
-            linkObligations.splice(index, 1)
-        } else {
-            linkObligations.push(item)
-        }
+const SelectTableLinkedObligations = ({ obligations, setObligations }: Props) => {
+    const [data, setData] = useState([])
+    const [isCheckAll, setIsCheckAll] = useState<boolean>(false)
+
+    useEffect(() => {
+        const mapperData = Object.entries(obligations).map((item, index) => [
+            item[1][0],
+            {
+                index: index,
+                checked: false,
+                obligation: item[1][0],
+            },
+            item[1][2],
+            item[1][3],
+            item[1][4],
+        ])
+        setData(mapperData)
+    }, [obligations])
+
+    const handlerRadioButton = (index: number, checked: boolean) => {
+        const newData = Object.entries(data).map(([i, rowData]: any) => {
+            if (i == index) {
+                rowData[1] = {
+                    ...rowData[1],
+                    checked: !checked,
+                }
+            }
+            return rowData
+        })
+        setData(newData)
+
         const linkObligation: Obligation[] = []
-        linkObligations.forEach((item: Obligation) => {
-            linkObligation.push(item)
+        Object.entries(data).forEach((item: any) => {
+            if (item[1][1].checked === true) {
+                linkObligation.push(item[1][0])
+            }
         })
         setObligations(linkObligation)
     }
 
-    const [checkAll, setCheckAll] = useState<boolean>(false)
     const handleCheckAll = () => {
-        setCheckAll(true)
+        const newData = Object.entries(data).map(([, rowData]: any) => {
+            rowData[1] = {
+                ...rowData[1],
+                checked: !isCheckAll,
+            }
+            return rowData
+        })
+        setData(newData)
+        setIsCheckAll((prev) => !prev)
         const linkObligation: Obligation[] = []
-        obligations.forEach((item: any) => {
-            linkObligation.push(item[0])
+        Object.entries(data).forEach((item: any) => {
+            if (item[1][1].checked === true) {
+                linkObligation.push(item[1][0])
+            }
         })
         setObligations(linkObligation)
     }
@@ -74,12 +107,10 @@ const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligat
                 tr.innerHTML = html
 
                 parent.parentNode.insertBefore(tr, parent.nextSibling)
+            } else if (attachmentDetail.hidden) {
+                attachmentDetail.hidden = false
             } else {
-                if (attachmentDetail.hidden == true) {
-                    attachmentDetail.hidden = false
-                } else {
-                    attachmentDetail.hidden = true
-                }
+                attachmentDetail.hidden = true
             }
         }
     }
@@ -94,15 +125,14 @@ const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligat
         },
         {
             id: 'obligationId',
-            name: _(<Form.Check defaultChecked={checkAll} type='checkbox' onClick={handleCheckAll}></Form.Check>),
-            formatter: (item: Obligation) =>
+            name: _(<Form.Check defaultChecked={isCheckAll} type='checkbox' onClick={handleCheckAll}></Form.Check>),
+            formatter: ({ checked, index }: any) =>
                 _(
                     <Form.Check
-                        name='obligationId'
                         type='checkbox'
-                        // defaultChecked={false}
+                        defaultChecked={checked}
                         onClick={() => {
-                            handlerRadioButton(item)
+                            handlerRadioButton(index, checked)
                         }}
                     ></Form.Check>
                 ),
@@ -119,9 +149,25 @@ const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligat
         },
     ]
 
+    const style = {
+        th: {
+            'text-align': 'center',
+            'font-size': '14px',
+        },
+        td: {
+            'text-align': 'center',
+        },
+    }
+
+    const [search, setSearch] = useState({})
+    const doSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        setSearch({ keyword: event.currentTarget.value })
+    }
     return (
         <div className='row' style={{ fontSize: '14px' }}>
-            <LinkedObligationsTable data={obligations} columns={columns} />
+            {/* <LinkedObligationsTable data={data} columns={columns} /> */}
+            <FilterObligation title='search' searchFunction={doSearch} />
+            <Table data={data} columns={columns} style={style} search={search} selector={true} />
         </div>
     )
 }

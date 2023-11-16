@@ -234,7 +234,6 @@ export default function EditLicense({ licenseId }: Props) {
                                     show={addObligationDiaglog}
                                     data={data}
                                     setData={setData}
-                                    setObligations={setObligations}
                                     obligations={obligations}
                                     setShow={setAddObligationDiaglog}
                                     onReRender={handleReRender}

@@ -26,7 +26,6 @@ interface Props {
     data: Array<any>
     setData: (data: Array<any>) => void
     obligations: Array<any>
-    setObligations: (data: Array<any>) => void
     licensePayload?: LicensePayload
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
 }
@@ -42,7 +41,6 @@ const LinkedObligationsDialog = ({
     setLicensePayload,
 }: Props) => {
     const t = useTranslations('default')
-    const [linkObligations] = useState([])
     const [linkedObligationsResponse, setLinkedObligationsResponse] = useState([])
 
     const handleCloseDialog = () => {
@@ -93,11 +91,7 @@ const LinkedObligationsDialog = ({
             </Modal.Header>
             <Modal.Body>
                 <div className='row'>
-                    <SelectTableLinkedObligations
-                        obligations={obligations}
-                        setObligations={getLinkObligations}
-                        linkObligations={linkObligations}
-                    />
+                    <SelectTableLinkedObligations obligations={obligations} setObligations={getLinkObligations} />
                 </div>
             </Modal.Body>
             <Modal.Footer className='justify-content-end'>
