@@ -84,7 +84,7 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
     const columns = [
         {
             id: 'check',
-            name: '',
+            name: _(<i className={styles.collapse}></i>),
             formatter: (item: Obligation) =>
                 _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
             sort: false,

@@ -10,7 +10,7 @@
 
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Form } from 'react-bootstrap'
 
 import { Obligation } from '@/object-types'
@@ -35,6 +35,16 @@ const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligat
         const linkObligation: Obligation[] = []
         linkObligations.forEach((item: Obligation) => {
             linkObligation.push(item)
+        })
+        setObligations(linkObligation)
+    }
+
+    const [checkAll, setCheckAll] = useState<boolean>(false)
+    const handleCheckAll = () => {
+        setCheckAll(true)
+        const linkObligation: Obligation[] = []
+        obligations.forEach((item: any) => {
+            linkObligation.push(item[0])
         })
         setObligations(linkObligation)
     }
@@ -77,19 +87,20 @@ const SelectTableLinkedObligations = ({ obligations, setObligations, linkObligat
     const columns = [
         {
             id: 'check',
-            name: '',
+            name: _(<i className={styles.collapse}></i>),
             formatter: (item: Obligation) =>
                 _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
             sort: false,
         },
         {
             id: 'obligationId',
-            name: '',
+            name: _(<Form.Check defaultChecked={checkAll} type='checkbox' onClick={handleCheckAll}></Form.Check>),
             formatter: (item: Obligation) =>
                 _(
                     <Form.Check
                         name='obligationId'
                         type='checkbox'
+                        // defaultChecked={false}
                         onClick={() => {
                             handlerRadioButton(item)
                         }}

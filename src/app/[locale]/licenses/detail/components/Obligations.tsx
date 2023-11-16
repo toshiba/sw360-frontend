@@ -119,7 +119,7 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
     const columns = [
         {
             id: 'check',
-            name: '',
+            name: _(<i className={styles.collapse}></i>),
             formatter: (item: Obligation) =>
                 _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
             sort: false,
