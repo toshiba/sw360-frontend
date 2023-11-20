@@ -14,11 +14,12 @@ import { useTranslations } from 'next-intl'
 import styles from './LicenseDetails.module.css'
 
 interface Props {
+    inputValid?: boolean
     licensePayload?: LicensePayload
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
 }
 
-const EditLicenseText = ({ licensePayload, setLicensePayload }: Props) => {
+const EditLicenseText = ({ licensePayload, setLicensePayload, inputValid }: Props) => {
     const t = useTranslations('default')
 
     const updateField = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -39,7 +40,7 @@ const EditLicenseText = ({ licensePayload, setLicensePayload }: Props) => {
                 <div className='col-lg-4'>
                     <textarea
                         style={{ height: '500px', width: '1460px' }}
-                        className='form-control'
+                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
                         placeholder='Enter the license-text here...'
                         id='text'
                         aria-describedby='fullnatextme'

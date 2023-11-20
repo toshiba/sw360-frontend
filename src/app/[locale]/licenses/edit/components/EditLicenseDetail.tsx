@@ -18,17 +18,29 @@ import { useEffect, useState } from 'react'
 import styles from './LicenseDetails.module.css'
 
 interface Props {
+    inputValid?: boolean
+    errorFullName?: boolean
+    setErrorFullName?: React.Dispatch<React.SetStateAction<boolean>>
     licensePayload?: LicensePayload
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
 }
 
-const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
+const EditLicenseDetail = ({
+    licensePayload,
+    setLicensePayload,
+    inputValid,
+    errorFullName,
+    setErrorFullName,
+}: Props) => {
     const t = useTranslations('default')
     const params = useSearchParams()
     const { data: session } = useSession()
     const [licenseTypes, setLicenseTypes] = useState([])
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+        if (e.target.name === 'fullName') {
+            setErrorFullName(false)
+        }
         setLicensePayload({
             ...licensePayload,
             [e.target.name]: e.target.value,
@@ -81,7 +93,9 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
 
                     <input
                         type='text'
-                        className='form-control'
+                        className={`form-control ${errorFullName ? 'is-invalid' : ''} ${
+                            !errorFullName && inputValid ? 'is-valid' : ''
+                        }`}
                         placeholder='Enter Fullname'
                         required
                         id='fullName'
@@ -116,7 +130,7 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                         {t('License Type')}{' '}
                     </label>
                     <select
-                        className='form-select'
+                        className={`form-select ${inputValid ? 'is-valid' : ''}`}
                         aria-label='licenseTypeDatabaseId'
                         id='licenseTypeDatabaseId'
                         name='licenseTypeDatabaseId'
@@ -139,7 +153,7 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                         {t('OSI Approved?')}{' '}
                     </label>
                     <select
-                        className='form-select'
+                        className={`form-select ${inputValid ? 'is-valid' : ''}`}
                         aria-label='OSIApproved'
                         id='OSIApproved'
                         required
@@ -156,7 +170,7 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                         {t('FSF Free/Libre?')}{' '}
                     </label>
                     <select
-                        className='form-select'
+                        className={`form-select ${inputValid ? 'is-valid' : ''}`}
                         aria-label='FSFLibre'
                         id='FSFLibre'
                         required
@@ -191,7 +205,7 @@ const EditLicenseDetail = ({ licensePayload, setLicensePayload }: Props) => {
                         {t('Note')}
                     </label>
                     <textarea
-                        className='form-control'
+                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
                         placeholder='Enter Note'
                         id='note'
                         aria-describedby='note'

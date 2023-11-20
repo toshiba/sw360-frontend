@@ -43,6 +43,8 @@ export default function EditLicense({ licenseId }: Props) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
     const [obligations, setObligations] = useState([])
     const router = useRouter()
+    const [inputValid, setInputValid] = useState(false)
+    const [errorFullName, setErrorFullName] = useState(false)
     const [licensePayload, setLicensePayload] = useState<LicensePayload>({
         shortName: '',
         fullName: '',
@@ -142,7 +144,9 @@ export default function EditLicense({ licenseId }: Props) {
     }
 
     const submit = async () => {
+        setInputValid(true)
         if (CommonUtils.isNullEmptyOrUndefinedString(licensePayload.fullName)) {
+            setErrorFullName(true)
             alert(true, 'Require!', t('Fullname not null or empty!'), 'danger')
         } else {
             const response = await ApiUtils.PATCH(`licenses/${licenseId}`, licensePayload, session.user.access_token)
@@ -225,6 +229,9 @@ export default function EditLicense({ licenseId }: Props) {
                                 hidden={selectedTab !== LicenseTabIds.DETAILS ? true : false}
                             >
                                 <EditLicenseSummary
+                                    errorFullName={errorFullName}
+                                    inputValid={inputValid}
+                                    setErrorFullName={setErrorFullName}
                                     licensePayload={licensePayload}
                                     setLicensePayload={setLicensePayload}
                                 />

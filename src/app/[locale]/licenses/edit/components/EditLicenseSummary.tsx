@@ -15,15 +15,34 @@ import EditLicenseDetail from './EditLicenseDetail'
 import EditLicenseText from './EditLicenseText'
 
 interface Props {
+    errorFullName?: boolean
+    setErrorFullName?: React.Dispatch<React.SetStateAction<boolean>>
     licensePayload?: LicensePayload
+    inputValid?: boolean
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
 }
 
-export default function EditLicenseSummary({ licensePayload, setLicensePayload }: Props) {
+export default function EditLicenseSummary({
+    licensePayload,
+    setLicensePayload,
+    errorFullName,
+    setErrorFullName,
+    inputValid,
+}: Props) {
     return (
         <div className='col'>
-            <EditLicenseDetail licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
-            <EditLicenseText licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
+            <EditLicenseDetail
+                licensePayload={licensePayload}
+                setLicensePayload={setLicensePayload}
+                inputValid={inputValid}
+                errorFullName={errorFullName}
+                setErrorFullName={setErrorFullName}
+            />
+            <EditLicenseText
+                licensePayload={licensePayload}
+                setLicensePayload={setLicensePayload}
+                inputValid={inputValid}
+            />
         </div>
     )
 }
