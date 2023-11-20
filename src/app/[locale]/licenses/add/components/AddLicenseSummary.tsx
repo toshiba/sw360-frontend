@@ -19,6 +19,7 @@ interface Props {
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
     errorShortName?: boolean
     errorFullName?: boolean
+    inputValid?: boolean
     setErrorShortName?: React.Dispatch<React.SetStateAction<boolean>>
     setErrorFullName?: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -28,6 +29,7 @@ export default function AddLicenseSummary({
     setLicensePayload,
     errorShortName,
     errorFullName,
+    inputValid,
     setErrorShortName,
     setErrorFullName,
 }: Props) {
@@ -40,8 +42,13 @@ export default function AddLicenseSummary({
                 errorFullName={errorFullName}
                 setErrorShortName={setErrorShortName}
                 setErrorFullName={setErrorFullName}
+                inputValid={inputValid}
             />
-            <AddLicenseText licensePayload={licensePayload} setLicensePayload={setLicensePayload} />
+            <AddLicenseText
+                licensePayload={licensePayload}
+                setLicensePayload={setLicensePayload}
+                inputValid={inputValid}
+            />
         </div>
     )
 }

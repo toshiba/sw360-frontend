@@ -16,9 +16,10 @@ import styles from './LicenseDetails.module.css'
 interface Props {
     licensePayload?: LicensePayload
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
+    inputValid?: boolean
 }
 
-const AddLicenseText = ({ licensePayload, setLicensePayload }: Props) => {
+const AddLicenseText = ({ licensePayload, setLicensePayload, inputValid }: Props) => {
     const t = useTranslations('default')
 
     const updateField = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -39,7 +40,7 @@ const AddLicenseText = ({ licensePayload, setLicensePayload }: Props) => {
                 <div className='col-lg-4'>
                     <textarea
                         style={{ height: '500px', width: '1460px' }}
-                        className='form-control'
+                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
                         placeholder='Enter the License-Text here...'
                         id='text'
                         aria-describedby='text'

@@ -23,6 +23,7 @@ interface Props {
     setLicensePayload?: React.Dispatch<React.SetStateAction<LicensePayload>>
     errorShortName?: boolean
     errorFullName?: boolean
+    inputValid?: boolean
     setErrorShortName?: React.Dispatch<React.SetStateAction<boolean>>
     setErrorFullName?: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -32,6 +33,7 @@ const AddLicenseDetail = ({
     setLicensePayload,
     errorShortName,
     errorFullName,
+    inputValid,
     setErrorShortName,
     setErrorFullName,
 }: Props) => {
@@ -104,7 +106,9 @@ const AddLicenseDetail = ({
                     </label>
                     <input
                         type='text'
-                        className={`form-control ${errorFullName ? 'is-invalid' : ''}`}
+                        className={`form-control ${errorFullName ? 'is-invalid' : ''} ${
+                            !errorFullName && inputValid ? 'is-valid' : ''
+                        }`}
                         placeholder='Enter Fullname'
                         id='fullName'
                         required
@@ -126,7 +130,7 @@ const AddLicenseDetail = ({
                         type='text'
                         className={`form-control ${errorShortName ? 'is-invalid' : ''} ${
                             regexError ? 'is-invalid' : ''
-                        }`}
+                        } ${!errorShortName && inputValid ? 'is-valid' : ''}`}
                         placeholder='Enter Shortname'
                         id='shortName'
                         required
@@ -134,15 +138,15 @@ const AddLicenseDetail = ({
                         name='shortName'
                         value={licensePayload.shortName ?? ''}
                         onChange={updateField}
+                        title='1*(ALPHA / DIGIT / "-" / "." / "+" )'
                     />
-                    {/* {regexError && <p style={{ color: 'red' }}>{regexError}</p>} */}
                 </div>
                 <div className='col-lg-4'>
                     <label htmlFor='licenseTypeDatabaseId' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
                         {t('License Type')}{' '}
                     </label>
                     <select
-                        className='form-select'
+                        className={`form-select ${inputValid ? 'is-valid' : ''}`}
                         aria-label='licenseTypeDatabaseId'
                         id='licenseTypeDatabaseId'
                         required
@@ -165,7 +169,7 @@ const AddLicenseDetail = ({
                         {t('OSI Approved?')}{' '}
                     </label>
                     <select
-                        className='form-select'
+                        className={`form-select ${inputValid ? 'is-valid' : ''}`}
                         aria-label='OSIApproved'
                         id='OSIApproved'
                         required
@@ -182,7 +186,7 @@ const AddLicenseDetail = ({
                         {t('FSF Free/Libre?')}{' '}
                     </label>
                     <select
-                        className='form-select'
+                        className={`form-select ${inputValid ? 'is-valid' : ''}`}
                         aria-label='FSFLibre'
                         id='FSFLibre'
                         required
@@ -217,7 +221,7 @@ const AddLicenseDetail = ({
                         {t('Note')}
                     </label>
                     <textarea
-                        className='form-control'
+                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
                         placeholder='Enter Note'
                         id='note'
                         aria-describedby='note'

@@ -39,6 +39,7 @@ export default function AddLicense() {
     const router = useRouter()
     const [errorShortName, setErrorShortName] = useState(false)
     const [errorFullName, setErrorFullName] = useState(false)
+    const [inputValid, setInputValid] = useState(false)
     const [licensePayload, setLicensePayload] = useState<LicensePayload>({
         shortName: '',
         fullName: '',
@@ -130,10 +131,15 @@ export default function AddLicense() {
     }
 
     const submit = async () => {
+        setInputValid(true)
+        if (validateLicenseShortName(licensePayload) && validateLicenseFullname(licensePayload)) {
+            setErrorShortName(true)
+            setErrorFullName(true)
+        }
         if (validateLicenseShortName(licensePayload) || validateLicenseFullname(licensePayload)) {
             alert(true, 'Require!', t('Fullname, shortname not null or Empty!'), 'danger')
         } else if (!licensePayload.shortName.match(/^[A-Za-z0-9\-.+]*$/)) {
-            alert(true, 'True!', t('Fullnam!'), 'danger')
+            alert(true, 'Error!', t('Shortname is invalid!'), 'danger')
         } else {
             const response = await ApiUtils.POST('licenses', licensePayload, session.user.access_token)
             if (response.status == HttpStatus.CREATED) {
@@ -203,6 +209,7 @@ export default function AddLicense() {
                                 errorShortName={errorShortName}
                                 setErrorShortName={setErrorShortName}
                                 errorFullName={errorFullName}
+                                inputValid={inputValid}
                                 setErrorFullName={setErrorFullName}
                                 licensePayload={licensePayload}
                                 setLicensePayload={setLicensePayload}
