@@ -22,7 +22,7 @@ function FilterSearch({ title, searchFunction }: Props) {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginLeft: '550px',
+                marginLeft: 'auto',
             }}
         >
             <label>Search: </label>

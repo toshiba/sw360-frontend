@@ -15,7 +15,6 @@ import { Form } from 'react-bootstrap'
 
 import { Obligation } from '@/object-types'
 import { Table, _ } from 'next-sw360'
-import FilterObligation from './FilterObligation'
 import styles from './LinkedObligations.module.css'
 
 interface Props {
@@ -165,9 +164,15 @@ const SelectTableLinkedObligations = ({ obligations, setObligations }: Props) =>
     }
     return (
         <div className='row' style={{ fontSize: '14px' }}>
-            {/* <LinkedObligationsTable data={data} columns={columns} /> */}
-            <FilterObligation title='search' searchFunction={doSearch} />
-            <Table data={data} columns={columns} style={style} search={search} selector={true} />
+            <Table
+                data={data}
+                columns={columns}
+                style={style}
+                search={search}
+                selector={true}
+                title='search'
+                searchFunction={doSearch}
+            />
         </div>
     )
 }

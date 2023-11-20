@@ -15,7 +15,7 @@ import DeleteObligationDialog from '@/app/[locale]/licenses/components/DeleteObl
 import { useTranslations } from 'next-intl'
 import { Table, _ } from 'next-sw360'
 import Obligation from '../../../object-types/Obligation'
-import FilterSearch from './FilterSearch'
+// import FilterSearch from './FilterSearch'
 import styles from './TableLinkedObligations.module.css'
 
 interface Props {
@@ -125,8 +125,15 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
                 show={deleteDialogOpen}
                 setShow={setDeleteDialogOpen}
             />
-            <FilterSearch title={t('search')} searchFunction={doSearch} />
-            <Table data={data} search={search} columns={columns} selector={true} style={style} />
+            <Table
+                data={data}
+                search={search}
+                columns={columns}
+                selector={true}
+                style={style}
+                title={t('search')}
+                searchFunction={doSearch}
+            />
         </div>
     )
 }
