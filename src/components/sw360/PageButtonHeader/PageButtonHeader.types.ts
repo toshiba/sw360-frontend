@@ -14,4 +14,7 @@ export interface PageButtonHeaderProps {
     buttons?: { [key: string]: { [key: string]: any } }
     children?: ReactNode
     checked?: boolean
+    changesLogTab?: string
+    changeLogIndex?: number
+    setChangesLogTab?: (key: string) => void
 }

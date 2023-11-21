@@ -222,40 +222,24 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
                                                 checked={license.checked}
                                             ></PageButtonHeader>
                                         ) : (
-                                            <PageButtonHeader
-                                                title={`${license.fullName} (${license.shortName})`}
-                                                buttons={headerButtons}
-                                                checked={license.checked}
-                                            >
-                                                {selectedTab === LicenseTabIds.CHANGE_LOG && (
-                                                    <div
-                                                        className='nav nav-pills justify-content-center bg-light font-weight-bold'
-                                                        id='pills-tab'
-                                                        role='tablist'
-                                                    >
-                                                        <a
-                                                            className={`nav-item nav-link ${
-                                                                changesLogTab == 'list-change' ? 'active' : ''
-                                                            }`}
-                                                            onClick={() => setChangesLogTab('list-change')}
-                                                            style={{ color: '#F7941E', fontWeight: 'bold' }}
-                                                        >
-                                                            {t('Change Log')}
-                                                        </a>
-                                                        <a
-                                                            className={`nav-item nav-link ${
-                                                                changesLogTab == 'view-log' ? 'active' : ''
-                                                            }`}
-                                                            onClick={() => {
-                                                                changeLogIndex !== -1 && setChangesLogTab('view-log')
-                                                            }}
-                                                            style={{ color: '#F7941E', fontWeight: 'bold' }}
-                                                        >
-                                                            {t('Changes')}
-                                                        </a>
-                                                    </div>
+                                            <>
+                                                {selectedTab === LicenseTabIds.CHANGE_LOG ? (
+                                                    <PageButtonHeader
+                                                        title={`${license.fullName} (${license.shortName})`}
+                                                        buttons={headerButtons}
+                                                        checked={license.checked}
+                                                        changesLogTab={changesLogTab}
+                                                        setChangesLogTab={setChangesLogTab}
+                                                        changeLogIndex={changeLogIndex}
+                                                    ></PageButtonHeader>
+                                                ) : (
+                                                    <PageButtonHeader
+                                                        title={`${license.fullName} (${license.shortName})`}
+                                                        buttons={headerButtons}
+                                                        checked={license.checked}
+                                                    ></PageButtonHeader>
                                                 )}
-                                            </PageButtonHeader>
+                                            </>
                                         )}
                                     </>
                                 )}
