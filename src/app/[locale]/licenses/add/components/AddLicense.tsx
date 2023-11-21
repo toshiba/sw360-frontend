@@ -144,7 +144,9 @@ export default function AddLicense() {
             const response = await ApiUtils.POST('licenses', licensePayload, session.user.access_token)
             if (response.status == HttpStatus.CREATED) {
                 alert(true, 'Success', t('License added successfully!'), 'success')
-                router.push('/licenses')
+                window.setTimeout(() => {
+                    router.push('/licenses')
+                }, 1500)
             } else if (response.status == HttpStatus.CONFLICT) {
                 alert(true, 'Error', t('License shortname is already taken!'), 'danger')
             } else {

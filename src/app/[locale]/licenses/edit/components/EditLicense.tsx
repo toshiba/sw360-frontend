@@ -153,7 +153,9 @@ export default function EditLicense({ licenseId }: Props) {
             if (response.status == HttpStatus.OK) {
                 const data = (await response.json()) as LicensePayload
                 alert(true, 'Success', t('License updated successfully!'), 'success')
-                router.push('/licenses/detail?id=' + data.shortName)
+                window.setTimeout(() => {
+                    router.push('/licenses/detail?id=' + data.shortName)
+                }, 1500)
             } else {
                 alert(true, 'Failed', t('License updated failed!'), 'danger')
             }
