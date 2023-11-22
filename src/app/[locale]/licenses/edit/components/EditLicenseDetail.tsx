@@ -76,7 +76,7 @@ const EditLicenseDetail = ({
     }, [params, session])
 
     return (
-        <div className='row mb-4' style={{ padding: '0px 12px' }}>
+        <div className='row mb-4' style={{ padding: '0px 12px', fontSize: '14px' }}>
             <div className={`${styles['header']} mb-2`}>
                 <p className='fw-bold mt-2' style={{ fontSize: '14px' }}>
                     {t('License Details')}
