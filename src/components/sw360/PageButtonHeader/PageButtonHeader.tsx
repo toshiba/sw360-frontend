@@ -65,11 +65,11 @@ function PageButtonHeader({
                         {checked != undefined && (
                             <>
                                 {checked ? (
-                                    <span className='badge bg-success' style={{ fontSize: '40%' }}>
+                                    <span className='badge' style={{ fontSize: '45%', backgroundColor: '#287d3c' }}>
                                         CHECKED
                                     </span>
                                 ) : (
-                                    <span className='badge bg-danger' style={{ fontSize: '40%' }}>
+                                    <span className='badge' style={{ fontSize: '45%', backgroundColor: '#da1414' }}>
                                         UNCHECKED
                                     </span>
                                 )}

@@ -9,6 +9,7 @@
 
 'use client'
 
+import FilterSearch from '@/components/LinkedObligations/TableLinkedObligations/FilterSearch'
 import { Config, Grid } from 'gridjs'
 import * as React from 'react'
 import { Component, RefObject, createRef } from 'react'
@@ -18,18 +19,20 @@ const defaultOptions = {
     pagination: { limit: 10 },
     search: false,
     selector: true,
-    sort: true,
+    sort: false,
 }
 type MessageFormat = (...args: []) => string
 type Message = string | MessageFormat
 export type Language = { [key: string]: Message | Language }
 
 interface TableProps extends Partial<Config> {
+    title?: string
+    searchFunction?: (event: React.KeyboardEvent<HTMLInputElement>) => void
     selector?: boolean
     language?: Language
 }
 
-class Table extends Component<TableProps, unknown> {
+class TableLicense extends Component<TableProps, unknown> {
     private wrapper: RefObject<HTMLDivElement> = createRef()
     // Grid.js instance
     private readonly instance: Grid = null
@@ -91,28 +94,35 @@ class Table extends Component<TableProps, unknown> {
     render(): React.ReactElement {
         return (
             <>
-                {this.props.selector && (
-                    <div className='col-11 mt-3 mb-3'>
-                        <div className='dataTables_length'>
-                            <span className='my-2'>Show</span>
-                            <label style={{ marginLeft: '5px', marginRight: '5px' }}>
-                                <Form.Select size='sm' onChange={this.handlePageSizeChange}>
-                                    <option defaultValue={defaultOptions.pagination.limit}>
-                                        {defaultOptions.pagination.limit}
-                                    </option>
-                                    <option value='25'>25</option>
-                                    <option value='50'>50</option>
-                                    <option value='100'>100</option>
-                                </Form.Select>
-                            </label>
-                            <span>entries</span>
-                        </div>
-                    </div>
-                )}
+                <div style={{ display: 'flex', width: '1455px' }}>
+                    {this.props.selector && (
+                        <>
+                            <div className='col-auto' style={{ fontSize: '14px' }}>
+                                <div className='dataTables_length'>
+                                    <span className='my-2'>Show</span>
+                                    <label style={{ marginLeft: '5px', marginRight: '5px' }}>
+                                        <Form.Select size='sm' onChange={this.handlePageSizeChange}>
+                                            <option defaultValue={defaultOptions.pagination.limit}>
+                                                {defaultOptions.pagination.limit}
+                                            </option>
+                                            <option value='25'>25</option>
+                                            <option value='50'>50</option>
+                                            <option value='100'>100</option>
+                                        </Form.Select>
+                                    </label>
+                                    <span>entries</span>
+                                </div>
+                            </div>
+                            {this.props.searchFunction && (
+                                <FilterSearch title={this.props.title} searchFunction={this.props.searchFunction} />
+                            )}
+                        </>
+                    )}
+                </div>
                 <div ref={this.wrapper} />
             </>
         )
     }
 }
 
-export default Table
+export default TableLicense

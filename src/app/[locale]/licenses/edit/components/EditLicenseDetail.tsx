@@ -84,7 +84,7 @@ const EditLicenseDetail = ({
             </div>
             <div className='row'>
                 <div className='col-lg-4'>
-                    <label htmlFor='used_license' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
+                    <label htmlFor='fullName' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
                         {t('Fullname')}
                         <span className='text-red' style={{ color: '#F7941E' }}>
                             *

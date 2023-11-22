@@ -9,17 +9,19 @@
 
 'use client'
 
+import TableLicense from '@/components/LinkedObligations/TableLicense'
 import { Embedded, LicensePayload } from '@/object-types'
 import DownloadService from '@/services/download.service'
 import { CommonUtils } from '@/utils'
 import { SW360_API_URL } from '@/utils/env'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
-import { PageButtonHeader, QuickFilter, Table, _ } from 'next-sw360'
+import { PageButtonHeader, _ } from 'next-sw360'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import React, { useState } from 'react'
 import { Check2Circle, XCircle } from 'react-bootstrap-icons'
+import QuickFilterLicense from './QuickFilterLicense'
 
 function LicensesPage() {
     const params = useSearchParams()
@@ -52,7 +54,7 @@ function LicensesPage() {
                 item.fullName,
                 _(
                     <center>
-                        {item.checked ? <Check2Circle color='#287d3c' size='16' /> : <XCircle color='red' />}
+                        {item.checked ? <Check2Circle color='#287d3c' size='16' /> : <XCircle color='#da1414' />}
                     </center>
                 ),
                 _(<>{item.licenseType ? item.licenseType.licenseType : '--'}</>),
@@ -88,7 +90,7 @@ function LicensesPage() {
             <div className='container' style={{ maxWidth: '98vw', marginTop: '10px' }}>
                 <div className='row'>
                     <div className='col-2 sidebar'>
-                        <QuickFilter id='licensefilter' title={t('Quick Filter')} searchFunction={doSearch} />
+                        <QuickFilterLicense id='licensefilter' title={t('Quick Filter')} searchFunction={doSearch} />
                     </div>
                     <div className='col col-sm-9'>
                         <div className='col'>
@@ -97,7 +99,7 @@ function LicensesPage() {
                                     buttons={headerButtons}
                                     title={`${t('Licenses')} (${numberLicense})`}
                                 />
-                                <Table server={server} columns={columns} search={search} selector={true} />
+                                <TableLicense server={server} columns={columns} search={search} selector={true} />
 
                                 <div className='row mt-2'></div>
                             </div>

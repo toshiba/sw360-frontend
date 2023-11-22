@@ -9,12 +9,12 @@
 
 'use client'
 
+import { QuickFilterProps } from '@/components/sw360/QuickFilter/QuickFilter.types'
 import { Form } from 'react-bootstrap'
-import { QuickFilterProps } from './QuickFilter.types'
 
-function QuickFilter({ id, searchFunction, title = 'Quick Filter' }: QuickFilterProps) {
+function QuickFilterLicense({ id, searchFunction, title = 'Quick Filter' }: QuickFilterProps) {
     return (
-        <div className='card-deck'>
+        <div className='card-deck' style={{ width: '232px', height: '76px', marginRight: '0px', marginLeft: 'auto' }}>
             <div id='component-quickfilter' className='card'>
                 <div className='card-header'>{title}</div>
                 <div className='card-body'>
@@ -25,7 +25,7 @@ function QuickFilter({ id, searchFunction, title = 'Quick Filter' }: QuickFilter
                                 type='text'
                                 size='sm'
                                 name={title}
-                                onKeyUp={searchFunction}
+                                onInput={searchFunction}
                             />
                         </Form.Group>
                     </Form>
@@ -35,4 +35,4 @@ function QuickFilter({ id, searchFunction, title = 'Quick Filter' }: QuickFilter
     )
 }
 
-export default QuickFilter
+export default QuickFilterLicense

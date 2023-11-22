@@ -13,8 +13,9 @@
 import React, { useEffect, useState } from 'react'
 import { Form } from 'react-bootstrap'
 
+import TableLicense from '@/components/LinkedObligations/TableLicense'
 import { Obligation } from '@/object-types'
-import { Table, _ } from 'next-sw360'
+import { _ } from 'next-sw360'
 import styles from './LinkedObligations.module.css'
 
 interface Props {
@@ -164,7 +165,7 @@ const SelectTableLinkedObligations = ({ obligations, setObligations }: Props) =>
     }
     return (
         <div className='row' style={{ fontSize: '14px' }}>
-            <Table
+            <TableLicense
                 data={data}
                 columns={columns}
                 style={style}

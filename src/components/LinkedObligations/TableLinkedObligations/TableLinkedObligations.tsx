@@ -13,9 +13,9 @@ import { FaTrashAlt } from 'react-icons/fa'
 
 import DeleteObligationDialog from '@/app/[locale]/licenses/components/DeleteObligationDialog'
 import { useTranslations } from 'next-intl'
-import { Table, _ } from 'next-sw360'
+import { _ } from 'next-sw360'
 import Obligation from '../../../object-types/Obligation'
-// import FilterSearch from './FilterSearch'
+import TableLicense from '../TableLicense'
 import styles from './TableLinkedObligations.module.css'
 
 interface Props {
@@ -104,9 +104,11 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
             name: t('Action'),
             formatter: (item: Obligation) =>
                 _(
-                    <span>
-                        <FaTrashAlt className={styles['delete-btn']} onClick={() => deleteObligation(item)} />
-                    </span>
+                    <div style={{ textAlign: 'left' }}>
+                        <span>
+                            <FaTrashAlt className={styles['delete-btn']} onClick={() => deleteObligation(item)} />
+                        </span>
+                    </div>
                 ),
         },
     ]
@@ -125,7 +127,7 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
                 show={deleteDialogOpen}
                 setShow={setDeleteDialogOpen}
             />
-            <Table
+            <TableLicense
                 data={data}
                 search={search}
                 columns={columns}

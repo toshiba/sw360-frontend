@@ -10,11 +10,12 @@
 
 'use client'
 
+import TableLicense from '@/components/LinkedObligations/TableLicense'
 import { HttpStatus, Obligation } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils/index'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
-import { Table, _ } from 'next-sw360'
+import { _ } from 'next-sw360'
 import { notFound, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { Form } from 'react-bootstrap'
@@ -123,21 +124,25 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
             formatter: (item: Obligation) =>
                 _(<i className={styles.collapse} onClick={buildAttachmentDetail(item)}></i>),
             sort: false,
+            width: '10%',
         },
         {
             id: 'obligation',
             name: t('Obligation'),
             sort: true,
+            width: '30%',
         },
         {
             id: 'obligationType',
             name: t('Obligation Type'),
             sort: true,
+            width: '30%',
         },
         {
             id: 'furtherProperties',
             name: t('Further properties'),
             sort: true,
+            width: '30%',
         },
     ]
 
@@ -215,7 +220,7 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
     return (
         <div className='row'>
             {isEditWhitelist ? (
-                <Table
+                <TableLicense
                     data={dataEditWhitelist}
                     search={true}
                     columns={columnEditWhitelists}
@@ -225,7 +230,7 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
             ) : (
                 <div>
                     <Filter title={t('search')} searchFunction={doSearch} />
-                    <Table data={data} search={search} columns={columns} style={style} pagination={false} />
+                    <TableLicense data={data} search={search} columns={columns} style={style} pagination={false} />
                 </div>
             )}
         </div>

@@ -78,7 +78,10 @@ const Detail = ({ license, setLicense }: Props) => {
                 />
             </ToastContainer>
             {!license.checked && (
-                <div className='alert alert-danger'>
+                <div
+                    className='alert'
+                    style={{ backgroundColor: '#feefef', borderColor: '#f48989', color: '#da1414', fontSize: '14px' }}
+                >
                     This license is <b>UNCHECKED</b>
                 </div>
             )}
