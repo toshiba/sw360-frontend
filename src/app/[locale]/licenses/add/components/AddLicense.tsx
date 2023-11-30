@@ -86,7 +86,8 @@ export default function AddLicense() {
                         item,
                         item,
                         item.title,
-                        item.obligationType,
+                        item.obligationType &&
+                            item.obligationType.charAt(0) + item.obligationType.slice(1).toLowerCase(),
                         item.text,
                     ])
                     setObligations(data)
@@ -157,7 +158,7 @@ export default function AddLicense() {
 
     const headerButtons = {
         'Create License': { link: '', type: 'primary', onClick: submit, name: t('Create License') },
-        Cancel: { link: '/licenses', type: 'secondary', name: t('Cancel') },
+        Cancel: { link: '/licenses', type: 'light', name: t('Cancel') },
     }
 
     const headerButtonAddObligations = {
@@ -168,7 +169,7 @@ export default function AddLicense() {
             onClick: handleClickAddObligations,
             name: t('Add Obligation'),
         },
-        Cancel: { link: '/licenses', type: 'secondary', name: t('Cancel') },
+        Cancel: { link: '/licenses', type: 'light', name: t('Cancel') },
     }
 
     if (status === 'unauthenticated') {

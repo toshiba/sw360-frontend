@@ -77,8 +77,8 @@ const EditLicenseDetail = ({
 
     return (
         <div className='row mb-4' style={{ padding: '0px 12px', fontSize: '14px' }}>
-            <div className={`${styles['header']} mb-2`}>
-                <p className='fw-bold mt-2' style={{ fontSize: '14px' }}>
+            <div className={`${styles['header']} mb-1`} style={{ paddingTop: '0.5rem', height: '45px' }}>
+                <p className='fw-bold mt-1' style={{ fontSize: '0.875rem' }}>
                     {t('License Details')}
                 </p>
             </div>
@@ -106,7 +106,7 @@ const EditLicenseDetail = ({
                     />
                 </div>
                 <div className='col-lg-4'>
-                    <label htmlFor='shortname' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
+                    <label htmlFor='shortName' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
                         {t('Shortname')}
                         <span className='text-red' style={{ color: '#F7941E' }}>
                             *
@@ -115,7 +115,7 @@ const EditLicenseDetail = ({
 
                     <input
                         type='text'
-                        className='form-control'
+                        className='form-control readonly'
                         placeholder='Enter Shortname'
                         id='shortName'
                         readOnly
@@ -123,6 +123,7 @@ const EditLicenseDetail = ({
                         name='shortName'
                         value={licensePayload.shortName ?? ''}
                         onChange={updateField}
+                        title='1*(ALPHA / DIGIT / "-" / "." / "+" )'
                     />
                 </div>
                 <div className='col-lg-4'>
@@ -130,7 +131,7 @@ const EditLicenseDetail = ({
                         {t('License Type')}{' '}
                     </label>
                     <select
-                        className={`form-select ${inputValid ? 'is-valid' : ''}`}
+                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
                         aria-label='licenseTypeDatabaseId'
                         id='licenseTypeDatabaseId'
                         name='licenseTypeDatabaseId'
@@ -153,7 +154,7 @@ const EditLicenseDetail = ({
                         {t('OSI Approved?')}{' '}
                     </label>
                     <select
-                        className={`form-select ${inputValid ? 'is-valid' : ''}`}
+                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
                         aria-label='OSIApproved'
                         id='OSIApproved'
                         required
@@ -170,7 +171,7 @@ const EditLicenseDetail = ({
                         {t('FSF Free/Libre?')}{' '}
                     </label>
                     <select
-                        className={`form-select ${inputValid ? 'is-valid' : ''}`}
+                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
                         aria-label='FSFLibre'
                         id='FSFLibre'
                         required

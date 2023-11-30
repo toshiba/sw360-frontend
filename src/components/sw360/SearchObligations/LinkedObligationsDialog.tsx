@@ -17,6 +17,7 @@ import { Button, Modal } from 'react-bootstrap'
 import { LicensePayload, Obligation } from '@/object-types'
 import { CommonUtils } from '@/utils'
 import { Check2Square } from 'react-bootstrap-icons'
+import styles from './CssButton.module.css'
 import SelectTableLinkedObligations from './SelectTableLinkedObligations'
 
 interface Props {
@@ -80,14 +81,29 @@ const LinkedObligationsDialog = ({
 
     return (
         <Modal show={show} onHide={handleCloseDialog} backdrop='static' centered size='lg'>
-            <Modal.Header closeButton style={{ backgroundColor: '#eef2fa', borderColor: '#89a7e0', color: '#2e5aac' }}>
+            <Modal.Header style={{ backgroundColor: '#eef2fa', color: '#2e5aac' }}>
                 <h5>
-                    <Modal.Title style={{ fontSize: '1.25rem' }}>
+                    <Modal.Title style={{ fontSize: '1.25rem', fontWeight: '700' }}>
                         <Check2Square />
                         &nbsp;
                         {t('Select License Obligations to be added')}
                     </Modal.Title>
                 </h5>
+                <button
+                    type='button'
+                    style={{
+                        color: '#2e5aac',
+                        backgroundColor: '#eef2fa',
+                        alignItems: 'center',
+                        borderColor: '#eef2fa',
+                        borderWidth: '0px',
+                        fontSize: '1.1rem',
+                        margin: '-1rem -1rem auto',
+                    }}
+                    onClick={handleCloseDialog}
+                >
+                    <span aria-hidden='true'>&times;</span>
+                </button>
             </Modal.Header>
             <Modal.Body>
                 <div className='row'>
@@ -95,15 +111,10 @@ const LinkedObligationsDialog = ({
                 </div>
             </Modal.Body>
             <Modal.Footer className='justify-content-end'>
-                <Button type='button' data-bs-dismiss='modal' variant='light' onClick={handleCloseDialog}>
+                <Button type='button' data-bs-dismiss='modal' className='btn btn-light' onClick={handleCloseDialog}>
                     {t('Cancel')}
                 </Button>
-                <Button
-                    type='button'
-                    style={{ backgroundColor: '#2e5aac', borderColor: '#2e5aac', color: '#fff' }}
-                    variant='info'
-                    onClick={handleClickSelectObligations}
-                >
+                <Button className={`${styles['btn-info']}`} type='button' onClick={handleClickSelectObligations}>
                     {t('Add')}
                 </Button>
             </Modal.Footer>

@@ -14,7 +14,7 @@ import { Form } from 'react-bootstrap'
 
 function QuickFilterLicense({ id, searchFunction, title = 'Quick Filter' }: QuickFilterProps) {
     return (
-        <div className='card-deck' style={{ width: '232px', height: '76px', marginRight: '0px', marginLeft: 'auto' }}>
+        <div className='card-deck' style={{ width: '258px', height: '74px', marginRight: '0px', marginLeft: 'auto' }}>
             <div id='component-quickfilter' className='card'>
                 <div className='card-header'>{title}</div>
                 <div className='card-body'>

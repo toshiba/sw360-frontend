@@ -150,7 +150,9 @@ const Detail = ({ license, setLicense }: Props) => {
                         </td>
                     </tr>
                     <tr>
-                        <td>{t('External link for more information')}:</td>
+                        <td>
+                            <p style={{ marginTop: '0.5rem' }}>{t('External link for more information')}:</p>
+                        </td>
                         <td>
                             <div style={{ display: 'flex' }}>
                                 <input

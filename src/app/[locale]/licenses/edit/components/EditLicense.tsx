@@ -76,7 +76,8 @@ export default function EditLicense({ licenseId }: Props) {
                     const data = license._embedded['sw360:obligations'].map((item: Obligation) => [
                         item,
                         item.title,
-                        item.obligationType,
+                        item.obligationType &&
+                            item.obligationType.charAt(0) + item.obligationType.slice(1).toLowerCase(),
                         item,
                     ])
                     setData(data)
@@ -104,7 +105,8 @@ export default function EditLicense({ licenseId }: Props) {
                         item,
                         item,
                         item.title,
-                        item.obligationType,
+                        item.obligationType &&
+                            item.obligationType.charAt(0) + item.obligationType.slice(1).toLowerCase(),
                         item.text,
                     ])
                     setObligations(data)

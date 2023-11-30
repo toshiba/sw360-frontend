@@ -82,17 +82,29 @@ const DeleteLicenseDialog = ({ licensePayload, show, setShow }: Props) => {
     return (
         licensePayload && (
             <Modal show={show} onHide={handleCloseDialog} backdrop='static' centered size='lg'>
-                <Modal.Header
-                    closeButton
-                    style={{ backgroundColor: '#feefef', borderColor: '#f48989', color: '#da1414' }}
-                >
+                <Modal.Header style={{ backgroundColor: '#FEEFEF', color: '#da1414' }}>
                     <h5>
-                        <Modal.Title style={{ fontSize: '24px' }}>
+                        <Modal.Title style={{ fontSize: '1.25rem', fontWeight: '700' }}>
                             <QuestionCircle />
                             &nbsp;
-                            {t('Delete License')} ?
+                            {t('Delete License')}?
                         </Modal.Title>
                     </h5>
+                    <button
+                        type='button'
+                        style={{
+                            color: 'red',
+                            backgroundColor: '#FEEFEF',
+                            alignItems: 'center',
+                            borderColor: '#FEEFEF',
+                            borderWidth: '0px',
+                            fontSize: '1.1rem',
+                            margin: '-1rem -1rem auto',
+                        }}
+                        onClick={handleCloseDialog}
+                    >
+                        <span aria-hidden='true'>&times;</span>
+                    </button>
                 </Modal.Header>
                 <Modal.Body>
                     <Alert variant={variant} onClose={() => setShowMessage(false)} dismissible show={showMessage}>

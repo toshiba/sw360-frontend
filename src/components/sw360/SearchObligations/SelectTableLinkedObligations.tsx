@@ -143,8 +143,8 @@ const SelectTableLinkedObligations = ({ obligations, setObligations }: Props) =>
             sort: true,
         },
         {
-            id: 'Obligations Type',
-            name: 'Obligations Type',
+            id: 'Obligation Type',
+            name: 'Obligation Type',
             sort: true,
         },
     ]

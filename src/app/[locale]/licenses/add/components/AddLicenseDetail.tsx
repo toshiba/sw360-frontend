@@ -91,8 +91,8 @@ const AddLicenseDetail = ({
 
     return (
         <div className='row mb-4' style={{ padding: '0px 12px', fontSize: '14px' }}>
-            <div className={`${styles['header']} mb-2`}>
-                <p className='fw-bold mt-2' style={{ fontSize: '14px' }}>
+            <div className={`${styles['header']} mb-1`} style={{ paddingTop: '0.5rem', height: '45px' }}>
+                <p className='fw-bold mt-1' style={{ fontSize: '0.875rem' }}>
                     {t('License Details')}
                 </p>
             </div>
@@ -146,7 +146,7 @@ const AddLicenseDetail = ({
                         {t('License Type')}{' '}
                     </label>
                     <select
-                        className={`form-select ${inputValid ? 'is-valid' : ''}`}
+                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
                         aria-label='licenseTypeDatabaseId'
                         id='licenseTypeDatabaseId'
                         required
@@ -169,7 +169,7 @@ const AddLicenseDetail = ({
                         {t('OSI Approved?')}{' '}
                     </label>
                     <select
-                        className={`form-select ${inputValid ? 'is-valid' : ''}`}
+                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
                         aria-label='OSIApproved'
                         id='OSIApproved'
                         required
@@ -186,7 +186,7 @@ const AddLicenseDetail = ({
                         {t('FSF Free/Libre?')}{' '}
                     </label>
                     <select
-                        className={`form-select ${inputValid ? 'is-valid' : ''}`}
+                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
                         aria-label='FSFLibre'
                         id='FSFLibre'
                         required

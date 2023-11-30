@@ -153,7 +153,20 @@ th {
 }
 
 .btn-secondary:hover {
+    background-color: #f7f8f9 !important;
     color: #000 !important;
+}
+
+.btn-danger {
+    background-color: #da1414;
+    border-color: #da1414;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #c31212 !important;
+    border-color: transparent;
+    color: #fff;
 }
 
 .btn-dark {
@@ -237,6 +250,7 @@ th {
     flex-wrap: wrap;
     margin-right: -12px;
     margin-left: -12px;
+    margin-top: 4px;
 }
 
 .card-deck {
@@ -319,7 +333,7 @@ th {
 .btn-light {
     background-color: #f1f2f5 !important;
     border-color: #f1f2f5 !important;
-    color: #000000 !important;
+    color: #272833 !important;
 }
 
 .btn-light:focus {
@@ -335,9 +349,9 @@ th {
 }
 
 .btn-light:hover {
-    background-color: #e2e4ea;
-    border-color: transparent;
-    color: #000000;
+    background-color: #e2e4ea !important;
+    border-color: transparent !important;
+    color: #272833 !important;
 }
 
 .header-underline {
@@ -601,4 +615,14 @@ th {
     border-color: #dbdce4 !important;
     color: #6b6c7e !important;
     background-color: #e89734 !important;
+}
+
+.readonly:focus {
+    border-color: #80acff;
+    box-shadow: none;
+    background-color: #fff;
+}
+
+.readonly:hover {
+    cursor: not-allowed;
 }

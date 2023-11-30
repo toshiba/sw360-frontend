@@ -31,8 +31,8 @@ const EditLicenseText = ({ licensePayload, setLicensePayload, inputValid }: Prop
 
     return (
         <div className='row mb-4' style={{ padding: '0px 12px' }}>
-            <div className={`${styles['header']} mb-2`}>
-                <p className='fw-bold mt-2' style={{ fontSize: '14px' }}>
+            <div className={`${styles['header']} mb-1`} style={{ paddingTop: '0.5rem', height: '45px' }}>
+                <p className='fw-bold mt-1' style={{ fontSize: '0.875rem' }}>
                     {t('License Text')}
                 </p>
             </div>

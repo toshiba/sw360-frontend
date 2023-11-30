@@ -29,7 +29,9 @@ const Text = ({ license }: Props) => {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{license.text ?? ''}</td>
+                        <td>
+                            <pre>{license.text ?? ''}</pre>
+                        </td>
                     </tr>
                 </tbody>
             </table>
