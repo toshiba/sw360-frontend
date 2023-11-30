@@ -82,138 +82,146 @@ const EditLicenseDetail = ({
                     {t('License Details')}
                 </p>
             </div>
-            <div className='row'>
-                <div className='col-lg-4'>
-                    <label htmlFor='fullName' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
-                        {t('Fullname')}
-                        <span className='text-red' style={{ color: '#F7941E' }}>
-                            *
-                        </span>
-                    </label>
-
-                    <input
-                        type='text'
-                        className={`form-control ${errorFullName ? 'is-invalid' : ''} ${
-                            !errorFullName && inputValid ? 'is-valid' : ''
-                        }`}
-                        placeholder='Enter Fullname'
-                        required
-                        id='fullName'
-                        aria-describedby='fullName'
-                        name='fullName'
-                        value={licensePayload.fullName ?? ''}
-                        onChange={updateField}
-                    />
-                </div>
-                <div className='col-lg-4'>
-                    <label htmlFor='shortName' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
-                        {t('Shortname')}
-                        <span className='text-red' style={{ color: '#F7941E' }}>
-                            *
-                        </span>
-                    </label>
-
-                    <input
-                        type='text'
-                        className='form-control readonly'
-                        placeholder='Enter Shortname'
-                        id='shortName'
-                        readOnly
-                        aria-describedby='shortName'
-                        name='shortName'
-                        value={licensePayload.shortName ?? ''}
-                        onChange={updateField}
-                        title='1*(ALPHA / DIGIT / "-" / "." / "+" )'
-                    />
-                </div>
-                <div className='col-lg-4'>
-                    <label htmlFor='licenseTypeDatabaseId' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
-                        {t('License Type')}{' '}
-                    </label>
-                    <select
-                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
-                        aria-label='licenseTypeDatabaseId'
-                        id='licenseTypeDatabaseId'
-                        name='licenseTypeDatabaseId'
-                        onChange={updateField}
-                        value={licensePayload?.licenseTypeDatabaseId ?? ''}
-                    >
-                        <option value=''>{t('No type selected')}</option>
-                        {licenseTypes.map((item) => (
-                            <option key={item.id} value={item.id}>
-                                {item.licenseType}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-            <hr className='my-2' />
-            <div className='row'>
-                <div className='col-lg-4'>
-                    <label htmlFor='OSIApproved' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
-                        {t('OSI Approved?')}{' '}
-                    </label>
-                    <select
-                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
-                        aria-label='OSIApproved'
-                        id='OSIApproved'
-                        required
-                        name='OSIApproved'
-                        onChange={updateField}
-                        value={licensePayload.OSIApproved ?? ''}
-                    >
-                        <option value='NA'>{t('(n/a)')}</option>
-                        <option value='YES'>{t('yes')}</option>
-                    </select>
-                </div>
-                <div className='col-lg-4'>
-                    <label htmlFor='FSFLibre' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
-                        {t('FSF Free/Libre?')}{' '}
-                    </label>
-                    <select
-                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
-                        aria-label='FSFLibre'
-                        id='FSFLibre'
-                        required
-                        name='FSFLibre'
-                        value={licensePayload.FSFLibre ?? ''}
-                        onChange={updateField}
-                    >
-                        <option value='NA'>{t('(n/a)')}</option>
-                        <option value='YES'>{t('yes')}</option>
-                    </select>
-                </div>
-                <div className='col-lg-4'>
-                    <div className='form-check'>
-                        <input
-                            id='isChecked'
-                            type='checkbox'
-                            className='form-check-input'
-                            name='checked'
-                            checked={licensePayload.checked ?? false}
-                            onChange={updateFieldChecked}
-                        />
-                        <label className='form-label fw-bold' htmlFor='isChecked' style={{ cursor: 'pointer' }}>
-                            {t('Is checked')}
+            <div style={{ backgroundColor: '#FFF', borderBottom: '1px solid #DCDCDC' }}>
+                <div className='row' style={{ paddingBottom: '0.7rem' }}>
+                    <div className='col-lg-4'>
+                        <label htmlFor='fullName' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
+                            {t('Fullname')}
+                            <span className='text-red' style={{ color: '#F7941E' }}>
+                                *
+                            </span>
                         </label>
+
+                        <input
+                            type='text'
+                            className={`form-control ${errorFullName ? 'is-invalid' : ''} ${
+                                !errorFullName && inputValid ? 'is-valid' : ''
+                            }`}
+                            placeholder='Enter Fullname'
+                            required
+                            id='fullName'
+                            aria-describedby='fullName'
+                            name='fullName'
+                            value={licensePayload.fullName ?? ''}
+                            onChange={updateField}
+                        />
+                    </div>
+                    <div className='col-lg-4'>
+                        <label htmlFor='shortName' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
+                            {t('Shortname')}
+                            <span className='text-red' style={{ color: '#F7941E' }}>
+                                *
+                            </span>
+                        </label>
+
+                        <input
+                            type='text'
+                            className='form-control readonly'
+                            placeholder='Enter Shortname'
+                            id='shortName'
+                            readOnly
+                            aria-describedby='shortName'
+                            name='shortName'
+                            value={licensePayload.shortName ?? ''}
+                            onChange={updateField}
+                            title='1*(ALPHA / DIGIT / "-" / "." / "+" )'
+                        />
+                    </div>
+                    <div className='col-lg-4'>
+                        <label
+                            htmlFor='licenseTypeDatabaseId'
+                            className='form-label fw-bold'
+                            style={{ cursor: 'pointer' }}
+                        >
+                            {t('License Type')}{' '}
+                        </label>
+                        <select
+                            className={`form-control ${inputValid ? 'is-valid' : ''}`}
+                            aria-label='licenseTypeDatabaseId'
+                            id='licenseTypeDatabaseId'
+                            name='licenseTypeDatabaseId'
+                            onChange={updateField}
+                            value={licensePayload?.licenseTypeDatabaseId ?? ''}
+                        >
+                            <option value=''>{t('No type selected')}</option>
+                            {licenseTypes.map((item) => (
+                                <option key={item.id} value={item.id}>
+                                    {item.licenseType}
+                                </option>
+                            ))}
+                        </select>
                     </div>
                 </div>
             </div>
-            <hr className='my-2' />
-            <div className='row'>
-                <div className='col-lg-4'>
-                    <label htmlFor='note' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
-                        {t('Note')}
-                    </label>
-                    <textarea
-                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
-                        placeholder='Enter Note'
-                        id='note'
-                        aria-describedby='note'
-                        name='note'
-                        value={licensePayload.note ?? ''}
-                        onChange={updateField}
-                    />
+            <div style={{ backgroundColor: '#FFF', borderBottom: '1px solid #DCDCDC' }}>
+                <div className='row' style={{ paddingBottom: '0.7rem' }}>
+                    <div className='col-lg-4'>
+                        <label htmlFor='OSIApproved' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
+                            {t('OSI Approved?')}{' '}
+                        </label>
+                        <select
+                            className={`form-control ${inputValid ? 'is-valid' : ''}`}
+                            aria-label='OSIApproved'
+                            id='OSIApproved'
+                            required
+                            name='OSIApproved'
+                            onChange={updateField}
+                            value={licensePayload.OSIApproved ?? ''}
+                        >
+                            <option value='NA'>{t('(n/a)')}</option>
+                            <option value='YES'>{t('yes')}</option>
+                        </select>
+                    </div>
+                    <div className='col-lg-4'>
+                        <label htmlFor='FSFLibre' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
+                            {t('FSF Free/Libre?')}{' '}
+                        </label>
+                        <select
+                            className={`form-control ${inputValid ? 'is-valid' : ''}`}
+                            aria-label='FSFLibre'
+                            id='FSFLibre'
+                            required
+                            name='FSFLibre'
+                            value={licensePayload.FSFLibre ?? ''}
+                            onChange={updateField}
+                        >
+                            <option value='NA'>{t('(n/a)')}</option>
+                            <option value='YES'>{t('yes')}</option>
+                        </select>
+                    </div>
+                    <div className='col-lg-4'>
+                        <div className='form-check'>
+                            <input
+                                id='isChecked'
+                                type='checkbox'
+                                className='form-check-input'
+                                name='checked'
+                                checked={licensePayload.checked ?? false}
+                                onChange={updateFieldChecked}
+                            />
+                            <label className='form-label fw-bold' htmlFor='isChecked' style={{ cursor: 'pointer' }}>
+                                {t('Is checked')}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style={{ backgroundColor: '#FFF', borderBottom: '1px solid #DCDCDC', width: '495px' }}>
+                <div className='row' style={{ paddingBottom: '0.7rem' }}>
+                    <div className='col-lg-12'>
+                        <label htmlFor='note' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
+                            {t('Note')}
+                        </label>
+                        <textarea
+                            className={`form-control ${inputValid ? 'is-valid' : ''}`}
+                            placeholder='Enter Note'
+                            id='note'
+                            aria-describedby='note'
+                            name='note'
+                            value={licensePayload.note ?? ''}
+                            onChange={updateField}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

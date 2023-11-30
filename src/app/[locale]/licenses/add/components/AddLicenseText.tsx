@@ -36,18 +36,20 @@ const AddLicenseText = ({ licensePayload, setLicensePayload, inputValid }: Props
                     {t('License Text')}
                 </p>
             </div>
-            <div className='row'>
-                <div className='col-lg-4'>
-                    <textarea
-                        style={{ height: '500px', width: '1460px' }}
-                        className={`form-control ${inputValid ? 'is-valid' : ''}`}
-                        placeholder='Enter the License-Text here...'
-                        id='text'
-                        aria-describedby='text'
-                        name='text'
-                        value={licensePayload.text ?? ''}
-                        onChange={updateField}
-                    />
+            <div style={{ backgroundColor: '#FFF', borderBottom: '1px solid #DCDCDC' }}>
+                <div className='row' style={{ paddingBottom: '0.7rem' }}>
+                    <div className='col-lg-4'>
+                        <textarea
+                            style={{ height: '500px', width: '1460px' }}
+                            className={`form-control ${inputValid ? 'is-valid' : ''}`}
+                            placeholder='Enter the License-Text here...'
+                            id='text'
+                            aria-describedby='text'
+                            name='text'
+                            value={licensePayload.text ?? ''}
+                            onChange={updateField}
+                        />
+                    </div>
                 </div>
             </div>
         </div>
