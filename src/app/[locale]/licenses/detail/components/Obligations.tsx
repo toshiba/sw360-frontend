@@ -160,7 +160,7 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
     const columnEditWhitelists = [
         {
             id: 'obligationId',
-            name: 'whitelist',
+            name: 'Whitelist',
             formatter: (item: any) =>
                 _(
                     <Form.Check
