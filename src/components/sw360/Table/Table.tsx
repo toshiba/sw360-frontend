@@ -92,8 +92,8 @@ class Table extends Component<TableProps, unknown> {
         return (
             <>
                 {this.props.selector && (
-                    <div className='col-11 mt-3 mb-3'>
-                        <div className='dataTables_length'>
+                    <div className='col-11 mt-2 mb-2'>
+                        <div className='dataTables_length' style={{ fontSize: '0.875rem' }}>
                             <span className='my-2'>Show</span>
                             <label style={{ marginLeft: '5px', marginRight: '5px' }}>
                                 <Form.Select size='sm' onChange={this.handlePageSizeChange}>

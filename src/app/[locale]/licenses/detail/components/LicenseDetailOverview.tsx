@@ -186,7 +186,7 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
                             <SideBar selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabList={tabList} />
                         </div>
                         <div className='col'>
-                            <div className='row' style={{ marginBottom: '20px' }}>
+                            <div className='row'>
                                 {selectedTab === LicenseTabIds.OBLIGATIONS ? (
                                     <>
                                         {!CommonUtils.isNullEmptyOrUndefinedArray(license.obligationDatabaseIds) ? (
