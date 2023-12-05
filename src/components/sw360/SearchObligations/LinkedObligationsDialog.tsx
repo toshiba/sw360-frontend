@@ -52,7 +52,7 @@ const LinkedObligationsDialog = ({
         const linkedObligationsResponseData = linkedObligationsResponse.map((item: Obligation) => [
             item,
             item.title,
-            item.obligationType,
+            item.obligationType && item.obligationType.charAt(0) + item.obligationType.slice(1).toLowerCase(),
             item,
         ])
         linkedObligationsResponseData.forEach((linkedObligations: any) => {

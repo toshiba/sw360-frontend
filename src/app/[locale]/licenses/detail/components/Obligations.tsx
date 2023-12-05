@@ -150,7 +150,11 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
     const handlerRadioButton = (item: any) => {
         const id: string = CommonUtils.getIdFromUrl(item._links.self.href)
         if (whitelist.has(id)) {
-            whitelist.set(id, false)
+            if (!whitelist.get(id)) {
+                whitelist.set(id, true)
+            } else {
+                whitelist.set(id, false)
+            }
         } else {
             whitelist.set(id, true)
         }

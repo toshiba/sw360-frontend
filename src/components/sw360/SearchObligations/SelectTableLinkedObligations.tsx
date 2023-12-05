@@ -11,7 +11,6 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { Form } from 'react-bootstrap'
 
 import TableLicense from '@/components/LinkedObligations/TableLicense'
 import { Obligation } from '@/object-types'
@@ -125,16 +124,24 @@ const SelectTableLinkedObligations = ({ obligations, setObligations }: Props) =>
         },
         {
             id: 'obligationId',
-            name: _(<Form.Check defaultChecked={isCheckAll} type='checkbox' onClick={handleCheckAll}></Form.Check>),
+            name: _(
+                <input
+                    className='checkbox-control'
+                    defaultChecked={isCheckAll}
+                    type='checkbox'
+                    onClick={handleCheckAll}
+                ></input>
+            ),
             formatter: ({ checked, index }: any) =>
                 _(
-                    <Form.Check
+                    <input
+                        className='checkbox-control'
                         type='checkbox'
                         defaultChecked={checked}
                         onClick={() => {
                             handlerRadioButton(index, checked)
                         }}
-                    ></Form.Check>
+                    ></input>
                 ),
         },
         {
