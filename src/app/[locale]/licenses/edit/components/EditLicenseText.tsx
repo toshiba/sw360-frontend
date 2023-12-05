@@ -38,9 +38,9 @@ const EditLicenseText = ({ licensePayload, setLicensePayload, inputValid }: Prop
             </div>
             <div style={{ backgroundColor: '#FFF', borderBottom: '1px solid #DCDCDC' }}>
                 <div className='row' style={{ paddingBottom: '0.7rem' }}>
-                    <div className='col-lg-4'>
+                    <div className='col-12'>
                         <textarea
-                            style={{ height: '500px', width: '1460px' }}
+                            style={{ height: '500px' }}
                             className={`form-control ${inputValid ? 'is-valid' : ''}`}
                             placeholder='Enter the license-text here...'
                             id='text'

@@ -64,7 +64,7 @@ const DeleteObligationDialog = ({
                         <Modal.Title style={{ fontSize: '1.25rem', fontWeight: '700' }}>
                             <QuestionCircle />
                             &nbsp;
-                            {t('Delete License')}?
+                            {t('Delete Obligation')}?
                         </Modal.Title>
                     </h5>
                     <button
