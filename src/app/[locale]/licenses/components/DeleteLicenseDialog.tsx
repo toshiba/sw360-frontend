@@ -51,7 +51,7 @@ const DeleteLicenseDialog = ({ licensePayload, show, setShow }: Props) => {
         try {
             if (response.status == HttpStatus.OK) {
                 displayMessage('success', t('Delete License success!'))
-                router.push('/licenses')
+                router.push('/licenses?delete=success')
                 setReloadPage(true)
             } else if (response.status == HttpStatus.ACCEPTED) {
                 displayMessage('success', t('Created moderation request'))

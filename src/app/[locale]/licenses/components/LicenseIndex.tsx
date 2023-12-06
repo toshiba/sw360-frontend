@@ -10,16 +10,17 @@
 'use client'
 
 import TableLicense from '@/components/LinkedObligations/TableLicense'
-import { Embedded, LicensePayload } from '@/object-types'
+import { Embedded, LicensePayload, ToastData } from '@/object-types'
 import DownloadService from '@/services/download.service'
 import { CommonUtils } from '@/utils'
 import { SW360_API_URL } from '@/utils/env'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
-import { PageButtonHeader, _ } from 'next-sw360'
+import { PageButtonHeader, ToastMessage, _ } from 'next-sw360'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { ToastContainer } from 'react-bootstrap'
 import { Check2Circle, XCircle } from 'react-bootstrap-icons'
 import QuickFilterLicense from './QuickFilterLicense'
 
@@ -30,6 +31,29 @@ function LicensesPage() {
     const [search, setSearch] = useState({})
     const [numberLicense, setNumberLicense] = useState(0)
     const { data: session, status } = useSession()
+    const deleteLicense = params.get('delete')
+
+    const [toastData, setToastData] = useState<ToastData>({
+        show: false,
+        type: '',
+        message: '',
+        contextual: '',
+    })
+
+    const alert = (show_data: boolean, status_type: string, message: string, contextual: string) => {
+        setToastData({
+            show: show_data,
+            type: status_type,
+            message: message,
+            contextual: contextual,
+        })
+    }
+
+    useEffect(() => {
+        if (!CommonUtils.isNullEmptyOrUndefinedString(deleteLicense)) {
+            alert(true, 'Success', t('License removed successfully!'), 'success')
+        }
+    }, [params])
 
     const handleExportLicense = () => {
         DownloadService.download(`reports?module=licenses`, session, `Licenses.xlsx`)
@@ -88,6 +112,16 @@ function LicensesPage() {
     } else {
         return (
             <div className='container' style={{ maxWidth: '98vw', marginTop: '10px' }}>
+                <ToastContainer position='top-start'>
+                    <ToastMessage
+                        show={toastData.show}
+                        type={toastData.type}
+                        message={toastData.message}
+                        contextual={toastData.contextual}
+                        onClose={() => setToastData({ ...toastData, show: false })}
+                        setShowToast={setToastData}
+                    />
+                </ToastContainer>
                 <div className='row'>
                     <div className='col-2 sidebar'>
                         <QuickFilterLicense id='licensefilter' title={t('Quick Filter')} searchFunction={doSearch} />
