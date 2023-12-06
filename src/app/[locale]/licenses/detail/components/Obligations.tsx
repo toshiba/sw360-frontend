@@ -50,7 +50,9 @@ const Obligations = ({ licenseId, isEditWhitelist, whitelist, setWhitelist }: Pr
                     <table class="table table-borderless">
                         <tbody>
                             <tr>
-                            <td>${item.text ?? ''}</td>
+                            <td>${
+                                item.text.replace(/[\r\n]/g, '<br>').replace(/\t/g, '&ensp;&ensp;&ensp;&ensp;') ?? ''
+                            }</td>
                             </tr>
                         </tbody>
                     </table>

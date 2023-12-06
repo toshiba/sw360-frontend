@@ -30,7 +30,7 @@ const Text = ({ license }: Props) => {
                 <tbody>
                     <tr>
                         <td>
-                            <pre>{license.text ?? ''}</pre>
+                            <pre style={{ whiteSpace: 'pre-wrap' }}>{license.text ?? ''}</pre>
                         </td>
                     </tr>
                 </tbody>

@@ -48,7 +48,9 @@ export default function TableLinkedObligations({ data, setData, setObligationIdT
                     <table class="table table-borderless">
                         <tbody>
                             <tr>
-                            <td>${item.text ?? ''}</td>
+                            <td>${
+                                item.text.replace(/[\r\n]/g, '<br>').replace(/\t/g, '&ensp;&ensp;&ensp;&ensp;') ?? ''
+                            }</td>
                             </tr>
                         </tbody>
                     </table>
