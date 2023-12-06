@@ -64,6 +64,7 @@ export default function AddLicense() {
     ]
 
     useEffect(() => {
+        alert(true, 'Success', t('New License'), 'success')
         const controller = new AbortController()
         const signal = controller.signal
 

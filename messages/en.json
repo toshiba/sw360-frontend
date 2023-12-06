@@ -766,6 +766,7 @@
         "License shortname is already taken!": "License shortname is already taken!",
         "search": "search",
         "Shortname is invalid!": "Shortname is invalid!",
-        "License removed successfully!": "License removed successfully!"
+        "License removed successfully!": "License removed successfully!",
+        "New License": "New License"
     }
 }
