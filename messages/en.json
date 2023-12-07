@@ -767,6 +767,8 @@
         "search": "search",
         "Shortname is invalid!": "Shortname is invalid!",
         "License removed successfully!": "License removed successfully!",
-        "New License": "New License"
+        "New License": "New License",
+        "Save": "Save",
+        "This license is": "This license is"
     }
 }

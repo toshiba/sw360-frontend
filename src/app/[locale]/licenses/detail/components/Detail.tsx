@@ -82,7 +82,7 @@ const Detail = ({ license, setLicense }: Props) => {
                     className='alert'
                     style={{ backgroundColor: '#feefef', borderColor: '#f48989', color: '#da1414', fontSize: '14px' }}
                 >
-                    This license is <b>UNCHECKED</b>
+                    {t('This license is')} <b>UNCHECKED</b>
                 </div>
             )}
             <table className={`table label-value-table ${styles['summary-table']}`}>
@@ -171,7 +171,7 @@ const Detail = ({ license, setLicense }: Props) => {
                                     type='submit'
                                     onClick={updateExternalLicenseLink}
                                 >
-                                    Save
+                                    {t('Save')}
                                 </Button>
                             </div>
                         </td>

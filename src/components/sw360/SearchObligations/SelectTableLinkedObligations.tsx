@@ -14,6 +14,7 @@ import React, { useEffect, useState } from 'react'
 
 import TableLicense from '@/components/LinkedObligations/TableLicense'
 import { Obligation } from '@/object-types'
+import { useTranslations } from 'next-intl'
 import { _ } from 'next-sw360'
 import styles from './LinkedObligations.module.css'
 
@@ -25,6 +26,7 @@ interface Props {
 const SelectTableLinkedObligations = ({ obligations, setObligations }: Props) => {
     const [data, setData] = useState([])
     const [isCheckAll, setIsCheckAll] = useState<boolean>(false)
+    const t = useTranslations('default')
 
     useEffect(() => {
         const mapperData = Object.entries(obligations).map((item, index) => [
@@ -146,12 +148,12 @@ const SelectTableLinkedObligations = ({ obligations, setObligations }: Props) =>
         },
         {
             id: 'Obligation Title',
-            name: 'Obligation Title',
+            name: t('Obligation Title'),
             sort: true,
         },
         {
             id: 'Obligation Type',
-            name: 'Obligation Type',
+            name: t('Obligation Type'),
             sort: true,
         },
     ]
