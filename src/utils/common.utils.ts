@@ -232,6 +232,46 @@ const truncateText = (text: string, maxLength = 80) => {
     return truncatedText
 }
 
+const fillDate = (value: string) => {
+    const timeStamp = Date.parse(value)
+
+    const date = new Date(timeStamp)
+
+    const localTimeStamp = timeStamp - date.getTimezoneOffset()
+
+    const localDate = new Date(localTimeStamp)
+
+    return (
+        localDate.getFullYear() +
+        '-' +
+        (localDate.getMonth() + 1).toString().padStart(2, '0') +
+        '-' +
+        localDate.getDate().toString().padStart(2, '0')
+    )
+}
+
+const fillTime = (value: string) => {
+    const timeStamp = Date.parse(value)
+
+    const date = new Date(timeStamp)
+
+    return (
+        date.getHours().toString().padStart(2, '0') +
+        ':' +
+        date.getMinutes().toString().padStart(2, '0') +
+        ':' +
+        date.getSeconds().toString().padStart(2, '0')
+    )
+}
+
+const readDateTime = (datePicker: string, timePicker: string) => {
+    if (datePicker == '' || timePicker == '') {
+        return ''
+    }
+    const localDate = new Date(datePicker + ' ' + timePicker)
+    return localDate.toISOString().slice(0, -5) + 'Z'
+}
+
 const CommonUtils = {
     isNullOrUndefined,
     isNullEmptyOrUndefinedString,
@@ -245,6 +285,9 @@ const CommonUtils = {
     convertObjectToMapRoles,
     convertRoles,
     truncateText,
+    fillDate,
+    fillTime,
+    readDateTime,
 }
 
 export default CommonUtils
