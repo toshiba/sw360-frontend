@@ -37,10 +37,13 @@ import {
     Vendor,
 } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils'
+import { SPDX_ENABLE } from '@/utils/env'
 import { PageButtonHeader, SideBar, ToastMessage } from 'next-sw360'
+import SPDX from '../../../../../../object-types/spdx/SPDX'
 import DeleteReleaseModal from '../../../detail/[id]/components/DeleteReleaseModal'
 import EditClearingDetails from './EditClearingDetails'
 import EditECCDetails from './EditECCDetails'
+import EditSPDXDocument from './EditSPDXDocument'
 import ReleaseEditSummary from './ReleaseEditSummary'
 import ReleaseEditTabs from './ReleaseEditTabs'
 
@@ -54,11 +57,16 @@ const EditRelease = ({ releaseId }: Props) => {
     const { data: session } = useSession()
     const params = useSearchParams()
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
-    const [tabList, setTabList] = useState(ReleaseEditTabs.WITHOUT_COMMERCIAL_DETAILS)
+    const [tabList, setTabList] = useState(ReleaseEditTabs.WITHOUT_COMMERCIAL_DETAILS_AND_SPDX)
     const [release, setRelease] = useState<ReleaseDetail>()
     const [componentId, setComponentId] = useState('')
     const [deletingRelease, setDeletingRelease] = useState('')
     const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+    const [SPDXPayload, setSPDXPayload] = useState<SPDX>({
+        spdxDocument: null,
+        documentCreationInformation: null,
+        packageInformation: null,
+    })
 
     useEffect(() => {
         const controller = new AbortController()
@@ -74,12 +82,26 @@ const EditRelease = ({ releaseId }: Props) => {
                     return notFound()
                 }
                 const release: ReleaseDetail = await response.json()
+                const SPDXPayload: SPDX = {
+                    spdxDocument: release._embedded['sw360:spdxDocument'],
+                    documentCreationInformation: release._embedded['sw360:documentCreationInformation'],
+                    packageInformation: release._embedded['sw360:packageInformation'],
+                }
+                setSPDXPayload(SPDXPayload)
                 setRelease(release)
                 setDeletingRelease(releaseId)
                 setComponentId(CommonUtils.getIdFromUrl(release['_links']['sw360:component']['href']))
 
-                if (release.componentType === 'COTS') {
+                if (release.componentType === 'COTS' && SPDX_ENABLE !== 'true') {
                     setTabList(ReleaseEditTabs.WITH_COMMERCIAL_DETAILS)
+                }
+
+                if (release.componentType === 'COTS' && SPDX_ENABLE === 'true') {
+                    setTabList(ReleaseEditTabs.WITH_COMMERCIAL_DETAILS_AND_SPDX)
+                }
+
+                if (release.componentType !== 'COTS' && SPDX_ENABLE === 'true') {
+                    setTabList(ReleaseEditTabs.WITH_SPDX)
                 }
 
                 if (typeof release.eccInformation !== 'undefined') {
@@ -237,6 +259,17 @@ const EditRelease = ({ releaseId }: Props) => {
     }
 
     const submit = async () => {
+        console.log(SPDXPayload)
+        if (SPDX_ENABLE === 'true') {
+            const responseUpdateSPDX = await ApiUtils.PATCH(
+                `releases/${releaseId}/spdx`,
+                SPDXPayload,
+                session.user.access_token
+            )
+            if (responseUpdateSPDX.status == HttpStatus.OK) {
+                alert(true, 'Success', `Success: SPDX updated successfully!`, 'success')
+            }
+        }
         const response = await ApiUtils.PATCH(`releases/${releaseId}`, releasePayload, session.user.access_token)
         if (response.status == HttpStatus.OK) {
             const release = (await response.json()) as ReleaseDetail
@@ -318,6 +351,15 @@ const EditRelease = ({ releaseId }: Props) => {
                                 clearingInformation={clearingInformation}
                             />
                         </div>
+                        {SPDX_ENABLE === 'true' && (
+                            <div className='row' hidden={selectedTab !== ReleaseTabIds.SPDX_DOCUMENT ? true : false}>
+                                <EditSPDXDocument
+                                    releaseId={releaseId}
+                                    SPDXPayload={SPDXPayload}
+                                    setSPDXPayload={setSPDXPayload}
+                                />
+                            </div>
+                        )}
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.LINKED_RELEASES ? true : false}>
                             <LinkedReleases
                                 actionType={ActionType.EDIT}
