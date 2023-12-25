@@ -8,12 +8,18 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-enum ReleaseTabIds {
-    LINKED_RELEASES = 'tab-Releases',
-    CLEARING_DETAILS = 'tab-ClearingDetails',
-    ECC_DETAILS = 'tab-EccDetails',
-    COMMERCIAL_DETAILS = 'tab-CommercialDetails',
-    SPDX_DOCUMENT = 'tab-SPDXDocument',
+'use client'
+
+interface Props {
+    releaseId: string
 }
 
-export default ReleaseTabIds
+const SPDXDocument = ({ releaseId }: Props) => {
+    return (
+        <>
+            <p>SPDXDocument: {releaseId}</p>
+        </>
+    )
+}
+
+export default SPDXDocument

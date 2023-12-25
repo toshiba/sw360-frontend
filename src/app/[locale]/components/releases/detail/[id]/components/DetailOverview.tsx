@@ -42,6 +42,7 @@ import CommercialDetails from './CommercialDetails'
 import ECCDetails from './ECCDetails'
 import LinkedReleases from './LinkedReleases'
 import ReleaseDetailTabs from './ReleaseDetailTabs'
+import SPDXDocument from './SPDXDocument'
 import Summary from './Summary'
 
 type EmbeddedChangelogs = Embedded<Changelogs, 'sw360:changeLogs'>
@@ -249,6 +250,9 @@ const DetailOverview = ({ releaseId }: Props) => {
                         </div>
                         <div className='row' hidden={selectedTab !== CommonTabIds.SUMMARY ? true : false}>
                             <Summary release={release} releaseId={releaseId} />
+                        </div>
+                        <div className='row' hidden={selectedTab !== ReleaseTabIds.SPDX_DOCUMENT ? true : false}>
+                            <SPDXDocument releaseId={releaseId} />
                         </div>
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.LINKED_RELEASES ? true : false}>
                             <LinkedReleases releaseId={releaseId} />

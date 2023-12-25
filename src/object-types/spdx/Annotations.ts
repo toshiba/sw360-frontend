@@ -8,12 +8,13 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-enum ReleaseTabIds {
-    LINKED_RELEASES = 'tab-Releases',
-    CLEARING_DETAILS = 'tab-ClearingDetails',
-    ECC_DETAILS = 'tab-EccDetails',
-    COMMERCIAL_DETAILS = 'tab-CommercialDetails',
-    SPDX_DOCUMENT = 'tab-SPDXDocument',
+interface Annotations {
+    annotator: string // 12.1
+    annotationDate: string // 12.2
+    annotationType: string // 12.3
+    spdxIdRef: string // 12.4
+    annotationComment: string // 12.5
+    index: number
 }
 
-export default ReleaseTabIds
+export default Annotations
