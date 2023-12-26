@@ -605,3 +605,51 @@ th {
 .fi-flag.custom-class {
     cursor: pointer;
 }
+
+.spdx-col-1 {
+    flex: 1;
+}
+
+.spdx-col-2 {
+    flex: 2;
+}
+
+.spdx-col-3 {
+    flex: 3;
+    max-width: 60%;
+}
+
+.spdx-flex-row {
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+}
+
+.spdx-flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+/*. {*/
+/*	margin-bottom: 0;*/
+/*}*/
+
+.spdx-key {
+    font-weight: bold;
+}
+
+.spdx-label-index {
+    text-decoration: underline;
+}
+
+.spdx-table td:first-child {
+    width: 100% !important;
+}
+
+.spdx-thead {
+    cursor: pointer;
+}
+
+.spdx-uppercase {
+    text-transform: uppercase;
+}

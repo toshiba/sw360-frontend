@@ -19,6 +19,9 @@ import {
     User,
     Vendor,
 } from '@/object-types'
+import DocumentCreationInformation from './spdx/DocumentCreationInformation'
+import PackageInformation from './spdx/PackageInformation'
+import SPDXDocument from './spdx/SPDXDocument'
 
 export default interface ReleaseDetail {
     name?: string
@@ -72,5 +75,8 @@ export default interface ReleaseDetail {
         'sw360:attachments'?: Array<Attachment>
         'sw360:license'?: Licenses[]
         'sw360:subscribers'?: User[]
+        'sw360:documentCreationInformation'?: DocumentCreationInformation
+        'sw360:packageInformation'?: PackageInformation
+        'sw360:spdxDocument'?: SPDXDocument
     }
 }

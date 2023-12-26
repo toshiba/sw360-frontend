@@ -25,7 +25,7 @@ interface PackageInformation {
     licenseInfoFromFiles: Array<string> // 7.14
     licenseDeclared: string // 7.15
     licenseComments: string // 7.16
-    copyrightText1: string // 7.17
+    copyrightText: string // 7.17
     summary: string // 7.18
     description: string // 7.19
     packageComment: string // 7.20

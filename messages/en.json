@@ -763,6 +763,14 @@
         "to edit the project relation": "to edit the project relation",
         "vector": "vector",
         "wrong_spdx_information": "If the wrong SPDX is entered, the information will not be registered correctly",
-        "SPDXDocument": "SPDXDocument"
+        "SPDXDocument": "SPDXDocument",
+        "SPDX FULL": "SPDX FULL",
+        "SPDX LITE": "SPDX LITE",
+        "6. Document Creation Information": "6. Document Creation Information",
+        "7. Package Information": "7. Package Information",
+        "9. Snippet Information": "9. Snippet Information",
+        "10. Other Licensing Information Detected": "10. Other Licensing Information Detected",
+        "11. Relationship between SPDX Elements Information": "11. Relationship between SPDX Elements Information",
+        "12. Annotation Information": "12. Annotation Information"
     }
 }

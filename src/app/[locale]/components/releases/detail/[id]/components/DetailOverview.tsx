@@ -42,8 +42,8 @@ import CommercialDetails from './CommercialDetails'
 import ECCDetails from './ECCDetails'
 import LinkedReleases from './LinkedReleases'
 import ReleaseDetailTabs from './ReleaseDetailTabs'
-import SPDXDocument from './SPDXDocument'
 import Summary from './Summary'
+import SPDXDocument from './spdx/SPDXDocument'
 
 type EmbeddedChangelogs = Embedded<Changelogs, 'sw360:changeLogs'>
 type EmbeddedVulnerabilities = Embedded<LinkedVulnerability, 'sw360:vulnerabilityDTOes'>
@@ -244,6 +244,14 @@ const DetailOverview = ({ releaseId }: Props) => {
                                         >
                                             {t('Changes')}
                                         </a>
+                                    </div>
+                                )}
+                                {selectedTab === ReleaseTabIds.SPDX_DOCUMENT && (
+                                    <div className='list-group-companion' data-belong-to='tab-Attachments'>
+                                        <div className='btn-group' role='group'>
+                                            <button>{t('SPDX FULL')}</button>
+                                            <button>{t('SPDX LITE')}</button>
+                                        </div>
                                     </div>
                                 )}
                             </PageButtonHeader>
