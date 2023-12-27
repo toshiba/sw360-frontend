@@ -38,7 +38,7 @@ const OtherLicensingInformationDetectedDetail = ({ spdxDocument }: Props) => {
             <tbody hidden={toggle}>
                 <tr>
                     <td>Index</td>
-                    <td className='spdx-flex-row'>
+                    <td className='spdx-flex-row' style={{ height: '50px' }}>
                         <select
                             id='otherLicensingSelect'
                             className='spdx-col-2'
@@ -52,13 +52,13 @@ const OtherLicensingInformationDetectedDetail = ({ spdxDocument }: Props) => {
                             <>
                                 <tr data-index={otherLicensingData.index}>
                                     <td>10.1 License identifier</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <div className='spdx-col-2'>{otherLicensingData.licenseId}</div>
                                     </td>
                                 </tr>
                                 <tr data-index={otherLicensingData.index}>
                                     <td>10.2 Extracted text</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <p className='spdx-col-2 ' id='extractedText-${otherLicensingData.index}'>
                                             {otherLicensingData.extractedText}
                                         </p>
@@ -66,13 +66,13 @@ const OtherLicensingInformationDetectedDetail = ({ spdxDocument }: Props) => {
                                 </tr>
                                 <tr data-index={otherLicensingData.index}>
                                     <td>10.3 License name</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <div className='spdx-col-2'>{otherLicensingData.licenseName}</div>
                                     </td>
                                 </tr>
                                 <tr className='spdx-full' data-index={otherLicensingData.index}>
                                     <td>10.4 License cross reference</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <p className='spdx-col-2 ' id='licenseCrossRefs-${otherLicensingData.index}'>
                                             {otherLicensingData?.licenseCrossRefs &&
                                                 otherLicensingData.licenseCrossRefs.map((licenseCrossRefsData) => {
@@ -83,7 +83,7 @@ const OtherLicensingInformationDetectedDetail = ({ spdxDocument }: Props) => {
                                 </tr>
                                 <tr data-index={otherLicensingData.index}>
                                     <td>10.5 License comment</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <p className='spdx-col-2 ' id='otherLicenseComment-${otherLicensingData.index}'>
                                             {otherLicensingData.licenseComment}
                                         </p>

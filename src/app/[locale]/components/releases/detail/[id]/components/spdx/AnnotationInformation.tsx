@@ -39,7 +39,7 @@ const AnnotationInformation = ({ spdxDocument, packageInformation }: Props) => {
             <tbody hidden={toggle}>
                 <tr>
                     <td>Source</td>
-                    <td className='spdx-flex-row'>
+                    <td className='spdx-flex-row' style={{ height: '50px' }}>
                         <select
                             id='annotationSourceSelect'
                             className='spdx-col-2'
@@ -52,7 +52,7 @@ const AnnotationInformation = ({ spdxDocument, packageInformation }: Props) => {
                 </tr>
                 <tr>
                     <td>Index</td>
-                    <td className='spdx-flex-row'>
+                    <td className='spdx-flex-row' style={{ height: '50px' }}>
                         <select
                             id='annotationSelect'
                             className='spdx-col-2'
@@ -66,13 +66,13 @@ const AnnotationInformation = ({ spdxDocument, packageInformation }: Props) => {
                             <>
                                 <tr className='annotation-document' data-index={annotationsData.index}>
                                     <td>12.1 Annotator</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <p className='spdx-col-2 '>{annotationsData.annotator}</p>
                                     </td>
                                 </tr>
                                 <tr className='annotation-document' data-index={annotationsData.index}>
                                     <td>12.2 Annotation date</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <p className='spdx-col-2 ' id='annotation-document-date-${loop.count}'>
                                             {annotationsData.annotationDate}
                                         </p>
@@ -80,7 +80,7 @@ const AnnotationInformation = ({ spdxDocument, packageInformation }: Props) => {
                                 </tr>
                                 <tr className='annotation-document' data-index={annotationsData.index}>
                                     <td>12.3 Annotation type</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <div className='spdx-col-2'>
                                             <div className='spdx-flex-row'>
                                                 <div className='spdx-col-3'>{annotationsData.annotationType}</div>
@@ -90,13 +90,11 @@ const AnnotationInformation = ({ spdxDocument, packageInformation }: Props) => {
                                 </tr>
                                 <tr className='annotation-document' data-index={annotationsData.index}>
                                     <td>12.4 SPDX identifier reference</td>
-                                    <td className='spdx-flex-row'>
-                                        <div className='spdx-col-2'>{annotationsData.spdxIdRef}</div>
-                                    </td>
+                                    <td>{annotationsData.spdxIdRef}</td>
                                 </tr>
                                 <tr className='annotation-document' data-index={annotationsData.index}>
                                     <td>12.5 Annotation comment</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <p
                                             className='spdx-col-2 '
                                             id='documentAnnotationComment-${annotationsData.index}'
@@ -114,13 +112,13 @@ const AnnotationInformation = ({ spdxDocument, packageInformation }: Props) => {
                             <>
                                 <tr className='annotation-package' data-index={annotationsData.index}>
                                     <td>12.1 Annotator</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <p className='spdx-col-2 '>{annotationsData.annotator}</p>
                                     </td>
                                 </tr>
                                 <tr className='annotation-package' data-index={annotationsData.index}>
                                     <td>12.2 Annotation date</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <p className='spdx-col-2 ' id='annotation-package-date-${loop.count}'>
                                             {annotationsData.annotationDate}
                                         </p>
@@ -128,7 +126,7 @@ const AnnotationInformation = ({ spdxDocument, packageInformation }: Props) => {
                                 </tr>
                                 <tr className='annotation-package' data-index={annotationsData.index}>
                                     <td>12.3 Annotation type</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <div className='spdx-col-2'>
                                             <div className='spdx-flex-row'>
                                                 <div className='spdx-col-3'>{annotationsData.annotationType}</div>
@@ -138,13 +136,13 @@ const AnnotationInformation = ({ spdxDocument, packageInformation }: Props) => {
                                 </tr>
                                 <tr className='annotation-package' data-index={annotationsData.index}>
                                     <td>12.4 SPDX identifier reference</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <div className='spdx-col-2'>{annotationsData.spdxIdRef}</div>
                                     </td>
                                 </tr>
                                 <tr className='annotation-package' data-index={annotationsData.index}>
                                     <td>12.5 Annotation comment</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <p
                                             className='spdx-col-2 '
                                             id='packageAnnotationComment-${annotationsData.index}'

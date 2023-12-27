@@ -51,15 +51,11 @@ const SnippetInformationDetail = ({ spdxDocument }: Props) => {
                             <>
                                 <tr data-index={snippetsData.index}>
                                     <td>9.1 Snippet SPDX identifier</td>
-                                    <td className='spdx-flex-row'>
-                                        <div className='spdx-col-2'>{snippetsData.SPDXID}</div>
-                                    </td>
+                                    <td>{snippetsData.SPDXID}</td>
                                 </tr>
                                 <tr data-index={snippetsData.index}>
                                     <td>9.2 Snippet from file SPDX identifier</td>
-                                    <td className='spdx-flex-row'>
-                                        <div className='spdx-col-2'>{snippetsData.snippetFromFile}</div>
-                                    </td>
+                                    <td>{snippetsData.snippetFromFile}</td>
                                 </tr>
                                 <tr data-index={snippetsData.index}>
                                     <td>9.3 & 9.4 Snippet ranges</td>
@@ -84,7 +80,7 @@ const SnippetInformationDetail = ({ spdxDocument }: Props) => {
                                                                 <td>~</td>
                                                                 <td>{snippetRangeData.endPointer}</td>
                                                             </div>
-                                                            <div className='spdx-col-3'>
+                                                            <div className='spdx-col-3 spdx-flex-row'>
                                                                 {snippetRangeData.reference}
                                                             </div>
                                                         </div>
@@ -95,9 +91,7 @@ const SnippetInformationDetail = ({ spdxDocument }: Props) => {
                                 </tr>
                                 <tr data-index={snippetsData.index}>
                                     <td>9.5 Snippet concluded license</td>
-                                    <td className='spdx-flex-row'>
-                                        <div className='spdx-col-2'>{snippetsData.licenseConcluded}</div>
-                                    </td>
+                                    <td>{snippetsData.licenseConcluded}</td>
                                 </tr>
                                 <tr data-index={snippetsData.index}>
                                     <td>9.6 License information in snippet</td>

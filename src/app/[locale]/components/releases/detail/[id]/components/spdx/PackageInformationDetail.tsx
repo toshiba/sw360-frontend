@@ -58,41 +58,35 @@ const PackageInformationDetail = ({ packageInformation }: Props) => {
                     <td>7.6 Package originator</td>
                     <td>{packageInformation?.originator}</td>
                 </tr>
-                <tr data-index={packageInformation?.index}>
+                <tr className='spdx-full' data-index={packageInformation?.index}>
                     <td>7.7 Package download location</td>
-                    <td className='spdx-flex-row'>
-                        <div className='spdx-col-2'>{packageInformation?.downloadLocation}</div>
-                    </td>
+                    <td>{packageInformation?.downloadLocation}</td>
                 </tr>
-                <tr data-index={packageInformation?.index}>
+                <tr className='spdx-full' data-index={packageInformation?.index}>
                     <td>7.8 Files analyzed</td>
                     <td>{packageInformation?.filesAnalyzed}</td>
                 </tr>
                 <tr className='spdx-full' data-index={packageInformation?.index}>
                     <td>7.9 Package verification code</td>
-                    <td className='spdx-flex-row'>
-                        <div>
-                            <div className='spdx-col-2 spdx-flex-col'>
-                                <div className='spdx-flex-row'>
-                                    <div className='spdx-col-1 spdx-key'>Value</div>
-                                    <div className='spdx-col-3'>
-                                        {packageInformation?.packageVerificationCode.value}
-                                    </div>
-                                </div>
-                                <div className='spdx-flex-row'>
-                                    <div className='spdx-col-1 spdx-key'>Excluded files</div>
-                                    <p className='spdx-col-3 ' id='excludedFiles'>
-                                        {packageInformation?.packageVerificationCode.excludedFiles &&
-                                            packageInformation?.packageVerificationCode.excludedFiles.map((item) => {
-                                                return (
-                                                    <>
-                                                        {item}
-                                                        <br></br>
-                                                    </>
-                                                )
-                                            })}
-                                    </p>
-                                </div>
+                    <td>
+                        <div className='spdx-col-2 spdx-flex-col'>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>Value</div>
+                                <div className='spdx-col-3'>{packageInformation?.packageVerificationCode.value}</div>
+                            </div>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>Excluded files</div>
+                                <p className='spdx-col-3 ' id='excludedFiles'>
+                                    {packageInformation?.packageVerificationCode.excludedFiles &&
+                                        packageInformation?.packageVerificationCode.excludedFiles.map((item) => {
+                                            return (
+                                                <>
+                                                    {item}
+                                                    <br></br>
+                                                </>
+                                            )
+                                        })}
+                                </p>
                             </div>
                         </div>
                     </td>
@@ -111,27 +105,21 @@ const PackageInformationDetail = ({ packageInformation }: Props) => {
                             })}
                     </td>
                 </tr>
-                <tr data-index={packageInformation?.index}>
+                <tr data-index={packageInformation?.index} className='spdx-full'>
                     <td>7.11 Package home page</td>
                     <td>{packageInformation?.homepage}</td>
                 </tr>
                 <tr className='spdx-full' data-index={packageInformation?.index}>
                     <td>7.12 Source information</td>
-                    <td className='spdx-flex-row'>
-                        <div className='spdx-col-2 ' id='sourceInfo'>
-                            {packageInformation?.sourceInfo}
-                        </div>
-                    </td>
+                    <td>{packageInformation?.sourceInfo}</td>
                 </tr>
-                <tr data-index={packageInformation?.index}>
+                <tr data-index={packageInformation?.index} className='spdx-full'>
                     <td>7.13 Concluded license</td>
-                    <td className='spdx-flex-row'>
-                        <div className='spdx-col-2'>{packageInformation?.licenseConcluded}</div>
-                    </td>
+                    <td>{packageInformation?.licenseConcluded}</td>
                 </tr>
                 <tr className='spdx-full' data-index={packageInformation?.index}>
                     <td>7.14 All licenses information from files</td>
-                    <td className='spdx-flex-row'>
+                    <td>
                         <p className='spdx-col-2 ' id='licenseInfoFromFile'>
                             {packageInformation?.licenseInfoFromFiles &&
                                 packageInformation?.licenseInfoFromFiles.map((item) => {
@@ -140,23 +128,21 @@ const PackageInformationDetail = ({ packageInformation }: Props) => {
                         </p>
                     </td>
                 </tr>
-                <tr data-index={packageInformation?.index}>
+                <tr data-index={packageInformation?.index} className='spdx-full'>
                     <td>7.15 Declared license</td>
-                    <td className='spdx-flex-row'>
-                        <div className='spdx-col-2'>{packageInformation?.licenseDeclared}</div>
-                    </td>
+                    <td>{packageInformation?.licenseDeclared}</td>
                 </tr>
-                <tr data-index={packageInformation?.index}>
+                <tr data-index={packageInformation?.index} className='spdx-full'>
                     <td>7.16 Comments on license</td>
-                    <td className='spdx-flex-row'>
+                    <td>
                         <p className='spdx-col-2 ' id='licenseComments'>
                             {packageInformation?.licenseComments}
                         </p>
                     </td>
                 </tr>
-                <tr data-index={packageInformation?.index}>
+                <tr data-index={packageInformation?.index} className='spdx-full'>
                     <td>7.17 Copyright text</td>
-                    <td className='spdx-flex-row'>
+                    <td>
                         <p className='spdx-col-2 ' id='copyrightText'>
                             {packageInformation?.copyrightText}
                         </p>
@@ -164,7 +150,7 @@ const PackageInformationDetail = ({ packageInformation }: Props) => {
                 </tr>
                 <tr className='spdx-full' data-index={packageInformation?.index}>
                     <td>7.18 Package summary description</td>
-                    <td className='spdx-flex-row'>
+                    <td>
                         <p className='spdx-col-2 ' id='summary'>
                             {packageInformation?.summary}
                         </p>
@@ -172,7 +158,7 @@ const PackageInformationDetail = ({ packageInformation }: Props) => {
                 </tr>
                 <tr className='spdx-full' data-index={packageInformation?.index}>
                     <td>7.19 Package detailed description</td>
-                    <td className='spdx-flex-row'>
+                    <td>
                         <p className='spdx-col-2 ' id='description'>
                             {packageInformation?.description}
                         </p>
@@ -180,7 +166,7 @@ const PackageInformationDetail = ({ packageInformation }: Props) => {
                 </tr>
                 <tr data-index={packageInformation?.index}>
                     <td>7.20 Package comment</td>
-                    <td className='spdx-flex-row'>
+                    <td>
                         <p className='spdx-col-2 ' id='packageComment'>
                             {packageInformation?.packageComment}
                         </p>
@@ -188,7 +174,7 @@ const PackageInformationDetail = ({ packageInformation }: Props) => {
                 </tr>
                 <tr className='spdx-full' data-index={packageInformation?.index}>
                     <td>7.21 External references </td>
-                    <td className='spdx-flex-row'>
+                    <td>
                         {packageInformation?.externalRefs.length !== 0 && (
                             <div className='spdx-col-2 section' data-size='4'>
                                 <div className='spdx-flex-row'>
@@ -238,7 +224,7 @@ const PackageInformationDetail = ({ packageInformation }: Props) => {
                 </tr> */}
                 <tr className='spdx-full' data-index={packageInformation?.index}>
                     <td>7.23 Package attribution text</td>
-                    <td className='spdx-flex-row'>
+                    <td>
                         <p className='spdx-col-2 ' id='attributionText'>
                             {packageInformation?.attributionText &&
                                 packageInformation?.attributionText.map((item) => {
@@ -249,7 +235,7 @@ const PackageInformationDetail = ({ packageInformation }: Props) => {
                 </tr>
                 <tr className='spdx-full' data-index={packageInformation?.index}>
                     <td>7.24 Primary Package Purpose </td>
-                    <td className='spdx-flex-row'>
+                    <td>
                         <div className='spdx-col-2 ' id='primaryPackagePurpose'>
                             {packageInformation?.primaryPackagePurpose}
                         </div>
@@ -257,7 +243,7 @@ const PackageInformationDetail = ({ packageInformation }: Props) => {
                 </tr>
                 <tr className='spdx-full' data-index={packageInformation?.index}>
                     <td>7.25 Release Date</td>
-                    <td className='spdx-flex-row'>
+                    <td>
                         <p className='spdx-col-2 ' id='release-date-${loop.count}'>
                             {packageInformation?.releaseDate}
                         </p>
@@ -265,7 +251,7 @@ const PackageInformationDetail = ({ packageInformation }: Props) => {
                 </tr>
                 <tr className='spdx-full' data-index={packageInformation?.index}>
                     <td>7.26 Built Date</td>
-                    <td className='spdx-flex-row'>
+                    <td>
                         <p className='spdx-col-2 ' id='built-date-${loop.count}'>
                             {packageInformation?.builtDate}
                         </p>
@@ -273,7 +259,7 @@ const PackageInformationDetail = ({ packageInformation }: Props) => {
                 </tr>
                 <tr className='spdx-full' data-index={packageInformation?.index}>
                     <td>7.27 Valid Until Date</td>
-                    <td className='spdx-flex-row'>
+                    <td>
                         <p className='spdx-col-2 ' id='validUntil-date-${loop.count}'>
                             {packageInformation?.validUntilDate}
                         </p>

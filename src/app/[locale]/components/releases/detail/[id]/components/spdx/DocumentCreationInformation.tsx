@@ -119,7 +119,7 @@ const DocumentCreationInformationDetail = ({ documentCreationInformation }: Prop
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <tr className='spdx-full'>
                     <td>6.9 Created</td>
                     <td>{documentCreationInformation?.created}</td>
                 </tr>

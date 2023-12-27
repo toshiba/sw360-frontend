@@ -40,7 +40,7 @@ const RelationshipbetweenSPDXElementsInformation = ({ spdxDocument, packageInfor
             <tbody hidden={toggle}>
                 <tr>
                     <td>Source</td>
-                    <td className='spdx-flex-row'>
+                    <td className='spdx-flex-row' style={{ height: '50.5px' }}>
                         <select
                             id='relationshipSourceSelect'
                             className='spdx-col-2'
@@ -53,7 +53,7 @@ const RelationshipbetweenSPDXElementsInformation = ({ spdxDocument, packageInfor
                 </tr>
                 <tr>
                     <td>Index</td>
-                    <td className='spdx-flex-row'>
+                    <td className='spdx-flex-row' style={{ height: '50.5px' }}>
                         <select
                             id='relationshipSelect'
                             className='spdx-col-2'
@@ -67,7 +67,7 @@ const RelationshipbetweenSPDXElementsInformation = ({ spdxDocument, packageInfor
                             <>
                                 <tr className='relationship-document' data-index={relationshipsData.index}>
                                     <td>11.1 Relationship</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <div className='spdx-col-2 spdx-flex-col'>
                                             <div className='spdx-flex-row'>
                                                 <div>{relationshipsData.spdxElementId}</div>
@@ -84,7 +84,7 @@ const RelationshipbetweenSPDXElementsInformation = ({ spdxDocument, packageInfor
                                 </tr>
                                 <tr className='relationship-document' data-index={relationshipsData.index}>
                                     <td>11.2 Relationship comment</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <p className='spdx-col-2 ' id='relationshipComment-${relationshipsData.index}'>
                                             {relationshipsData.relationshipComment}
                                         </p>
@@ -99,9 +99,9 @@ const RelationshipbetweenSPDXElementsInformation = ({ spdxDocument, packageInfor
                             <>
                                 <tr className='relationship-package' data-index={relationshipsData.index}>
                                     <td>11.1 Relationship</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <div className='spdx-col-2 spdx-flex-col'>
-                                            <div className='spdx-flex-row'>
+                                            <div>
                                                 <div>{relationshipsData.spdxElementId}</div>
                                                 <div className='spdx-col-1 spdx-flex-row'>
                                                     {relationshipsData.relationshipType.replace(
@@ -116,7 +116,7 @@ const RelationshipbetweenSPDXElementsInformation = ({ spdxDocument, packageInfor
                                 </tr>
                                 <tr className='relationship-package' data-index={relationshipsData.index}>
                                     <td>11.2 Relationship comment</td>
-                                    <td className='spdx-flex-row'>
+                                    <td>
                                         <p className='spdx-col-2 ' id='relationshipComment-${relationshipsData.index}'>
                                             {relationshipsData.relationshipComment}
                                         </p>
