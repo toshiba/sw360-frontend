@@ -246,14 +246,6 @@ const DetailOverview = ({ releaseId }: Props) => {
                                         </a>
                                     </div>
                                 )}
-                                {selectedTab === ReleaseTabIds.SPDX_DOCUMENT && (
-                                    <div className='list-group-companion' data-belong-to='tab-Attachments'>
-                                        <div className='btn-group' role='group'>
-                                            <button>{t('SPDX FULL')}</button>
-                                            <button>{t('SPDX LITE')}</button>
-                                        </div>
-                                    </div>
-                                )}
                             </PageButtonHeader>
                         </div>
                         <div className='row' hidden={selectedTab !== CommonTabIds.SUMMARY ? true : false}>

@@ -16,13 +16,21 @@ import styles from '../../detail.module.css'
 
 interface Props {
     documentCreationInformation?: DocumentCreationInformation
+    externalDocumentRef?: ExternalDocumentReferences
+    setExternalDocumentRef?: React.Dispatch<React.SetStateAction<ExternalDocumentReferences>>
 }
 
-const DocumentCreationInformationDetail = ({ documentCreationInformation }: Props) => {
+const DocumentCreationInformationDetail = ({
+    documentCreationInformation,
+    externalDocumentRef,
+    setExternalDocumentRef,
+}: Props) => {
     const [toggle, setToggle] = useState(false)
-    // const displayIndex = () => {
-    //     console.log("index");
-    // }
+
+    const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const index: string = e.target.value
+        setExternalDocumentRef(documentCreationInformation.externalDocumentRefs[+index])
+    }
 
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
@@ -57,44 +65,43 @@ const DocumentCreationInformationDetail = ({ documentCreationInformation }: Prop
                     <td>6.5 SPDX document namespace</td>
                     <td>{documentCreationInformation?.documentNamespace}</td>
                 </tr>
-                <tr className='spdx-full'>
-                    <td>6.6 External document references</td>
-                    <td className='spdx-flex-row'>
-                        <div className='spdx-col-2 section' data-size='3'>
-                            <div className='spdx-flex-row'>
-                                <div className='spdx-col-1 spdx-label-index'>Index</div>
-                                <select
-                                    className='spdx-col-3'
-                                    id='externalDocumentRefs'
-                                    // onChange={displayIndex()}
-                                ></select>
+                {externalDocumentRef && (
+                    <tr className='spdx-full'>
+                        <td>6.6 External document references</td>
+                        <td className='spdx-flex-row'>
+                            <div className='spdx-col-2 section' data-size='3'>
+                                <div className='spdx-flex-row'>
+                                    <div className='spdx-col-1 spdx-label-index'>Index</div>
+                                    <select className='spdx-col-3' id='externalDocumentRefs' onChange={displayIndex}>
+                                        {documentCreationInformation?.externalDocumentRefs
+                                            .toSorted((e1, e2) => e1.index - e2.index)
+                                            .map((item) => (
+                                                <option key={item.index} value={item.index}>
+                                                    {item.index + 1}
+                                                </option>
+                                            ))}
+                                    </select>
+                                </div>
+                                <div className='spdx-flex-row'>
+                                    <div className='spdx-col-1 spdx-key'>External document ID</div>
+                                    <div className='spdx-col-3'>{externalDocumentRef.externalDocumentId}</div>
+                                </div>
+                                <div className='spdx-flex-row'>
+                                    <div className='spdx-col-1 spdx-key'>External document</div>
+                                    <div className='spdx-col-3'>{externalDocumentRef.spdxDocument}</div>
+                                </div>
+                                <div className='spdx-flex-row'>
+                                    <div className='spdx-col-2 spdx-key'>Checksum</div>
+                                    <div className='spdx-col-3'>
+                                        {externalDocumentRef.checksum.algorithm}:
+                                        {externalDocumentRef.checksum.checksumValue}
+                                    </div>
+                                </div>
                             </div>
-                            {documentCreationInformation?.externalDocumentRefs &&
-                                documentCreationInformation?.externalDocumentRefs.map(
-                                    (item: ExternalDocumentReferences) => {
-                                        return (
-                                            <>
-                                                <div className='spdx-flex-row' data-index={item.index}>
-                                                    <div className='spdx-col-1 spdx-key'>External document ID</div>
-                                                    <div className='spdx-col-3'>{item.externalDocumentId}</div>
-                                                </div>
-                                                <div className='spdx-flex-row' data-index={item.index}>
-                                                    <div className='spdx-col-1 spdx-key'>External document</div>
-                                                    <div className='spdx-col-3'>{item.spdxDocument}</div>
-                                                </div>
-                                                <div className='spdx-flex-row' data-index={item.index}>
-                                                    <div className='spdx-col-2 spdx-key'>Checksum</div>
-                                                    <div className='spdx-col-3'>
-                                                        {item.checksum.algorithm}:{item.checksum.checksumValue}
-                                                    </div>
-                                                </div>
-                                            </>
-                                        )
-                                    }
-                                )}
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                )}
+
                 <tr className='spdx-full'>
                     <td>6.7 License list version</td>
                     <td>{documentCreationInformation?.licenseListVersion}</td>

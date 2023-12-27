@@ -13,14 +13,18 @@
 import CommonUtils from '@/utils/common.utils'
 import { ApiUtils } from '@/utils/index'
 import { signOut, useSession } from 'next-auth/react'
+import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
 import ReleaseDetail from '../../../../../../../../object-types/ReleaseDetail'
 import HttpStatus from '../../../../../../../../object-types/enums/HttpStatus'
 import DocumentCreationInformation from '../../../../../../../../object-types/spdx/DocumentCreationInformation'
+import ExternalDocumentReferences from '../../../../../../../../object-types/spdx/ExternalDocumentReferences'
+import ExternalReference from '../../../../../../../../object-types/spdx/ExternalReference'
 import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
 import SPDXDocument from '../../../../../../../../object-types/spdx/SPDXDocument'
 import SnippetInformationDetail from './ SnippetInformation'
 import AnnotationInformation from './AnnotationInformation'
+import styles from './CssButton.module.css'
 import DocumentCreationInformationDetail from './DocumentCreationInformation'
 import OtherLicensingInformationDetectedDetail from './OtherLicensingInformationDetectedDetail'
 import PackageInformationDetail from './PackageInformationDetail'
@@ -31,6 +35,7 @@ interface Props {
 }
 
 const SPDXDocument = ({ releaseId }: Props) => {
+    const t = useTranslations('default')
     const [spdxDocument, setSPDXDocument] = useState<SPDXDocument>()
     const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
     const [packageInformation, setPackageInformation] = useState<PackageInformation>()
@@ -38,6 +43,8 @@ const SPDXDocument = ({ releaseId }: Props) => {
     // const [otherLicensingInformationDetecteds, setOtherLicensingInformationDetected] = useState<OtherLicensingInformationDetected>()
     // const [relationshipsBetweenSPDXElements, setRelationshipsBetweenSPDXElements] = useState<RelationshipsBetweenSPDXElements>()
     // const [annotations, setAnnotations] = useState<Annotations>()
+    const [externalDocumentRef, setExternalDocumentRef] = useState<ExternalDocumentReferences>()
+    const [externalRefsData, setExternalRefsData] = useState<ExternalReference>()
 
     const { data: session } = useSession()
 
@@ -73,6 +80,15 @@ const SPDXDocument = ({ releaseId }: Props) => {
                     !CommonUtils.isNullOrUndefined(release._embedded['sw360:documentCreationInformation'])
                 ) {
                     setDocumentCreationInformation(release._embedded['sw360:documentCreationInformation'])
+                    if (
+                        !CommonUtils.isNullEmptyOrUndefinedArray(
+                            release._embedded['sw360:documentCreationInformation'].externalDocumentRefs
+                        )
+                    ) {
+                        setExternalDocumentRef(
+                            release._embedded['sw360:documentCreationInformation'].externalDocumentRefs[0]
+                        )
+                    }
                 }
 
                 // PackageInformation
@@ -81,23 +97,49 @@ const SPDXDocument = ({ releaseId }: Props) => {
                     !CommonUtils.isNullOrUndefined(release._embedded['sw360:packageInformation'])
                 ) {
                     setPackageInformation(release._embedded['sw360:packageInformation'])
+                    if (
+                        !CommonUtils.isNullEmptyOrUndefinedArray(
+                            release._embedded['sw360:packageInformation'].externalRefs
+                        )
+                    ) {
+                        setExternalRefsData(release._embedded['sw360:packageInformation'].externalRefs[0])
+                    }
                 }
             })
             .catch((err) => console.error(err))
     }, [fetchData, releaseId])
 
     return (
-        <div className='col'>
-            <DocumentCreationInformationDetail documentCreationInformation={documentCreationInformation} />
-            <PackageInformationDetail packageInformation={packageInformation} />
-            <SnippetInformationDetail spdxDocument={spdxDocument} />
-            <OtherLicensingInformationDetectedDetail spdxDocument={spdxDocument} />
-            <RelationshipbetweenSPDXElementsInformation
-                spdxDocument={spdxDocument}
-                packageInformation={packageInformation}
-            />
-            <AnnotationInformation spdxDocument={spdxDocument} packageInformation={packageInformation} />
-        </div>
+        <>
+            <div className='list-group-companion' data-belong-to='tab-Attachments'>
+                <div className='btn-group'>
+                    <button className={`${styles['btn-info']}`}>{t('SPDX FULL')}</button>
+                    <button className='btn btn-secondary'>{t('SPDX LITE')}</button>
+                </div>
+            </div>
+            <br></br>
+            <br></br>
+            <br></br>
+            <div className='col'>
+                <DocumentCreationInformationDetail
+                    documentCreationInformation={documentCreationInformation}
+                    externalDocumentRef={externalDocumentRef}
+                    setExternalDocumentRef={setExternalDocumentRef}
+                />
+                <PackageInformationDetail
+                    packageInformation={packageInformation}
+                    externalRefsData={externalRefsData}
+                    setExternalRefsData={setExternalRefsData}
+                />
+                <SnippetInformationDetail spdxDocument={spdxDocument} />
+                <OtherLicensingInformationDetectedDetail spdxDocument={spdxDocument} />
+                <RelationshipbetweenSPDXElementsInformation
+                    spdxDocument={spdxDocument}
+                    packageInformation={packageInformation}
+                />
+                <AnnotationInformation spdxDocument={spdxDocument} packageInformation={packageInformation} />
+            </div>
+        </>
     )
 }
 
