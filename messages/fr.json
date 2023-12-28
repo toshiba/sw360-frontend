@@ -1,5 +1,23 @@
 {
     "default": {
+        "10": {
+            " Other Licensing Information Detected": ""
+        },
+        "11": {
+            " Relationship between SPDX Elements Information": ""
+        },
+        "12": {
+            " Annotation Information": ""
+        },
+        "6": {
+            " Document Creation Information": ""
+        },
+        "7": {
+            " Package Information": ""
+        },
+        "9": {
+            " Snippet Information": ""
+        },
         "A vendor with same name already exists": "Un vendeur ayant le même nom existe déjà",
         "ACCEPTED": "Acceptée",
         "ADJACENT_NETWORK": "RÉSEAU AJACENT",
@@ -179,9 +197,9 @@
         "Cvss Score": "Cvss Score",
         "Cwe": "Porc",
         "CycloneDX": "CycloneDX",
-        "DELETE_ALL_LICENCES_ERROR": "",
-        "DELETE_ALL_LICENCES_SUCCESS": "",
-        "DELETE_ALL_LICENSE": "",
+        "DELETE_ALL_LICENCES_ERROR": "Quelque chose s'est mal passé. Essaie encore.",
+        "DELETE_ALL_LICENCES_SUCCESS": "Toutes les informations de licence supprimées avec succès.",
+        "DELETE_ALL_LICENSE": "Voulez-vous vraiment supprimer toutes les licences, types de licences, obligations, obligations, risques, catégories de risques et obligation de propriétés personnalisées de la base de données?",
         "DENIED": "Refusé",
         "DOWNLOAD": "Télécharger",
         "DYNAMICALLY_LINKED": "Liens dynamiques",
@@ -192,8 +210,8 @@
         "Decision report": "Rapport sur les décisions",
         "Default vendor": "Fournisseur par défaut",
         "Delete": "Supprimer",
-        "Delete All License Information": "",
-        "Delete All Licenses": "",
+        "Delete All License Information": "Supprimer toutes les informations de licence",
+        "Delete All Licenses": "Supprimer toutes les licences?",
         "Delete Attachment": "Supprimer la pièce jointe",
         "Delete Component": "Supprimer le composant",
         "Delete Release": "Supprimer la publication",
@@ -491,7 +509,7 @@
         "Platform": "Plateforme",
         "Platforms": "Plateformes",
         "Please comment your changes": "Veuillez commenter vos modifications",
-        "Please select a file": "",
+        "Please select a file": "Veuillez sélectionner un fichier!",
         "Preferences": "Préférences",
         "Priority": "Priorité",
         "Priority Text": "Texte prioritaire",
@@ -573,6 +591,10 @@
         "SINGLE": "UNIQUE",
         "SPDX": "SPDX",
         "SPDX Attachments": "SPDX Pièces jointes",
+        "SPDX Document": "Document SPDX",
+        "SPDX FULL": "SPDX COMPLET",
+        "SPDX LITE": "",
+        "SPDXDocument": "",
         "SPECIFIC": "Spécifique",
         "STANDALONE": "Standalone",
         "STATICALLY_LINKED": "Liens statiques",
@@ -664,7 +686,7 @@
         "The verification of vulnerabilities will be changed to": "La vérification <strong>{numéro}</strong> les vulnérabilités seront changées en",
         "There are some errors while creating project": "Il y a quelques erreurs lors de la création du projet",
         "This currently only supports SPDX RDF/XML files with a uniq described top level node": "Ceci ne prend actuellement en charge que les fichiers SPDX RDF/XML avec un nœud uniq décrit haut niveau",
-        "This function is meant to be followed by a new license import": "",
+        "This function is meant to be followed by a new license import": "Cette fonction doit être suivie d'une nouvelle importation de licence.",
         "This release contains": "Cette version <strong>{nom}</strong> contient: ",
         "Title": "Titre",
         "To": "Aux",
@@ -757,19 +779,11 @@
         "learn_more_components": "En savoir plus sur les types de composants.",
         "number of the vulnerabilities were matched by": "<strong>{compte}</strong> des vulnérabilités ont été jumelées par <strong>{comparé par}</strong>",
         "number_of_attachments_not_match_condition": "Il doit y avoir exactement une pièce jointe source, mais il y a {count} à cette publication. Revenez une fois que vous l'avez corrigé.",
-        "other documents might use the licenses": "",
+        "other documents might use the licenses": "Remarque : d'autres documents pourraient utiliser les licences.",
         "owner_account_unit": "Inscrivez l'unité comptable du propriétaire",
         "project_cannot_be_created": "Le projet ne peut pas être créé/mise à jour",
         "to edit the project relation": "pour modifier la relation du projet",
         "vector": "vecteur",
-        "wrong_spdx_information": "Si le SPDX incorrect est entré, les informations ne seront pas enregistrées correctement",
-        "DELETE_ALL_LICENCES_ERROR": "Quelque chose s'est mal passé. Essaie encore.",
-        "DELETE_ALL_LICENCES_SUCCESS": "Toutes les informations de licence supprimées avec succès.",
-        "DELETE_ALL_LICENSE": "Voulez-vous vraiment supprimer toutes les licences, types de licences, obligations, obligations, risques, catégories de risques et obligation de propriétés personnalisées de la base de données?",
-        "Delete All License Information": "Supprimer toutes les informations de licence",
-        "Delete All Licenses": "Supprimer toutes les licences?",
-        "Please select a file": "Veuillez sélectionner un fichier!",
-        "This function is meant to be followed by a new license import": "Cette fonction doit être suivie d'une nouvelle importation de licence.",
-        "other documents might use the licenses": "Remarque : d'autres documents pourraient utiliser les licences."
+        "wrong_spdx_information": "Si le SPDX incorrect est entré, les informations ne seront pas enregistrées correctement"
     }
 }

@@ -1,5 +1,23 @@
 {
     "default": {
+        "10": {
+            " Other Licensing Information Detected": ""
+        },
+        "11": {
+            " Relationship between SPDX Elements Information": ""
+        },
+        "12": {
+            " Annotation Information": ""
+        },
+        "6": {
+            " Document Creation Information": ""
+        },
+        "7": {
+            " Package Information": ""
+        },
+        "9": {
+            " Snippet Information": ""
+        },
         "A vendor with same name already exists": "같은 이름을 가진 납품업자는 이미 존재합니다",
         "ACCEPTED": "이름 *",
         "ADJACENT_NETWORK": "팝업레이어 알림",
@@ -179,9 +197,9 @@
         "Cvss Score": "Cvs 점수",
         "Cwe": "사이트맵",
         "CycloneDX": "사이클론DX",
-        "DELETE_ALL_LICENCES_ERROR": "",
-        "DELETE_ALL_LICENCES_SUCCESS": "",
-        "DELETE_ALL_LICENSE": "",
+        "DELETE_ALL_LICENCES_ERROR": "뭔가 잘못되었습니다. 다시 시도하십시오.",
+        "DELETE_ALL_LICENCES_SUCCESS": "모든 라이센스 정보는 성공적으로 삭제됩니다.",
+        "DELETE_ALL_LICENSE": "모든 라이센스, 라이센스 유형, 의무, 의무, 위험, 위험 범주 및 데이터베이스에서 사용자 정의 속성을 삭제하고 싶습니까?",
         "DENIED": "한국어",
         "DOWNLOAD": "다운로드",
         "DYNAMICALLY_LINKED": "Dynamically 연결",
@@ -192,8 +210,8 @@
         "Decision report": "Decision 보고서",
         "Default vendor": "기본 납품업자",
         "Delete": "이름 *",
-        "Delete All License Information": "",
-        "Delete All Licenses": "",
+        "Delete All License Information": "모든 라이센스 정보 삭제",
+        "Delete All Licenses": "모든 라이센스 삭제?",
         "Delete Attachment": "첨부파일",
         "Delete Component": "제거 구성",
         "Delete Release": "파일 삭제",
@@ -491,7 +509,7 @@
         "Platform": "회사연혁",
         "Platforms": "플랫폼",
         "Please comment your changes": "자주 묻는 질문",
-        "Please select a file": "",
+        "Please select a file": "파일을 선택하십시오!",
         "Preferences": "옵션 정보",
         "Priority": "회사연혁",
         "Priority Text": "본문 바로가기",
@@ -573,6 +591,10 @@
         "SINGLE": "이름 *",
         "SPDX": "사이트맵",
         "SPDX Attachments": "사이트맵 첨부파일",
+        "SPDX Document": "SPDX 문서",
+        "SPDX FULL": "SPDX 전체",
+        "SPDX LITE": "",
+        "SPDXDocument": "",
         "SPECIFIC": "제품정보",
         "STANDALONE": "회사 소개",
         "STATICALLY_LINKED": "정적 링크",
@@ -664,7 +686,7 @@
         "The verification of vulnerabilities will be changed to": "인증현황 <strong>이름 *</strong> 취약점이 변경됩니다.",
         "There are some errors while creating project": "프로젝트를 만드는 동안 몇 가지 오류가 있습니다.",
         "This currently only supports SPDX RDF/XML files with a uniq described top level node": "현재 SPDX RDF/XML 파일을 uniq 기술 최고 수준의 노드로 지원합니다.",
-        "This function is meant to be followed by a new license import": "",
+        "This function is meant to be followed by a new license import": "이 기능은 새로운 라이센스 수입에 의해 따를 수 없습니다.",
         "This release contains": "이 릴리스 <strong>이름 *</strong> 포함 : ",
         "Title": "이름 *",
         "To": "으로",
@@ -757,19 +779,11 @@
         "learn_more_components": "구성요소 유형에 대해 자세히 알아보세요.",
         "number of the vulnerabilities were matched by": "<strong>이름 *</strong> 취약점의 일치 <strong>이름 *</strong>",
         "number_of_attachments_not_match_condition": "정확히 하나의 소스 첨부 파일이 있지만,이 릴리스에서 {count}이 있습니다. 한 번에 다시 오십시오.",
-        "other documents might use the licenses": "",
+        "other documents might use the licenses": "참고 : 다른 문서는 라이센스를 사용할 수 있습니다.",
         "owner_account_unit": "소유자의 회계 단위를 입력하십시오",
         "project_cannot_be_created": "프로젝트는 만들 수 없습니다/업데이트",
         "to edit the project relation": "프로젝트 관계 편집",
         "vector": "벡터 벡터",
-        "wrong_spdx_information": "잘못된 SPDX가 입력되면 정보가 올바르게 등록되지 않습니다.",
-        "DELETE_ALL_LICENCES_ERROR": "뭔가 잘못되었습니다. 다시 시도하십시오.",
-        "DELETE_ALL_LICENCES_SUCCESS": "모든 라이센스 정보는 성공적으로 삭제됩니다.",
-        "DELETE_ALL_LICENSE": "모든 라이센스, 라이센스 유형, 의무, 의무, 위험, 위험 범주 및 데이터베이스에서 사용자 정의 속성을 삭제하고 싶습니까?",
-        "Delete All License Information": "모든 라이센스 정보 삭제",
-        "Delete All Licenses": "모든 라이센스 삭제?",
-        "Please select a file": "파일을 선택하십시오!",
-        "This function is meant to be followed by a new license import": "이 기능은 새로운 라이센스 수입에 의해 따를 수 없습니다.",
-        "other documents might use the licenses": "참고 : 다른 문서는 라이센스를 사용할 수 있습니다."
+        "wrong_spdx_information": "잘못된 SPDX가 입력되면 정보가 올바르게 등록되지 않습니다."
     }
 }

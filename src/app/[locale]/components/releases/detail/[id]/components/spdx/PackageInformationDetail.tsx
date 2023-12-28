@@ -16,8 +16,8 @@ import styles from '../../detail.module.css'
 
 interface Props {
     packageInformation?: PackageInformation
-    externalRefsData: ExternalReference
-    setExternalRefsData: React.Dispatch<React.SetStateAction<ExternalReference>>
+    externalRefsData?: ExternalReference
+    setExternalRefsData?: React.Dispatch<React.SetStateAction<ExternalReference>>
 }
 
 const PackageInformationDetail = ({ packageInformation, externalRefsData, setExternalRefsData }: Props) => {
@@ -201,19 +201,19 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                                                 ))}
                                         </select>
                                     </div>
-                                    <div className='spdx-flex-row' data-index='${externalRefsData.index}'>
+                                    <div className='spdx-flex-row' data-index={externalRefsData.index}>
                                         <div className='spdx-col-1 spdx-key'>Category</div>
                                         <div className='spdx-col-3 spdx-uppercase'>
                                             {externalRefsData.referenceCategory}
                                         </div>
                                     </div>
-                                    <div className='spdx-flex-row' data-index='${externalRefsData.index}'>
+                                    <div className='spdx-flex-row' data-index={externalRefsData.index}>
                                         <div className='spdx-col-1 spdx-key'>Type</div>
                                         <div className='spdx-col-3'>{externalRefsData.referenceType}</div>
                                     </div>
-                                    <div className='spdx-flex-row' data-index='${externalRefsData.index}'>
+                                    <div className='spdx-flex-row' data-index={externalRefsData.index}>
                                         <div className='spdx-col-1 spdx-key'>Locator</div>
-                                        <div className='spdx-col-3'>${externalRefsData.referenceLocator}</div>
+                                        <div className='spdx-col-3'>{externalRefsData.referenceLocator}</div>
                                     </div>
                                     <div className='spdx-flex-row' data-index={externalRefsData.index}>
                                         <div className='spdx-col-1 spdx-key'>7.22 Comment</div>

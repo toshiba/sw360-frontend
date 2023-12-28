@@ -1,5 +1,23 @@
 {
     "default": {
+        "10": {
+            " Other Licensing Information Detected": ""
+        },
+        "11": {
+            " Relationship between SPDX Elements Information": ""
+        },
+        "12": {
+            " Annotation Information": ""
+        },
+        "6": {
+            " Document Creation Information": ""
+        },
+        "7": {
+            " Package Information": ""
+        },
+        "9": {
+            " Snippet Information": ""
+        },
         "A vendor with same name already exists": "A vendor with same name already exists",
         "ACCEPTED": "受け入れられました",
         "ADJACENT_NETWORK": "ADJACENT_NETWORK",
@@ -573,6 +591,10 @@
         "SINGLE": "SINGLE",
         "SPDX": "SPDX",
         "SPDX Attachments": "SPDXアタッチメント",
+        "SPDX Document": "SPDXドキュメント",
+        "SPDX FULL": "SPDXフル",
+        "SPDX LITE": "",
+        "SPDXDocument": "",
         "SPECIFIC": "特定の",
         "STANDALONE": "単体",
         "STATICALLY_LINKED": "静的にリンクされている",

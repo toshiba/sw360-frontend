@@ -12,15 +12,23 @@
 import { useState } from 'react'
 // import SnippetInformation from '../../../../../../../../object-types/spdx/SnippetInformation'
 import SPDXDocument from '../../../../../../../../object-types/spdx/SPDXDocument'
+import SnippetInformation from '../../../../../../../../object-types/spdx/SnippetInformation'
 import styles from '../../detail.module.css'
 
 interface Props {
     // snippetInformations?: Array<SnippetInformation>
     spdxDocument?: SPDXDocument
+    snippetInformation?: SnippetInformation
+    setSnippetInformation?: React.Dispatch<React.SetStateAction<SnippetInformation>>
 }
 
-const SnippetInformationDetail = ({ spdxDocument }: Props) => {
+const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippetInformation }: Props) => {
     const [toggle, setToggle] = useState(false)
+
+    const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const index: string = e.target.value
+        setSnippetInformation(spdxDocument.snippets[+index])
+    }
 
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
@@ -36,115 +44,116 @@ const SnippetInformationDetail = ({ spdxDocument }: Props) => {
             </thead>
             <tbody hidden={toggle}>
                 <tr>
-                    <td>Index</td>
+                    <td className='spdx-label-index'>Index</td>
                     <td className='spdx-flex-row'>
-                        <select
-                            id='snippetInfoSelect'
-                            className='spdx-col-2'
-                            // onchange='displayIndex(this)'
-                        ></select>
+                        <select id='snippetInfoSelect' className='spdx-col-2' onChange={displayIndex}>
+                            {spdxDocument?.snippets
+                                .toSorted((e1, e2) => e1.index - e2.index)
+                                .map((item) => (
+                                    <option key={item.index} value={item.index}>
+                                        {item.index + 1}
+                                    </option>
+                                ))}
+                        </select>
                     </td>
                 </tr>
-                {spdxDocument?.snippets.length !== 0 &&
-                    spdxDocument?.snippets.map((snippetsData) => {
-                        return (
-                            <>
-                                <tr data-index={snippetsData.index}>
-                                    <td>9.1 Snippet SPDX identifier</td>
-                                    <td>{snippetsData.SPDXID}</td>
-                                </tr>
-                                <tr data-index={snippetsData.index}>
-                                    <td>9.2 Snippet from file SPDX identifier</td>
-                                    <td>{snippetsData.snippetFromFile}</td>
-                                </tr>
-                                <tr data-index={snippetsData.index}>
-                                    <td>9.3 & 9.4 Snippet ranges</td>
-                                    <td className='spdx-flex-row'>
-                                        <div
-                                            className='spdx-col-2 spdx-flex-col'
-                                            id='snippetRanges-${snippetsData.index}'
-                                        >
-                                            {snippetsData?.snippetRanges &&
-                                                snippetsData?.snippetRanges.map((snippetRangeData) => {
-                                                    return (
-                                                        <div
-                                                            key={snippetsData.index}
-                                                            className='spdx-flex-row snippetRange-${snippetsData.index}'
-                                                            data-index={snippetRangeData.index}
-                                                        >
-                                                            <div className='spdx-col-1 spdx-key'>
-                                                                {snippetRangeData.rangeType}
-                                                            </div>
-                                                            <div className='spdx-col-1 spdx-flex-row'>
-                                                                <td>{snippetRangeData.startPointer}</td>
-                                                                <td>~</td>
-                                                                <td>{snippetRangeData.endPointer}</td>
-                                                            </div>
-                                                            <div className='spdx-col-3 spdx-flex-row'>
-                                                                {snippetRangeData.reference}
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                })}
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr data-index={snippetsData.index}>
-                                    <td>9.5 Snippet concluded license</td>
-                                    <td>{snippetsData.licenseConcluded}</td>
-                                </tr>
-                                <tr data-index={snippetsData.index}>
-                                    <td>9.6 License information in snippet</td>
-                                    <td className='spdx-flex-row'>
-                                        <p className='spdx-col-2 '>
-                                            {snippetsData?.licenseInfoInSnippets &&
-                                                snippetsData?.licenseInfoInSnippets.map((licenseInfoInSnippetData) => {
-                                                    return <>{licenseInfoInSnippetData}</>
-                                                })}
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr data-index={snippetsData.index}>
-                                    <td>9.7 Snippet comments on license</td>
-                                    <td className='spdx-flex-row'>
-                                        <p className='spdx-col-2 ' id='snippetLicenseComments-${snippetsData.index}'>
-                                            {snippetsData.licenseComments}
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr data-index={snippetsData.index}>
-                                    <td>9.8 Snippet copyright text</td>
-                                    <td className='spdx-flex-row'>
-                                        <p className='spdx-col-2 ' id='snippetCopyrightText-${snippetsData.index}'>
-                                            {snippetsData.copyrightText}
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr data-index={snippetsData.index}>
-                                    <td>9.9 Snippet comment</td>
-                                    <td className='spdx-flex-row'>
-                                        <p className='spdx-col-2 ' id='snippetComment-${snippetsData.index}'>
-                                            {snippetsData.comment}
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr data-index={snippetsData.index}>
-                                    <td>9.10 Snippet name</td>
-                                    <td className='spdx-flex-row'>
-                                        <p className='spdx-col-2 '>{snippetsData?.name}</p>
-                                    </td>
-                                </tr>
-                                <tr data-index={snippetsData.index}>
-                                    <td>9.11 Snippet attribution text</td>
-                                    <td>
-                                        <p className='spdx-col-2 ' id='snippetAttributionText-${snippetsData.index}'>
-                                            {snippetsData?.snippetAttributionText}
-                                        </p>
-                                    </td>
-                                </tr>
-                            </>
-                        )
-                    })}
+                {snippetInformation && (
+                    <>
+                        <tr data-index={snippetInformation.index}>
+                            <td>9.1 Snippet SPDX identifier</td>
+                            <td>{snippetInformation.SPDXID}</td>
+                        </tr>
+                        <tr data-index={snippetInformation.index}>
+                            <td>9.2 Snippet from file SPDX identifier</td>
+                            <td>{snippetInformation.snippetFromFile}</td>
+                        </tr>
+                        <tr data-index={snippetInformation.index}>
+                            <td>9.3 & 9.4 Snippet ranges</td>
+                            <td className='spdx-flex-row'>
+                                <div
+                                    className='spdx-col-2 spdx-flex-col'
+                                    id='snippetRanges-${snippetInformation.index}'
+                                >
+                                    {snippetInformation?.snippetRanges &&
+                                        snippetInformation?.snippetRanges.map((snippetRangeData) => {
+                                            return (
+                                                <div
+                                                    key={snippetInformation.index}
+                                                    className='spdx-flex-row snippetRange-${snippetInformation.index}'
+                                                    data-index={snippetRangeData.index}
+                                                >
+                                                    <div className='spdx-col-1 spdx-key'>
+                                                        {snippetRangeData.rangeType}
+                                                    </div>
+                                                    <div className='spdx-col-1 spdx-flex-row'>
+                                                        <td>{snippetRangeData.startPointer}</td>
+                                                        <td>~</td>
+                                                        <td>{snippetRangeData.endPointer}</td>
+                                                    </div>
+                                                    <div className='spdx-col-3 spdx-flex-row'>
+                                                        {snippetRangeData.reference}
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-index={snippetInformation.index}>
+                            <td>9.5 Snippet concluded license</td>
+                            <td>{snippetInformation.licenseConcluded}</td>
+                        </tr>
+                        <tr data-index={snippetInformation.index}>
+                            <td>9.6 License information in snippet</td>
+                            <td className='spdx-flex-row'>
+                                <p className='spdx-col-2 '>
+                                    {snippetInformation?.licenseInfoInSnippets &&
+                                        snippetInformation?.licenseInfoInSnippets.map((licenseInfoInSnippetData) => {
+                                            return <>{licenseInfoInSnippetData}</>
+                                        })}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr data-index={snippetInformation.index}>
+                            <td>9.7 Snippet comments on license</td>
+                            <td className='spdx-flex-row'>
+                                <p className='spdx-col-2 ' id='snippetLicenseComments-${snippetInformation.index}'>
+                                    {snippetInformation.licenseComments}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr data-index={snippetInformation.index}>
+                            <td>9.8 Snippet copyright text</td>
+                            <td className='spdx-flex-row'>
+                                <p className='spdx-col-2 ' id='snippetCopyrightText-${snippetInformation.index}'>
+                                    {snippetInformation.copyrightText}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr data-index={snippetInformation.index}>
+                            <td>9.9 Snippet comment</td>
+                            <td className='spdx-flex-row'>
+                                <p className='spdx-col-2 ' id='snippetComment-${snippetInformation.index}'>
+                                    {snippetInformation.comment}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr data-index={snippetInformation.index}>
+                            <td>9.10 Snippet name</td>
+                            <td className='spdx-flex-row'>
+                                <p className='spdx-col-2 '>{snippetInformation?.name}</p>
+                            </td>
+                        </tr>
+                        <tr data-index={snippetInformation.index}>
+                            <td>9.11 Snippet attribution text</td>
+                            <td>
+                                <p className='spdx-col-2 ' id='snippetAttributionText-${snippetInformation.index}'>
+                                    {snippetInformation?.snippetAttributionText}
+                                </p>
+                            </td>
+                        </tr>
+                    </>
+                )}
             </tbody>
         </table>
     )

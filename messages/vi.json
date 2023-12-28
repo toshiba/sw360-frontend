@@ -1,5 +1,23 @@
 {
     "default": {
+        "10": {
+            " Other Licensing Information Detected": ""
+        },
+        "11": {
+            " Relationship between SPDX Elements Information": ""
+        },
+        "12": {
+            " Annotation Information": ""
+        },
+        "6": {
+            " Document Creation Information": ""
+        },
+        "7": {
+            " Package Information": ""
+        },
+        "9": {
+            " Snippet Information": ""
+        },
         "A vendor with same name already exists": "A vendor with same name already exists",
         "ACCEPTED": "Đã được chấp nhận",
         "ADJACENT_NETWORK": "ADJACENT_NETWORK",
@@ -573,6 +591,10 @@
         "SINGLE": "ĐƠN",
         "SPDX": "SPDX",
         "SPDX Attachments": "Tệp đính kèm SPDX",
+        "SPDX Document": "Tài liệu SPDX",
+        "SPDX FULL": "SPDX ĐẦY ĐỦ",
+        "SPDX LITE": "",
+        "SPDXDocument": "",
         "SPECIFIC": "Cụ thể",
         "STANDALONE": "Độc lập",
         "STATICALLY_LINKED": "Liên kết tĩnh",

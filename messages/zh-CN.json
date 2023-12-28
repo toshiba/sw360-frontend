@@ -1,5 +1,23 @@
 {
     "default": {
+        "10": {
+            " Other Licensing Information Detected": ""
+        },
+        "11": {
+            " Relationship between SPDX Elements Information": ""
+        },
+        "12": {
+            " Annotation Information": ""
+        },
+        "6": {
+            " Document Creation Information": ""
+        },
+        "7": {
+            " Package Information": ""
+        },
+        "9": {
+            " Snippet Information": ""
+        },
         "A vendor with same name already exists": "A vendor with same name already exists",
         "ACCEPTED": "公认",
         "ADJACENT_NETWORK": "ADJACENT_NETWORK",
@@ -573,6 +591,10 @@
         "SINGLE": "单身的",
         "SPDX": "SPDX",
         "SPDX Attachments": "SPDX 附件",
+        "SPDX Document": "SPDX文件",
+        "SPDX FULL": "SPDX 完整版",
+        "SPDX LITE": "",
+        "SPDXDocument": "",
         "SPECIFIC": "具体的",
         "STANDALONE": "独立式",
         "STATICALLY_LINKED": "静态链接",

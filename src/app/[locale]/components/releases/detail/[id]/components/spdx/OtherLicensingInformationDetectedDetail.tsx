@@ -13,15 +13,27 @@ import { useState } from 'react'
 import styles from '../../detail.module.css'
 
 // import OtherLicensingInformationDetected from '../../../../../../../../object-types/spdx/OtherLicensingInformationDetected'
+import OtherLicensingInformationDetected from '../../../../../../../../object-types/spdx/OtherLicensingInformationDetected'
 import SPDXDocument from '../../../../../../../../object-types/spdx/SPDXDocument'
 
 interface Props {
     // otherLicensingInformationDetecteds?: Array<OtherLicensingInformationDetected>
     spdxDocument?: SPDXDocument
+    otherLicensingInformationDetected?: OtherLicensingInformationDetected
+    setOtherLicensingInformationDetected?: React.Dispatch<React.SetStateAction<OtherLicensingInformationDetected>>
 }
 
-const OtherLicensingInformationDetectedDetail = ({ spdxDocument }: Props) => {
+const OtherLicensingInformationDetectedDetail = ({
+    spdxDocument,
+    otherLicensingInformationDetected,
+    setOtherLicensingInformationDetected,
+}: Props) => {
     const [toggle, setToggle] = useState(false)
+
+    const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const index: string = e.target.value
+        setOtherLicensingInformationDetected(spdxDocument.otherLicensingInformationDetecteds[+index])
+    }
 
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
@@ -37,61 +49,74 @@ const OtherLicensingInformationDetectedDetail = ({ spdxDocument }: Props) => {
             </thead>
             <tbody hidden={toggle}>
                 <tr>
-                    <td>Index</td>
+                    <td className='spdx-label-index'>Index</td>
                     <td className='spdx-flex-row' style={{ height: '50px' }}>
-                        <select
-                            id='otherLicensingSelect'
-                            className='spdx-col-2'
-                            // onchange='displayIndex(this)'
-                        ></select>
+                        <select id='otherLicensingSelect' className='spdx-col-2' onChange={displayIndex}>
+                            {' '}
+                            {spdxDocument?.otherLicensingInformationDetecteds
+                                .toSorted((e1, e2) => e1.index - e2.index)
+                                .map((item) => (
+                                    <option key={item.index} value={item.index}>
+                                        {item.index + 1}
+                                    </option>
+                                ))}
+                        </select>
                     </td>
                 </tr>
-                {spdxDocument?.otherLicensingInformationDetecteds?.length !== 0 &&
-                    spdxDocument?.otherLicensingInformationDetecteds?.map((otherLicensingData) => {
-                        return (
-                            <>
-                                <tr data-index={otherLicensingData.index}>
-                                    <td>10.1 License identifier</td>
-                                    <td>
-                                        <div className='spdx-col-2'>{otherLicensingData.licenseId}</div>
-                                    </td>
-                                </tr>
-                                <tr data-index={otherLicensingData.index}>
-                                    <td>10.2 Extracted text</td>
-                                    <td>
-                                        <p className='spdx-col-2 ' id='extractedText-${otherLicensingData.index}'>
-                                            {otherLicensingData.extractedText}
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr data-index={otherLicensingData.index}>
-                                    <td>10.3 License name</td>
-                                    <td>
-                                        <div className='spdx-col-2'>{otherLicensingData.licenseName}</div>
-                                    </td>
-                                </tr>
-                                <tr className='spdx-full' data-index={otherLicensingData.index}>
-                                    <td>10.4 License cross reference</td>
-                                    <td>
-                                        <p className='spdx-col-2 ' id='licenseCrossRefs-${otherLicensingData.index}'>
-                                            {otherLicensingData?.licenseCrossRefs &&
-                                                otherLicensingData.licenseCrossRefs.map((licenseCrossRefsData) => {
-                                                    return <>{licenseCrossRefsData}</>
-                                                })}
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr data-index={otherLicensingData.index}>
-                                    <td>10.5 License comment</td>
-                                    <td>
-                                        <p className='spdx-col-2 ' id='otherLicenseComment-${otherLicensingData.index}'>
-                                            {otherLicensingData.licenseComment}
-                                        </p>
-                                    </td>
-                                </tr>
-                            </>
-                        )
-                    })}
+                {otherLicensingInformationDetected && (
+                    <>
+                        <tr data-index={otherLicensingInformationDetected.index}>
+                            <td>10.1 License identifier</td>
+                            <td>
+                                <div className='spdx-col-2'>{otherLicensingInformationDetected.licenseId}</div>
+                            </td>
+                        </tr>
+                        <tr data-index={otherLicensingInformationDetected.index}>
+                            <td>10.2 Extracted text</td>
+                            <td>
+                                <p
+                                    className='spdx-col-2 '
+                                    id='extractedText-${otherLicensingInformationDetected.index}'
+                                >
+                                    {otherLicensingInformationDetected.extractedText}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr data-index={otherLicensingInformationDetected.index}>
+                            <td>10.3 License name</td>
+                            <td>
+                                <div className='spdx-col-2'>{otherLicensingInformationDetected.licenseName}</div>
+                            </td>
+                        </tr>
+                        <tr className='spdx-full' data-index={otherLicensingInformationDetected.index}>
+                            <td>10.4 License cross reference</td>
+                            <td>
+                                <p
+                                    className='spdx-col-2 '
+                                    id='licenseCrossRefs-${otherLicensingInformationDetected.index}'
+                                >
+                                    {otherLicensingInformationDetected?.licenseCrossRefs &&
+                                        otherLicensingInformationDetected.licenseCrossRefs.map(
+                                            (licenseCrossRefsData) => {
+                                                return <>{licenseCrossRefsData}</>
+                                            }
+                                        )}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr data-index={otherLicensingInformationDetected.index}>
+                            <td>10.5 License comment</td>
+                            <td>
+                                <p
+                                    className='spdx-col-2 '
+                                    id='otherLicenseComment-${otherLicensingInformationDetected.index}'
+                                >
+                                    {otherLicensingInformationDetected.licenseComment}
+                                </p>
+                            </td>
+                        </tr>
+                    </>
+                )}
             </tbody>
         </table>
     )

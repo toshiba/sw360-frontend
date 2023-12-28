@@ -1,5 +1,23 @@
 {
     "default": {
+        "10": {
+            " Other Licensing Information Detected": ""
+        },
+        "11": {
+            " Relationship between SPDX Elements Information": ""
+        },
+        "12": {
+            " Annotation Information": ""
+        },
+        "6": {
+            " Document Creation Information": ""
+        },
+        "7": {
+            " Package Information": ""
+        },
+        "9": {
+            " Snippet Information": ""
+        },
         "A vendor with same name already exists": "A vendor with same name already exists",
         "ACCEPTED": "Aceito(a) em",
         "ADJACENT_NETWORK": "ADJACENT_NETWORK",
@@ -179,9 +197,9 @@
         "Cvss Score": "Pontuação CVSS",
         "Cwe": "Cwe",
         "CycloneDX": "CycloneDX",
-        "DELETE_ALL_LICENCES_ERROR": "Algo deu errado. \nTente novamente.",
-        "DELETE_ALL_LICENCES_SUCCESS": "Todas as informações de licença foram excluídas com sucesso.",
-        "DELETE_ALL_LICENSE": "Você realmente deseja excluir todas as licenças, tipos de licença, obrigações, obrigações, riscos, categorias de risco e propriedades personalizadas obrigatórias do banco de dados?",
+        "DELETE_ALL_LICENCES_ERROR": "Algo errado aconteceu. Tente de novo.",
+        "DELETE_ALL_LICENCES_SUCCESS": "Todos os dados de licenças foram removidos com sucesso.",
+        "DELETE_ALL_LICENSE": "Você realmente quer remover todos os dados relacionados a licenças ?",
         "DENIED": "Negada",
         "DOWNLOAD": "Baixar",
         "DYNAMICALLY_LINKED": "Ligado dinamicamente",
@@ -573,6 +591,10 @@
         "SINGLE": "úNICO",
         "SPDX": "SPDX",
         "SPDX Attachments": "Anexos SPDX",
+        "SPDX Document": "Documento SPDX",
+        "SPDX FULL": "SPDX COMPLETO",
+        "SPDX LITE": "",
+        "SPDXDocument": "",
         "SPECIFIC": "Específico (Specific)",
         "STANDALONE": "Standalone",
         "STATICALLY_LINKED": "Estaticamente vinculado",
@@ -685,7 +707,7 @@
         "Upload Attachment": "Enviar Anexo",
         "Upload BOM document as": "Carregar documento bom como",
         "Upload License Archive": "Carregar arquivo de licença",
-        "Upload Licenses": "Carregar licenças",
+        "Upload Licenses": "Upload das Licenças",
         "Upload SBOM": "Carregar SBOM",
         "Upload the sources to FOSSology": "Carregar as fontes para FOSSology",
         "Uploaded By": "Enviado Por",
@@ -762,10 +784,6 @@
         "project_cannot_be_created": "O projeto não pode ser criado/atualizado",
         "to edit the project relation": "para editar a relação do projeto",
         "vector": "vector",
-        "wrong_spdx_information": "Se for inserido o SPDX errado, as informações não serão registradas corretamente",
-        "DELETE_ALL_LICENCES_ERROR": "Algo errado aconteceu. Tente de novo.",
-        "DELETE_ALL_LICENCES_SUCCESS": "Todos os dados de licenças foram removidos com sucesso.",
-        "DELETE_ALL_LICENSE": "Você realmente quer remover todos os dados relacionados a licenças ?",
-        "Upload Licenses": "Upload das Licenças"
+        "wrong_spdx_information": "Se for inserido o SPDX errado, as informações não serão registradas corretamente"
     }
 }

@@ -65,42 +65,45 @@ const DocumentCreationInformationDetail = ({
                     <td>6.5 SPDX document namespace</td>
                     <td>{documentCreationInformation?.documentNamespace}</td>
                 </tr>
-                {externalDocumentRef && (
-                    <tr className='spdx-full'>
-                        <td>6.6 External document references</td>
-                        <td className='spdx-flex-row'>
-                            <div className='spdx-col-2 section' data-size='3'>
-                                <div className='spdx-flex-row'>
-                                    <div className='spdx-col-1 spdx-label-index'>Index</div>
-                                    <select className='spdx-col-3' id='externalDocumentRefs' onChange={displayIndex}>
-                                        {documentCreationInformation?.externalDocumentRefs
-                                            .toSorted((e1, e2) => e1.index - e2.index)
-                                            .map((item) => (
-                                                <option key={item.index} value={item.index}>
-                                                    {item.index + 1}
-                                                </option>
-                                            ))}
-                                    </select>
-                                </div>
-                                <div className='spdx-flex-row'>
-                                    <div className='spdx-col-1 spdx-key'>External document ID</div>
-                                    <div className='spdx-col-3'>{externalDocumentRef.externalDocumentId}</div>
-                                </div>
-                                <div className='spdx-flex-row'>
-                                    <div className='spdx-col-1 spdx-key'>External document</div>
-                                    <div className='spdx-col-3'>{externalDocumentRef.spdxDocument}</div>
-                                </div>
-                                <div className='spdx-flex-row'>
-                                    <div className='spdx-col-2 spdx-key'>Checksum</div>
-                                    <div className='spdx-col-3'>
-                                        {externalDocumentRef.checksum.algorithm}:
-                                        {externalDocumentRef.checksum.checksumValue}
-                                    </div>
-                                </div>
+
+                <tr className='spdx-full'>
+                    <td>6.6 External document references</td>
+                    <td className='spdx-flex-row'>
+                        <div className='spdx-col-2 section' data-size='3'>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-label-index'>Index</div>
+                                <select className='spdx-col-3' id='externalDocumentRefs' onChange={displayIndex}>
+                                    {documentCreationInformation?.externalDocumentRefs
+                                        .toSorted((e1, e2) => e1.index - e2.index)
+                                        .map((item) => (
+                                            <option key={item.index} value={item.index}>
+                                                {item.index + 1}
+                                            </option>
+                                        ))}
+                                </select>
                             </div>
-                        </td>
-                    </tr>
-                )}
+                            {externalDocumentRef && (
+                                <>
+                                    <div className='spdx-flex-row'>
+                                        <div className='spdx-col-1 spdx-key'>External document ID</div>
+                                        <div className='spdx-col-3'>{externalDocumentRef.externalDocumentId}</div>
+                                    </div>
+                                    <div className='spdx-flex-row'>
+                                        <div className='spdx-col-1 spdx-key'>External document</div>
+                                        <div className='spdx-col-3'>{externalDocumentRef.spdxDocument}</div>
+                                    </div>
+                                    <div className='spdx-flex-row'>
+                                        <div className='spdx-col-2 spdx-key'>Checksum</div>
+                                        <div className='spdx-col-3'>
+                                            {externalDocumentRef.checksum.algorithm}:
+                                            {externalDocumentRef.checksum.checksumValue}
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </td>
+                </tr>
 
                 <tr className='spdx-full'>
                     <td>6.7 License list version</td>
