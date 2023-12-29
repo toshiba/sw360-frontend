@@ -35,18 +35,18 @@ const AnnotationInformation = ({
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [isSourceSPDXDocument, setIsSourceSPDXDocument] = useState<boolean>(true)
-    const [index, setIndex] = useState(1)
+    const [index, setIndex] = useState(0)
 
     const changeAnnotationSource = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDoucument') {
             setIsSourceSPDXDocument(true)
             setIndexAnnotations(spdxDocument.annotations)
-            setAnnotations(spdxDocument.annotations.toSorted((e1, e2) => e1.index - e2.index)[index - 1])
+            setAnnotations(packageInformation.annotations[index])
         } else if (relationshipType === 'package') {
             setIsSourceSPDXDocument(false)
             setIndexAnnotations(packageInformation.annotations)
-            setAnnotations(packageInformation.annotations.toSorted((e1, e2) => e1.index - e2.index)[index - 1])
+            setAnnotations(packageInformation.annotations[index])
         }
     }
 
