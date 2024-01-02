@@ -52,7 +52,7 @@ const DocumentCreationInformationDetail = ({
                     <td>{documentCreationInformation?.spdxVersion}</td>
                 </tr>
                 <tr>
-                    <td>6.2 Data licens</td>
+                    <td>6.2 Data license</td>
                     <td>{documentCreationInformation?.dataLicense}</td>
                 </tr>
                 <tr>

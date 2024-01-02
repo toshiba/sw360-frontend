@@ -88,7 +88,7 @@ const OtherLicensingInformationDetectedDetail = ({
                                 <div className='spdx-col-2'>{otherLicensingInformationDetected.licenseName}</div>
                             </td>
                         </tr>
-                        {isModeFull ?? (
+                        {isModeFull && (
                             <tr className='spdx-full' data-index={otherLicensingInformationDetected.index}>
                                 <td>10.4 License cross reference</td>
                                 <td>

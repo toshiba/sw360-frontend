@@ -28,6 +28,7 @@ import SPDXDocument from '../../../../../../../../object-types/spdx/SPDXDocument
 import SnippetInformation from '../../../../../../../../object-types/spdx/SnippetInformation'
 import SnippetInformationDetail from './ SnippetInformation'
 import AnnotationInformation from './AnnotationInformation'
+import styles from './CssButton.module.css'
 import DocumentCreationInformationDetail from './DocumentCreationInformation'
 import OtherLicensingInformationDetectedDetail from './OtherLicensingInformationDetectedDetail'
 import PackageInformationDetail from './PackageInformationDetail'
@@ -164,15 +165,13 @@ const SPDXDocument = ({ releaseId }: Props) => {
             <div className='list-group-companion' data-belong-to='tab-Attachments'>
                 <div className='btn-group'>
                     <button
-                        className='btn'
-                        style={{ backgroundColor: '#2e5aac', borderColor: '#2e5aac', color: '#fff' }}
+                        className={`btn ${isModeFull ? styles['btn-full'] : styles['btn-lite']}`}
                         onClick={changeModeFull}
                     >
                         {t('SPDX FULL')}
                     </button>
                     <button
-                        className='btn'
-                        style={{ backgroundColor: '#fff', borderColor: '#cdced9', color: '#6b6c7e' }}
+                        className={`btn ${isModeFull ? styles['btn-lite'] : styles['btn-full']}`}
                         onClick={changeModeLite}
                     >
                         {t('SPDX LITE')}
