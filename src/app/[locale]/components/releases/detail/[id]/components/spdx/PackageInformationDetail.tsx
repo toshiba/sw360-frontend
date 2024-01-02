@@ -18,9 +18,10 @@ interface Props {
     packageInformation?: PackageInformation
     externalRefsData?: ExternalReference
     setExternalRefsData?: React.Dispatch<React.SetStateAction<ExternalReference>>
+    isModeFull?: boolean
 }
 
-const PackageInformationDetail = ({ packageInformation, externalRefsData, setExternalRefsData }: Props) => {
+const PackageInformationDetail = ({ packageInformation, externalRefsData, setExternalRefsData, isModeFull }: Props) => {
     const [toggle, setToggle] = useState(false)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -179,100 +180,103 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                         </p>
                     </td>
                 </tr>
-                {externalRefsData && (
-                    <tr className='spdx-full' data-index={packageInformation?.index}>
-                        <td>7.21 External references </td>
-                        <td>
-                            {packageInformation?.externalRefs.length !== 0 && (
-                                <div className='spdx-col-2 section' data-size='4'>
-                                    <div className='spdx-flex-row'>
-                                        <div className='spdx-col-1 spdx-label-index'>Index</div>
-                                        <select
-                                            id='externalReferenceSelect${package.index}'
-                                            className='spdx-col-3'
-                                            onChange={displayIndex}
-                                        >
-                                            {packageInformation?.externalRefs
-                                                .toSorted((e1, e2) => e1.index - e2.index)
-                                                .map((item) => (
-                                                    <option key={item.index} value={item.index}>
-                                                        {item.index + 1}
-                                                    </option>
-                                                ))}
-                                        </select>
-                                    </div>
-                                    <div className='spdx-flex-row' data-index={externalRefsData.index}>
-                                        <div className='spdx-col-1 spdx-key'>Category</div>
-                                        <div className='spdx-col-3 spdx-uppercase'>
-                                            {externalRefsData.referenceCategory}
+                {isModeFull && (
+                    <>
+                        {externalRefsData && (
+                            <tr className='spdx-full' data-index={packageInformation?.index}>
+                                <td>7.21 External references </td>
+                                <td>
+                                    {packageInformation?.externalRefs.length !== 0 && (
+                                        <div className='spdx-col-2 section' data-size='4'>
+                                            <div className='spdx-flex-row'>
+                                                <div className='spdx-col-1 spdx-label-index'>Index</div>
+                                                <select
+                                                    id='externalReferenceSelect${package.index}'
+                                                    className='spdx-col-3'
+                                                    onChange={displayIndex}
+                                                >
+                                                    {packageInformation?.externalRefs
+                                                        .toSorted((e1, e2) => e1.index - e2.index)
+                                                        .map((item) => (
+                                                            <option key={item.index} value={item.index}>
+                                                                {item.index + 1}
+                                                            </option>
+                                                        ))}
+                                                </select>
+                                            </div>
+                                            <div className='spdx-flex-row' data-index={externalRefsData.index}>
+                                                <div className='spdx-col-1 spdx-key'>Category</div>
+                                                <div className='spdx-col-3 spdx-uppercase'>
+                                                    {externalRefsData.referenceCategory}
+                                                </div>
+                                            </div>
+                                            <div className='spdx-flex-row' data-index={externalRefsData.index}>
+                                                <div className='spdx-col-1 spdx-key'>Type</div>
+                                                <div className='spdx-col-3'>{externalRefsData.referenceType}</div>
+                                            </div>
+                                            <div className='spdx-flex-row' data-index={externalRefsData.index}>
+                                                <div className='spdx-col-1 spdx-key'>Locator</div>
+                                                <div className='spdx-col-3'>{externalRefsData.referenceLocator}</div>
+                                            </div>
+                                            <div className='spdx-flex-row' data-index={externalRefsData.index}>
+                                                <div className='spdx-col-1 spdx-key'>7.22 Comment</div>
+                                                <p
+                                                    className='spdx-col-3'
+                                                    id='externalRefComment-${externalRefsData.index}'
+                                                >
+                                                    {externalRefsData.comment}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className='spdx-flex-row' data-index={externalRefsData.index}>
-                                        <div className='spdx-col-1 spdx-key'>Type</div>
-                                        <div className='spdx-col-3'>{externalRefsData.referenceType}</div>
-                                    </div>
-                                    <div className='spdx-flex-row' data-index={externalRefsData.index}>
-                                        <div className='spdx-col-1 spdx-key'>Locator</div>
-                                        <div className='spdx-col-3'>{externalRefsData.referenceLocator}</div>
-                                    </div>
-                                    <div className='spdx-flex-row' data-index={externalRefsData.index}>
-                                        <div className='spdx-col-1 spdx-key'>7.22 Comment</div>
-                                        <p className='spdx-col-3' id='externalRefComment-${externalRefsData.index}'>
-                                            {externalRefsData.comment}
-                                        </p>
-                                    </div>
+                                    )}
+                                </td>
+                            </tr>
+                        )}
+                        <tr className='spdx-full' data-index={packageInformation?.index}>
+                            <td>7.23 Package attribution text</td>
+                            <td>
+                                <p className='spdx-col-2 ' id='attributionText'>
+                                    {packageInformation?.attributionText &&
+                                        packageInformation?.attributionText.map((item) => {
+                                            return <>{item}</>
+                                        })}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr className='spdx-full' data-index={packageInformation?.index}>
+                            <td>7.24 Primary Package Purpose </td>
+                            <td>
+                                <div className='spdx-col-2 ' id='primaryPackagePurpose'>
+                                    {packageInformation?.primaryPackagePurpose}
                                 </div>
-                            )}
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
+                        <tr className='spdx-full' data-index={packageInformation?.index}>
+                            <td>7.25 Release Date</td>
+                            <td>
+                                <p className='spdx-col-2 ' id='release-date-${loop.count}'>
+                                    {packageInformation?.releaseDate}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr className='spdx-full' data-index={packageInformation?.index}>
+                            <td>7.26 Built Date</td>
+                            <td>
+                                <p className='spdx-col-2 ' id='built-date-${loop.count}'>
+                                    {packageInformation?.builtDate}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr className='spdx-full' data-index={packageInformation?.index}>
+                            <td>7.27 Valid Until Date</td>
+                            <td>
+                                <p className='spdx-col-2 ' id='validUntil-date-${loop.count}'>
+                                    {packageInformation?.validUntilDate}
+                                </p>
+                            </td>
+                        </tr>
+                    </>
                 )}
-                {/* <tr>
-                    <td>7.22 Comment</td>
-                    <td>{packageInformation?.packageComment}</td>
-                </tr> */}
-                <tr className='spdx-full' data-index={packageInformation?.index}>
-                    <td>7.23 Package attribution text</td>
-                    <td>
-                        <p className='spdx-col-2 ' id='attributionText'>
-                            {packageInformation?.attributionText &&
-                                packageInformation?.attributionText.map((item) => {
-                                    return <>{item}</>
-                                })}
-                        </p>
-                    </td>
-                </tr>
-                <tr className='spdx-full' data-index={packageInformation?.index}>
-                    <td>7.24 Primary Package Purpose </td>
-                    <td>
-                        <div className='spdx-col-2 ' id='primaryPackagePurpose'>
-                            {packageInformation?.primaryPackagePurpose}
-                        </div>
-                    </td>
-                </tr>
-                <tr className='spdx-full' data-index={packageInformation?.index}>
-                    <td>7.25 Release Date</td>
-                    <td>
-                        <p className='spdx-col-2 ' id='release-date-${loop.count}'>
-                            {packageInformation?.releaseDate}
-                        </p>
-                    </td>
-                </tr>
-                <tr className='spdx-full' data-index={packageInformation?.index}>
-                    <td>7.26 Built Date</td>
-                    <td>
-                        <p className='spdx-col-2 ' id='built-date-${loop.count}'>
-                            {packageInformation?.builtDate}
-                        </p>
-                    </td>
-                </tr>
-                <tr className='spdx-full' data-index={packageInformation?.index}>
-                    <td>7.27 Valid Until Date</td>
-                    <td>
-                        <p className='spdx-col-2 ' id='validUntil-date-${loop.count}'>
-                            {packageInformation?.validUntilDate}
-                        </p>
-                    </td>
-                </tr>
             </tbody>
         </table>
     )

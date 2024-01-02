@@ -28,7 +28,6 @@ import SPDXDocument from '../../../../../../../../object-types/spdx/SPDXDocument
 import SnippetInformation from '../../../../../../../../object-types/spdx/SnippetInformation'
 import SnippetInformationDetail from './ SnippetInformation'
 import AnnotationInformation from './AnnotationInformation'
-import styles from './CssButton.module.css'
 import DocumentCreationInformationDetail from './DocumentCreationInformation'
 import OtherLicensingInformationDetectedDetail from './OtherLicensingInformationDetectedDetail'
 import PackageInformationDetail from './PackageInformationDetail'
@@ -59,6 +58,8 @@ const SPDXDocument = ({ releaseId }: Props) => {
 
     const [annotations, setAnnotations] = useState<Annotations>()
     const [indexAnnotations, setIndexAnnotations] = useState<Array<Annotations>>()
+
+    const [isModeFull, setIsModeFull] = useState(true)
 
     const { data: session } = useSession()
 
@@ -150,55 +151,101 @@ const SPDXDocument = ({ releaseId }: Props) => {
             .catch((err) => console.error(err))
     }, [fetchData, releaseId])
 
+    const changeModeFull = () => {
+        setIsModeFull(true)
+    }
+
+    const changeModeLite = () => {
+        setIsModeFull(false)
+    }
+
     return (
         <>
             <div className='list-group-companion' data-belong-to='tab-Attachments'>
                 <div className='btn-group'>
-                    <button className={`${styles['btn-info']}`}>{t('SPDX FULL')}</button>
-                    <button className='btn btn-secondary'>{t('SPDX LITE')}</button>
+                    <button
+                        className='btn'
+                        style={{ backgroundColor: '#2e5aac', borderColor: '#2e5aac', color: '#fff' }}
+                        onClick={changeModeFull}
+                    >
+                        {t('SPDX FULL')}
+                    </button>
+                    <button
+                        className='btn'
+                        style={{ backgroundColor: '#fff', borderColor: '#cdced9', color: '#6b6c7e' }}
+                        onClick={changeModeLite}
+                    >
+                        {t('SPDX LITE')}
+                    </button>
                 </div>
             </div>
             <br></br>
             <br></br>
             <br></br>
-            <div className='col'>
-                <DocumentCreationInformationDetail
-                    documentCreationInformation={documentCreationInformation}
-                    externalDocumentRef={externalDocumentRef}
-                    setExternalDocumentRef={setExternalDocumentRef}
-                />
-                <PackageInformationDetail
-                    packageInformation={packageInformation}
-                    externalRefsData={externalRefsData}
-                    setExternalRefsData={setExternalRefsData}
-                />
-                <SnippetInformationDetail
-                    spdxDocument={spdxDocument}
-                    snippetInformation={snippetInformation}
-                    setSnippetInformation={setSnippetInformation}
-                />
-                <OtherLicensingInformationDetectedDetail
-                    spdxDocument={spdxDocument}
-                    otherLicensingInformationDetected={otherLicensingInformationDetected}
-                    setOtherLicensingInformationDetected={setOtherLicensingInformationDetected}
-                />
-                <RelationshipbetweenSPDXElementsInformation
-                    spdxDocument={spdxDocument}
-                    packageInformation={packageInformation}
-                    relationshipsBetweenSPDXElements={relationshipsBetweenSPDXElements}
-                    setRelationshipsBetweenSPDXElements={setRelationshipsBetweenSPDXElements}
-                    indexRelationShip={indexRelationShip}
-                    setIndexRelationShip={setIndexRelationShip}
-                />
-                <AnnotationInformation
-                    spdxDocument={spdxDocument}
-                    packageInformation={packageInformation}
-                    annotations={annotations}
-                    setAnnotations={setAnnotations}
-                    indexAnnotations={indexAnnotations}
-                    setIndexAnnotations={setIndexAnnotations}
-                />
-            </div>
+            {isModeFull ? (
+                <div className='col'>
+                    <DocumentCreationInformationDetail
+                        isModeFull={isModeFull}
+                        documentCreationInformation={documentCreationInformation}
+                        externalDocumentRef={externalDocumentRef}
+                        setExternalDocumentRef={setExternalDocumentRef}
+                    />
+                    <PackageInformationDetail
+                        isModeFull={isModeFull}
+                        packageInformation={packageInformation}
+                        externalRefsData={externalRefsData}
+                        setExternalRefsData={setExternalRefsData}
+                    />
+                    <SnippetInformationDetail
+                        spdxDocument={spdxDocument}
+                        snippetInformation={snippetInformation}
+                        setSnippetInformation={setSnippetInformation}
+                    />
+                    <OtherLicensingInformationDetectedDetail
+                        isModeFull={isModeFull}
+                        spdxDocument={spdxDocument}
+                        otherLicensingInformationDetected={otherLicensingInformationDetected}
+                        setOtherLicensingInformationDetected={setOtherLicensingInformationDetected}
+                    />
+                    <RelationshipbetweenSPDXElementsInformation
+                        spdxDocument={spdxDocument}
+                        packageInformation={packageInformation}
+                        relationshipsBetweenSPDXElements={relationshipsBetweenSPDXElements}
+                        setRelationshipsBetweenSPDXElements={setRelationshipsBetweenSPDXElements}
+                        indexRelationShip={indexRelationShip}
+                        setIndexRelationShip={setIndexRelationShip}
+                    />
+                    <AnnotationInformation
+                        spdxDocument={spdxDocument}
+                        packageInformation={packageInformation}
+                        annotations={annotations}
+                        setAnnotations={setAnnotations}
+                        indexAnnotations={indexAnnotations}
+                        setIndexAnnotations={setIndexAnnotations}
+                    />
+                </div>
+            ) : (
+                <div className='col'>
+                    <DocumentCreationInformationDetail
+                        isModeFull={isModeFull}
+                        documentCreationInformation={documentCreationInformation}
+                        externalDocumentRef={externalDocumentRef}
+                        setExternalDocumentRef={setExternalDocumentRef}
+                    />
+                    <PackageInformationDetail
+                        isModeFull={isModeFull}
+                        packageInformation={packageInformation}
+                        externalRefsData={externalRefsData}
+                        setExternalRefsData={setExternalRefsData}
+                    />
+                    <OtherLicensingInformationDetectedDetail
+                        isModeFull={isModeFull}
+                        spdxDocument={spdxDocument}
+                        otherLicensingInformationDetected={otherLicensingInformationDetected}
+                        setOtherLicensingInformationDetected={setOtherLicensingInformationDetected}
+                    />
+                </div>
+            )}
         </>
     )
 }

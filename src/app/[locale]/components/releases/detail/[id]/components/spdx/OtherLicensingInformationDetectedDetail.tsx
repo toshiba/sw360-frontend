@@ -12,21 +12,21 @@
 import { useState } from 'react'
 import styles from '../../detail.module.css'
 
-// import OtherLicensingInformationDetected from '../../../../../../../../object-types/spdx/OtherLicensingInformationDetected'
 import OtherLicensingInformationDetected from '../../../../../../../../object-types/spdx/OtherLicensingInformationDetected'
 import SPDXDocument from '../../../../../../../../object-types/spdx/SPDXDocument'
 
 interface Props {
-    // otherLicensingInformationDetecteds?: Array<OtherLicensingInformationDetected>
     spdxDocument?: SPDXDocument
     otherLicensingInformationDetected?: OtherLicensingInformationDetected
     setOtherLicensingInformationDetected?: React.Dispatch<React.SetStateAction<OtherLicensingInformationDetected>>
+    isModeFull?: boolean
 }
 
 const OtherLicensingInformationDetectedDetail = ({
     spdxDocument,
     otherLicensingInformationDetected,
     setOtherLicensingInformationDetected,
+    isModeFull,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
 
@@ -88,22 +88,24 @@ const OtherLicensingInformationDetectedDetail = ({
                                 <div className='spdx-col-2'>{otherLicensingInformationDetected.licenseName}</div>
                             </td>
                         </tr>
-                        <tr className='spdx-full' data-index={otherLicensingInformationDetected.index}>
-                            <td>10.4 License cross reference</td>
-                            <td>
-                                <p
-                                    className='spdx-col-2 '
-                                    id='licenseCrossRefs-${otherLicensingInformationDetected.index}'
-                                >
-                                    {otherLicensingInformationDetected?.licenseCrossRefs &&
-                                        otherLicensingInformationDetected.licenseCrossRefs.map(
-                                            (licenseCrossRefsData) => {
-                                                return <>{licenseCrossRefsData}</>
-                                            }
-                                        )}
-                                </p>
-                            </td>
-                        </tr>
+                        {isModeFull ?? (
+                            <tr className='spdx-full' data-index={otherLicensingInformationDetected.index}>
+                                <td>10.4 License cross reference</td>
+                                <td>
+                                    <p
+                                        className='spdx-col-2 '
+                                        id='licenseCrossRefs-${otherLicensingInformationDetected.index}'
+                                    >
+                                        {otherLicensingInformationDetected?.licenseCrossRefs &&
+                                            otherLicensingInformationDetected.licenseCrossRefs.map(
+                                                (licenseCrossRefsData) => {
+                                                    return <>{licenseCrossRefsData}</>
+                                                }
+                                            )}
+                                    </p>
+                                </td>
+                            </tr>
+                        )}
                         <tr data-index={otherLicensingInformationDetected.index}>
                             <td>10.5 License comment</td>
                             <td>
