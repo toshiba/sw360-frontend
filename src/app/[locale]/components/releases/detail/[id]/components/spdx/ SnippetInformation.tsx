@@ -79,20 +79,20 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                                             return (
                                                 <div
                                                     key={snippetInformation.index}
-                                                    className='spdx-flex-row snippetRange-${snippetInformation.index}'
+                                                    className='spdx-flex-row'
                                                     data-index={snippetRangeData.index}
                                                 >
                                                     <div className='spdx-col-1 spdx-key'>
                                                         {snippetRangeData.rangeType}
                                                     </div>
-                                                    <div className='spdx-col-1 spdx-flex-row'>
-                                                        <td>{snippetRangeData.startPointer}</td>
-                                                        <td>~</td>
-                                                        <td>{snippetRangeData.endPointer}</td>
+                                                    <div className='spdx-col-1' style={{ display: 'flex' }}>
+                                                        <div className='spdx-col-1'>
+                                                            {snippetRangeData.startPointer}
+                                                        </div>
+                                                        <div className='spdx-col-1'>~</div>
+                                                        <div className='spdx-col-1'>{snippetRangeData.endPointer}</div>
                                                     </div>
-                                                    <div className='spdx-col-3 spdx-flex-row'>
-                                                        {snippetRangeData.reference}
-                                                    </div>
+                                                    <div className='spdx-col-3'>{snippetRangeData.reference}</div>
                                                 </div>
                                             )
                                         })}

@@ -11,6 +11,7 @@
 'use client'
 import { useState } from 'react'
 // import Annotations from '../../../../../../../../object-types/spdx/Annotations'
+import CommonUtils from '@/utils/common.utils'
 import Annotations from '../../../../../../../../object-types/spdx/Annotations'
 import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
 import SPDXDocument from '../../../../../../../../object-types/spdx/SPDXDocument'
@@ -41,12 +42,22 @@ const AnnotationInformation = ({
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDoucument') {
             setIsSourceSPDXDocument(true)
-            setIndexAnnotations(spdxDocument.annotations)
-            setAnnotations(packageInformation.annotations[index])
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(spdxDocument.annotations)) {
+                setIndexAnnotations(spdxDocument.annotations)
+                setAnnotations(spdxDocument.annotations[index])
+            } else {
+                setIndexAnnotations([])
+                setAnnotations(null)
+            }
         } else if (relationshipType === 'package') {
             setIsSourceSPDXDocument(false)
-            setIndexAnnotations(packageInformation.annotations)
-            setAnnotations(packageInformation.annotations[index])
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(packageInformation.annotations)) {
+                setIndexAnnotations(packageInformation.annotations)
+                setAnnotations(packageInformation.annotations[index])
+            } else {
+                setIndexAnnotations([])
+                setAnnotations(null)
+            }
         }
     }
 

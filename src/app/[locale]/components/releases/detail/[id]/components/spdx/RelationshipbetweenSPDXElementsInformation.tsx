@@ -12,6 +12,7 @@
 import { useState } from 'react'
 import styles from '../../detail.module.css'
 
+import CommonUtils from '@/utils/common.utils'
 import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
 import RelationshipsBetweenSPDXElements from '../../../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
 import SPDXDocument from '../../../../../../../../object-types/spdx/SPDXDocument'
@@ -41,12 +42,23 @@ const RelationshipbetweenSPDXElementsInformation = ({
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDoucument') {
             setIsSourceSPDXDocument(true)
-            setIndexRelationShip(spdxDocument.relationships)
-            setRelationshipsBetweenSPDXElements(spdxDocument.relationships[index])
+
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(spdxDocument.relationships)) {
+                setIndexRelationShip(spdxDocument.relationships)
+                setRelationshipsBetweenSPDXElements(spdxDocument.relationships[index])
+            } else {
+                setIndexRelationShip([])
+                setRelationshipsBetweenSPDXElements(null)
+            }
         } else if (relationshipType === 'package') {
             setIsSourceSPDXDocument(false)
-            setIndexRelationShip(packageInformation.relationships)
-            setRelationshipsBetweenSPDXElements(packageInformation.relationships[index])
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(packageInformation.relationships)) {
+                setIndexRelationShip(packageInformation.relationships)
+                setRelationshipsBetweenSPDXElements(packageInformation.relationships[index])
+            } else {
+                setIndexRelationShip([])
+                setRelationshipsBetweenSPDXElements(null)
+            }
         }
     }
 
