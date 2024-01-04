@@ -41,6 +41,7 @@ import { PageButtonHeader, SideBar, ToastMessage } from 'next-sw360'
 import DeleteReleaseModal from '../../../detail/[id]/components/DeleteReleaseModal'
 import EditClearingDetails from './EditClearingDetails'
 import EditECCDetails from './EditECCDetails'
+import EditSPDXDocument from './EditSPDXDocument'
 import ReleaseEditSummary from './ReleaseEditSummary'
 import ReleaseEditTabs from './ReleaseEditTabs'
 
@@ -316,6 +317,13 @@ const EditRelease = ({ releaseId }: Props) => {
                                 cotsDetails={cotsDetails}
                                 eccInformation={eccInformation}
                                 clearingInformation={clearingInformation}
+                            />
+                        </div>
+                        <div className='row' hidden={selectedTab !== ReleaseTabIds.SPDX_DOCUMENT ? true : false}>
+                            <EditSPDXDocument
+                                releaseId={releaseId}
+                                releasePayload={releasePayload}
+                                setReleasePayload={setReleasePayload}
                             />
                         </div>
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.LINKED_RELEASES ? true : false}>

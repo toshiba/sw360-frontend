@@ -16,6 +16,10 @@ const WITHOUT_COMMERCIAL_DETAILS = [
         name: 'Summary',
     },
     {
+        id: ReleaseTabIds.SPDX_DOCUMENT,
+        name: 'SPDX Document',
+    },
+    {
         id: ReleaseTabIds.LINKED_RELEASES,
         name: 'Linked Releases',
     },
@@ -37,6 +41,10 @@ const WITH_COMMERCIAL_DETAILS = [
     {
         id: CommonTabIds.SUMMARY,
         name: 'Summary',
+    },
+    {
+        id: ReleaseTabIds.SPDX_DOCUMENT,
+        name: 'SPDX Document',
     },
     {
         id: ReleaseTabIds.LINKED_RELEASES,
