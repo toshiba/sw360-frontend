@@ -72,7 +72,7 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                             <td className='spdx-flex-row'>
                                 <div
                                     className='spdx-col-2 spdx-flex-col'
-                                    id='snippetRanges-${snippetInformation.index}'
+                                    id={`snippetLicenseComments-${snippetInformation.index}`}
                                 >
                                     {snippetInformation?.snippetRanges &&
                                         snippetInformation?.snippetRanges.map((snippetRangeData) => {
@@ -117,7 +117,7 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                         <tr data-index={snippetInformation.index}>
                             <td>9.7 Snippet comments on license</td>
                             <td className='spdx-flex-row'>
-                                <p className='spdx-col-2 ' id='snippetLicenseComments-${snippetInformation.index}'>
+                                <p className='spdx-col-2 ' id={`snippetLicenseComments-${snippetInformation.index}`}>
                                     {snippetInformation.licenseComments}
                                 </p>
                             </td>
@@ -125,7 +125,7 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                         <tr data-index={snippetInformation.index}>
                             <td>9.8 Snippet copyright text</td>
                             <td className='spdx-flex-row'>
-                                <p className='spdx-col-2 ' id='snippetCopyrightText-${snippetInformation.index}'>
+                                <p className='spdx-col-2 ' id={`snippetLicenseComments-${snippetInformation.index}`}>
                                     {snippetInformation.copyrightText}
                                 </p>
                             </td>
@@ -133,7 +133,7 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                         <tr data-index={snippetInformation.index}>
                             <td>9.9 Snippet comment</td>
                             <td className='spdx-flex-row'>
-                                <p className='spdx-col-2 ' id='snippetComment-${snippetInformation.index}'>
+                                <p className='spdx-col-2 ' id={`snippetLicenseComments-${snippetInformation.index}`}>
                                     {snippetInformation.comment}
                                 </p>
                             </td>
@@ -147,7 +147,7 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                         <tr data-index={snippetInformation.index}>
                             <td>9.11 Snippet attribution text</td>
                             <td>
-                                <p className='spdx-col-2 ' id='snippetAttributionText-${snippetInformation.index}'>
+                                <p className='spdx-col-2 ' id={`snippetLicenseComments-${snippetInformation.index}`}>
                                     {snippetInformation?.snippetAttributionText}
                                 </p>
                             </td>

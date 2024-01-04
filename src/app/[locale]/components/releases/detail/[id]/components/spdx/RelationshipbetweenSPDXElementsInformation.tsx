@@ -139,7 +139,7 @@ const RelationshipbetweenSPDXElementsInformation = ({
                             <td>
                                 <p
                                     className='spdx-col-2 '
-                                    id='relationshipComment-${relationshipsBetweenSPDXElements.index}'
+                                    id={`relationshipComment-${relationshipsBetweenSPDXElements.index}`}
                                 >
                                     {relationshipsBetweenSPDXElements.relationshipComment}
                                 </p>

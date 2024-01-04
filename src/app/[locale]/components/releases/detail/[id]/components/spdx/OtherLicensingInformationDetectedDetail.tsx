@@ -76,7 +76,8 @@ const OtherLicensingInformationDetectedDetail = ({
                             <td>
                                 <p
                                     className='spdx-col-2 '
-                                    id='extractedText-${otherLicensingInformationDetected.index}'
+                                    id={`extractedText-${otherLicensingInformationDetected.index}`}
+                                    style={{ whiteSpace: 'pre-wrap' }}
                                 >
                                     {otherLicensingInformationDetected.extractedText}
                                 </p>
@@ -94,7 +95,7 @@ const OtherLicensingInformationDetectedDetail = ({
                                 <td>
                                     <p
                                         className='spdx-col-2 '
-                                        id='licenseCrossRefs-${otherLicensingInformationDetected.index}'
+                                        id={`licenseCrossRefs-${otherLicensingInformationDetected.index}`}
                                     >
                                         {otherLicensingInformationDetected?.licenseCrossRefs &&
                                             otherLicensingInformationDetected.licenseCrossRefs.map(
@@ -111,7 +112,7 @@ const OtherLicensingInformationDetectedDetail = ({
                             <td>
                                 <p
                                     className='spdx-col-2 '
-                                    id='otherLicenseComment-${otherLicensingInformationDetected.index}'
+                                    id={`otherLicenseComment-${otherLicensingInformationDetected.index}`}
                                 >
                                     {otherLicensingInformationDetected.licenseComment}
                                 </p>
