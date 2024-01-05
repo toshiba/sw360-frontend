@@ -10,119 +10,174 @@
 
 'use client'
 import { useState } from 'react'
+import { FaTrashAlt } from 'react-icons/fa'
 import styles from '../detail.module.css'
 
-import OtherLicensingInformationDetected from '../../../../../../../object-types/spdx/OtherLicensingInformationDetected'
-import SPDXDocument from '../../../../../../../object-types/spdx/SPDXDocument'
+// import OtherLicensingInformationDetected from '../../../../../../../object-types/spdx/OtherLicensingInformationDetected'
+// import SPDXDocument from '../../../../../../../object-types/spdx/SPDXDocument'
 
-interface Props {
-    spdxDocument?: SPDXDocument
-    otherLicensingInformationDetected?: OtherLicensingInformationDetected
-    setOtherLicensingInformationDetected?: React.Dispatch<React.SetStateAction<OtherLicensingInformationDetected>>
-    isModeFull?: boolean
-}
+// interface Props {
+//     spdxDocument?: SPDXDocument
+//     otherLicensingInformationDetected?: OtherLicensingInformationDetected
+//     setOtherLicensingInformationDetected?: React.Dispatch<React.SetStateAction<OtherLicensingInformationDetected>>
+//     isModeFull?: boolean
+// }
 
-const OtherLicensingInformationDetectedDetail = ({
-    spdxDocument,
-    otherLicensingInformationDetected,
-    setOtherLicensingInformationDetected,
-    isModeFull,
-}: Props) => {
-    const [toggle, setToggle] = useState(false)
+const OtherLicensingInformationDetectedDetail = () =>
+    //     {
+    //     spdxDocument,
+    //     otherLicensingInformationDetected,
+    //     setOtherLicensingInformationDetected,
+    //     isModeFull,
+    // }: Props
+    {
+        const [toggle, setToggle] = useState(false)
 
-    const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const index: string = e.target.value
-        setOtherLicensingInformationDetected(spdxDocument.otherLicensingInformationDetecteds[+index])
-    }
+        // const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        //     const index: string = e.target.value
+        //     setOtherLicensingInformationDetected(spdxDocument.otherLicensingInformationDetecteds[+index])
+        // }
 
-    return (
-        <table className={`table label-value-table ${styles['summary-table']}`}>
-            <thead
-                title='Click to expand or collapse'
-                onClick={() => {
-                    setToggle(!toggle)
-                }}
-            >
-                <tr>
-                    <th colSpan={2}>10. Other Licensing Information Detected</th>
-                </tr>
-            </thead>
-            <tbody hidden={toggle}>
-                <tr>
-                    <td className='spdx-label-index'>Index</td>
-                    <td className='spdx-flex-row' style={{ height: '50px' }}>
-                        <select id='otherLicensingSelect' className='spdx-col-2' onChange={displayIndex}>
-                            {' '}
-                            {spdxDocument?.otherLicensingInformationDetecteds
-                                .toSorted((e1, e2) => e1.index - e2.index)
-                                .map((item) => (
-                                    <option key={item.index} value={item.index}>
-                                        {item.index + 1}
-                                    </option>
-                                ))}
-                        </select>
-                    </td>
-                </tr>
-                {otherLicensingInformationDetected && (
-                    <>
-                        <tr data-index={otherLicensingInformationDetected.index}>
-                            <td>10.1 License identifier</td>
-                            <td>
-                                <div className='spdx-col-2'>{otherLicensingInformationDetected.licenseId}</div>
-                            </td>
-                        </tr>
-                        <tr data-index={otherLicensingInformationDetected.index}>
-                            <td>10.2 Extracted text</td>
-                            <td>
-                                <p
-                                    className='spdx-col-2 '
-                                    id={`extractedText-${otherLicensingInformationDetected.index}`}
-                                    style={{ whiteSpace: 'pre-wrap' }}
-                                >
-                                    {otherLicensingInformationDetected.extractedText}
-                                </p>
-                            </td>
-                        </tr>
-                        <tr data-index={otherLicensingInformationDetected.index}>
-                            <td>10.3 License name</td>
-                            <td>
-                                <div className='spdx-col-2'>{otherLicensingInformationDetected.licenseName}</div>
-                            </td>
-                        </tr>
-                        {isModeFull && (
-                            <tr className='spdx-full' data-index={otherLicensingInformationDetected.index}>
-                                <td>10.4 License cross reference</td>
-                                <td>
-                                    <p
-                                        className='spdx-col-2 '
-                                        id={`licenseCrossRefs-${otherLicensingInformationDetected.index}`}
+        return (
+            <table className={`table label-value-table ${styles['summary-table']}`}>
+                <thead
+                    title='Click to expand or collapse'
+                    onClick={() => {
+                        setToggle(!toggle)
+                    }}
+                >
+                    <tr>
+                        <th colSpan={3}>10. Other Licensing Information Detected</th>
+                    </tr>
+                </thead>
+                <tbody hidden={toggle}>
+                    <tr>
+                        <td>
+                            <div style={{ display: 'flex', flexDirection: 'column', paddingLeft: '1rem' }}>
+                                <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '0.75rem' }}>
+                                    <label
+                                        htmlFor='selectOtherLicensing'
+                                        style={{ textDecoration: 'underline' }}
+                                        className='sub-title lableSPDX'
                                     >
-                                        {otherLicensingInformationDetected?.licenseCrossRefs &&
-                                            otherLicensingInformationDetected.licenseCrossRefs.map(
-                                                (licenseCrossRefsData) => {
-                                                    return <>{licenseCrossRefsData}</>
-                                                }
-                                            )}
-                                    </p>
-                                </td>
-                            </tr>
-                        )}
-                        <tr data-index={otherLicensingInformationDetected.index}>
-                            <td>10.5 License comment</td>
-                            <td>
-                                <p
-                                    className='spdx-col-2 '
-                                    id={`otherLicenseComment-${otherLicensingInformationDetected.index}`}
-                                >
-                                    {otherLicensingInformationDetected.licenseComment}
-                                </p>
-                            </td>
-                        </tr>
-                    </>
-                )}
-            </tbody>
-        </table>
-    )
-}
+                                        Select Other Licensing
+                                    </label>
+                                    <select id='selectOtherLicensing' className='form-control spdx-select'></select>
+                                    <FaTrashAlt />
+                                </div>
+                                <button className='spdx-add-button-main' name='add-otherLicensing'>
+                                    Add new Licensing
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div className='form-group'>
+                                <label className='mandatory lableSPDX' htmlFor='licenseId'>
+                                    10.1 License identifier
+                                </label>
+                                <div style={{ display: 'flex' }}>
+                                    <label className='sub-label lableSPDX'>LicenseRef-</label>
+                                    <input
+                                        id='licenseId'
+                                        className='form-control needs-validation'
+                                        type='text'
+                                        placeholder='Enter license identifier'
+                                    />
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div className='form-group'>
+                                <label className='mandatory lableSPDX' htmlFor='extractedText'>
+                                    10.2 Extracted text
+                                </label>
+                                <textarea
+                                    className='form-control needs-validation'
+                                    id='extractedText'
+                                    rows={5}
+                                    name='_sw360_portlet_components_EXTRACTED_TEXT'
+                                    placeholder='Enter extracted text'
+                                ></textarea>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colSpan={3}>
+                            <div className='form-group'>
+                                <label className='lableSPDX'>10.3 License name</label>
+                                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                    <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
+                                        <input
+                                            className='spdx-radio'
+                                            id='licenseNameExist'
+                                            type='radio'
+                                            name='_sw360_portlet_components_LICENSE_NAME'
+                                            value='EXIST'
+                                        />
+                                        <input
+                                            style={{ flex: 6, marginRight: '1rem' }}
+                                            id='licenseName'
+                                            className='form-control needs-validation'
+                                            type='text'
+                                            placeholder='Enter license name'
+                                        />
+                                    </div>
+                                    <div style={{ flex: 2 }}>
+                                        <input
+                                            className='spdx-radio'
+                                            id='licenseNameNoAssertion'
+                                            type='radio'
+                                            name='_sw360_portlet_components_LICENSE_NAME'
+                                            value='NOASSERTION'
+                                        />
+                                        <label
+                                            className='form-check-label radio-label lableSPDX'
+                                            htmlFor='licenseNameNoAssertion'
+                                        >
+                                            NOASSERTION
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr className='spdx-full'>
+                        <td>
+                            <div className='form-group'>
+                                <label className='lableSPDX' htmlFor='licenseCrossRefs'>
+                                    10.4 License cross reference
+                                </label>
+                                <textarea
+                                    className='form-control'
+                                    id='licenseCrossRefs'
+                                    rows={5}
+                                    placeholder='Enter license cross reference'
+                                ></textarea>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div className='form-group'>
+                                <label className='lableSPDX' htmlFor='licenseComment'>
+                                    10.5 License comment
+                                </label>
+                                <textarea
+                                    className='form-control'
+                                    id='licenseCommentOnOtherLicensing'
+                                    rows={5}
+                                    placeholder='Enter license comment'
+                                ></textarea>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        )
+    }
 
 export default OtherLicensingInformationDetectedDetail

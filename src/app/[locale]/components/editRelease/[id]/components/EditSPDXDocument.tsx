@@ -20,7 +20,7 @@ import Annotations from '../../../../../../object-types/spdx/Annotations'
 // import DocumentCreationInformation from '../../../../../../object-types/spdx/DocumentCreationInformation'
 // import ExternalDocumentReferences from '../../../../../../object-types/spdx/ExternalDocumentReferences'
 // import ExternalReference from '../../../../../../object-types/spdx/ExternalReference'
-import OtherLicensingInformationDetected from '../../../../../../object-types/spdx/OtherLicensingInformationDetected'
+// import OtherLicensingInformationDetected from '../../../../../../object-types/spdx/OtherLicensingInformationDetected'
 import PackageInformation from '../../../../../../object-types/spdx/PackageInformation'
 import RelationshipsBetweenSPDXElements from '../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
 import SPDXDocument from '../../../../../../object-types/spdx/SPDXDocument'
@@ -51,8 +51,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
     // const [externalDocumentRef, setExternalDocumentRef] = useState<ExternalDocumentReferences>()
     // const [externalRefsData, setExternalRefsData] = useState<ExternalReference>()
     // const [snippetInformation, setSnippetInformation] = useState<SnippetInformation>()
-    const [otherLicensingInformationDetected, setOtherLicensingInformationDetected] =
-        useState<OtherLicensingInformationDetected>()
+    // const [otherLicensingInformationDetected, setOtherLicensingInformationDetected] =
+    //     useState<OtherLicensingInformationDetected>()
 
     const [relationshipsBetweenSPDXElements, setRelationshipsBetweenSPDXElements] =
         useState<RelationshipsBetweenSPDXElements>()
@@ -99,9 +99,9 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                             release._embedded['sw360:spdxDocument'].otherLicensingInformationDetecteds
                         )
                     ) {
-                        setOtherLicensingInformationDetected(
-                            release._embedded['sw360:spdxDocument'].otherLicensingInformationDetecteds[0]
-                        )
+                        // setOtherLicensingInformationDetected(
+                        //     release._embedded['sw360:spdxDocument'].otherLicensingInformationDetecteds[0]
+                        // )
                     }
                     //RelationshipsBetweenSPDXElements
                     if (
@@ -202,10 +202,10 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     // setSnippetInformation={setSnippetInformation}
                     />
                     <OtherLicensingInformationDetectedDetail
-                        isModeFull={isModeFull}
-                        spdxDocument={spdxDocument}
-                        otherLicensingInformationDetected={otherLicensingInformationDetected}
-                        setOtherLicensingInformationDetected={setOtherLicensingInformationDetected}
+                    // isModeFull={isModeFull}
+                    // spdxDocument={spdxDocument}
+                    // otherLicensingInformationDetected={otherLicensingInformationDetected}
+                    // setOtherLicensingInformationDetected={setOtherLicensingInformationDetected}
                     />
                     <RelationshipbetweenSPDXElementsInformation
                         spdxDocument={spdxDocument}
@@ -239,10 +239,10 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     // setExternalRefsData={setExternalRefsData}
                     />
                     <OtherLicensingInformationDetectedDetail
-                        isModeFull={isModeFull}
-                        spdxDocument={spdxDocument}
-                        otherLicensingInformationDetected={otherLicensingInformationDetected}
-                        setOtherLicensingInformationDetected={setOtherLicensingInformationDetected}
+                    // isModeFull={isModeFull}
+                    // spdxDocument={spdxDocument}
+                    // otherLicensingInformationDetected={otherLicensingInformationDetected}
+                    // setOtherLicensingInformationDetected={setOtherLicensingInformationDetected}
                     />
                 </div>
             )}
