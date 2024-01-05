@@ -17,21 +17,21 @@ import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
 import Annotations from '../../../../../../object-types/spdx/Annotations'
-import DocumentCreationInformation from '../../../../../../object-types/spdx/DocumentCreationInformation'
-import ExternalDocumentReferences from '../../../../../../object-types/spdx/ExternalDocumentReferences'
-import ExternalReference from '../../../../../../object-types/spdx/ExternalReference'
+// import DocumentCreationInformation from '../../../../../../object-types/spdx/DocumentCreationInformation'
+// import ExternalDocumentReferences from '../../../../../../object-types/spdx/ExternalDocumentReferences'
+// import ExternalReference from '../../../../../../object-types/spdx/ExternalReference'
 import OtherLicensingInformationDetected from '../../../../../../object-types/spdx/OtherLicensingInformationDetected'
 import PackageInformation from '../../../../../../object-types/spdx/PackageInformation'
 import RelationshipsBetweenSPDXElements from '../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
 import SPDXDocument from '../../../../../../object-types/spdx/SPDXDocument'
-import SnippetInformation from '../../../../../../object-types/spdx/SnippetInformation'
-import SnippetInformationDetail from './spdx/ SnippetInformation'
+// import SnippetInformation from '../../../../../../object-types/spdx/SnippetInformation'
 import AnnotationInformation from './spdx/AnnotationInformation'
 import styles from './spdx/CssButton.module.css'
 import DocumentCreationInformationDetail from './spdx/DocumentCreationInformation'
 import OtherLicensingInformationDetectedDetail from './spdx/OtherLicensingInformationDetectedDetail'
 import PackageInformationDetail from './spdx/PackageInformationDetail'
 import RelationshipbetweenSPDXElementsInformation from './spdx/RelationshipbetweenSPDXElementsInformation'
+import SnippetInformationDetail from './spdx/SnippetInformation'
 
 interface Props {
     releaseId: string
@@ -42,15 +42,15 @@ interface Props {
 const EditSPDXDocument = ({ releaseId }: Props) => {
     const t = useTranslations('default')
     const [spdxDocument, setSPDXDocument] = useState<SPDXDocument>()
-    const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
+    // const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
     const [packageInformation, setPackageInformation] = useState<PackageInformation>()
     // const [snippetInformations, setSnippetInformations] = useState<SnippetInformation>()
     // const [otherLicensingInformationDetecteds, setOtherLicensingInformationDetected] = useState<OtherLicensingInformationDetected>()
     // const [relationshipsBetweenSPDXElements, setRelationshipsBetweenSPDXElements] = useState<RelationshipsBetweenSPDXElements>()
     // const [annotations, setAnnotations] = useState<Annotations>()
-    const [externalDocumentRef, setExternalDocumentRef] = useState<ExternalDocumentReferences>()
-    const [externalRefsData, setExternalRefsData] = useState<ExternalReference>()
-    const [snippetInformation, setSnippetInformation] = useState<SnippetInformation>()
+    // const [externalDocumentRef, setExternalDocumentRef] = useState<ExternalDocumentReferences>()
+    // const [externalRefsData, setExternalRefsData] = useState<ExternalReference>()
+    // const [snippetInformation, setSnippetInformation] = useState<SnippetInformation>()
     const [otherLicensingInformationDetected, setOtherLicensingInformationDetected] =
         useState<OtherLicensingInformationDetected>()
 
@@ -91,7 +91,7 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     setSPDXDocument(release._embedded['sw360:spdxDocument'])
                     //SnippetInformation
                     if (!CommonUtils.isNullEmptyOrUndefinedArray(release._embedded['sw360:spdxDocument'].snippets)) {
-                        setSnippetInformation(release._embedded['sw360:spdxDocument'].snippets[0])
+                        // setSnippetInformation(release._embedded['sw360:spdxDocument'].snippets[0])
                     }
                     //OtherLicensingInformationDetected
                     if (
@@ -122,16 +122,16 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     !CommonUtils.isNullOrUndefined(release._embedded) &&
                     !CommonUtils.isNullOrUndefined(release._embedded['sw360:documentCreationInformation'])
                 ) {
-                    setDocumentCreationInformation(release._embedded['sw360:documentCreationInformation'])
+                    // setDocumentCreationInformation(release._embedded['sw360:documentCreationInformation'])
                     // ExternalDocumentRefs
                     if (
                         !CommonUtils.isNullEmptyOrUndefinedArray(
                             release._embedded['sw360:documentCreationInformation'].externalDocumentRefs
                         )
                     ) {
-                        setExternalDocumentRef(
-                            release._embedded['sw360:documentCreationInformation'].externalDocumentRefs[0]
-                        )
+                        // setExternalDocumentRef(
+                        //     release._embedded['sw360:documentCreationInformation'].externalDocumentRefs[0]
+                        // )
                     }
                 }
 
@@ -146,7 +146,7 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                             release._embedded['sw360:packageInformation'].externalRefs
                         )
                     ) {
-                        setExternalRefsData(release._embedded['sw360:packageInformation'].externalRefs[0])
+                        // setExternalRefsData(release._embedded['sw360:packageInformation'].externalRefs[0])
                     }
                 }
             })
@@ -185,21 +185,21 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
             {isModeFull ? (
                 <div className='col'>
                     <DocumentCreationInformationDetail
-                        isModeFull={isModeFull}
-                        documentCreationInformation={documentCreationInformation}
-                        externalDocumentRef={externalDocumentRef}
-                        setExternalDocumentRef={setExternalDocumentRef}
+                    // isModeFull={isModeFull}
+                    // documentCreationInformation={documentCreationInformation}
+                    // externalDocumentRef={externalDocumentRef}
+                    // setExternalDocumentRef={setExternalDocumentRef}
                     />
                     <PackageInformationDetail
-                        isModeFull={isModeFull}
-                        packageInformation={packageInformation}
-                        externalRefsData={externalRefsData}
-                        setExternalRefsData={setExternalRefsData}
+                    // isModeFull={isModeFull}
+                    // packageInformation={packageInformation}
+                    // externalRefsData={externalRefsData}
+                    // setExternalRefsData={setExternalRefsData}
                     />
                     <SnippetInformationDetail
-                        spdxDocument={spdxDocument}
-                        snippetInformation={snippetInformation}
-                        setSnippetInformation={setSnippetInformation}
+                    // spdxDocument={spdxDocument}
+                    // snippetInformation={snippetInformation}
+                    // setSnippetInformation={setSnippetInformation}
                     />
                     <OtherLicensingInformationDetectedDetail
                         isModeFull={isModeFull}
@@ -227,16 +227,16 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
             ) : (
                 <div className='col'>
                     <DocumentCreationInformationDetail
-                        isModeFull={isModeFull}
-                        documentCreationInformation={documentCreationInformation}
-                        externalDocumentRef={externalDocumentRef}
-                        setExternalDocumentRef={setExternalDocumentRef}
+                    // isModeFull={isModeFull}
+                    // documentCreationInformation={documentCreationInformation}
+                    // externalDocumentRef={externalDocumentRef}
+                    // setExternalDocumentRef={setExternalDocumentRef}
                     />
                     <PackageInformationDetail
-                        isModeFull={isModeFull}
-                        packageInformation={packageInformation}
-                        externalRefsData={externalRefsData}
-                        setExternalRefsData={setExternalRefsData}
+                    // isModeFull={isModeFull}
+                    // packageInformation={packageInformation}
+                    // externalRefsData={externalRefsData}
+                    // setExternalRefsData={setExternalRefsData}
                     />
                     <OtherLicensingInformationDetectedDetail
                         isModeFull={isModeFull}
