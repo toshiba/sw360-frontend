@@ -17,8 +17,8 @@ import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
 // import Annotations from '../../../../../../object-types/spdx/Annotations'
-// import DocumentCreationInformation from '../../../../../../object-types/spdx/DocumentCreationInformation'
-// import ExternalDocumentReferences from '../../../../../../object-types/spdx/ExternalDocumentReferences'
+import DocumentCreationInformation from '../../../../../../object-types/spdx/DocumentCreationInformation'
+import ExternalDocumentReferences from '../../../../../../object-types/spdx/ExternalDocumentReferences'
 // import ExternalReference from '../../../../../../object-types/spdx/ExternalReference'
 // import OtherLicensingInformationDetected from '../../../../../../object-types/spdx/OtherLicensingInformationDetected'
 // import PackageInformation from '../../../../../../object-types/spdx/PackageInformation'
@@ -42,13 +42,13 @@ interface Props {
 const EditSPDXDocument = ({ releaseId }: Props) => {
     const t = useTranslations('default')
     // const [spdxDocument, setSPDXDocument] = useState<SPDXDocument>()
-    // const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
+    const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
     // const [packageInformation, setPackageInformation] = useState<PackageInformation>()
     // const [snippetInformations, setSnippetInformations] = useState<SnippetInformation>()
     // const [otherLicensingInformationDetecteds, setOtherLicensingInformationDetected] = useState<OtherLicensingInformationDetected>()
     // const [relationshipsBetweenSPDXElements, setRelationshipsBetweenSPDXElements] = useState<RelationshipsBetweenSPDXElements>()
     // const [annotations, setAnnotations] = useState<Annotations>()
-    // const [externalDocumentRef, setExternalDocumentRef] = useState<ExternalDocumentReferences>()
+    const [externalDocumentRef, setExternalDocumentRef] = useState<ExternalDocumentReferences>()
     // const [externalRefsData, setExternalRefsData] = useState<ExternalReference>()
     // const [snippetInformation, setSnippetInformation] = useState<SnippetInformation>()
     // const [otherLicensingInformationDetected, setOtherLicensingInformationDetected] =
@@ -122,16 +122,16 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     !CommonUtils.isNullOrUndefined(release._embedded) &&
                     !CommonUtils.isNullOrUndefined(release._embedded['sw360:documentCreationInformation'])
                 ) {
-                    // setDocumentCreationInformation(release._embedded['sw360:documentCreationInformation'])
+                    setDocumentCreationInformation(release._embedded['sw360:documentCreationInformation'])
                     // ExternalDocumentRefs
                     if (
                         !CommonUtils.isNullEmptyOrUndefinedArray(
                             release._embedded['sw360:documentCreationInformation'].externalDocumentRefs
                         )
                     ) {
-                        // setExternalDocumentRef(
-                        //     release._embedded['sw360:documentCreationInformation'].externalDocumentRefs[0]
-                        // )
+                        setExternalDocumentRef(
+                            release._embedded['sw360:documentCreationInformation'].externalDocumentRefs[0]
+                        )
                     }
                 }
 
@@ -185,10 +185,10 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
             {isModeFull ? (
                 <div className='col'>
                     <DocumentCreationInformationDetail
-                    // isModeFull={isModeFull}
-                    // documentCreationInformation={documentCreationInformation}
-                    // externalDocumentRef={externalDocumentRef}
-                    // setExternalDocumentRef={setExternalDocumentRef}
+                        isModeFull={isModeFull}
+                        documentCreationInformation={documentCreationInformation}
+                        externalDocumentRef={externalDocumentRef}
+                        setExternalDocumentRef={setExternalDocumentRef}
                     />
                     <PackageInformationDetail
                     // isModeFull={isModeFull}
