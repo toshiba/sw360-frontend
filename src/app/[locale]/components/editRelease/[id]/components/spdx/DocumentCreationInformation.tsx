@@ -9,6 +9,7 @@
 // License-Filename: LICENSE
 
 'use client'
+import CommonUtils from '@/utils/common.utils'
 import { useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import DocumentCreationInformation from '../../../../../../../object-types/spdx/DocumentCreationInformation'
@@ -364,7 +365,7 @@ const DocumentCreationInformationDetail = ({
                                                 type='date'
                                                 className='form-control spdx-date needs-validation'
                                                 placeholder='created.date.yyyy.mm.dd'
-                                                // value={documentCreationInformation.created ?? ''}
+                                                value={CommonUtils.fillDate(documentCreationInformation.created) ?? ''}
                                             />
                                         </div>
                                         <div>
@@ -374,7 +375,7 @@ const DocumentCreationInformationDetail = ({
                                                 step='1'
                                                 className='form-control spdx-time needs-validation'
                                                 placeholder='created.time.hh.mm.ss'
-                                                // value={documentCreationInformation.created ?? ''}
+                                                value={CommonUtils.fillTime(documentCreationInformation.created) ?? ''}
                                             />
                                         </div>
                                     </div>

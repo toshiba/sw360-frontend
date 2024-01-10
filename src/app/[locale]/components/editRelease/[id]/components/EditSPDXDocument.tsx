@@ -19,9 +19,9 @@ import { useCallback, useEffect, useState } from 'react'
 // import Annotations from '../../../../../../object-types/spdx/Annotations'
 import DocumentCreationInformation from '../../../../../../object-types/spdx/DocumentCreationInformation'
 import ExternalDocumentReferences from '../../../../../../object-types/spdx/ExternalDocumentReferences'
-// import ExternalReference from '../../../../../../object-types/spdx/ExternalReference'
+import ExternalReference from '../../../../../../object-types/spdx/ExternalReference'
 // import OtherLicensingInformationDetected from '../../../../../../object-types/spdx/OtherLicensingInformationDetected'
-// import PackageInformation from '../../../../../../object-types/spdx/PackageInformation'
+import PackageInformation from '../../../../../../object-types/spdx/PackageInformation'
 // import RelationshipsBetweenSPDXElements from '../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
 // import SPDXDocument from '../../../../../../object-types/spdx/SPDXDocument'
 // import SnippetInformation from '../../../../../../object-types/spdx/SnippetInformation'
@@ -43,13 +43,13 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
     const t = useTranslations('default')
     // const [spdxDocument, setSPDXDocument] = useState<SPDXDocument>()
     const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
-    // const [packageInformation, setPackageInformation] = useState<PackageInformation>()
+    const [packageInformation, setPackageInformation] = useState<PackageInformation>()
     // const [snippetInformations, setSnippetInformations] = useState<SnippetInformation>()
     // const [otherLicensingInformationDetecteds, setOtherLicensingInformationDetected] = useState<OtherLicensingInformationDetected>()
     // const [relationshipsBetweenSPDXElements, setRelationshipsBetweenSPDXElements] = useState<RelationshipsBetweenSPDXElements>()
     // const [annotations, setAnnotations] = useState<Annotations>()
     const [externalDocumentRef, setExternalDocumentRef] = useState<ExternalDocumentReferences>()
-    // const [externalRefsData, setExternalRefsData] = useState<ExternalReference>()
+    const [externalRefsData, setExternalRefsData] = useState<ExternalReference>()
     // const [snippetInformation, setSnippetInformation] = useState<SnippetInformation>()
     // const [otherLicensingInformationDetected, setOtherLicensingInformationDetected] =
     //     useState<OtherLicensingInformationDetected>()
@@ -140,13 +140,13 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     !CommonUtils.isNullOrUndefined(release._embedded) &&
                     !CommonUtils.isNullOrUndefined(release._embedded['sw360:packageInformation'])
                 ) {
-                    // setPackageInformation(release._embedded['sw360:packageInformation'])
+                    setPackageInformation(release._embedded['sw360:packageInformation'])
                     if (
                         !CommonUtils.isNullEmptyOrUndefinedArray(
                             release._embedded['sw360:packageInformation'].externalRefs
                         )
                     ) {
-                        // setExternalRefsData(release._embedded['sw360:packageInformation'].externalRefs[0])
+                        setExternalRefsData(release._embedded['sw360:packageInformation'].externalRefs[0])
                     }
                 }
             })
@@ -191,10 +191,10 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         setExternalDocumentRef={setExternalDocumentRef}
                     />
                     <PackageInformationDetail
-                    // isModeFull={isModeFull}
-                    // packageInformation={packageInformation}
-                    // externalRefsData={externalRefsData}
-                    // setExternalRefsData={setExternalRefsData}
+                        isModeFull={isModeFull}
+                        packageInformation={packageInformation}
+                        externalRefsData={externalRefsData}
+                        setExternalRefsData={setExternalRefsData}
                     />
                     <SnippetInformationDetail
                     // spdxDocument={spdxDocument}
@@ -227,16 +227,16 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
             ) : (
                 <div className='col'>
                     <DocumentCreationInformationDetail
-                    // isModeFull={isModeFull}
-                    // documentCreationInformation={documentCreationInformation}
-                    // externalDocumentRef={externalDocumentRef}
-                    // setExternalDocumentRef={setExternalDocumentRef}
+                        isModeFull={isModeFull}
+                        documentCreationInformation={documentCreationInformation}
+                        externalDocumentRef={externalDocumentRef}
+                        setExternalDocumentRef={setExternalDocumentRef}
                     />
                     <PackageInformationDetail
-                    // isModeFull={isModeFull}
-                    // packageInformation={packageInformation}
-                    // externalRefsData={externalRefsData}
-                    // setExternalRefsData={setExternalRefsData}
+                        isModeFull={isModeFull}
+                        packageInformation={packageInformation}
+                        externalRefsData={externalRefsData}
+                        setExternalRefsData={setExternalRefsData}
                     />
                     <OtherLicensingInformationDetectedDetail
                     // isModeFull={isModeFull}
