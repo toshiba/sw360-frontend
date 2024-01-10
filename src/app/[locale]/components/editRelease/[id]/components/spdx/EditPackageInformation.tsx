@@ -77,7 +77,7 @@ const EditPackageInformation = ({ packageInformation, externalRefsData, setExter
                                             type='text'
                                             placeholder='Enter package SPDX identifier'
                                             name='_sw360_portlet_components_PACKAGE_SPDX_ID'
-                                            value={packageInformation.SPDXID ?? ''}
+                                            value={packageInformation.SPDXID.substring(8) ?? ''}
                                         />
                                     </div>
                                 </div>
@@ -152,7 +152,7 @@ const EditPackageInformation = ({ packageInformation, externalRefsData, setExter
                                                         type='text'
                                                         name='_sw360_portlet_components_SUPPLIER_VALUE'
                                                         placeholder='Enter package supplier'
-                                                        value={packageInformation.supplier ?? ''}
+                                                        value={packageInformation.supplier.substring(14) ?? ''}
                                                     />
                                                 </div>
                                                 <div style={{ flex: 2 }}>
@@ -202,7 +202,7 @@ const EditPackageInformation = ({ packageInformation, externalRefsData, setExter
                                                         type='text'
                                                         name='_sw360_portlet_components_ORIGINATOR_VALUE'
                                                         placeholder='Enter package originator'
-                                                        value={packageInformation.originator ?? ''}
+                                                        value={packageInformation.originator.substring(14) ?? ''}
                                                     />
                                                 </div>
                                                 <div style={{ flex: 2 }}>

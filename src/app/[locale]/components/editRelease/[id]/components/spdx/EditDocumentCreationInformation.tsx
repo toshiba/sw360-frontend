@@ -64,7 +64,7 @@ const EditDocumentCreationInformation = ({
                                             className='form-control needs-validation'
                                             type='text'
                                             placeholder='Enter SPDX version'
-                                            value={documentCreationInformation.spdxVersion ?? ''}
+                                            value={documentCreationInformation.spdxVersion.substring(5) ?? ''}
                                         />
                                     </div>
                                 </div>
@@ -95,7 +95,7 @@ const EditDocumentCreationInformation = ({
                                             className='form-control needs-validation'
                                             type='text'
                                             placeholder='Enter SPDX identifier'
-                                            value={documentCreationInformation.SPDXID ?? ''}
+                                            value={documentCreationInformation.SPDXID.substring(8) ?? ''}
                                         />
                                     </div>
                                 </div>

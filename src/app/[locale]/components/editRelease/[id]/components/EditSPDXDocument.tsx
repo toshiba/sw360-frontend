@@ -23,15 +23,15 @@ import ExternalReference from '../../../../../../object-types/spdx/ExternalRefer
 // import OtherLicensingInformationDetected from '../../../../../../object-types/spdx/OtherLicensingInformationDetected'
 import PackageInformation from '../../../../../../object-types/spdx/PackageInformation'
 // import RelationshipsBetweenSPDXElements from '../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
-// import SPDXDocument from '../../../../../../object-types/spdx/SPDXDocument'
-// import SnippetInformation from '../../../../../../object-types/spdx/SnippetInformation'
+import SPDXDocument from '../../../../../../object-types/spdx/SPDXDocument'
+import SnippetInformation from '../../../../../../object-types/spdx/SnippetInformation'
 import AnnotationInformation from './spdx/AnnotationInformation'
 import styles from './spdx/CssButton.module.css'
 import EditDocumentCreationInformation from './spdx/EditDocumentCreationInformation'
 import EditPackageInformation from './spdx/EditPackageInformation'
+import EditSnippetInformation from './spdx/EditSnippetInformation'
 import OtherLicensingInformationDetectedDetail from './spdx/OtherLicensingInformationDetectedDetail'
 import RelationshipbetweenSPDXElementsInformation from './spdx/RelationshipbetweenSPDXElementsInformation'
-import SnippetInformationDetail from './spdx/SnippetInformation'
 
 interface Props {
     releaseId: string
@@ -41,7 +41,7 @@ interface Props {
 
 const EditSPDXDocument = ({ releaseId }: Props) => {
     const t = useTranslations('default')
-    // const [spdxDocument, setSPDXDocument] = useState<SPDXDocument>()
+    const [spdxDocument, setSPDXDocument] = useState<SPDXDocument>()
     const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
     const [packageInformation, setPackageInformation] = useState<PackageInformation>()
     // const [snippetInformations, setSnippetInformations] = useState<SnippetInformation>()
@@ -50,7 +50,7 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
     // const [annotations, setAnnotations] = useState<Annotations>()
     const [externalDocumentRef, setExternalDocumentRef] = useState<ExternalDocumentReferences>()
     const [externalRefsData, setExternalRefsData] = useState<ExternalReference>()
-    // const [snippetInformation, setSnippetInformation] = useState<SnippetInformation>()
+    const [snippetInformation, setSnippetInformation] = useState<SnippetInformation>()
     // const [otherLicensingInformationDetected, setOtherLicensingInformationDetected] =
     //     useState<OtherLicensingInformationDetected>()
 
@@ -88,10 +88,10 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     !CommonUtils.isNullOrUndefined(release._embedded) &&
                     !CommonUtils.isNullOrUndefined(release._embedded['sw360:spdxDocument'])
                 ) {
-                    // setSPDXDocument(release._embedded['sw360:spdxDocument'])
+                    setSPDXDocument(release._embedded['sw360:spdxDocument'])
                     //SnippetInformation
                     if (!CommonUtils.isNullEmptyOrUndefinedArray(release._embedded['sw360:spdxDocument'].snippets)) {
-                        // setSnippetInformation(release._embedded['sw360:spdxDocument'].snippets[0])
+                        setSnippetInformation(release._embedded['sw360:spdxDocument'].snippets[0])
                     }
                     //OtherLicensingInformationDetected
                     if (
@@ -196,10 +196,10 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         externalRefsData={externalRefsData}
                         setExternalRefsData={setExternalRefsData}
                     />
-                    <SnippetInformationDetail
-                    // spdxDocument={spdxDocument}
-                    // snippetInformation={snippetInformation}
-                    // setSnippetInformation={setSnippetInformation}
+                    <EditSnippetInformation
+                        spdxDocument={spdxDocument}
+                        snippetInformation={snippetInformation}
+                        setSnippetInformation={setSnippetInformation}
                     />
                     <OtherLicensingInformationDetectedDetail
                     // isModeFull={isModeFull}
