@@ -23,7 +23,7 @@ interface Props {
     isModeFull?: boolean
 }
 
-const PackageInformationDetail = ({ packageInformation, externalRefsData, setExternalRefsData, isModeFull }: Props) => {
+const EditPackageInformation = ({ packageInformation, externalRefsData, setExternalRefsData, isModeFull }: Props) => {
     const [toggle, setToggle] = useState(false)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -121,106 +121,111 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                             </td>
                         </tr>
 
-                        <tr className='spdx-full'>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX'>7.5 Package supplier</label>
-                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                            <input
-                                                className='spdx-radio'
-                                                type='radio'
-                                                name='_sw360_portlet_components_SUPPLIER'
-                                                value='EXIST'
-                                                checked={true}
-                                            />
-                                            <select
-                                                id='supplierType'
-                                                style={{ flex: 2, marginRight: '1rem' }}
-                                                className='form-control'
-                                            >
-                                                <option>Organization</option>
-                                                <option>Person</option>
-                                            </select>
-                                            <input
-                                                style={{ flex: 6, marginRight: '1rem' }}
-                                                id='supplierValue'
-                                                className='form-control'
-                                                type='text'
-                                                name='_sw360_portlet_components_SUPPLIER_VALUE'
-                                                placeholder='Enter package supplier'
-                                                value={packageInformation.supplier ?? ''}
-                                            />
+                        {isModeFull && (
+                            <>
+                                {' '}
+                                <tr className='spdx-full'>
+                                    <td colSpan={3}>
+                                        <div className='form-group'>
+                                            <label className='lableSPDX'>7.5 Package supplier</label>
+                                            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                                <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
+                                                    <input
+                                                        className='spdx-radio'
+                                                        type='radio'
+                                                        name='_sw360_portlet_components_SUPPLIER'
+                                                        value='EXIST'
+                                                        checked={true}
+                                                    />
+                                                    <select
+                                                        id='supplierType'
+                                                        style={{ flex: 2, marginRight: '1rem' }}
+                                                        className='form-control'
+                                                    >
+                                                        <option>Organization</option>
+                                                        <option>Person</option>
+                                                    </select>
+                                                    <input
+                                                        style={{ flex: 6, marginRight: '1rem' }}
+                                                        id='supplierValue'
+                                                        className='form-control'
+                                                        type='text'
+                                                        name='_sw360_portlet_components_SUPPLIER_VALUE'
+                                                        placeholder='Enter package supplier'
+                                                        value={packageInformation.supplier ?? ''}
+                                                    />
+                                                </div>
+                                                <div style={{ flex: 2 }}>
+                                                    <input
+                                                        className='spdx-radio lableSPDX'
+                                                        id='supplierNoAssertion'
+                                                        type='radio'
+                                                        name='_sw360_portlet_components_SUPPLIER'
+                                                        value='NOASSERTION'
+                                                    />
+                                                    <label
+                                                        className='form-check-label radio-label lableSPDX'
+                                                        htmlFor='supplierNoAssertion'
+                                                    >
+                                                        NOASSERTION
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div style={{ flex: 2 }}>
-                                            <input
-                                                className='spdx-radio lableSPDX'
-                                                id='supplierNoAssertion'
-                                                type='radio'
-                                                name='_sw360_portlet_components_SUPPLIER'
-                                                value='NOASSERTION'
-                                            />
-                                            <label
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='supplierNoAssertion'
-                                            >
-                                                NOASSERTION
-                                            </label>
+                                    </td>
+                                </tr>
+                                <tr className='spdx-full'>
+                                    <td colSpan={3}>
+                                        <div className='form-group'>
+                                            <label className='lableSPDX'>7.6 Package originator</label>
+                                            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                                <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
+                                                    <input
+                                                        className='spdx-radio'
+                                                        type='radio'
+                                                        name='_sw360_portlet_components_ORIGINATOR'
+                                                        value='EXIST'
+                                                        checked={true}
+                                                    />
+                                                    <select
+                                                        id='originatorType'
+                                                        style={{ flex: 2, marginRight: '1rem' }}
+                                                        className='form-control'
+                                                    >
+                                                        <option>Organization</option>
+                                                        <option>Person</option>
+                                                    </select>
+                                                    <input
+                                                        style={{ flex: 6, marginRight: '1rem' }}
+                                                        className='form-control'
+                                                        id='originatorValue'
+                                                        type='text'
+                                                        name='_sw360_portlet_components_ORIGINATOR_VALUE'
+                                                        placeholder='Enter package originator'
+                                                        value={packageInformation.originator ?? ''}
+                                                    />
+                                                </div>
+                                                <div style={{ flex: 2 }}>
+                                                    <input
+                                                        className='spdx-radio'
+                                                        id='originatorNoAssertion'
+                                                        type='radio'
+                                                        name='_sw360_portlet_components_ORIGINATOR'
+                                                        value='NOASSERTION'
+                                                    />
+                                                    <label
+                                                        className='form-check-label radio-label lableSPDX'
+                                                        htmlFor='originatorNoAssertion'
+                                                    >
+                                                        NOASSERTION
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr className='spdx-full'>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX'>7.6 Package originator</label>
-                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                            <input
-                                                className='spdx-radio'
-                                                type='radio'
-                                                name='_sw360_portlet_components_ORIGINATOR'
-                                                value='EXIST'
-                                                checked={true}
-                                            />
-                                            <select
-                                                id='originatorType'
-                                                style={{ flex: 2, marginRight: '1rem' }}
-                                                className='form-control'
-                                            >
-                                                <option>Organization</option>
-                                                <option>Person</option>
-                                            </select>
-                                            <input
-                                                style={{ flex: 6, marginRight: '1rem' }}
-                                                className='form-control'
-                                                id='originatorValue'
-                                                type='text'
-                                                name='_sw360_portlet_components_ORIGINATOR_VALUE'
-                                                placeholder='Enter package originator'
-                                                value={packageInformation.originator ?? ''}
-                                            />
-                                        </div>
-                                        <div style={{ flex: 2 }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='originatorNoAssertion'
-                                                type='radio'
-                                                name='_sw360_portlet_components_ORIGINATOR'
-                                                value='NOASSERTION'
-                                            />
-                                            <label
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='originatorNoAssertion'
-                                            >
-                                                NOASSERTION
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                                    </td>
+                                </tr>
+                            </>
+                        )}
                         <tr>
                             <td colSpan={3}>
                                 <div className='form-group'>
@@ -316,66 +321,73 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                                 </div>
                             </td>
                         </tr>
-                        <tr className='spdx-full'>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX' htmlFor='verificationCodeValue'>
-                                        7.9 Package verification code
-                                    </label>
-                                    <div>
-                                        <input
-                                            style={{ marginBottom: '0.75rem' }}
-                                            className='form-control'
-                                            id='verificationCodeValue'
-                                            name='_sw360_portlet_components_VERIFICATION_CODE_VALUE'
-                                            placeholder='Enter verification code value'
-                                            value={packageInformation.packageVerificationCode?.excludedFiles ?? ''}
-                                        ></input>
-                                        <textarea
-                                            className='form-control'
-                                            id='excludedFiles'
-                                            rows={5}
-                                            name='_sw360_portlet_components_EXCLUDED_FILES'
-                                            placeholder='Enter excluded files'
-                                            value={packageInformation.packageVerificationCode.value ?? ''}
-                                        ></textarea>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr className='spdx-full'>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX'>7.10 Package checksum</label>
-                                    <div style={{ display: 'flex' }}>
-                                        <label className='sub-title lableSPDX'>Checksum</label>
-                                        <div style={{ display: 'flex', flexDirection: 'column', flex: 7 }}>
-                                            <div style={{ display: 'none', marginBottom: '0.75rem' }}>
+                        {isModeFull && (
+                            <>
+                                {' '}
+                                <tr className='spdx-full'>
+                                    <td colSpan={3}>
+                                        <div className='form-group'>
+                                            <label className='lableSPDX' htmlFor='verificationCodeValue'>
+                                                7.9 Package verification code
+                                            </label>
+                                            <div>
                                                 <input
-                                                    style={{ flex: 2, marginRight: '1rem' }}
-                                                    type='text'
-                                                    className='form-control checksum-algorithm'
-                                                    placeholder='Enter algorithm'
-                                                />
-                                                <input
-                                                    style={{ flex: 6, marginRight: '2rem' }}
-                                                    type='text'
-                                                    className='form-control checksum-value'
-                                                    placeholder='Enter value'
-                                                />
-                                                <FaTrashAlt />
+                                                    style={{ marginBottom: '0.75rem' }}
+                                                    className='form-control'
+                                                    id='verificationCodeValue'
+                                                    name='_sw360_portlet_components_VERIFICATION_CODE_VALUE'
+                                                    placeholder='Enter verification code value'
+                                                    value={
+                                                        packageInformation.packageVerificationCode?.excludedFiles ?? ''
+                                                    }
+                                                ></input>
+                                                <textarea
+                                                    className='form-control'
+                                                    id='excludedFiles'
+                                                    rows={5}
+                                                    name='_sw360_portlet_components_EXCLUDED_FILES'
+                                                    placeholder='Enter excluded files'
+                                                    value={packageInformation.packageVerificationCode.value ?? ''}
+                                                ></textarea>
                                             </div>
-                                            <button
-                                                id='addNewAlgorithm'
-                                                className='spdx-add-button-sub spdx-add-button-sub-checksum'
-                                            >
-                                                Add new algorithm
-                                            </button>
                                         </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                                    </td>
+                                </tr>
+                                <tr className='spdx-full'>
+                                    <td colSpan={3}>
+                                        <div className='form-group'>
+                                            <label className='lableSPDX'>7.10 Package checksum</label>
+                                            <div style={{ display: 'flex' }}>
+                                                <label className='sub-title lableSPDX'>Checksum</label>
+                                                <div style={{ display: 'flex', flexDirection: 'column', flex: 7 }}>
+                                                    <div style={{ display: 'none', marginBottom: '0.75rem' }}>
+                                                        <input
+                                                            style={{ flex: 2, marginRight: '1rem' }}
+                                                            type='text'
+                                                            className='form-control checksum-algorithm'
+                                                            placeholder='Enter algorithm'
+                                                        />
+                                                        <input
+                                                            style={{ flex: 6, marginRight: '2rem' }}
+                                                            type='text'
+                                                            className='form-control checksum-value'
+                                                            placeholder='Enter value'
+                                                        />
+                                                        <FaTrashAlt />
+                                                    </div>
+                                                    <button
+                                                        id='addNewAlgorithm'
+                                                        className='spdx-add-button-sub spdx-add-button-sub-checksum'
+                                                    >
+                                                        Add new algorithm
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </>
+                        )}
                         <tr>
                             <td colSpan={3}>
                                 <div className='form-group'>
@@ -433,25 +445,27 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                                 </div>
                             </td>
                         </tr>
-                        <tr className='spdx-full'>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX' htmlFor='verificationCodeValue'>
-                                        7.12 Source information
-                                    </label>
-                                    <div>
-                                        <textarea
-                                            className='form-control'
-                                            id='excludedFiles'
-                                            rows={5}
-                                            name='_sw360_portlet_components_EXCLUDED_FILES'
-                                            placeholder='Enter excluded files'
-                                            value={packageInformation.sourceInfo}
-                                        ></textarea>
+                        {isModeFull && (
+                            <tr className='spdx-full'>
+                                <td colSpan={3}>
+                                    <div className='form-group'>
+                                        <label className='lableSPDX' htmlFor='verificationCodeValue'>
+                                            7.12 Source information
+                                        </label>
+                                        <div>
+                                            <textarea
+                                                className='form-control'
+                                                id='excludedFiles'
+                                                rows={5}
+                                                name='_sw360_portlet_components_EXCLUDED_FILES'
+                                                placeholder='Enter excluded files'
+                                                value={packageInformation.sourceInfo}
+                                            ></textarea>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        )}
                         <tr>
                             <td colSpan={3}>
                                 <div className='form-group'>
@@ -509,63 +523,65 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX'>7.14 All licenses information from file</label>
-                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='licenseInfoInFile'
-                                                type='radio'
-                                                name='licenseInfoFromFiles'
-                                                value='EXIST'
-                                                checked={true}
-                                            />
-                                            <textarea
-                                                style={{ flex: 6, marginRight: '1rem' }}
-                                                id='licenseInfoInFileValue'
-                                                rows={5}
-                                                className='form-control'
-                                                name='_sw360_portlet_components_LICENSE_INFO_IN_FILE_SOURCE'
-                                                placeholder='Enter all licenses information from files'
-                                                value={packageInformation.licenseInfoFromFiles}
-                                            ></textarea>
-                                        </div>
-                                        <div style={{ flex: 2 }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='licenseInfoInFileNone'
-                                                type='radio'
-                                                name='_sw360_portlet_components_LICENSE_INFO_IN_FILE'
-                                                value='NONE'
-                                            />
-                                            <label
-                                                style={{ marginRight: '2rem' }}
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='licenseInfoInFileNone'
-                                            >
-                                                NONE
-                                            </label>
-                                            <input
-                                                className='spdx-radio'
-                                                id='licenseInfoInFileNoAssertion'
-                                                type='radio'
-                                                name='_sw360_portlet_components_LICENSE_INFO_IN_FILE'
-                                                value='NOASSERTION'
-                                            />
-                                            <label
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='licenseInfoInFileNoAssertion'
-                                            >
-                                                NOASSERTION
-                                            </label>
+                        {isModeFull && (
+                            <tr>
+                                <td colSpan={3}>
+                                    <div className='form-group'>
+                                        <label className='lableSPDX'>7.14 All licenses information from file</label>
+                                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                            <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
+                                                <input
+                                                    className='spdx-radio'
+                                                    id='licenseInfoInFile'
+                                                    type='radio'
+                                                    name='licenseInfoFromFiles'
+                                                    value='EXIST'
+                                                    checked={true}
+                                                />
+                                                <textarea
+                                                    style={{ flex: 6, marginRight: '1rem' }}
+                                                    id='licenseInfoInFileValue'
+                                                    rows={5}
+                                                    className='form-control'
+                                                    name='_sw360_portlet_components_LICENSE_INFO_IN_FILE_SOURCE'
+                                                    placeholder='Enter all licenses information from files'
+                                                    value={packageInformation.licenseInfoFromFiles}
+                                                ></textarea>
+                                            </div>
+                                            <div style={{ flex: 2 }}>
+                                                <input
+                                                    className='spdx-radio'
+                                                    id='licenseInfoInFileNone'
+                                                    type='radio'
+                                                    name='_sw360_portlet_components_LICENSE_INFO_IN_FILE'
+                                                    value='NONE'
+                                                />
+                                                <label
+                                                    style={{ marginRight: '2rem' }}
+                                                    className='form-check-label radio-label lableSPDX'
+                                                    htmlFor='licenseInfoInFileNone'
+                                                >
+                                                    NONE
+                                                </label>
+                                                <input
+                                                    className='spdx-radio'
+                                                    id='licenseInfoInFileNoAssertion'
+                                                    type='radio'
+                                                    name='_sw360_portlet_components_LICENSE_INFO_IN_FILE'
+                                                    value='NOASSERTION'
+                                                />
+                                                <label
+                                                    className='form-check-label radio-label lableSPDX'
+                                                    htmlFor='licenseInfoInFileNoAssertion'
+                                                >
+                                                    NOASSERTION
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        )}
                         <tr>
                             <td colSpan={3}>
                                 <div className='form-group'>
@@ -699,44 +715,49 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                                 </div>
                             </td>
                         </tr>
-                        <tr className='spdx-full'>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX' htmlFor='verificationCodeValue'>
-                                        7.18 Package summary description
-                                    </label>
-                                    <div>
-                                        <textarea
-                                            className='form-control'
-                                            id='excludedFiles'
-                                            rows={5}
-                                            name='_sw360_portlet_components_EXCLUDED_FILES'
-                                            placeholder='Enter excluded files'
-                                            value={packageInformation.summary ?? ''}
-                                        ></textarea>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr className='spdx-full'>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX' htmlFor='verificationCodeValue'>
-                                        7.19 Package detailed description
-                                    </label>
-                                    <div>
-                                        <textarea
-                                            className='form-control'
-                                            id='excludedFiles'
-                                            rows={5}
-                                            name='_sw360_portlet_components_EXCLUDED_FILES'
-                                            placeholder='Enter excluded files'
-                                            value={packageInformation.description ?? ''}
-                                        ></textarea>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                        {isModeFull && (
+                            <>
+                                {' '}
+                                <tr className='spdx-full'>
+                                    <td colSpan={3}>
+                                        <div className='form-group'>
+                                            <label className='lableSPDX' htmlFor='verificationCodeValue'>
+                                                7.18 Package summary description
+                                            </label>
+                                            <div>
+                                                <textarea
+                                                    className='form-control'
+                                                    id='excludedFiles'
+                                                    rows={5}
+                                                    name='_sw360_portlet_components_EXCLUDED_FILES'
+                                                    placeholder='Enter excluded files'
+                                                    value={packageInformation.summary ?? ''}
+                                                ></textarea>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr className='spdx-full'>
+                                    <td colSpan={3}>
+                                        <div className='form-group'>
+                                            <label className='lableSPDX' htmlFor='verificationCodeValue'>
+                                                7.19 Package detailed description
+                                            </label>
+                                            <div>
+                                                <textarea
+                                                    className='form-control'
+                                                    id='excludedFiles'
+                                                    rows={5}
+                                                    name='_sw360_portlet_components_EXCLUDED_FILES'
+                                                    placeholder='Enter excluded files'
+                                                    value={packageInformation.description ?? ''}
+                                                ></textarea>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </>
+                        )}
                         <tr className='spdx-full'>
                             <td colSpan={3}>
                                 <div className='form-group'>
@@ -887,134 +908,166 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                             </>
                         )}
 
-                        <tr className='spdx-full'>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX' htmlFor='verificationCodeValue'>
-                                        7.23 Package attribution text
-                                    </label>
-                                    <div>
-                                        <textarea
-                                            className='form-control'
-                                            id='excludedFiles'
-                                            rows={5}
-                                            name='_sw360_portlet_components_EXCLUDED_FILES'
-                                            placeholder='Enter excluded files'
-                                            value={packageInformation.attributionText ?? ''}
-                                        ></textarea>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr className='spdx-full'>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX' htmlFor='verificationCodeValue'>
-                                        7.24 Primary Package Purpose
-                                    </label>
-                                    <div>
-                                        <textarea
-                                            className='form-control'
-                                            id='excludedFiles'
-                                            rows={5}
-                                            name='_sw360_portlet_components_EXCLUDED_FILES'
-                                            placeholder='Enter excluded files'
-                                            value={packageInformation.primaryPackagePurpose ?? ''}
-                                        ></textarea>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr className='spdx-full'>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX' htmlFor='createdDate'>
-                                        7.25 Release Date
-                                    </label>
-                                    <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '0.75rem' }}>
-                                        <div>
-                                            <input
-                                                id='createdReleaseDate'
-                                                type='date'
-                                                className='form-control spdx-date needs-validation'
-                                                placeholder='created.date.yyyy.mm.dd'
-                                                value={CommonUtils.fillDate(packageInformation.releaseDate) ?? ''}
-                                            />
+                        {isModeFull && (
+                            <>
+                                <tr className='spdx-full'>
+                                    <td colSpan={3}>
+                                        <div className='form-group'>
+                                            <label className='lableSPDX' htmlFor='verificationCodeValue'>
+                                                7.23 Package attribution text
+                                            </label>
+                                            <div>
+                                                <textarea
+                                                    className='form-control'
+                                                    id='excludedFiles'
+                                                    rows={5}
+                                                    name='_sw360_portlet_components_EXCLUDED_FILES'
+                                                    placeholder='Enter excluded files'
+                                                    value={packageInformation.attributionText ?? ''}
+                                                ></textarea>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <input
-                                                id='createdReleaseTime'
-                                                type='time'
-                                                step='1'
-                                                className='form-control spdx-time needs-validation'
-                                                placeholder='created.time.hh.mm.ss'
-                                                value={CommonUtils.fillTime(packageInformation.releaseDate) ?? ''}
-                                            />
+                                    </td>
+                                </tr>
+                                <tr className='spdx-full'>
+                                    <td colSpan={3}>
+                                        <div className='form-group'>
+                                            <label className='lableSPDX' htmlFor='verificationCodeValue'>
+                                                7.24 Primary Package Purpose
+                                            </label>
+                                            <div>
+                                                <textarea
+                                                    className='form-control'
+                                                    id='excludedFiles'
+                                                    rows={5}
+                                                    name='_sw360_portlet_components_EXCLUDED_FILES'
+                                                    placeholder='Enter excluded files'
+                                                    value={packageInformation.primaryPackagePurpose ?? ''}
+                                                ></textarea>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr className='spdx-full'>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX' htmlFor='createdDate'>
-                                        7.26 Built Date
-                                    </label>
-                                    <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '0.75rem' }}>
-                                        <div>
-                                            <input
-                                                id='createdReleaseDate'
-                                                type='date'
-                                                className='form-control spdx-date needs-validation'
-                                                placeholder='created.date.yyyy.mm.dd'
-                                                value={CommonUtils.fillDate(packageInformation.builtDate) ?? ''}
-                                            />
+                                    </td>
+                                </tr>
+                                <tr className='spdx-full'>
+                                    <td colSpan={3}>
+                                        <div className='form-group'>
+                                            <label className='lableSPDX' htmlFor='createdDate'>
+                                                7.25 Release Date
+                                            </label>
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    flexDirection: 'row',
+                                                    marginBottom: '0.75rem',
+                                                }}
+                                            >
+                                                <div>
+                                                    <input
+                                                        id='createdReleaseDate'
+                                                        type='date'
+                                                        className='form-control spdx-date needs-validation'
+                                                        placeholder='created.date.yyyy.mm.dd'
+                                                        value={
+                                                            CommonUtils.fillDate(packageInformation.releaseDate) ?? ''
+                                                        }
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <input
+                                                        id='createdReleaseTime'
+                                                        type='time'
+                                                        step='1'
+                                                        className='form-control spdx-time needs-validation'
+                                                        placeholder='created.time.hh.mm.ss'
+                                                        value={
+                                                            CommonUtils.fillTime(packageInformation.releaseDate) ?? ''
+                                                        }
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <input
-                                                id='createdReleaseTime'
-                                                type='time'
-                                                step='1'
-                                                className='form-control spdx-time needs-validation'
-                                                placeholder='created.time.hh.mm.ss'
-                                                value={CommonUtils.fillTime(packageInformation.builtDate) ?? ''}
-                                            />
+                                    </td>
+                                </tr>
+                                <tr className='spdx-full'>
+                                    <td colSpan={3}>
+                                        <div className='form-group'>
+                                            <label className='lableSPDX' htmlFor='createdDate'>
+                                                7.26 Built Date
+                                            </label>
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    flexDirection: 'row',
+                                                    marginBottom: '0.75rem',
+                                                }}
+                                            >
+                                                <div>
+                                                    <input
+                                                        id='createdReleaseDate'
+                                                        type='date'
+                                                        className='form-control spdx-date needs-validation'
+                                                        placeholder='created.date.yyyy.mm.dd'
+                                                        value={CommonUtils.fillDate(packageInformation.builtDate) ?? ''}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <input
+                                                        id='createdReleaseTime'
+                                                        type='time'
+                                                        step='1'
+                                                        className='form-control spdx-time needs-validation'
+                                                        placeholder='created.time.hh.mm.ss'
+                                                        value={CommonUtils.fillTime(packageInformation.builtDate) ?? ''}
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr className='spdx-full'>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX' htmlFor='createdDate'>
-                                        7.27 Valid Until Date
-                                    </label>
-                                    <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '0.75rem' }}>
-                                        <div>
-                                            <input
-                                                id='createdReleaseDate'
-                                                type='date'
-                                                className='form-control spdx-date needs-validation'
-                                                placeholder='created.date.yyyy.mm.dd'
-                                                value={CommonUtils.fillDate(packageInformation.validUntilDate) ?? ''}
-                                            />
+                                    </td>
+                                </tr>
+                                <tr className='spdx-full'>
+                                    <td colSpan={3}>
+                                        <div className='form-group'>
+                                            <label className='lableSPDX' htmlFor='createdDate'>
+                                                7.27 Valid Until Date
+                                            </label>
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    flexDirection: 'row',
+                                                    marginBottom: '0.75rem',
+                                                }}
+                                            >
+                                                <div>
+                                                    <input
+                                                        id='createdReleaseDate'
+                                                        type='date'
+                                                        className='form-control spdx-date needs-validation'
+                                                        placeholder='created.date.yyyy.mm.dd'
+                                                        value={
+                                                            CommonUtils.fillDate(packageInformation.validUntilDate) ??
+                                                            ''
+                                                        }
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <input
+                                                        id='createdReleaseTime'
+                                                        type='time'
+                                                        step='1'
+                                                        className='form-control spdx-time needs-validation'
+                                                        placeholder='created.time.hh.mm.ss'
+                                                        value={
+                                                            CommonUtils.fillTime(packageInformation.validUntilDate) ??
+                                                            ''
+                                                        }
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <input
-                                                id='createdReleaseTime'
-                                                type='time'
-                                                step='1'
-                                                className='form-control spdx-time needs-validation'
-                                                placeholder='created.time.hh.mm.ss'
-                                                value={CommonUtils.fillTime(packageInformation.validUntilDate) ?? ''}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                                    </td>
+                                </tr>
+                            </>
+                        )}
                     </>
                 )}
             </tbody>
@@ -1022,4 +1075,4 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
     )
 }
 
-export default PackageInformationDetail
+export default EditPackageInformation

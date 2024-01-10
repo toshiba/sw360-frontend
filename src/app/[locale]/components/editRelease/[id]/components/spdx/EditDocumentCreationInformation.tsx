@@ -23,7 +23,7 @@ interface Props {
     isModeFull?: boolean
 }
 
-const DocumentCreationInformationDetail = ({
+const EditDocumentCreationInformation = ({
     documentCreationInformation,
     externalDocumentRef,
     setExternalDocumentRef,
@@ -425,4 +425,4 @@ const DocumentCreationInformationDetail = ({
     )
 }
 
-export default DocumentCreationInformationDetail
+export default EditDocumentCreationInformation

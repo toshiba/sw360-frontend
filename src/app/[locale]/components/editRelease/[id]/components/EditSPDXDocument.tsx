@@ -27,9 +27,9 @@ import PackageInformation from '../../../../../../object-types/spdx/PackageInfor
 // import SnippetInformation from '../../../../../../object-types/spdx/SnippetInformation'
 import AnnotationInformation from './spdx/AnnotationInformation'
 import styles from './spdx/CssButton.module.css'
-import DocumentCreationInformationDetail from './spdx/DocumentCreationInformation'
+import EditDocumentCreationInformation from './spdx/EditDocumentCreationInformation'
+import EditPackageInformation from './spdx/EditPackageInformation'
 import OtherLicensingInformationDetectedDetail from './spdx/OtherLicensingInformationDetectedDetail'
-import PackageInformationDetail from './spdx/PackageInformationDetail'
 import RelationshipbetweenSPDXElementsInformation from './spdx/RelationshipbetweenSPDXElementsInformation'
 import SnippetInformationDetail from './spdx/SnippetInformation'
 
@@ -184,13 +184,13 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
             <br></br>
             {isModeFull ? (
                 <div className='col'>
-                    <DocumentCreationInformationDetail
+                    <EditDocumentCreationInformation
                         isModeFull={isModeFull}
                         documentCreationInformation={documentCreationInformation}
                         externalDocumentRef={externalDocumentRef}
                         setExternalDocumentRef={setExternalDocumentRef}
                     />
-                    <PackageInformationDetail
+                    <EditPackageInformation
                         isModeFull={isModeFull}
                         packageInformation={packageInformation}
                         externalRefsData={externalRefsData}
@@ -226,13 +226,13 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                 </div>
             ) : (
                 <div className='col'>
-                    <DocumentCreationInformationDetail
+                    <EditDocumentCreationInformation
                         isModeFull={isModeFull}
                         documentCreationInformation={documentCreationInformation}
                         externalDocumentRef={externalDocumentRef}
                         setExternalDocumentRef={setExternalDocumentRef}
                     />
-                    <PackageInformationDetail
+                    <EditPackageInformation
                         isModeFull={isModeFull}
                         packageInformation={packageInformation}
                         externalRefsData={externalRefsData}
