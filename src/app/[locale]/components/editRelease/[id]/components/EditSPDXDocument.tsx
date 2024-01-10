@@ -16,7 +16,7 @@ import { ApiUtils } from '@/utils/index'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
-// import Annotations from '../../../../../../object-types/spdx/Annotations'
+import Annotations from '../../../../../../object-types/spdx/Annotations'
 import DocumentCreationInformation from '../../../../../../object-types/spdx/DocumentCreationInformation'
 import ExternalDocumentReferences from '../../../../../../object-types/spdx/ExternalDocumentReferences'
 import ExternalReference from '../../../../../../object-types/spdx/ExternalReference'
@@ -25,8 +25,8 @@ import PackageInformation from '../../../../../../object-types/spdx/PackageInfor
 import RelationshipsBetweenSPDXElements from '../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
 import SPDXDocument from '../../../../../../object-types/spdx/SPDXDocument'
 import SnippetInformation from '../../../../../../object-types/spdx/SnippetInformation'
-import AnnotationInformation from './spdx/AnnotationInformation'
 import styles from './spdx/CssButton.module.css'
+import AnnotationInformation from './spdx/EditAnnotationInformation'
 import EditDocumentCreationInformation from './spdx/EditDocumentCreationInformation'
 import EditOtherLicensingInformationDetected from './spdx/EditOtherLicensingInformationDetected'
 import EditPackageInformation from './spdx/EditPackageInformation'
@@ -58,8 +58,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
         useState<RelationshipsBetweenSPDXElements>()
     const [indexRelationShip, setIndexRelationShip] = useState<Array<RelationshipsBetweenSPDXElements>>()
 
-    // const [annotations, setAnnotations] = useState<Annotations>()
-    // const [indexAnnotations, setIndexAnnotations] = useState<Array<Annotations>>()
+    const [annotations, setAnnotations] = useState<Annotations>()
+    const [indexAnnotations, setIndexAnnotations] = useState<Array<Annotations>>()
 
     const [isModeFull, setIsModeFull] = useState(true)
 
@@ -112,8 +112,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     }
                     //Annotations
                     if (!CommonUtils.isNullEmptyOrUndefinedArray(release._embedded['sw360:spdxDocument'].annotations)) {
-                        // setAnnotations(release._embedded['sw360:spdxDocument'].annotations[0])
-                        // setIndexAnnotations(release._embedded['sw360:spdxDocument'].annotations)
+                        setAnnotations(release._embedded['sw360:spdxDocument'].annotations[0])
+                        setIndexAnnotations(release._embedded['sw360:spdxDocument'].annotations)
                     }
                 }
 
@@ -216,12 +216,12 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         setIndexRelationShip={setIndexRelationShip}
                     />
                     <AnnotationInformation
-                    // spdxDocument={spdxDocument}
-                    // packageInformation={packageInformation}
-                    // annotations={annotations}
-                    // setAnnotations={setAnnotations}
-                    // indexAnnotations={indexAnnotations}
-                    // setIndexAnnotations={setIndexAnnotations}
+                        spdxDocument={spdxDocument}
+                        packageInformation={packageInformation}
+                        annotations={annotations}
+                        setAnnotations={setAnnotations}
+                        indexAnnotations={indexAnnotations}
+                        setIndexAnnotations={setIndexAnnotations}
                     />
                 </div>
             ) : (
