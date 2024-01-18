@@ -13,26 +13,24 @@ import CommonUtils from '@/utils/common.utils'
 import { useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import Annotations from '../../../../../../../object-types/spdx/Annotations'
-import PackageInformation from '../../../../../../../object-types/spdx/PackageInformation'
-import SPDXDocument from '../../../../../../../object-types/spdx/SPDXDocument'
 import styles from '../detail.module.css'
 
 interface Props {
-    spdxDocument?: SPDXDocument
-    packageInformation?: PackageInformation
     annotations?: Annotations
     setAnnotations?: React.Dispatch<React.SetStateAction<Annotations>>
-    indexAnnotations?: Array<Annotations>
-    setIndexAnnotations?: React.Dispatch<React.SetStateAction<Array<Annotations>>>
+    annotationsSPDXs: Annotations[]
+    setAnnotationsSPDXs: React.Dispatch<React.SetStateAction<Annotations[]>>
+    annotationsPackages: Annotations[]
+    setAnnotationsPackages: React.Dispatch<React.SetStateAction<Annotations[]>>
 }
 
 const EditAnnotationInformation = ({
-    spdxDocument,
-    packageInformation,
     annotations,
     setAnnotations,
-    indexAnnotations,
-    setIndexAnnotations,
+    annotationsSPDXs,
+    setAnnotationsSPDXs,
+    annotationsPackages,
+    setAnnotationsPackages,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [isSourceSPDXDocument, setIsSourceSPDXDocument] = useState<boolean>(true)
@@ -42,20 +40,20 @@ const EditAnnotationInformation = ({
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDoucument') {
             setIsSourceSPDXDocument(true)
-            if (!CommonUtils.isNullEmptyOrUndefinedArray(spdxDocument.annotations)) {
-                setIndexAnnotations(spdxDocument.annotations)
-                setAnnotations(spdxDocument.annotations[index])
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsSPDXs)) {
+                setAnnotationsSPDXs(annotationsSPDXs)
+                setAnnotations(annotationsSPDXs[index])
             } else {
-                setIndexAnnotations([])
+                setAnnotationsSPDXs([])
                 setAnnotations(null)
             }
         } else if (relationshipType === 'package') {
             setIsSourceSPDXDocument(false)
-            if (!CommonUtils.isNullEmptyOrUndefinedArray(packageInformation.annotations)) {
-                setIndexAnnotations(packageInformation.annotations)
-                setAnnotations(packageInformation.annotations[index])
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
+                setAnnotationsPackages(annotationsPackages)
+                setAnnotations(annotationsPackages[index])
             } else {
-                setIndexAnnotations([])
+                setAnnotationsPackages([])
                 setAnnotations(null)
             }
         }
@@ -64,9 +62,41 @@ const EditAnnotationInformation = ({
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
         setIndex(+index)
-        isSourceSPDXDocument
-            ? setAnnotations(spdxDocument.annotations[+index])
-            : setAnnotations(packageInformation.annotations[+index])
+        isSourceSPDXDocument ? setAnnotations(annotationsSPDXs[+index]) : setAnnotations(annotationsPackages[+index])
+    }
+
+    const addAnnotationsSPDXsSPDX = () => {
+        const arrayExternals: Annotations[] = annotationsSPDXs
+        const relationshipsBetweenSPDXElements: Annotations = {
+            annotator: '', // 12.1
+            annotationDate: '', // 12.2
+            annotationType: '', // 12.3
+            spdxIdRef: '', // 12.4
+            annotationComment: '', // 12.5
+            index: annotationsSPDXs.length,
+        }
+        arrayExternals.push(relationshipsBetweenSPDXElements)
+        setAnnotationsSPDXs(arrayExternals)
+        setAnnotations(relationshipsBetweenSPDXElements)
+    }
+
+    const addAnnotationsSPDXsPackage = () => {
+        const arrayExternals: Annotations[] = annotationsPackages
+        const relationshipsBetweenSPDXElements: Annotations = {
+            annotator: '', // 12.1
+            annotationDate: '', // 12.2
+            annotationType: '', // 12.3
+            spdxIdRef: '', // 12.4
+            annotationComment: '', // 12.5
+            index: annotationsPackages.length,
+        }
+        arrayExternals.push(relationshipsBetweenSPDXElements)
+        setAnnotationsPackages(arrayExternals)
+        setAnnotations(relationshipsBetweenSPDXElements)
+    }
+
+    const addAnnotation = () => {
+        isSourceSPDXDocument ? addAnnotationsSPDXsSPDX() : addAnnotationsSPDXsPackage()
     }
 
     return (
@@ -123,18 +153,21 @@ const EditAnnotationInformation = ({
                                     className='form-control spdx-select'
                                     onChange={displayIndex}
                                 >
-                                    {indexAnnotations &&
-                                        indexAnnotations
-                                            .toSorted((e1, e2) => e1.index - e2.index)
-                                            .map((item) => (
-                                                <option key={item.index} value={item.index}>
-                                                    {item.index + 1}
-                                                </option>
-                                            ))}
+                                    {isSourceSPDXDocument
+                                        ? annotationsSPDXs.map((item) => (
+                                              <option key={item.index} value={item.index}>
+                                                  {item.index + 1}
+                                              </option>
+                                          ))
+                                        : annotationsPackages.map((item) => (
+                                              <option key={item.index} value={item.index}>
+                                                  {item.index + 1}
+                                              </option>
+                                          ))}
                                 </select>
                                 <FaTrashAlt />
                             </div>
-                            <button className='spdx-add-button-main' name='add-annotation'>
+                            <button className='spdx-add-button-main' name='add-annotation' onClick={addAnnotation}>
                                 Add new Annotation
                             </button>
                         </div>
@@ -151,7 +184,6 @@ const EditAnnotationInformation = ({
                                             id='annotatorType'
                                             style={{ flex: 2, marginRight: '1rem' }}
                                             className='form-control'
-                                            aria-placeholder='Enter type'
                                         >
                                             <option value='Organization'>Organization</option>
                                             <option value='Person'>Person</option>

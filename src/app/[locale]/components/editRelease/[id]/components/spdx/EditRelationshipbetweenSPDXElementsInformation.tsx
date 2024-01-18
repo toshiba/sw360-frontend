@@ -14,26 +14,24 @@ import { FaTrashAlt } from 'react-icons/fa'
 import styles from '../detail.module.css'
 
 import CommonUtils from '@/utils/common.utils'
-import PackageInformation from '../../../../../../../object-types/spdx/PackageInformation'
 import RelationshipsBetweenSPDXElements from '../../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
-import SPDXDocument from '../../../../../../../object-types/spdx/SPDXDocument'
 
 interface Props {
-    spdxDocument?: SPDXDocument
-    packageInformation?: PackageInformation
     relationshipsBetweenSPDXElements?: RelationshipsBetweenSPDXElements
     setRelationshipsBetweenSPDXElements?: React.Dispatch<React.SetStateAction<RelationshipsBetweenSPDXElements>>
-    indexRelationShip?: Array<RelationshipsBetweenSPDXElements>
-    setIndexRelationShip?: React.Dispatch<React.SetStateAction<Array<RelationshipsBetweenSPDXElements>>>
+    relationshipsBetweenSPDXElementSPDXs: RelationshipsBetweenSPDXElements[]
+    setRelationshipsBetweenSPDXElementSPDXs: React.Dispatch<React.SetStateAction<RelationshipsBetweenSPDXElements[]>>
+    relationshipsBetweenSPDXElementPackages: RelationshipsBetweenSPDXElements[]
+    setRelationshipsBetweenSPDXElementPackages: React.Dispatch<React.SetStateAction<RelationshipsBetweenSPDXElements[]>>
 }
 
 const EditRelationshipbetweenSPDXElementsInformation = ({
-    spdxDocument,
-    packageInformation,
     relationshipsBetweenSPDXElements,
     setRelationshipsBetweenSPDXElements,
-    indexRelationShip,
-    setIndexRelationShip,
+    relationshipsBetweenSPDXElementSPDXs,
+    setRelationshipsBetweenSPDXElementSPDXs,
+    relationshipsBetweenSPDXElementPackages,
+    setRelationshipsBetweenSPDXElementPackages,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [isSourceSPDXDocument, setIsSourceSPDXDocument] = useState<boolean>(true)
@@ -44,20 +42,20 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
         if (relationshipType === 'spdxDoucument') {
             setIsSourceSPDXDocument(true)
 
-            if (!CommonUtils.isNullEmptyOrUndefinedArray(spdxDocument.relationships)) {
-                setIndexRelationShip(spdxDocument.relationships)
-                setRelationshipsBetweenSPDXElements(spdxDocument.relationships[index])
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementSPDXs)) {
+                setRelationshipsBetweenSPDXElementSPDXs(relationshipsBetweenSPDXElementSPDXs)
+                setRelationshipsBetweenSPDXElements(relationshipsBetweenSPDXElementSPDXs[index])
             } else {
-                setIndexRelationShip([])
+                setRelationshipsBetweenSPDXElementSPDXs([])
                 setRelationshipsBetweenSPDXElements(null)
             }
         } else if (relationshipType === 'package') {
             setIsSourceSPDXDocument(false)
-            if (!CommonUtils.isNullEmptyOrUndefinedArray(packageInformation.relationships)) {
-                setIndexRelationShip(packageInformation.relationships)
-                setRelationshipsBetweenSPDXElements(packageInformation.relationships[index])
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementPackages)) {
+                setRelationshipsBetweenSPDXElementPackages(relationshipsBetweenSPDXElementPackages)
+                setRelationshipsBetweenSPDXElements(relationshipsBetweenSPDXElementPackages[index])
             } else {
-                setIndexRelationShip([])
+                setRelationshipsBetweenSPDXElementPackages([])
                 setRelationshipsBetweenSPDXElements(null)
             }
         }
@@ -67,8 +65,40 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
         const index: string = e.target.value
         setIndex(+index)
         isSourceSPDXDocument
-            ? setRelationshipsBetweenSPDXElements(spdxDocument.relationships[+index])
-            : setRelationshipsBetweenSPDXElements(packageInformation.relationships[+index])
+            ? setRelationshipsBetweenSPDXElements(relationshipsBetweenSPDXElementSPDXs[+index])
+            : setRelationshipsBetweenSPDXElements(relationshipsBetweenSPDXElementPackages[+index])
+    }
+
+    const addRelationshipsBetweenSPDXElementsSPDX = () => {
+        const arrayExternals: RelationshipsBetweenSPDXElements[] = relationshipsBetweenSPDXElementSPDXs
+        const relationshipsBetweenSPDXElements: RelationshipsBetweenSPDXElements = {
+            spdxElementId: '', // 11.1
+            relationshipType: '', // 11.1
+            relatedSpdxElement: '', // 11.1
+            relationshipComment: '', // 11.2
+            index: relationshipsBetweenSPDXElementSPDXs.length,
+        }
+        arrayExternals.push(relationshipsBetweenSPDXElements)
+        setRelationshipsBetweenSPDXElementSPDXs(arrayExternals)
+        setRelationshipsBetweenSPDXElements(relationshipsBetweenSPDXElements)
+    }
+
+    const addRelationshipsBetweenSPDXElementsPackage = () => {
+        const arrayExternals: RelationshipsBetweenSPDXElements[] = relationshipsBetweenSPDXElementPackages
+        const relationshipsBetweenSPDXElements: RelationshipsBetweenSPDXElements = {
+            spdxElementId: '', // 11.1
+            relationshipType: '', // 11.1
+            relatedSpdxElement: '', // 11.1
+            relationshipComment: '', // 11.2
+            index: relationshipsBetweenSPDXElementPackages.length,
+        }
+        arrayExternals.push(relationshipsBetweenSPDXElements)
+        setRelationshipsBetweenSPDXElementPackages(arrayExternals)
+        setRelationshipsBetweenSPDXElements(relationshipsBetweenSPDXElements)
+    }
+
+    const addRelations = () => {
+        isSourceSPDXDocument ? addRelationshipsBetweenSPDXElementsSPDX() : addRelationshipsBetweenSPDXElementsPackage()
     }
 
     return (
@@ -125,18 +155,21 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                                     className='form-control spdx-select'
                                     onChange={displayIndex}
                                 >
-                                    {indexRelationShip &&
-                                        indexRelationShip
-                                            .toSorted((e1, e2) => e1.index - e2.index)
-                                            .map((item) => (
-                                                <option key={item.index} value={item.index}>
-                                                    {item.index + 1}
-                                                </option>
-                                            ))}
+                                    {isSourceSPDXDocument
+                                        ? relationshipsBetweenSPDXElementSPDXs.map((item) => (
+                                              <option key={item.index} value={item.index}>
+                                                  {item.index + 1}
+                                              </option>
+                                          ))
+                                        : relationshipsBetweenSPDXElementPackages.map((item) => (
+                                              <option key={item.index} value={item.index}>
+                                                  {item.index + 1}
+                                              </option>
+                                          ))}
                                 </select>
                                 <FaTrashAlt />
                             </div>
-                            <button className='spdx-add-button-main' name='add-relationship'>
+                            <button className='spdx-add-button-main' name='add-relationship' onClick={addRelations}>
                                 Add new Relationship
                             </button>
                         </div>

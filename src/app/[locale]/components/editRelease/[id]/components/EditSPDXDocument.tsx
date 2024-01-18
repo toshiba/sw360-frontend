@@ -23,7 +23,7 @@ import ExternalReference from '../../../../../../object-types/spdx/ExternalRefer
 import OtherLicensingInformationDetected from '../../../../../../object-types/spdx/OtherLicensingInformationDetected'
 import PackageInformation from '../../../../../../object-types/spdx/PackageInformation'
 import RelationshipsBetweenSPDXElements from '../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
-import SPDXDocument from '../../../../../../object-types/spdx/SPDXDocument'
+// import SPDXDocument from '../../../../../../object-types/spdx/SPDXDocument'
 import SnippetInformation from '../../../../../../object-types/spdx/SnippetInformation'
 import styles from './spdx/CssButton.module.css'
 import AnnotationInformation from './spdx/EditAnnotationInformation'
@@ -41,7 +41,7 @@ interface Props {
 
 const EditSPDXDocument = ({ releaseId }: Props) => {
     const t = useTranslations('default')
-    const [spdxDocument, setSPDXDocument] = useState<SPDXDocument>()
+    // const [spdxDocument, setSPDXDocument] = useState<SPDXDocument>()
     const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
     const [packageInformation, setPackageInformation] = useState<PackageInformation>()
     // const [snippetInformations, setSnippetInformations] = useState<SnippetInformation>()
@@ -62,10 +62,16 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
 
     const [relationshipsBetweenSPDXElements, setRelationshipsBetweenSPDXElements] =
         useState<RelationshipsBetweenSPDXElements>()
-    const [indexRelationShip, setIndexRelationShip] = useState<Array<RelationshipsBetweenSPDXElements>>()
+    const [relationshipsBetweenSPDXElementSPDXs, setRelationshipsBetweenSPDXElementSPDXs] = useState<
+        RelationshipsBetweenSPDXElements[]
+    >([])
+    const [relationshipsBetweenSPDXElementPackages, setRelationshipsBetweenSPDXElementPackages] = useState<
+        RelationshipsBetweenSPDXElements[]
+    >([])
 
     const [annotations, setAnnotations] = useState<Annotations>()
-    const [indexAnnotations, setIndexAnnotations] = useState<Array<Annotations>>()
+    const [annotationsSPDXs, setAnnotationsSPDXs] = useState<Annotations[]>([])
+    const [annotationsPackages, setAnnotationsPackages] = useState<Annotations[]>([])
 
     const [isModeFull, setIsModeFull] = useState(true)
 
@@ -94,7 +100,7 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     !CommonUtils.isNullOrUndefined(release._embedded) &&
                     !CommonUtils.isNullOrUndefined(release._embedded['sw360:spdxDocument'])
                 ) {
-                    setSPDXDocument(release._embedded['sw360:spdxDocument'])
+                    // setSPDXDocument(release._embedded['sw360:spdxDocument'])
                     //SnippetInformation
                     if (!CommonUtils.isNullEmptyOrUndefinedArray(release._embedded['sw360:spdxDocument'].snippets)) {
                         setSnippetInformations(
@@ -121,13 +127,21 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     if (
                         !CommonUtils.isNullEmptyOrUndefinedArray(release._embedded['sw360:spdxDocument'].relationships)
                     ) {
+                        setRelationshipsBetweenSPDXElementSPDXs(
+                            release._embedded['sw360:spdxDocument'].relationships.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )
+                        )
                         setRelationshipsBetweenSPDXElements(release._embedded['sw360:spdxDocument'].relationships[0])
-                        setIndexRelationShip(release._embedded['sw360:spdxDocument'].relationships)
                     }
                     //Annotations
                     if (!CommonUtils.isNullEmptyOrUndefinedArray(release._embedded['sw360:spdxDocument'].annotations)) {
                         setAnnotations(release._embedded['sw360:spdxDocument'].annotations[0])
-                        setIndexAnnotations(release._embedded['sw360:spdxDocument'].annotations)
+                        setAnnotationsSPDXs(
+                            release._embedded['sw360:spdxDocument'].annotations.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )
+                        )
                     }
                 }
 
@@ -173,6 +187,30 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                             )
                         )
                         setExternalRefsData(release._embedded['sw360:packageInformation'].externalRefs[0])
+                    }
+
+                    if (
+                        !CommonUtils.isNullEmptyOrUndefinedArray(
+                            release._embedded['sw360:packageInformation'].relationships
+                        )
+                    ) {
+                        setRelationshipsBetweenSPDXElementPackages(
+                            release._embedded['sw360:packageInformation'].relationships.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )
+                        )
+                    }
+
+                    if (
+                        !CommonUtils.isNullEmptyOrUndefinedArray(
+                            release._embedded['sw360:packageInformation'].annotations
+                        )
+                    ) {
+                        setAnnotationsPackages(
+                            release._embedded['sw360:packageInformation'].annotations.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )
+                        )
                     }
                 }
             })
@@ -240,20 +278,20 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         setOtherLicensingInformationDetecteds={setOtherLicensingInformationDetecteds}
                     />
                     <EditRelationshipbetweenSPDXElementsInformation
-                        spdxDocument={spdxDocument}
-                        packageInformation={packageInformation}
                         relationshipsBetweenSPDXElements={relationshipsBetweenSPDXElements}
                         setRelationshipsBetweenSPDXElements={setRelationshipsBetweenSPDXElements}
-                        indexRelationShip={indexRelationShip}
-                        setIndexRelationShip={setIndexRelationShip}
+                        relationshipsBetweenSPDXElementSPDXs={relationshipsBetweenSPDXElementSPDXs}
+                        setRelationshipsBetweenSPDXElementSPDXs={setRelationshipsBetweenSPDXElementSPDXs}
+                        relationshipsBetweenSPDXElementPackages={relationshipsBetweenSPDXElementPackages}
+                        setRelationshipsBetweenSPDXElementPackages={setRelationshipsBetweenSPDXElementPackages}
                     />
                     <AnnotationInformation
-                        spdxDocument={spdxDocument}
-                        packageInformation={packageInformation}
                         annotations={annotations}
                         setAnnotations={setAnnotations}
-                        indexAnnotations={indexAnnotations}
-                        setIndexAnnotations={setIndexAnnotations}
+                        annotationsSPDXs={annotationsSPDXs}
+                        setAnnotationsSPDXs={setAnnotationsSPDXs}
+                        annotationsPackages={annotationsPackages}
+                        setAnnotationsPackages={setAnnotationsPackages}
                     />
                 </div>
             ) : (
