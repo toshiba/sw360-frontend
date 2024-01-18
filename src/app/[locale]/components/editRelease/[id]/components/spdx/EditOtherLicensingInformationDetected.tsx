@@ -11,29 +11,44 @@
 'use client'
 import { useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
+import OtherLicensingInformationDetected from '../../../../../../../object-types/spdx/OtherLicensingInformationDetected'
 import styles from '../detail.module.css'
 
-import OtherLicensingInformationDetected from '../../../../../../../object-types/spdx/OtherLicensingInformationDetected'
-import SPDXDocument from '../../../../../../../object-types/spdx/SPDXDocument'
-
 interface Props {
-    spdxDocument?: SPDXDocument
     otherLicensingInformationDetected?: OtherLicensingInformationDetected
     setOtherLicensingInformationDetected?: React.Dispatch<React.SetStateAction<OtherLicensingInformationDetected>>
     isModeFull?: boolean
+    otherLicensingInformationDetecteds?: OtherLicensingInformationDetected[]
+    setOtherLicensingInformationDetecteds?: React.Dispatch<React.SetStateAction<OtherLicensingInformationDetected[]>>
 }
 
 const EditOtherLicensingInformationDetected = ({
-    spdxDocument,
     otherLicensingInformationDetected,
     setOtherLicensingInformationDetected,
     isModeFull,
+    otherLicensingInformationDetecteds,
+    setOtherLicensingInformationDetecteds,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setOtherLicensingInformationDetected(spdxDocument.otherLicensingInformationDetecteds[+index])
+        setOtherLicensingInformationDetected(otherLicensingInformationDetecteds[+index])
+    }
+
+    const addOtherLicensingInformationDetecteds = () => {
+        const arrayExternals: OtherLicensingInformationDetected[] = otherLicensingInformationDetecteds
+        const externalDocumentReference: OtherLicensingInformationDetected = {
+            licenseId: '', // 10.1
+            extractedText: '', // 10.2
+            licenseName: '', // 10.3
+            licenseCrossRefs: [], // 10.4
+            licenseComment: '', // 10.5
+            index: otherLicensingInformationDetecteds.length,
+        }
+        arrayExternals.push(externalDocumentReference)
+        setOtherLicensingInformationDetecteds(arrayExternals)
+        setOtherLicensingInformationDetected(externalDocumentReference)
     }
 
     return (
@@ -65,17 +80,19 @@ const EditOtherLicensingInformationDetected = ({
                                     className='form-control spdx-select'
                                     onChange={displayIndex}
                                 >
-                                    {spdxDocument?.otherLicensingInformationDetecteds
-                                        .toSorted((e1, e2) => e1.index - e2.index)
-                                        .map((item) => (
-                                            <option key={item.index} value={item.index}>
-                                                {item.index + 1}
-                                            </option>
-                                        ))}
+                                    {otherLicensingInformationDetecteds.map((item) => (
+                                        <option key={item.index} value={item.index}>
+                                            {item.index + 1}
+                                        </option>
+                                    ))}
                                 </select>
                                 <FaTrashAlt />
                             </div>
-                            <button className='spdx-add-button-main' name='add-otherLicensing'>
+                            <button
+                                className='spdx-add-button-main'
+                                name='add-otherLicensing'
+                                onClick={addOtherLicensingInformationDetecteds}
+                            >
                                 Add new Licensing
                             </button>
                         </div>
@@ -162,24 +179,22 @@ const EditOtherLicensingInformationDetected = ({
                             </td>
                         </tr>
                         {isModeFull && (
-                            <>
-                                <tr className='spdx-full'>
-                                    <td>
-                                        <div className='form-group'>
-                                            <label className='lableSPDX' htmlFor='licenseCrossRefs'>
-                                                10.4 License cross reference
-                                            </label>
-                                            <textarea
-                                                className='form-control'
-                                                id='licenseCrossRefs'
-                                                rows={5}
-                                                placeholder='Enter license cross reference'
-                                                value={otherLicensingInformationDetected.licenseCrossRefs ?? ''}
-                                            ></textarea>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </>
+                            <tr className='spdx-full'>
+                                <td>
+                                    <div className='form-group'>
+                                        <label className='lableSPDX' htmlFor='licenseCrossRefs'>
+                                            10.4 License cross reference
+                                        </label>
+                                        <textarea
+                                            className='form-control'
+                                            id='licenseCrossRefs'
+                                            rows={5}
+                                            placeholder='Enter license cross reference'
+                                            value={otherLicensingInformationDetected.licenseCrossRefs ?? ''}
+                                        ></textarea>
+                                    </div>
+                                </td>
+                            </tr>
                         )}
                         <tr>
                             <td>

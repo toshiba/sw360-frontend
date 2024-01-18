@@ -36,7 +36,6 @@ const EditDocumentCreationInformation = ({
     setExternalDocumentRefs,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
-    // const [addExternal, setAddExternal] = useState(false)
 
     const [creator, setCreator] = useState<InputKeyValue[]>([])
 
@@ -44,10 +43,8 @@ const EditDocumentCreationInformation = ({
         const index: string = e.target.value
         setExternalDocumentRef(externalDocumentRefs[+index])
     }
-    console.log(externalDocumentRefs.toSorted((e1, e2) => e1.index - e2.index))
 
     const addDocumentReferences = () => {
-        // setAddExternal(true)
         const arrayExternals: ExternalDocumentReferences[] = externalDocumentRefs
         const externalDocumentReference: ExternalDocumentReferences = {
             externalDocumentId: '',
@@ -56,10 +53,6 @@ const EditDocumentCreationInformation = ({
             index: externalDocumentRefs.length,
         }
         arrayExternals.push(externalDocumentReference)
-        // const externalElement = document.getElementById('externalDocumentRefs')
-        // externalElement.append(`<option  value=${externalDocumentRefs.length - 1}>${externalDocumentRefs.length}</option>`)
-
-        // {$('externalDocumentRefs').append}
         setExternalDocumentRefs(arrayExternals)
         setExternalDocumentRef(externalDocumentReference)
     }

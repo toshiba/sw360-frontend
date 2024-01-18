@@ -12,25 +12,50 @@
 import { useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
-import SPDXDocument from '../../../../../../../object-types/spdx/SPDXDocument'
 import SnippetInformation from '../../../../../../../object-types/spdx/SnippetInformation'
 import styles from '../detail.module.css'
 import SnippetRanges from './SnippetRanges'
 
 interface Props {
     // snippetInformations?: Array<SnippetInformation>
-    spdxDocument?: SPDXDocument
     snippetInformation?: SnippetInformation
     setSnippetInformation?: React.Dispatch<React.SetStateAction<SnippetInformation>>
+    snippetInformations?: SnippetInformation[]
+    setSnippetInformations?: React.Dispatch<React.SetStateAction<SnippetInformation[]>>
 }
 
-const EditSnippetInformation = ({ spdxDocument, snippetInformation, setSnippetInformation }: Props) => {
+const EditSnippetInformation = ({
+    snippetInformation,
+    setSnippetInformation,
+    snippetInformations,
+    setSnippetInformations,
+}: Props) => {
     const [toggle, setToggle] = useState(false)
     const [snippetRanges, setSnippetRanges] = useState<InputKeyValue[]>([])
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setSnippetInformation(spdxDocument.snippets[+index])
+        setSnippetInformation(snippetInformations[+index])
+    }
+
+    const addSnippet = () => {
+        const arrayExternals: SnippetInformation[] = snippetInformations
+        const snippetInformation: SnippetInformation = {
+            SPDXID: '', // 9.1
+            snippetFromFile: '', // 9.2
+            snippetRanges: [], // 9.3, 9.4
+            licenseConcluded: '', // 9.5
+            licenseInfoInSnippets: [], // 9.6
+            licenseComments: '', // 9.7
+            copyrightText: '', // 9.8
+            comment: '', // 9.9
+            name: '', // 9.10
+            snippetAttributionText: '', // 9.11
+            index: snippetInformations.length,
+        }
+        arrayExternals.push(snippetInformation)
+        setSnippetInformations(arrayExternals)
+        setSnippetInformation(snippetInformation)
     }
 
     return (
@@ -65,17 +90,15 @@ const EditSnippetInformation = ({ spdxDocument, snippetInformation, setSnippetIn
                                             onChange={displayIndex}
                                         >
                                             {' '}
-                                            {spdxDocument?.snippets
-                                                .toSorted((e1, e2) => e1.index - e2.index)
-                                                .map((item) => (
-                                                    <option key={item.index} value={item.index}>
-                                                        {item.index + 1}
-                                                    </option>
-                                                ))}
+                                            {snippetInformations.map((item) => (
+                                                <option key={item.index} value={item.index}>
+                                                    {item.index + 1}
+                                                </option>
+                                            ))}
                                         </select>
                                         <FaTrashAlt />
                                     </div>
-                                    <button className='spdx-add-button-main' name='add-snippet'>
+                                    <button className='spdx-add-button-main' name='add-snippet' onClick={addSnippet}>
                                         Add new Snippet
                                     </button>
                                 </div>

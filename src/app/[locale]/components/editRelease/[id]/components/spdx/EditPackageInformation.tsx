@@ -23,15 +23,38 @@ interface Props {
     externalRefsData?: ExternalReference
     setExternalRefsData?: React.Dispatch<React.SetStateAction<ExternalReference>>
     isModeFull?: boolean
+    externalRefsDatas?: ExternalReference[]
+    setExternalRefsDatas?: React.Dispatch<React.SetStateAction<ExternalReference[]>>
 }
 
-const EditPackageInformation = ({ packageInformation, externalRefsData, setExternalRefsData, isModeFull }: Props) => {
+const EditPackageInformation = ({
+    packageInformation,
+    externalRefsData,
+    setExternalRefsData,
+    isModeFull,
+    externalRefsDatas,
+    setExternalRefsDatas,
+}: Props) => {
     const [toggle, setToggle] = useState(false)
 
     const [checkSums, setCheckSums] = useState<InputKeyValue[]>([])
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setExternalRefsData(packageInformation.externalRefs[+index])
+        setExternalRefsData(externalRefsDatas[+index])
+    }
+
+    const addReferences = () => {
+        const arrayExternals: ExternalReference[] = externalRefsDatas
+        const externalReference: ExternalReference = {
+            referenceCategory: '',
+            referenceLocator: '',
+            referenceType: '',
+            comment: '',
+            index: externalRefsDatas.length,
+        }
+        arrayExternals.push(externalReference)
+        setExternalRefsDatas(arrayExternals)
+        setExternalRefsData(externalReference)
     }
 
     return (
@@ -791,17 +814,19 @@ const EditPackageInformation = ({ packageInformation, externalRefsData, setExter
                                                                 id='externalReferences'
                                                                 onChange={displayIndex}
                                                             >
-                                                                {packageInformation?.externalRefs
-                                                                    .toSorted((e1, e2) => e1.index - e2.index)
-                                                                    .map((item) => (
-                                                                        <option key={item.index} value={item.index}>
-                                                                            {item.index + 1}
-                                                                        </option>
-                                                                    ))}
+                                                                {externalRefsDatas.map((item) => (
+                                                                    <option key={item.index} value={item.index}>
+                                                                        {item.index + 1}
+                                                                    </option>
+                                                                ))}
                                                             </select>
                                                             <FaTrashAlt />
                                                         </div>
-                                                        <button className='spdx-add-button-main' name='add-externalRef'>
+                                                        <button
+                                                            className='spdx-add-button-main'
+                                                            name='add-externalRef'
+                                                            onClick={addReferences}
+                                                        >
                                                             Add new Reference
                                                         </button>
                                                         <div

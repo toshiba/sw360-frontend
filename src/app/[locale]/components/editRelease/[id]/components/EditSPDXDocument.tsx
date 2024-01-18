@@ -51,9 +51,14 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
     const [externalDocumentRef, setExternalDocumentRef] = useState<ExternalDocumentReferences>()
     const [externalDocumentRefs, setExternalDocumentRefs] = useState<ExternalDocumentReferences[]>([])
     const [externalRefsData, setExternalRefsData] = useState<ExternalReference>()
+    const [externalRefsDatas, setExternalRefsDatas] = useState<ExternalReference[]>([])
     const [snippetInformation, setSnippetInformation] = useState<SnippetInformation>()
+    const [snippetInformations, setSnippetInformations] = useState<SnippetInformation[]>([])
     const [otherLicensingInformationDetected, setOtherLicensingInformationDetected] =
         useState<OtherLicensingInformationDetected>()
+    const [otherLicensingInformationDetecteds, setOtherLicensingInformationDetecteds] = useState<
+        OtherLicensingInformationDetected[]
+    >([])
 
     const [relationshipsBetweenSPDXElements, setRelationshipsBetweenSPDXElements] =
         useState<RelationshipsBetweenSPDXElements>()
@@ -92,6 +97,9 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     setSPDXDocument(release._embedded['sw360:spdxDocument'])
                     //SnippetInformation
                     if (!CommonUtils.isNullEmptyOrUndefinedArray(release._embedded['sw360:spdxDocument'].snippets)) {
+                        setSnippetInformations(
+                            release._embedded['sw360:spdxDocument'].snippets.toSorted((e1, e2) => e1.index - e2.index)
+                        )
                         setSnippetInformation(release._embedded['sw360:spdxDocument'].snippets[0])
                     }
                     //OtherLicensingInformationDetected
@@ -102,6 +110,11 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     ) {
                         setOtherLicensingInformationDetected(
                             release._embedded['sw360:spdxDocument'].otherLicensingInformationDetecteds[0]
+                        )
+                        setOtherLicensingInformationDetecteds(
+                            release._embedded['sw360:spdxDocument'].otherLicensingInformationDetecteds.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )
                         )
                     }
                     // RelationshipsBetweenSPDXElements
@@ -154,6 +167,11 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                             release._embedded['sw360:packageInformation'].externalRefs
                         )
                     ) {
+                        setExternalRefsDatas(
+                            release._embedded['sw360:packageInformation'].externalRefs.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )
+                        )
                         setExternalRefsData(release._embedded['sw360:packageInformation'].externalRefs[0])
                     }
                 }
@@ -205,17 +223,21 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         packageInformation={packageInformation}
                         externalRefsData={externalRefsData}
                         setExternalRefsData={setExternalRefsData}
+                        externalRefsDatas={externalRefsDatas}
+                        setExternalRefsDatas={setExternalRefsDatas}
                     />
                     <EditSnippetInformation
-                        spdxDocument={spdxDocument}
                         snippetInformation={snippetInformation}
                         setSnippetInformation={setSnippetInformation}
+                        snippetInformations={snippetInformations}
+                        setSnippetInformations={setSnippetInformations}
                     />
                     <EditOtherLicensingInformationDetected
                         isModeFull={isModeFull}
-                        spdxDocument={spdxDocument}
                         otherLicensingInformationDetected={otherLicensingInformationDetected}
                         setOtherLicensingInformationDetected={setOtherLicensingInformationDetected}
+                        otherLicensingInformationDetecteds={otherLicensingInformationDetecteds}
+                        setOtherLicensingInformationDetecteds={setOtherLicensingInformationDetecteds}
                     />
                     <EditRelationshipbetweenSPDXElementsInformation
                         spdxDocument={spdxDocument}
@@ -247,12 +269,15 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         packageInformation={packageInformation}
                         externalRefsData={externalRefsData}
                         setExternalRefsData={setExternalRefsData}
+                        externalRefsDatas={externalRefsDatas}
+                        setExternalRefsDatas={setExternalRefsDatas}
                     />
                     <EditOtherLicensingInformationDetected
                         isModeFull={isModeFull}
-                        spdxDocument={spdxDocument}
                         otherLicensingInformationDetected={otherLicensingInformationDetected}
                         setOtherLicensingInformationDetected={setOtherLicensingInformationDetected}
+                        otherLicensingInformationDetecteds={otherLicensingInformationDetecteds}
+                        setOtherLicensingInformationDetecteds={setOtherLicensingInformationDetecteds}
                     />
                 </div>
             )}
