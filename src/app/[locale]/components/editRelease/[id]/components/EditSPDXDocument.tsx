@@ -49,6 +49,7 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
     // const [relationshipsBetweenSPDXElements, setRelationshipsBetweenSPDXElements] = useState<RelationshipsBetweenSPDXElements>()
     // const [annotations, setAnnotations] = useState<Annotations>()
     const [externalDocumentRef, setExternalDocumentRef] = useState<ExternalDocumentReferences>()
+    const [externalDocumentRefs, setExternalDocumentRefs] = useState<ExternalDocumentReferences[]>([])
     const [externalRefsData, setExternalRefsData] = useState<ExternalReference>()
     const [snippetInformation, setSnippetInformation] = useState<SnippetInformation>()
     const [otherLicensingInformationDetected, setOtherLicensingInformationDetected] =
@@ -129,8 +130,15 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                             release._embedded['sw360:documentCreationInformation'].externalDocumentRefs
                         )
                     ) {
+                        setExternalDocumentRefs(
+                            release._embedded['sw360:documentCreationInformation'].externalDocumentRefs.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )
+                        )
                         setExternalDocumentRef(
-                            release._embedded['sw360:documentCreationInformation'].externalDocumentRefs[0]
+                            release._embedded['sw360:documentCreationInformation'].externalDocumentRefs.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )[0]
                         )
                     }
                 }
@@ -189,6 +197,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         documentCreationInformation={documentCreationInformation}
                         externalDocumentRef={externalDocumentRef}
                         setExternalDocumentRef={setExternalDocumentRef}
+                        externalDocumentRefs={externalDocumentRefs}
+                        setExternalDocumentRefs={setExternalDocumentRefs}
                     />
                     <EditPackageInformation
                         isModeFull={isModeFull}

@@ -11,9 +11,11 @@
 'use client'
 import { useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
+import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
 import SPDXDocument from '../../../../../../../object-types/spdx/SPDXDocument'
 import SnippetInformation from '../../../../../../../object-types/spdx/SnippetInformation'
 import styles from '../detail.module.css'
+import SnippetRanges from './SnippetRanges'
 
 interface Props {
     // snippetInformations?: Array<SnippetInformation>
@@ -24,6 +26,7 @@ interface Props {
 
 const EditSnippetInformation = ({ spdxDocument, snippetInformation, setSnippetInformation }: Props) => {
     const [toggle, setToggle] = useState(false)
+    const [snippetRanges, setSnippetRanges] = useState<InputKeyValue[]>([])
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
@@ -125,41 +128,7 @@ const EditSnippetInformation = ({ spdxDocument, snippetInformation, setSnippetIn
                             <td colSpan={3}>
                                 <div className='form-group'>
                                     <label className='lableSPDX'>9.3 & 9.4 Snippet ranges</label>
-                                    <div style={{ display: 'flex', flexDirection: 'column', paddingLeft: '1rem' }}>
-                                        <div style={{ display: 'none', marginBottom: '0.75rem' }}>
-                                            <select
-                                                style={{ flex: 1, marginRight: '1rem' }}
-                                                className='form-control range-type'
-                                            >
-                                                <option value='BYTE' selected>
-                                                    BYTE
-                                                </option>
-                                                <option value='LINE'>LINE</option>
-                                            </select>
-                                            <input
-                                                style={{ flex: 2, marginRight: '1rem' }}
-                                                type='text'
-                                                className='form-control start-pointer'
-                                                placeholder='Enter start pointer'
-                                            />
-                                            <input
-                                                style={{ flex: 2, marginRight: '1rem' }}
-                                                type='text'
-                                                className='form-control end-pointer'
-                                                placeholder='Enter end pointer'
-                                            />
-                                            <input
-                                                style={{ flex: 4, marginRight: '2rem' }}
-                                                type='text'
-                                                className='form-control reference'
-                                                placeholder='Enter reference'
-                                            />
-                                            <FaTrashAlt />
-                                        </div>
-                                        <button id='addNewRange' className='spdx-add-button-sub'>
-                                            Add new Range
-                                        </button>
-                                    </div>
+                                    <SnippetRanges inputList={snippetRanges} setInputList={setSnippetRanges} />
                                 </div>
                             </td>
                         </tr>

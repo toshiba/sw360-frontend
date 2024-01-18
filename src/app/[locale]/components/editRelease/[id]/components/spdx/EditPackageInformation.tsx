@@ -12,9 +12,11 @@
 import CommonUtils from '@/utils/common.utils'
 import { useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
+import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
 import ExternalReference from '../../../../../../../object-types/spdx/ExternalReference'
 import PackageInformation from '../../../../../../../object-types/spdx/PackageInformation'
 import styles from '../detail.module.css'
+import CheckSums from './CheckSums'
 
 interface Props {
     packageInformation?: PackageInformation
@@ -26,6 +28,7 @@ interface Props {
 const EditPackageInformation = ({ packageInformation, externalRefsData, setExternalRefsData, isModeFull }: Props) => {
     const [toggle, setToggle] = useState(false)
 
+    const [checkSums, setCheckSums] = useState<InputKeyValue[]>([])
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
         setExternalRefsData(packageInformation.externalRefs[+index])
@@ -359,29 +362,7 @@ const EditPackageInformation = ({ packageInformation, externalRefsData, setExter
                                             <label className='lableSPDX'>7.10 Package checksum</label>
                                             <div style={{ display: 'flex' }}>
                                                 <label className='sub-title lableSPDX'>Checksum</label>
-                                                <div style={{ display: 'flex', flexDirection: 'column', flex: 7 }}>
-                                                    <div style={{ display: 'none', marginBottom: '0.75rem' }}>
-                                                        <input
-                                                            style={{ flex: 2, marginRight: '1rem' }}
-                                                            type='text'
-                                                            className='form-control checksum-algorithm'
-                                                            placeholder='Enter algorithm'
-                                                        />
-                                                        <input
-                                                            style={{ flex: 6, marginRight: '2rem' }}
-                                                            type='text'
-                                                            className='form-control checksum-value'
-                                                            placeholder='Enter value'
-                                                        />
-                                                        <FaTrashAlt />
-                                                    </div>
-                                                    <button
-                                                        id='addNewAlgorithm'
-                                                        className='spdx-add-button-sub spdx-add-button-sub-checksum'
-                                                    >
-                                                        Add new algorithm
-                                                    </button>
-                                                </div>
+                                                <CheckSums inputList={checkSums} setInputList={setCheckSums} />
                                             </div>
                                         </div>
                                     </td>

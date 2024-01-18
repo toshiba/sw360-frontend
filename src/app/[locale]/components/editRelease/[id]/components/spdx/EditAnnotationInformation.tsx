@@ -163,7 +163,7 @@ const EditAnnotationInformation = ({
                                             type='text'
                                             className='form-control'
                                             placeholder='Enter annotator'
-                                            value={annotations.annotator ?? ''}
+                                            value={annotations.annotator.substring(13) ?? ''}
                                         />
                                     </div>
                                 </div>

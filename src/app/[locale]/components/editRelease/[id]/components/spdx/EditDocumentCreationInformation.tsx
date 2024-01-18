@@ -10,17 +10,21 @@
 
 'use client'
 import CommonUtils from '@/utils/common.utils'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
+import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
 import DocumentCreationInformation from '../../../../../../../object-types/spdx/DocumentCreationInformation'
 import ExternalDocumentReferences from '../../../../../../../object-types/spdx/ExternalDocumentReferences'
 import styles from '../detail.module.css'
+import Creators from './Creators'
 
 interface Props {
     documentCreationInformation?: DocumentCreationInformation
     externalDocumentRef?: ExternalDocumentReferences
     setExternalDocumentRef?: React.Dispatch<React.SetStateAction<ExternalDocumentReferences>>
     isModeFull?: boolean
+    externalDocumentRefs?: ExternalDocumentReferences[]
+    setExternalDocumentRefs?: React.Dispatch<React.SetStateAction<ExternalDocumentReferences[]>>
 }
 
 const EditDocumentCreationInformation = ({
@@ -28,12 +32,36 @@ const EditDocumentCreationInformation = ({
     externalDocumentRef,
     setExternalDocumentRef,
     isModeFull,
+    externalDocumentRefs,
+    setExternalDocumentRefs,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
+    // const [addExternal, setAddExternal] = useState(false)
+
+    const [creator, setCreator] = useState<InputKeyValue[]>([])
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setExternalDocumentRef(documentCreationInformation.externalDocumentRefs[+index])
+        setExternalDocumentRef(externalDocumentRefs[+index])
+    }
+    console.log(externalDocumentRefs.toSorted((e1, e2) => e1.index - e2.index))
+
+    const addDocumentReferences = () => {
+        // setAddExternal(true)
+        const arrayExternals: ExternalDocumentReferences[] = externalDocumentRefs
+        const externalDocumentReference: ExternalDocumentReferences = {
+            externalDocumentId: '',
+            checksum: { algorithm: '', checksumValue: '', index: 0 },
+            spdxDocument: '',
+            index: externalDocumentRefs.length,
+        }
+        arrayExternals.push(externalDocumentReference)
+        // const externalElement = document.getElementById('externalDocumentRefs')
+        // externalElement.append(`<option  value=${externalDocumentRefs.length - 1}>${externalDocumentRefs.length}</option>`)
+
+        // {$('externalDocumentRefs').append}
+        setExternalDocumentRefs(arrayExternals)
+        setExternalDocumentRef(externalDocumentReference)
     }
 
     return (
@@ -168,17 +196,19 @@ const EditDocumentCreationInformation = ({
                                                         className='form-control spdx-select'
                                                         onChange={displayIndex}
                                                     >
-                                                        {documentCreationInformation?.externalDocumentRefs
-                                                            .toSorted((e1, e2) => e1.index - e2.index)
-                                                            .map((item) => (
-                                                                <option key={item.index} value={item.index}>
-                                                                    {item.index + 1}
-                                                                </option>
-                                                            ))}
+                                                        {externalDocumentRefs.map((item) => (
+                                                            <option key={item.index} value={item.index}>
+                                                                {item.index + 1}
+                                                            </option>
+                                                        ))}
                                                     </select>
                                                     <FaTrashAlt />
                                                 </div>
-                                                <button className='spdx-add-button-main' name='add-externalDocRef'>
+                                                <button
+                                                    className='spdx-add-button-main'
+                                                    name='add-externalDocRef'
+                                                    onClick={addDocumentReferences}
+                                                >
                                                     Add new Reference
                                                 </button>
                                             </div>
@@ -306,36 +336,7 @@ const EditDocumentCreationInformation = ({
                                         </div>
                                         <div style={{ display: 'flex' }}>
                                             <label className='sub-title lableSPDX'>List</label>
-                                            <div style={{ display: 'flex', flexDirection: 'column', flex: 7 }}>
-                                                <div
-                                                    style={{ display: 'none', marginBottom: '0.75rem' }}
-                                                    className='creatorRow'
-                                                >
-                                                    <select
-                                                        style={{ flex: 2, marginRight: '1rem' }}
-                                                        className='form-control creator-type'
-                                                    >
-                                                        <option value='Organization' selected>
-                                                            Organization
-                                                        </option>
-                                                        <option value='Person'>Person</option>
-                                                        <option value='Tool'>Tool</option>
-                                                    </select>
-                                                    <input
-                                                        style={{ flex: 6, marginRight: '2rem' }}
-                                                        type='text'
-                                                        className='form-control creator-value'
-                                                        placeholder='Enter creator'
-                                                    />
-                                                    <FaTrashAlt />
-                                                </div>
-                                                <button
-                                                    className='spdx-add-button-sub spdx-add-button-sub-creator'
-                                                    name='add-spdx-creator'
-                                                >
-                                                    Add new creator
-                                                </button>
-                                            </div>
+                                            <Creators inputList={creator} setInputList={setCreator} />
                                         </div>
                                         <input
                                             id='spdxCreator'
