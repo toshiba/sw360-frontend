@@ -41,10 +41,13 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDoucument') {
             setIsSourceSPDXDocument(true)
-
             if (!CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementSPDXs)) {
                 setRelationshipsBetweenSPDXElementSPDXs(relationshipsBetweenSPDXElementSPDXs)
-                setRelationshipsBetweenSPDXElements(relationshipsBetweenSPDXElementSPDXs[index])
+                if (!CommonUtils.isNullOrUndefined(relationshipsBetweenSPDXElementSPDXs[index])) {
+                    setRelationshipsBetweenSPDXElements(relationshipsBetweenSPDXElementSPDXs[index])
+                } else {
+                    setRelationshipsBetweenSPDXElements(relationshipsBetweenSPDXElementSPDXs[0])
+                }
             } else {
                 setRelationshipsBetweenSPDXElementSPDXs([])
                 setRelationshipsBetweenSPDXElements(null)
@@ -53,7 +56,11 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
             setIsSourceSPDXDocument(false)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementPackages)) {
                 setRelationshipsBetweenSPDXElementPackages(relationshipsBetweenSPDXElementPackages)
-                setRelationshipsBetweenSPDXElements(relationshipsBetweenSPDXElementPackages[index])
+                if (!CommonUtils.isNullOrUndefined(relationshipsBetweenSPDXElementPackages[index])) {
+                    setRelationshipsBetweenSPDXElements(relationshipsBetweenSPDXElementPackages[index])
+                } else {
+                    setRelationshipsBetweenSPDXElements(relationshipsBetweenSPDXElementPackages[0])
+                }
             } else {
                 setRelationshipsBetweenSPDXElementPackages([])
                 setRelationshipsBetweenSPDXElements(null)

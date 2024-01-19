@@ -42,7 +42,11 @@ const EditAnnotationInformation = ({
             setIsSourceSPDXDocument(true)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsSPDXs)) {
                 setAnnotationsSPDXs(annotationsSPDXs)
-                setAnnotations(annotationsSPDXs[index])
+                if (!CommonUtils.isNullOrUndefined(annotationsSPDXs[index])) {
+                    setAnnotations(annotationsSPDXs[index])
+                } else {
+                    setAnnotations(annotationsSPDXs[0])
+                }
             } else {
                 setAnnotationsSPDXs([])
                 setAnnotations(null)
@@ -51,7 +55,11 @@ const EditAnnotationInformation = ({
             setIsSourceSPDXDocument(false)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
                 setAnnotationsPackages(annotationsPackages)
-                setAnnotations(annotationsPackages[index])
+                if (!CommonUtils.isNullOrUndefined(annotationsPackages[index])) {
+                    setAnnotations(annotationsPackages[index])
+                } else {
+                    setAnnotations(annotationsPackages[0])
+                }
             } else {
                 setAnnotationsPackages([])
                 setAnnotations(null)
