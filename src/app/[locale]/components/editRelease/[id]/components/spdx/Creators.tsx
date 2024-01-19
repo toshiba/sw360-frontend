@@ -35,7 +35,7 @@ function Creators({ inputList, setInputList }: Props) {
     }
 
     const handleAddClick = () => {
-        setInputList([...inputList, { key: 'Committer', value: '' }])
+        setInputList([...inputList, { key: 'Organization', value: '' }])
     }
 
     return (
@@ -45,6 +45,7 @@ function Creators({ inputList, setInputList }: Props) {
                     <div key={j} style={{ display: 'flex', marginBottom: '0.75rem' }} className='creatorRow'>
                         <select
                             style={{ flex: 2, marginRight: '1rem' }}
+                            value={elem.key}
                             className='form-control creator-type'
                             onChange={(e) => handleInputChange(e, j)}
                         >
@@ -57,6 +58,7 @@ function Creators({ inputList, setInputList }: Props) {
                         <input
                             style={{ flex: 6, marginRight: '2rem' }}
                             type='text'
+                            value={elem.value}
                             className='form-control creator-value'
                             placeholder='Enter creator'
                             onChange={(e) => handleInputChange(e, j)}

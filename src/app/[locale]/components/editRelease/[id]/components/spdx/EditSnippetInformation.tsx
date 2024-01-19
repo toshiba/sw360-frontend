@@ -9,10 +9,10 @@
 // License-Filename: LICENSE
 
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
-import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
 import SnippetInformation from '../../../../../../../object-types/spdx/SnippetInformation'
+import SnippetRange from '../../../../../../../object-types/spdx/SnippetRange'
 import styles from '../detail.module.css'
 import SnippetRanges from './SnippetRanges'
 
@@ -31,7 +31,7 @@ const EditSnippetInformation = ({
     setSnippetInformations,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
-    const [snippetRanges, setSnippetRanges] = useState<InputKeyValue[]>([])
+    const [snippetRanges, setSnippetRanges] = useState<SnippetRange[]>([])
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
@@ -56,6 +56,27 @@ const EditSnippetInformation = ({
         arrayExternals.push(snippetInformation)
         setSnippetInformations(arrayExternals)
         setSnippetInformation(snippetInformation)
+    }
+
+    useEffect(() => {
+        if (typeof snippetInformation?.snippetRanges !== 'undefined') {
+            setSnippetRanges(convertSnippetRanges(snippetInformation.snippetRanges))
+        }
+    }, [snippetInformation])
+
+    const convertSnippetRanges = (snippetRanges: SnippetRange[]) => {
+        const inputs: SnippetRange[] = []
+        snippetRanges.forEach((snippetRange: SnippetRange) => {
+            const input: SnippetRange = {
+                rangeType: snippetRange.rangeType,
+                startPointer: snippetRange.startPointer,
+                endPointer: snippetRange.endPointer,
+                reference: snippetRange.reference,
+                index: snippetRange.index,
+            }
+            inputs.push(input)
+        })
+        return inputs
     }
 
     return (

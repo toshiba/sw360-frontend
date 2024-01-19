@@ -10,9 +10,10 @@
 
 'use client'
 import CommonUtils from '@/utils/common.utils'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
+import Creator from '../../../../../../../object-types/spdx/Creator'
 import DocumentCreationInformation from '../../../../../../../object-types/spdx/DocumentCreationInformation'
 import ExternalDocumentReferences from '../../../../../../../object-types/spdx/ExternalDocumentReferences'
 import styles from '../detail.module.css'
@@ -55,6 +56,24 @@ const EditDocumentCreationInformation = ({
         arrayExternals.push(externalDocumentReference)
         setExternalDocumentRefs(arrayExternals)
         setExternalDocumentRef(externalDocumentReference)
+    }
+
+    useEffect(() => {
+        if (typeof documentCreationInformation?.creator !== 'undefined') {
+            setCreator(convertCreator(documentCreationInformation.creator))
+        }
+    }, [documentCreationInformation])
+
+    const convertCreator = (creators: Creator[]) => {
+        const inputs: InputKeyValue[] = []
+        creators.forEach((creator: Creator) => {
+            const input: InputKeyValue = {
+                key: creator.type,
+                value: creator.value,
+            }
+            inputs.push(input)
+        })
+        return inputs
     }
 
     return (

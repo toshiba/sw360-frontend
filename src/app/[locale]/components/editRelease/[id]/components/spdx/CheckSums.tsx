@@ -35,7 +35,7 @@ function CheckSums({ inputList, setInputList }: Props) {
     }
 
     const handleAddClick = () => {
-        setInputList([...inputList, { key: 'Committer', value: '' }])
+        setInputList([...inputList, { key: '', value: '' }])
     }
 
     return (
@@ -46,6 +46,7 @@ function CheckSums({ inputList, setInputList }: Props) {
                         <input
                             style={{ flex: 2, marginRight: '1rem' }}
                             type='text'
+                            value={elem.key}
                             className='form-control checksum-algorithm'
                             placeholder='Enter algorithm'
                             onChange={(e) => handleInputChange(e, j)}
@@ -54,6 +55,7 @@ function CheckSums({ inputList, setInputList }: Props) {
                             style={{ flex: 6, marginRight: '2rem' }}
                             type='text'
                             className='form-control checksum-value'
+                            value={elem.value}
                             placeholder='Enter value'
                             onChange={(e) => handleInputChange(e, j)}
                         />

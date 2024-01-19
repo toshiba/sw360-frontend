@@ -10,9 +10,10 @@
 
 'use client'
 import CommonUtils from '@/utils/common.utils'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
+import CheckSum from '../../../../../../../object-types/spdx/CheckSum'
 import ExternalReference from '../../../../../../../object-types/spdx/ExternalReference'
 import PackageInformation from '../../../../../../../object-types/spdx/PackageInformation'
 import styles from '../detail.module.css'
@@ -55,6 +56,24 @@ const EditPackageInformation = ({
         arrayExternals.push(externalReference)
         setExternalRefsDatas(arrayExternals)
         setExternalRefsData(externalReference)
+    }
+
+    useEffect(() => {
+        if (typeof packageInformation?.checksums !== 'undefined') {
+            setCheckSums(convertChecksums(packageInformation.checksums))
+        }
+    }, [packageInformation])
+
+    const convertChecksums = (checksums: CheckSum[]) => {
+        const inputs: InputKeyValue[] = []
+        checksums.forEach((checksum: CheckSum) => {
+            const input: InputKeyValue = {
+                key: checksum.algorithm,
+                value: checksum.checksumValue,
+            }
+            inputs.push(input)
+        })
+        return inputs
     }
 
     return (

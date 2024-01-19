@@ -7,25 +7,25 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import { InputKeyValue } from '@/object-types'
 // import { useTranslations } from 'next-intl'
 import { FaTrashAlt } from 'react-icons/fa'
+import SnippetRange from '../../../../../../../object-types/spdx/SnippetRange'
 
 interface Props {
     // setDataInputList?: RolesType
-    setInputList?: React.Dispatch<React.SetStateAction<InputKeyValue[]>>
-    inputList?: InputKeyValue[]
+    setInputList?: React.Dispatch<React.SetStateAction<SnippetRange[]>>
+    inputList?: SnippetRange[]
 }
 
 function SnippetRanges({ inputList, setInputList }: Props) {
     // const t = useTranslations('default')
-    const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>, index: number) => {
-        const { name, value } = e.target
-        const list: InputKeyValue[] = [...inputList]
-        list[index][name as keyof InputKeyValue] = value
-        setInputList(list)
-        // setDataInputList(list)
-    }
+    // const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>, index: number) => {
+    //     // const { name, value } = e.target
+    //     // const list: SnippetRange[] = [...inputList]
+    //     // list[index][name as keyof SnippetRange] = value
+    //     // setInputList(list)
+    //     // setDataInputList(list)
+    // }
 
     const handleRemoveClick = (index: number) => {
         const list = [...inputList]
@@ -35,7 +35,7 @@ function SnippetRanges({ inputList, setInputList }: Props) {
     }
 
     const handleAddClick = () => {
-        setInputList([...inputList, { key: 'Committer', value: '' }])
+        setInputList([...inputList, { rangeType: '', startPointer: '', endPointer: '', reference: '', index: 0 }])
     }
 
     return (
@@ -43,7 +43,11 @@ function SnippetRanges({ inputList, setInputList }: Props) {
             {inputList.map((elem, j) => {
                 return (
                     <div key={j} style={{ display: 'flex', marginBottom: '0.75rem' }}>
-                        <select style={{ flex: 1, marginRight: '1rem' }} className='form-control range-type'>
+                        <select
+                            style={{ flex: 1, marginRight: '1rem' }}
+                            className='form-control range-type'
+                            value={elem.rangeType}
+                        >
                             <option value='BYTE' selected>
                                 BYTE
                             </option>
@@ -54,21 +58,24 @@ function SnippetRanges({ inputList, setInputList }: Props) {
                             type='text'
                             className='form-control start-pointer'
                             placeholder='Enter start pointer'
-                            onChange={(e) => handleInputChange(e, j)}
+                            value={elem.startPointer}
+                            // onChange={(e) => handleInputChange(e, j)}
                         />
                         <input
                             style={{ flex: 2, marginRight: '1rem' }}
                             type='text'
                             className='form-control end-pointer'
                             placeholder='Enter end pointer'
-                            onChange={(e) => handleInputChange(e, j)}
+                            value={elem.endPointer}
+                            // onChange={(e) => handleInputChange(e, j)}
                         />
                         <input
                             style={{ flex: 4, marginRight: '2rem' }}
                             type='text'
                             className='form-control reference'
                             placeholder='Enter reference'
-                            onChange={(e) => handleInputChange(e, j)}
+                            value={elem.reference}
+                            // onChange={(e) => handleInputChange(e, j)}
                         />
                         <FaTrashAlt onClick={() => handleRemoveClick(j)} />
                     </div>
