@@ -30,6 +30,7 @@ const EditOtherLicensingInformationDetected = ({
     setOtherLicensingInformationDetecteds,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
+    const [licenseName, setLicenseName] = useState(true)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
@@ -148,7 +149,8 @@ const EditOtherLicensingInformationDetected = ({
                                                 type='radio'
                                                 name='_sw360_portlet_components_LICENSE_NAME'
                                                 value='EXIST'
-                                                checked={true}
+                                                onClick={() => setLicenseName(true)}
+                                                checked={licenseName}
                                             />
                                             <input
                                                 style={{ flex: 6, marginRight: '1rem' }}
@@ -157,6 +159,7 @@ const EditOtherLicensingInformationDetected = ({
                                                 type='text'
                                                 placeholder='Enter license name'
                                                 value={otherLicensingInformationDetected.licenseName ?? ''}
+                                                disabled={!licenseName}
                                             />
                                         </div>
                                         <div style={{ flex: 2 }}>
@@ -166,6 +169,8 @@ const EditOtherLicensingInformationDetected = ({
                                                 type='radio'
                                                 name='_sw360_portlet_components_LICENSE_NAME'
                                                 value='NOASSERTION'
+                                                onClick={() => setLicenseName(false)}
+                                                checked={!licenseName}
                                             />
                                             <label
                                                 className='form-check-label radio-label lableSPDX'

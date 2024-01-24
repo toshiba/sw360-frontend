@@ -14,6 +14,9 @@ import { FaTrashAlt } from 'react-icons/fa'
 import SnippetInformation from '../../../../../../../object-types/spdx/SnippetInformation'
 import SnippetRange from '../../../../../../../object-types/spdx/SnippetRange'
 import styles from '../detail.module.css'
+import SnippetConcludedLicense from './SnippetInformation/SnippetConcludedLicense'
+import SnippetCopyrightText from './SnippetInformation/SnippetCopyrightText'
+import SnippetLicenseInformation from './SnippetInformation/SnippetLicenseInformation'
 import SnippetRanges from './SnippetRanges'
 
 interface Props {
@@ -177,118 +180,10 @@ const EditSnippetInformation = ({
                             </td>
                         </tr>
                         <tr>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX'>9.5 Snippet concluded license</label>
-                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseExist'
-                                                type='radio'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE'
-                                                value='EXIST'
-                                                checked={true}
-                                            />
-                                            <input
-                                                style={{ flex: 6, marginRight: '1rem' }}
-                                                id='spdxConcludedLicenseValue'
-                                                className='form-control'
-                                                type='text'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE_VALUE'
-                                                placeholder='Enter snippet concluded license'
-                                                value={snippetInformation.licenseConcluded ?? ''}
-                                            />
-                                        </div>
-                                        <div style={{ flex: 2 }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseNone'
-                                                type='radio'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE'
-                                                value='NONE'
-                                            />
-                                            <label
-                                                style={{ marginRight: '2rem' }}
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='spdxConcludedLicenseNone'
-                                            >
-                                                NONE
-                                            </label>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseNoAssertion'
-                                                type='radio'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE'
-                                                value='NOASSERTION'
-                                            />
-                                            <label
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='spdxConcludedLicenseNoAssertion'
-                                            >
-                                                NOASSERTION
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
+                            <SnippetConcludedLicense snippetInformation={snippetInformation} />
                         </tr>
                         <tr>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX'>9.6 License information in snippet</label>
-                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='licenseInfoInFile'
-                                                type='radio'
-                                                name='_sw360_portlet_components_LICENSE_INFO_IN_FILE'
-                                                value='EXIST'
-                                                checked={true}
-                                            />
-                                            <textarea
-                                                style={{ flex: 6, marginRight: '1rem' }}
-                                                id='licenseInfoInFileValue'
-                                                rows={5}
-                                                className='form-control'
-                                                name='_sw360_portlet_components_LICENSE_INFO_IN_FILE_SOURCE'
-                                                placeholder='Enter license information in snippet'
-                                                value={snippetInformation.licenseInfoInSnippets ?? ''}
-                                            ></textarea>
-                                        </div>
-                                        <div style={{ flex: 2 }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='licenseInfoInFileNone'
-                                                type='radio'
-                                                name='_sw360_portlet_components_LICENSE_INFO_IN_FILE'
-                                                value='NONE'
-                                            />
-                                            <label
-                                                style={{ marginRight: '2rem' }}
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='licenseInfoInFileNone'
-                                            >
-                                                NONE
-                                            </label>
-                                            <input
-                                                className='spdx-radio'
-                                                id='licenseInfoInFileNoAssertion'
-                                                type='radio'
-                                                name='_sw360_portlet_components_LICENSE_INFO_IN_FILE'
-                                                value='NOASSERTION'
-                                            />
-                                            <label
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='licenseInfoInFileNoAssertion'
-                                            >
-                                                NOASSERTION
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
+                            <SnippetLicenseInformation snippetInformation={snippetInformation} />
                         </tr>
                         <tr>
                             <td colSpan={3}>
@@ -307,60 +202,7 @@ const EditSnippetInformation = ({
                             </td>
                         </tr>
                         <tr>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX'>9.8 Snippet copyright text</label>
-                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='snippetCopyrightText'
-                                                type='radio'
-                                                name='_sw360_portlet_components_SNIPPET_COPYRIGHT_TEXT'
-                                                value='EXIST'
-                                                checked={true}
-                                            />
-                                            <textarea
-                                                style={{ flex: 6, marginRight: '1rem' }}
-                                                id='copyrightTextValueSnippet'
-                                                rows={5}
-                                                className='form-control'
-                                                placeholder='Enter snippet copyright text'
-                                                value={snippetInformation.copyrightText ?? ''}
-                                            ></textarea>
-                                        </div>
-                                        <div style={{ flex: 2 }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='snippetCopyrightTextNone'
-                                                type='radio'
-                                                name='_sw360_portlet_components_SNIPPET_COPYRIGHT_TEXT'
-                                                value='NONE'
-                                            />
-                                            <label
-                                                style={{ marginRight: '2rem' }}
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='snippetCopyrightTextNone'
-                                            >
-                                                NONE
-                                            </label>
-                                            <input
-                                                className='spdx-radio'
-                                                id='snippetCopyrightTextNoAssertion'
-                                                type='radio'
-                                                name='_sw360_portlet_components_SNIPPET_COPYRIGHT_TEXT'
-                                                value='NOASSERTION'
-                                            />
-                                            <label
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='snippetCopyrightTextNoAssertion'
-                                            >
-                                                NOASSERTION
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
+                            <SnippetCopyrightText snippetInformation={snippetInformation} />
                         </tr>
                         <tr>
                             <td colSpan={3}>

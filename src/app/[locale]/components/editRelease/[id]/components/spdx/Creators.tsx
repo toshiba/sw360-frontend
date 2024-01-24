@@ -35,7 +35,7 @@ function Creators({ inputList, setInputList }: Props) {
     }
 
     const handleAddClick = () => {
-        setInputList([...inputList, { key: 'Organization', value: '' }])
+        setInputList([...inputList, { key: 'Tool', value: '' }])
     }
 
     return (

@@ -18,6 +18,12 @@ import ExternalReference from '../../../../../../../object-types/spdx/ExternalRe
 import PackageInformation from '../../../../../../../object-types/spdx/PackageInformation'
 import styles from '../detail.module.css'
 import CheckSums from './CheckSums'
+import PackageAllLicensesInformation from './PackageInformation/PackageAllLicensesInformation'
+import PackageConcludedLicense from './PackageInformation/PackageConcludedLicense'
+import PackageCopyrightText from './PackageInformation/PackageCopyrightText'
+import PackageDeclaredLicense from './PackageInformation/PackageDeclaredLicense'
+import PackageDownloadLocation from './PackageInformation/PackageDownloadLocation'
+import PackageHomePage from './PackageInformation/PackageHomePage'
 
 interface Props {
     packageInformation?: PackageInformation
@@ -37,6 +43,10 @@ const EditPackageInformation = ({
     setExternalRefsDatas,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
+
+    const [packageSupplier, setPackageSupplier] = useState(true)
+    const [packageOriginator, setPackageOriginator] = useState(true)
+    const [filesAnalyzed, setFilesAnalyzed] = useState(true)
 
     const [checkSums, setCheckSums] = useState<InputKeyValue[]>([])
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -180,17 +190,20 @@ const EditPackageInformation = ({
                                                         type='radio'
                                                         name='_sw360_portlet_components_SUPPLIER'
                                                         value='EXIST'
-                                                        checked={true}
+                                                        onClick={() => setPackageSupplier(true)}
+                                                        checked={packageSupplier}
                                                     />
                                                     <select
                                                         id='supplierType'
                                                         style={{ flex: 2, marginRight: '1rem' }}
                                                         className='form-control'
+                                                        disabled={!packageSupplier}
                                                     >
                                                         <option>Organization</option>
                                                         <option>Person</option>
                                                     </select>
                                                     <input
+                                                        disabled={!packageSupplier}
                                                         style={{ flex: 6, marginRight: '1rem' }}
                                                         id='supplierValue'
                                                         className='form-control'
@@ -205,6 +218,8 @@ const EditPackageInformation = ({
                                                         className='spdx-radio lableSPDX'
                                                         id='supplierNoAssertion'
                                                         type='radio'
+                                                        onClick={() => setPackageSupplier(false)}
+                                                        checked={!packageSupplier}
                                                         name='_sw360_portlet_components_SUPPLIER'
                                                         value='NOASSERTION'
                                                     />
@@ -230,12 +245,14 @@ const EditPackageInformation = ({
                                                         type='radio'
                                                         name='_sw360_portlet_components_ORIGINATOR'
                                                         value='EXIST'
-                                                        checked={true}
+                                                        onClick={() => setPackageOriginator(true)}
+                                                        checked={packageOriginator}
                                                     />
                                                     <select
                                                         id='originatorType'
                                                         style={{ flex: 2, marginRight: '1rem' }}
                                                         className='form-control'
+                                                        disabled={!packageOriginator}
                                                     >
                                                         <option>Organization</option>
                                                         <option>Person</option>
@@ -248,6 +265,7 @@ const EditPackageInformation = ({
                                                         name='_sw360_portlet_components_ORIGINATOR_VALUE'
                                                         placeholder='Enter package originator'
                                                         value={packageInformation.originator.substring(14) ?? ''}
+                                                        disabled={!packageOriginator}
                                                     />
                                                 </div>
                                                 <div style={{ flex: 2 }}>
@@ -257,6 +275,8 @@ const EditPackageInformation = ({
                                                         type='radio'
                                                         name='_sw360_portlet_components_ORIGINATOR'
                                                         value='NOASSERTION'
+                                                        onClick={() => setPackageOriginator(false)}
+                                                        checked={!packageOriginator}
                                                     />
                                                     <label
                                                         className='form-check-label radio-label lableSPDX'
@@ -272,61 +292,7 @@ const EditPackageInformation = ({
                             </>
                         )}
                         <tr>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX'>7.7 Package download location</label>
-                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseExist1'
-                                                type='radio'
-                                                name='packageDownloadLocation'
-                                                value='EXIST'
-                                                checked={true}
-                                            />
-                                            <input
-                                                style={{ flex: 6, marginRight: '1rem' }}
-                                                id='spdxConcludedLicenseValue'
-                                                className='form-control'
-                                                type='text'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE_VALUE'
-                                                placeholder='Enter package supplier'
-                                                value={packageInformation.downloadLocation ?? ''}
-                                            />
-                                        </div>
-                                        <div style={{ flex: 2 }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseNone'
-                                                type='radio'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE'
-                                                value='NONE'
-                                            />
-                                            <label
-                                                style={{ marginRight: '2rem' }}
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='spdxConcludedLicenseNone'
-                                            >
-                                                NONE
-                                            </label>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseNoAssertion'
-                                                type='radio'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE'
-                                                value='NOASSERTION'
-                                            />
-                                            <label
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='spdxConcludedLicenseNoAssertion'
-                                            >
-                                                NOASSERTION
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
+                            <PackageDownloadLocation packageInformation={packageInformation} />
                         </tr>
                         <tr>
                             <td colSpan={3}>
@@ -339,7 +305,8 @@ const EditPackageInformation = ({
                                                 id='FilesAnalyzedTrue'
                                                 type='radio'
                                                 name='_sw360_portlet_components_FILES_ANALYZED'
-                                                checked={true}
+                                                onClick={() => setFilesAnalyzed(true)}
+                                                checked={filesAnalyzed ? true : false}
                                             />
                                             <label
                                                 style={{ marginRight: '2rem' }}
@@ -354,6 +321,8 @@ const EditPackageInformation = ({
                                                 type='radio'
                                                 name='_sw360_portlet_components_FILES_ANALYZED'
                                                 value='false'
+                                                onClick={() => setFilesAnalyzed(false)}
+                                                checked={filesAnalyzed ? false : true}
                                             />
                                             <label
                                                 className='form-check-label radio-label lableSPDX'
@@ -412,61 +381,7 @@ const EditPackageInformation = ({
                             </>
                         )}
                         <tr>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX'>7.11 Package home page</label>
-                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseExist'
-                                                type='radio'
-                                                name='homepage'
-                                                value='EXIST'
-                                                checked={true}
-                                            />
-                                            <input
-                                                style={{ flex: 6, marginRight: '1rem' }}
-                                                id='spdxConcludedLicenseValue'
-                                                className='form-control'
-                                                type='text'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE_VALUE'
-                                                placeholder='Enter package homepage'
-                                                value={packageInformation.homepage ?? ''}
-                                            />
-                                        </div>
-                                        <div style={{ flex: 2 }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseNone'
-                                                type='radio'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE'
-                                                value='NONE'
-                                            />
-                                            <label
-                                                style={{ marginRight: '2rem' }}
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='spdxConcludedLicenseNone'
-                                            >
-                                                NONE
-                                            </label>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseNoAssertion'
-                                                type='radio'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE'
-                                                value='NOASSERTION'
-                                            />
-                                            <label
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='spdxConcludedLicenseNoAssertion'
-                                            >
-                                                NOASSERTION
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
+                            <PackageHomePage packageInformation={packageInformation} />
                         </tr>
                         {isModeFull && (
                             <tr className='spdx-full'>
@@ -490,177 +405,15 @@ const EditPackageInformation = ({
                             </tr>
                         )}
                         <tr>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX'>7.13 Concluded license</label>
-                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseExist'
-                                                type='radio'
-                                                name='licenseConcluded'
-                                                value='EXIST'
-                                                checked={true}
-                                            />
-                                            <input
-                                                style={{ flex: 6, marginRight: '1rem' }}
-                                                id='spdxConcludedLicenseValue'
-                                                className='form-control'
-                                                type='text'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE_VALUE'
-                                                placeholder='Enter concluded license'
-                                                value={packageInformation.licenseConcluded ?? ''}
-                                            />
-                                        </div>
-                                        <div style={{ flex: 2 }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseNone'
-                                                type='radio'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE'
-                                                value='NONE'
-                                            />
-                                            <label
-                                                style={{ marginRight: '2rem' }}
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='spdxConcludedLicenseNone'
-                                            >
-                                                NONE
-                                            </label>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseNoAssertion'
-                                                type='radio'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE'
-                                                value='NOASSERTION'
-                                            />
-                                            <label
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='spdxConcludedLicenseNoAssertion'
-                                            >
-                                                NOASSERTION
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
+                            <PackageConcludedLicense packageInformation={packageInformation} />
                         </tr>
                         {isModeFull && (
                             <tr>
-                                <td colSpan={3}>
-                                    <div className='form-group'>
-                                        <label className='lableSPDX'>7.14 All licenses information from file</label>
-                                        <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                            <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                                <input
-                                                    className='spdx-radio'
-                                                    id='licenseInfoInFile'
-                                                    type='radio'
-                                                    name='licenseInfoFromFiles'
-                                                    value='EXIST'
-                                                    checked={true}
-                                                />
-                                                <textarea
-                                                    style={{ flex: 6, marginRight: '1rem' }}
-                                                    id='licenseInfoInFileValue'
-                                                    rows={5}
-                                                    className='form-control'
-                                                    name='_sw360_portlet_components_LICENSE_INFO_IN_FILE_SOURCE'
-                                                    placeholder='Enter all licenses information from files'
-                                                    value={packageInformation.licenseInfoFromFiles}
-                                                ></textarea>
-                                            </div>
-                                            <div style={{ flex: 2 }}>
-                                                <input
-                                                    className='spdx-radio'
-                                                    id='licenseInfoInFileNone'
-                                                    type='radio'
-                                                    name='_sw360_portlet_components_LICENSE_INFO_IN_FILE'
-                                                    value='NONE'
-                                                />
-                                                <label
-                                                    style={{ marginRight: '2rem' }}
-                                                    className='form-check-label radio-label lableSPDX'
-                                                    htmlFor='licenseInfoInFileNone'
-                                                >
-                                                    NONE
-                                                </label>
-                                                <input
-                                                    className='spdx-radio'
-                                                    id='licenseInfoInFileNoAssertion'
-                                                    type='radio'
-                                                    name='_sw360_portlet_components_LICENSE_INFO_IN_FILE'
-                                                    value='NOASSERTION'
-                                                />
-                                                <label
-                                                    className='form-check-label radio-label lableSPDX'
-                                                    htmlFor='licenseInfoInFileNoAssertion'
-                                                >
-                                                    NOASSERTION
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
+                                <PackageAllLicensesInformation packageInformation={packageInformation} />
                             </tr>
                         )}
                         <tr>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX'>7.15 Declared license</label>
-                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseExist'
-                                                type='radio'
-                                                name='licenseDeclared'
-                                                value='EXIST'
-                                                checked={true}
-                                            />
-                                            <input
-                                                style={{ flex: 6, marginRight: '1rem' }}
-                                                id='spdxConcludedLicenseValue'
-                                                className='form-control'
-                                                type='text'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE_VALUE'
-                                                placeholder='Enter declared license'
-                                                value={packageInformation.licenseDeclared ?? ''}
-                                            />
-                                        </div>
-                                        <div style={{ flex: 2 }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseNone'
-                                                type='radio'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE'
-                                                value='NONE'
-                                            />
-                                            <label
-                                                style={{ marginRight: '2rem' }}
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='spdxConcludedLicenseNone'
-                                            >
-                                                NONE
-                                            </label>
-                                            <input
-                                                className='spdx-radio'
-                                                id='spdxConcludedLicenseNoAssertion'
-                                                type='radio'
-                                                name='_sw360_portlet_components_CONCLUDED_LICENSE'
-                                                value='NOASSERTION'
-                                            />
-                                            <label
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='spdxConcludedLicenseNoAssertion'
-                                            >
-                                                NOASSERTION
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
+                            <PackageDeclaredLicense packageInformation={packageInformation} />
                         </tr>
                         <tr className='spdx-full'>
                             <td colSpan={3}>
@@ -682,61 +435,7 @@ const EditPackageInformation = ({
                             </td>
                         </tr>
                         <tr>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX'>7.17 Copyright text</label>
-                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='licenseInfoInFile'
-                                                type='radio'
-                                                name='copyrightText'
-                                                value='EXIST'
-                                                checked={true}
-                                            />
-                                            <textarea
-                                                style={{ flex: 6, marginRight: '1rem' }}
-                                                id='licenseInfoInFileValue'
-                                                rows={5}
-                                                className='form-control'
-                                                name='_sw360_portlet_components_LICENSE_INFO_IN_FILE_SOURCE'
-                                                placeholder='Enter copyright text'
-                                                value={packageInformation.copyrightText ?? ''}
-                                            ></textarea>
-                                        </div>
-                                        <div style={{ flex: 2 }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='licenseInfoInFileNone'
-                                                type='radio'
-                                                name='_sw360_portlet_components_LICENSE_INFO_IN_FILE'
-                                                value='NONE'
-                                            />
-                                            <label
-                                                style={{ marginRight: '2rem' }}
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='licenseInfoInFileNone'
-                                            >
-                                                NONE
-                                            </label>
-                                            <input
-                                                className='spdx-radio'
-                                                id='licenseInfoInFileNoAssertion'
-                                                type='radio'
-                                                name='_sw360_portlet_components_LICENSE_INFO_IN_FILE'
-                                                value='NOASSERTION'
-                                            />
-                                            <label
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='licenseInfoInFileNoAssertion'
-                                            >
-                                                NOASSERTION
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
+                            <PackageCopyrightText packageInformation={packageInformation} />
                         </tr>
                         {isModeFull && (
                             <>
