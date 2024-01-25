@@ -76,6 +76,8 @@ const EditDocumentCreationInformation = ({
         return inputs
     }
 
+    const [isAnonymous, setIsAnonymous] = useState(false)
+
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
             <thead
@@ -343,12 +345,16 @@ const EditDocumentCreationInformation = ({
                                                 id='creator-anonymous'
                                                 className='spdx-checkbox'
                                                 type='checkbox'
-                                                // onclick="setAnonymous()"
+                                                onClick={() => setIsAnonymous(true)}
                                             />
                                         </div>
                                         <div style={{ display: 'flex' }}>
                                             <label className='sub-title lableSPDX'>List</label>
-                                            <Creators inputList={creator} setInputList={setCreator} />
+                                            <Creators
+                                                inputList={creator}
+                                                setInputList={setCreator}
+                                                isAnonymous={isAnonymous}
+                                            />
                                         </div>
                                         <input
                                             id='spdxCreator'

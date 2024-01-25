@@ -15,9 +15,10 @@ interface Props {
     // setDataInputList?: RolesType
     setInputList?: React.Dispatch<React.SetStateAction<InputKeyValue[]>>
     inputList?: InputKeyValue[]
+    isAnonymous?: boolean
 }
 
-function Creators({ inputList, setInputList }: Props) {
+function Creators({ inputList, setInputList, isAnonymous }: Props) {
     // const t = useTranslations('default')
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>, index: number) => {
         const { name, value } = e.target
@@ -47,11 +48,10 @@ function Creators({ inputList, setInputList }: Props) {
                             style={{ flex: 2, marginRight: '1rem' }}
                             value={elem.key}
                             className='form-control creator-type'
+                            disabled={isAnonymous && (elem.key === 'Organization' || elem.key === 'Person')}
                             onChange={(e) => handleInputChange(e, j)}
                         >
-                            <option value='Organization' selected>
-                                Organization
-                            </option>
+                            <option value='Organization'>Organization</option>
                             <option value='Person'>Person</option>
                             <option value='Tool'>Tool</option>
                         </select>
@@ -62,6 +62,7 @@ function Creators({ inputList, setInputList }: Props) {
                             className='form-control creator-value'
                             placeholder='Enter creator'
                             onChange={(e) => handleInputChange(e, j)}
+                            disabled={isAnonymous && (elem.key === 'Organization' || elem.key === 'Person')}
                         />
                         <FaTrashAlt onClick={() => handleRemoveClick(j)} />
                     </div>
