@@ -21,6 +21,7 @@ import Creators from './Creators'
 
 interface Props {
     documentCreationInformation?: DocumentCreationInformation
+    setDocumentCreationInformation?: React.Dispatch<React.SetStateAction<DocumentCreationInformation>>
     externalDocumentRef?: ExternalDocumentReferences
     setExternalDocumentRef?: React.Dispatch<React.SetStateAction<ExternalDocumentReferences>>
     isModeFull?: boolean
@@ -30,6 +31,7 @@ interface Props {
 
 const EditDocumentCreationInformation = ({
     documentCreationInformation,
+    setDocumentCreationInformation,
     externalDocumentRef,
     setExternalDocumentRef,
     isModeFull,
@@ -78,6 +80,13 @@ const EditDocumentCreationInformation = ({
 
     const [isAnonymous, setIsAnonymous] = useState(false)
 
+    const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+        setDocumentCreationInformation({
+            ...documentCreationInformation,
+            [e.target.name]: e.target.value,
+        })
+    }
+
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
             <thead
@@ -103,10 +112,16 @@ const EditDocumentCreationInformation = ({
                                         <label className='sub-label'>SPDX-</label>
                                         <input
                                             id='spdxVersion'
+                                            name='spdxVersion'
                                             className='form-control needs-validation'
                                             type='text'
                                             placeholder='Enter SPDX version'
-                                            value={documentCreationInformation.spdxVersion.substring(5) ?? ''}
+                                            onChange={updateField}
+                                            value={
+                                                documentCreationInformation.spdxVersion?.startsWith('SPDX-')
+                                                    ? documentCreationInformation.spdxVersion.substring(5)
+                                                    : documentCreationInformation.spdxVersion
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -118,9 +133,11 @@ const EditDocumentCreationInformation = ({
                                     </label>
                                     <input
                                         id='dataLicense'
+                                        name='dataLicense'
                                         className='form-control needs-validation'
                                         type='text'
                                         placeholder='Enter data license'
+                                        onChange={updateField}
                                         value={documentCreationInformation.dataLicense ?? ''}
                                     />
                                 </div>
@@ -134,10 +151,16 @@ const EditDocumentCreationInformation = ({
                                         <label className='sub-label'>SPDXRef-</label>
                                         <input
                                             id='spdxIdentifier'
+                                            name='SPDXID'
                                             className='form-control needs-validation'
                                             type='text'
                                             placeholder='Enter SPDX identifier'
-                                            value={documentCreationInformation.SPDXID.substring(8) ?? ''}
+                                            onChange={updateField}
+                                            value={
+                                                documentCreationInformation.SPDXID?.startsWith('SPDXRef-')
+                                                    ? documentCreationInformation.SPDXID.substring(8)
+                                                    : documentCreationInformation.SPDXID
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -151,9 +174,11 @@ const EditDocumentCreationInformation = ({
                                     </label>
                                     <input
                                         id='documentName'
+                                        name='name'
                                         type='text'
                                         className='form-control needs-validation'
                                         placeholder='Enter document name'
+                                        onChange={updateField}
                                         value={documentCreationInformation.name ?? ''}
                                     />
                                 </div>
@@ -167,9 +192,11 @@ const EditDocumentCreationInformation = ({
                                     </label>
                                     <input
                                         id='documentNamespace'
+                                        name='documentNamespace'
                                         className='form-control needs-validation'
                                         type='text'
                                         placeholder='Enter SPDX document namespace'
+                                        onChange={updateField}
                                         value={documentCreationInformation.documentNamespace ?? ''}
                                     />
                                 </div>
@@ -319,9 +346,11 @@ const EditDocumentCreationInformation = ({
                                             </label>
                                             <input
                                                 id='licenseListVersion'
+                                                name='licenseListVersion'
                                                 className='form-control'
                                                 type='text'
                                                 placeholder='Enter license list version'
+                                                onChange={updateField}
                                                 value={documentCreationInformation.licenseListVersion ?? ''}
                                             />
                                         </div>
@@ -345,7 +374,7 @@ const EditDocumentCreationInformation = ({
                                                 id='creator-anonymous'
                                                 className='spdx-checkbox'
                                                 type='checkbox'
-                                                onClick={() => setIsAnonymous(true)}
+                                                onClick={() => setIsAnonymous(!isAnonymous)}
                                             />
                                         </div>
                                         <div style={{ display: 'flex' }}>
@@ -412,8 +441,10 @@ const EditDocumentCreationInformation = ({
                                             <textarea
                                                 className='form-control'
                                                 id='creatorComment'
+                                                name='creatorComment'
                                                 rows={5}
                                                 placeholder='Enter creator comment'
+                                                onChange={updateField}
                                                 value={documentCreationInformation.creatorComment ?? ''}
                                             ></textarea>
                                         </div>
@@ -427,8 +458,10 @@ const EditDocumentCreationInformation = ({
                                             </label>
                                             <textarea
                                                 className='form-control'
+                                                name='documentComment'
                                                 id='documentComment'
                                                 rows={5}
+                                                onChange={updateField}
                                                 placeholder='Enter document comment'
                                                 value={documentCreationInformation.documentComment ?? ''}
                                             ></textarea>

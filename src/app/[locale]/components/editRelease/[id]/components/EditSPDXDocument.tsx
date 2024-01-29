@@ -9,8 +9,8 @@
 // License-Filename: LICENSE
 
 'use client'
-
-import { HttpStatus, Release, ReleaseDetail } from '@/object-types'
+// import { HttpStatus, Release, ReleaseDetail } from '@/object-types'
+import { HttpStatus, ReleaseDetail } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
 import { ApiUtils } from '@/utils/index'
 import { signOut, useSession } from 'next-auth/react'
@@ -23,7 +23,7 @@ import ExternalReference from '../../../../../../object-types/spdx/ExternalRefer
 import OtherLicensingInformationDetected from '../../../../../../object-types/spdx/OtherLicensingInformationDetected'
 import PackageInformation from '../../../../../../object-types/spdx/PackageInformation'
 import RelationshipsBetweenSPDXElements from '../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
-// import SPDXDocument from '../../../../../../object-types/spdx/SPDXDocument'
+import SPDXDocument from '../../../../../../object-types/spdx/SPDXDocument'
 import SnippetInformation from '../../../../../../object-types/spdx/SnippetInformation'
 import styles from './spdx/CssButton.module.css'
 import AnnotationInformation from './spdx/EditAnnotationInformation'
@@ -35,13 +35,13 @@ import EditSnippetInformation from './spdx/EditSnippetInformation'
 
 interface Props {
     releaseId: string
-    releasePayload?: Release
-    setReleasePayload?: React.Dispatch<React.SetStateAction<Release>>
+    // releasePayload?: Release
+    // setReleasePayload?: React.Dispatch<React.SetStateAction<Release>>
 }
 
 const EditSPDXDocument = ({ releaseId }: Props) => {
     const t = useTranslations('default')
-    // const [spdxDocument, setSPDXDocument] = useState<SPDXDocument>()
+    const [spdxDocument, setSPDXDocument] = useState<SPDXDocument>()
     const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
     const [packageInformation, setPackageInformation] = useState<PackageInformation>()
     // const [snippetInformations, setSnippetInformations] = useState<SnippetInformation>()
@@ -100,7 +100,7 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     !CommonUtils.isNullOrUndefined(release._embedded) &&
                     !CommonUtils.isNullOrUndefined(release._embedded['sw360:spdxDocument'])
                 ) {
-                    // setSPDXDocument(release._embedded['sw360:spdxDocument'])
+                    setSPDXDocument(release._embedded['sw360:spdxDocument'])
                     //SnippetInformation
                     if (!CommonUtils.isNullEmptyOrUndefinedArray(release._embedded['sw360:spdxDocument'].snippets)) {
                         setSnippetInformations(
@@ -251,6 +251,7 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     <EditDocumentCreationInformation
                         isModeFull={isModeFull}
                         documentCreationInformation={documentCreationInformation}
+                        setDocumentCreationInformation={setDocumentCreationInformation}
                         externalDocumentRef={externalDocumentRef}
                         setExternalDocumentRef={setExternalDocumentRef}
                         externalDocumentRefs={externalDocumentRefs}
@@ -259,6 +260,7 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     <EditPackageInformation
                         isModeFull={isModeFull}
                         packageInformation={packageInformation}
+                        setPackageInformation={setPackageInformation}
                         externalRefsData={externalRefsData}
                         setExternalRefsData={setExternalRefsData}
                         externalRefsDatas={externalRefsDatas}

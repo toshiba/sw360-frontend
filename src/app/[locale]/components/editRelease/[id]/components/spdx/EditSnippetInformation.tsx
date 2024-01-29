@@ -82,6 +82,13 @@ const EditSnippetInformation = ({
         return inputs
     }
 
+    const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+        setSnippetInformation({
+            ...snippetInformation,
+            [e.target.name]: e.target.value,
+        })
+    }
+
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
             <thead
@@ -139,10 +146,15 @@ const EditSnippetInformation = ({
                                         <input
                                             id='snippetSpdxIdentifier'
                                             className='form-control'
-                                            name='_sw360_portlet_components_SPDXSPDX_IDENTIFIER'
                                             type='text'
                                             placeholder='Enter snippet SPDX identifier'
-                                            value={snippetInformation.SPDXID.substring(8) ?? ''}
+                                            name='SPDXID'
+                                            onChange={updateField}
+                                            value={
+                                                snippetInformation.SPDXID?.startsWith('SPDXRef-')
+                                                    ? snippetInformation.SPDXID?.substring(8)
+                                                    : snippetInformation.SPDXID
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -196,6 +208,8 @@ const EditSnippetInformation = ({
                                         id='snippetLicenseComments'
                                         rows={5}
                                         placeholder='Enter snippet comments on license'
+                                        name='licenseComments'
+                                        onChange={updateField}
                                         value={snippetInformation.licenseComments ?? ''}
                                     ></textarea>
                                 </div>
@@ -215,6 +229,8 @@ const EditSnippetInformation = ({
                                         id='snippetComment'
                                         rows={5}
                                         placeholder='Enter snippet comment'
+                                        name='comment'
+                                        onChange={updateField}
                                         value={snippetInformation.comment ?? ''}
                                     ></textarea>
                                 </div>
@@ -231,6 +247,8 @@ const EditSnippetInformation = ({
                                         type='text'
                                         className='form-control'
                                         placeholder='Enter snippet name'
+                                        name='name'
+                                        onChange={updateField}
                                         value={snippetInformation.name ?? ''}
                                     />
                                 </div>
@@ -247,6 +265,8 @@ const EditSnippetInformation = ({
                                         id='snippetAttributionText'
                                         rows={5}
                                         placeholder='Enter snippet attribution text'
+                                        name='snippetAttributionText'
+                                        onChange={updateField}
                                         value={snippetInformation.snippetAttributionText ?? ''}
                                     ></textarea>
                                 </div>

@@ -27,6 +27,7 @@ import PackageHomePage from './PackageInformation/PackageHomePage'
 
 interface Props {
     packageInformation?: PackageInformation
+    setPackageInformation?: React.Dispatch<React.SetStateAction<PackageInformation>>
     externalRefsData?: ExternalReference
     setExternalRefsData?: React.Dispatch<React.SetStateAction<ExternalReference>>
     isModeFull?: boolean
@@ -41,6 +42,7 @@ const EditPackageInformation = ({
     isModeFull,
     externalRefsDatas,
     setExternalRefsDatas,
+    setPackageInformation,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
 
@@ -73,6 +75,13 @@ const EditPackageInformation = ({
             setCheckSums(convertChecksums(packageInformation.checksums))
         }
     }, [packageInformation])
+
+    const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+        setPackageInformation({
+            ...packageInformation,
+            [e.target.name]: e.target.value,
+        })
+    }
 
     const convertChecksums = (checksums: CheckSum[]) => {
         const inputs: InputKeyValue[] = []
@@ -111,9 +120,10 @@ const EditPackageInformation = ({
                                         <input
                                             id='packageName'
                                             className='form-control needs-validation'
+                                            name='name'
                                             type='text'
                                             placeholder='Enter package name'
-                                            name='_sw360_portlet_components_PACKAGE_NAME'
+                                            onChange={updateField}
                                             value={packageInformation.name ?? ''}
                                         />
                                     </div>
@@ -131,8 +141,13 @@ const EditPackageInformation = ({
                                             className='form-control needs-validation'
                                             type='text'
                                             placeholder='Enter package SPDX identifier'
-                                            name='_sw360_portlet_components_PACKAGE_SPDX_ID'
-                                            value={packageInformation.SPDXID.substring(8) ?? ''}
+                                            name='SPDXID'
+                                            onChange={updateField}
+                                            value={
+                                                packageInformation.SPDXID?.startsWith('SPDXRef-')
+                                                    ? packageInformation.SPDXID.substring(8)
+                                                    : packageInformation.SPDXID
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -151,7 +166,8 @@ const EditPackageInformation = ({
                                             className='form-control'
                                             type='text'
                                             placeholder='Enter package version'
-                                            name='_sw360_portlet_components_VERSION_INFO'
+                                            name='versionInfo'
+                                            onChange={updateField}
                                             value={packageInformation.versionInfo ?? ''}
                                         />
                                     </div>
@@ -168,7 +184,8 @@ const EditPackageInformation = ({
                                             className='form-control'
                                             type='text'
                                             placeholder='Enter package file name'
-                                            name='_sw360_portlet_components_PACKAGE_FILE_NAME'
+                                            name='packageFileName'
+                                            onChange={updateField}
                                             value={packageInformation.packageFileName ?? ''}
                                         />
                                     </div>
@@ -337,7 +354,6 @@ const EditPackageInformation = ({
                         </tr>
                         {isModeFull && (
                             <>
-                                {' '}
                                 <tr className='spdx-full'>
                                     <td colSpan={3}>
                                         <div className='form-group'>
@@ -395,9 +411,10 @@ const EditPackageInformation = ({
                                                 className='form-control'
                                                 id='excludedFiles'
                                                 rows={5}
-                                                name='_sw360_portlet_components_EXCLUDED_FILES'
+                                                name='sourceInfo'
+                                                onChange={updateField}
                                                 placeholder='Enter excluded files'
-                                                value={packageInformation.sourceInfo}
+                                                value={packageInformation.sourceInfo ?? ''}
                                             ></textarea>
                                         </div>
                                     </div>
@@ -426,8 +443,9 @@ const EditPackageInformation = ({
                                             className='form-control'
                                             id='excludedFiles'
                                             rows={5}
-                                            name='_sw360_portlet_components_EXCLUDED_FILES'
                                             placeholder='Enter excluded files'
+                                            name='licenseComments'
+                                            onChange={updateField}
                                             value={packageInformation.licenseComments ?? ''}
                                         ></textarea>
                                     </div>
@@ -451,7 +469,8 @@ const EditPackageInformation = ({
                                                     className='form-control'
                                                     id='excludedFiles'
                                                     rows={5}
-                                                    name='_sw360_portlet_components_EXCLUDED_FILES'
+                                                    name='summary'
+                                                    onChange={updateField}
                                                     placeholder='Enter excluded files'
                                                     value={packageInformation.summary ?? ''}
                                                 ></textarea>
@@ -470,7 +489,8 @@ const EditPackageInformation = ({
                                                     className='form-control'
                                                     id='excludedFiles'
                                                     rows={5}
-                                                    name='_sw360_portlet_components_EXCLUDED_FILES'
+                                                    name='description'
+                                                    onChange={updateField}
                                                     placeholder='Enter excluded files'
                                                     value={packageInformation.description ?? ''}
                                                 ></textarea>
@@ -491,7 +511,8 @@ const EditPackageInformation = ({
                                             className='form-control'
                                             id='excludedFiles'
                                             rows={5}
-                                            name='_sw360_portlet_components_EXCLUDED_FILES'
+                                            name='packageComment'
+                                            onChange={updateField}
                                             placeholder='Enter excluded files'
                                             value={packageInformation.packageComment ?? ''}
                                         ></textarea>
@@ -645,7 +666,8 @@ const EditPackageInformation = ({
                                                     className='form-control'
                                                     id='excludedFiles'
                                                     rows={5}
-                                                    name='_sw360_portlet_components_EXCLUDED_FILES'
+                                                    name='attributionText'
+                                                    onChange={updateField}
                                                     placeholder='Enter excluded files'
                                                     value={packageInformation.attributionText ?? ''}
                                                 ></textarea>
@@ -664,7 +686,8 @@ const EditPackageInformation = ({
                                                     className='form-control'
                                                     id='excludedFiles'
                                                     rows={5}
-                                                    name='_sw360_portlet_components_EXCLUDED_FILES'
+                                                    name='primaryPackagePurpose'
+                                                    onChange={updateField}
                                                     placeholder='Enter excluded files'
                                                     value={packageInformation.primaryPackagePurpose ?? ''}
                                                 ></textarea>

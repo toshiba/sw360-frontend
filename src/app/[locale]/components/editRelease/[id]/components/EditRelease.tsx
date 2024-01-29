@@ -322,8 +322,8 @@ const EditRelease = ({ releaseId }: Props) => {
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.SPDX_DOCUMENT ? true : false}>
                             <EditSPDXDocument
                                 releaseId={releaseId}
-                                releasePayload={releasePayload}
-                                setReleasePayload={setReleasePayload}
+                                // releasePayload={releasePayload}
+                                // setReleasePayload={setReleasePayload}
                             />
                         </div>
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.LINKED_RELEASES ? true : false}>

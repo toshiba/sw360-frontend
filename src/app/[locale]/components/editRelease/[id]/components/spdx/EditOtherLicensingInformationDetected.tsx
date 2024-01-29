@@ -52,6 +52,13 @@ const EditOtherLicensingInformationDetected = ({
         setOtherLicensingInformationDetected(externalDocumentReference)
     }
 
+    const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+        setOtherLicensingInformationDetected({
+            ...otherLicensingInformationDetected,
+            [e.target.name]: e.target.value,
+        })
+    }
+
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
             <thead
@@ -114,7 +121,13 @@ const EditOtherLicensingInformationDetected = ({
                                             className='form-control needs-validation'
                                             type='text'
                                             placeholder='Enter license identifier'
-                                            value={otherLicensingInformationDetected.licenseId.substring(11) ?? ''}
+                                            name='licenseId'
+                                            onChange={updateField}
+                                            value={
+                                                otherLicensingInformationDetected.licenseId?.startsWith('LicenseRef-')
+                                                    ? otherLicensingInformationDetected.licenseId?.substring(11)
+                                                    : otherLicensingInformationDetected.licenseId
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -130,7 +143,8 @@ const EditOtherLicensingInformationDetected = ({
                                         className='form-control needs-validation'
                                         id='extractedText'
                                         rows={5}
-                                        name='_sw360_portlet_components_EXTRACTED_TEXT'
+                                        name='extractedText'
+                                        onChange={updateField}
                                         placeholder='Enter extracted text'
                                         value={otherLicensingInformationDetected.extractedText ?? ''}
                                     ></textarea>
@@ -195,6 +209,8 @@ const EditOtherLicensingInformationDetected = ({
                                             id='licenseCrossRefs'
                                             rows={5}
                                             placeholder='Enter license cross reference'
+                                            name='licenseCrossRefs'
+                                            onChange={updateField}
                                             value={otherLicensingInformationDetected.licenseCrossRefs ?? ''}
                                         ></textarea>
                                     </div>
@@ -212,6 +228,8 @@ const EditOtherLicensingInformationDetected = ({
                                         id='licenseCommentOnOtherLicensing'
                                         rows={5}
                                         placeholder='Enter license comment'
+                                        name='licenseComment'
+                                        onChange={updateField}
                                         value={otherLicensingInformationDetected.licenseComment ?? ''}
                                     ></textarea>
                                 </div>
