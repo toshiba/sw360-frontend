@@ -172,6 +172,8 @@ const EditOtherLicensingInformationDetected = ({
                                                 className='form-control needs-validation'
                                                 type='text'
                                                 placeholder='Enter license name'
+                                                name='licenseName'
+                                                onChange={updateField}
                                                 value={otherLicensingInformationDetected.licenseName ?? ''}
                                                 disabled={!licenseName}
                                             />

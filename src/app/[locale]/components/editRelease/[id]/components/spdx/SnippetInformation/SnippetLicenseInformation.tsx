@@ -10,10 +10,11 @@
 import { useState } from 'react'
 import SnippetInformation from '../../../../../../../../object-types/spdx/SnippetInformation'
 interface Props {
-    snippetInformation: SnippetInformation
+    snippetInformation?: SnippetInformation
+    updateField?: any
 }
 
-function SnippetLicenseInformation({ snippetInformation }: Props) {
+function SnippetLicenseInformation({ snippetInformation, updateField }: Props) {
     // licenseInfoSnippet
     const [licenseInfoSnippetExist, setLicenseInfoSnippetExist] = useState(true)
     const [licenseInfoSnippetNone, setLicenseInfoSnippetNone] = useState(false)
@@ -55,8 +56,9 @@ function SnippetLicenseInformation({ snippetInformation }: Props) {
                             id='licenseInfoInFileValue'
                             rows={5}
                             className='form-control'
-                            name='_sw360_portlet_components_LICENSE_INFO_IN_FILE_SOURCE'
+                            name='licenseInfoInSnippets'
                             placeholder='Enter license information in snippet'
+                            onChange={updateField}
                             value={snippetInformation.licenseInfoInSnippets ?? ''}
                             disabled={licenseInfoSnippetNone || licenseInfoSnippetNoasserttion}
                         ></textarea>

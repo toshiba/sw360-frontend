@@ -10,10 +10,11 @@
 import { useState } from 'react'
 import SnippetInformation from '../../../../../../../../object-types/spdx/SnippetInformation'
 interface Props {
-    snippetInformation: SnippetInformation
+    snippetInformation?: SnippetInformation
+    updateField?: any
 }
 
-function SnippetCopyrightText({ snippetInformation }: Props) {
+function SnippetCopyrightText({ snippetInformation, updateField }: Props) {
     // snippetCopyrightText
     const [snippetCopyrightTextExist, setSnippetCopyrightTextExist] = useState(true)
     const [snippetCopyrightTextNone, setSnippetCopyrightTextNone] = useState(false)
@@ -55,7 +56,9 @@ function SnippetCopyrightText({ snippetInformation }: Props) {
                             id='copyrightTextValueSnippet'
                             rows={5}
                             className='form-control'
+                            name='copyrightText'
                             placeholder='Enter snippet copyright text'
+                            onChange={updateField}
                             value={snippetInformation.copyrightText ?? ''}
                             disabled={snippetCopyrightTextNone || snippetCopyrightTextNoasserttion}
                         ></textarea>

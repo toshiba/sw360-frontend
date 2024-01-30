@@ -23,10 +23,6 @@ function Creators({ inputList, setInputList, isAnonymous, setDataCreators }: Pro
     // const t = useTranslations('default')
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>, index: number) => {
         const { name, value } = e.target
-        console.log('------name---')
-        console.log('------value---')
-        console.log(name)
-        console.log(value)
         const list: InputKeyValue[] = [...inputList]
         list[index][name as keyof InputKeyValue] = value
         setInputList(list)

@@ -11,11 +11,13 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
+import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
 import SnippetInformation from '../../../../../../../object-types/spdx/SnippetInformation'
 import SnippetRange from '../../../../../../../object-types/spdx/SnippetRange'
 import styles from '../detail.module.css'
 import SnippetConcludedLicense from './SnippetInformation/SnippetConcludedLicense'
 import SnippetCopyrightText from './SnippetInformation/SnippetCopyrightText'
+import SnippetFileSPDXIdentifier from './SnippetInformation/SnippetFileSPDXIdentifier'
 import SnippetLicenseInformation from './SnippetInformation/SnippetLicenseInformation'
 import SnippetRanges from './SnippetRanges'
 
@@ -35,6 +37,13 @@ const EditSnippetInformation = ({
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [snippetRanges, setSnippetRanges] = useState<SnippetRange[]>([])
+
+    const setDataSnippetRanges = (inputs: SnippetRange[]) => {
+        setSnippetInformation({
+            ...snippetInformation,
+            snippetRanges: inputs,
+        })
+    }
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
@@ -65,6 +74,10 @@ const EditSnippetInformation = ({
         if (typeof snippetInformation?.snippetRanges !== 'undefined') {
             setSnippetRanges(convertSnippetRanges(snippetInformation.snippetRanges))
         }
+
+        if (typeof snippetInformation?.snippetFromFile !== 'undefined') {
+            setDataSnippetFromFile(handleSnippetFromFile(snippetInformation.snippetFromFile))
+        }
     }, [snippetInformation])
 
     const convertSnippetRanges = (snippetRanges: SnippetRange[]) => {
@@ -86,6 +99,27 @@ const EditSnippetInformation = ({
         setSnippetInformation({
             ...snippetInformation,
             [e.target.name]: e.target.value,
+        })
+    }
+
+    const [dataSnippetFromFile, setDataSnippetFromFile] = useState<InputKeyValue>()
+
+    const handleSnippetFromFile = (data: string) => {
+        const input: InputKeyValue = {
+            key: data.split(':')[0],
+            value: data.split(':')[1],
+        }
+        return input
+    }
+
+    const handleInputKeyToSnippetFromFile = (data: InputKeyValue) => {
+        return data.key + ':' + data.value
+    }
+
+    const setSnippetFromFileToSnippet = (input: InputKeyValue) => {
+        setSnippetInformation({
+            ...snippetInformation,
+            snippetFromFile: handleInputKeyToSnippetFromFile(input),
         })
     }
 
@@ -159,43 +193,35 @@ const EditSnippetInformation = ({
                                     </div>
                                 </div>
                             </td>
-                            <td>
-                                <div className='form-group' style={{ flex: 1 }}>
-                                    <label className='lableSPDX' htmlFor='snippetFromFile'>
-                                        9.2 Snippet from file SPDX identifier
-                                    </label>
-                                    <div style={{ display: 'flex' }}>
-                                        <select id='snippetFromFile' className='form-control' style={{ flex: 1 }}>
-                                            <option>SPDXRef</option>
-                                            <option>DocumentRef</option>
-                                        </select>
-                                        <div style={{ margin: '0.5rem' }}>-</div>
-                                        <input
-                                            style={{ flex: 3 }}
-                                            id='snippetFromFileValue'
-                                            className='form-control'
-                                            name='_sw360_portlet_components_SPDXSPDX_VERSION'
-                                            type='text'
-                                            placeholder='Enter snippet from file SPDX identifier'
-                                            value={snippetInformation.snippetFromFile.substring(8) ?? ''}
-                                        />
-                                    </div>
-                                </div>
-                            </td>
+                            <SnippetFileSPDXIdentifier
+                                dataSnippetFromFile={dataSnippetFromFile}
+                                setDataSnippetFromFile={setDataSnippetFromFile}
+                                setSnippetFromFileToSnippet={setSnippetFromFileToSnippet}
+                            />
                         </tr>
                         <tr>
                             <td colSpan={3}>
                                 <div className='form-group'>
                                     <label className='lableSPDX'>9.3 & 9.4 Snippet ranges</label>
-                                    <SnippetRanges inputList={snippetRanges} setInputList={setSnippetRanges} />
+                                    <SnippetRanges
+                                        inputList={snippetRanges}
+                                        setInputList={setSnippetRanges}
+                                        setDataSnippetRanges={setDataSnippetRanges}
+                                    />
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <SnippetConcludedLicense snippetInformation={snippetInformation} />
+                            <SnippetConcludedLicense
+                                snippetInformation={snippetInformation}
+                                updateField={updateField}
+                            />
                         </tr>
                         <tr>
-                            <SnippetLicenseInformation snippetInformation={snippetInformation} />
+                            <SnippetLicenseInformation
+                                snippetInformation={snippetInformation}
+                                updateField={updateField}
+                            />
                         </tr>
                         <tr>
                             <td colSpan={3}>
@@ -216,7 +242,7 @@ const EditSnippetInformation = ({
                             </td>
                         </tr>
                         <tr>
-                            <SnippetCopyrightText snippetInformation={snippetInformation} />
+                            <SnippetCopyrightText snippetInformation={snippetInformation} updateField={updateField} />
                         </tr>
                         <tr>
                             <td colSpan={3}>

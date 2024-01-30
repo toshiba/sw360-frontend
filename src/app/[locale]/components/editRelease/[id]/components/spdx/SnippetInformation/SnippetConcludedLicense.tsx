@@ -10,10 +10,11 @@
 import { useState } from 'react'
 import SnippetInformation from '../../../../../../../../object-types/spdx/SnippetInformation'
 interface Props {
-    snippetInformation: SnippetInformation
+    snippetInformation?: SnippetInformation
+    updateField?: any
 }
 
-function SnippetConcludedLicense({ snippetInformation }: Props) {
+function SnippetConcludedLicense({ snippetInformation, updateField }: Props) {
     //snippetConcludedLicense
     const [snippetConcludedLicenseExist, setSnippetConcludedLicenseExist] = useState(true)
     const [snippetConcludedLicenseNone, setSnippetConcludedLicenseNone] = useState(false)
@@ -55,8 +56,9 @@ function SnippetConcludedLicense({ snippetInformation }: Props) {
                             id='spdxConcludedLicenseValue'
                             className='form-control'
                             type='text'
-                            name='_sw360_portlet_components_CONCLUDED_LICENSE_VALUE'
+                            name='licenseConcluded'
                             placeholder='Enter snippet concluded license'
+                            onChange={updateField}
                             value={snippetInformation.licenseConcluded ?? ''}
                             disabled={snippetConcludedLicenseNone || snippetConcludedLicenseNoasserttion}
                         />
