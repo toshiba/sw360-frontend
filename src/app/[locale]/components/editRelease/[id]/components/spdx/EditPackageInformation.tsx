@@ -24,6 +24,8 @@ import PackageCopyrightText from './PackageInformation/PackageCopyrightText'
 import PackageDeclaredLicense from './PackageInformation/PackageDeclaredLicense'
 import PackageDownloadLocation from './PackageInformation/PackageDownloadLocation'
 import PackageHomePage from './PackageInformation/PackageHomePage'
+import PackageOriginator from './PackageInformation/PackageOriginator'
+import PackageSupplier from './PackageInformation/PackageSupplier'
 
 interface Props {
     packageInformation?: PackageInformation
@@ -45,12 +47,76 @@ const EditPackageInformation = ({
     setPackageInformation,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
+    const [dataPackageSupplier, setDataPackageSupplier] = useState<InputKeyValue>()
 
-    const [packageSupplier, setPackageSupplier] = useState(true)
-    const [packageOriginator, setPackageOriginator] = useState(true)
+    const handlePackageSupplier = (data: string) => {
+        const input: InputKeyValue = {
+            key: data.split(':')[0],
+            value: data.split(':')[1],
+        }
+        return input
+    }
+
+    const handleInputKeyToPackageSupplier = (data: InputKeyValue) => {
+        return data.key + ':' + data.value
+    }
+
+    const setPackageSupplierToPackage = (input: InputKeyValue) => {
+        setPackageInformation({
+            ...packageInformation,
+            supplier: handleInputKeyToPackageSupplier(input),
+        })
+    }
+
+    const [dataPackageOriginator, setDataPackageOriginator] = useState<InputKeyValue>()
+
+    const handlePackageOriginator = (data: string) => {
+        const input: InputKeyValue = {
+            key: data.split(':')[0],
+            value: data.split(':')[1],
+        }
+        return input
+    }
+
+    const handleInputKeyToPackageOriginator = (data: InputKeyValue) => {
+        return data.key + ':' + data.value
+    }
+
+    const setPackageOriginatorToPackage = (input: InputKeyValue) => {
+        setPackageInformation({
+            ...packageInformation,
+            originator: handleInputKeyToPackageOriginator(input),
+        })
+    }
+
     const [filesAnalyzed, setFilesAnalyzed] = useState(true)
 
     const [checkSums, setCheckSums] = useState<InputKeyValue[]>([])
+
+    const setDataCheckSums = (inputs: InputKeyValue[]) => {
+        setPackageInformation({
+            ...packageInformation,
+            checksums: convertInputToChecksums(inputs),
+        })
+    }
+
+    const convertInputToChecksums = (datas: InputKeyValue[]) => {
+        if (datas === null) {
+            return null
+        }
+        const checksums: CheckSum[] = []
+        // const index: number = 0
+        datas.forEach((data: InputKeyValue, index: number) => {
+            const checksum: CheckSum = {
+                algorithm: data.key,
+                checksumValue: data.value,
+                index: index,
+            }
+            checksums.push(checksum)
+        })
+
+        return checksums
+    }
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
         setExternalRefsData(externalRefsDatas[+index])
@@ -74,12 +140,30 @@ const EditPackageInformation = ({
         if (typeof packageInformation?.checksums !== 'undefined') {
             setCheckSums(convertChecksums(packageInformation.checksums))
         }
+
+        if (typeof packageInformation?.supplier !== 'undefined') {
+            setDataPackageSupplier(handlePackageSupplier(packageInformation.supplier))
+        }
+
+        if (typeof packageInformation?.originator !== 'undefined') {
+            setDataPackageOriginator(handlePackageOriginator(packageInformation.originator))
+        }
     }, [packageInformation])
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         setPackageInformation({
             ...packageInformation,
             [e.target.name]: e.target.value,
+        })
+    }
+
+    const updateFieldPackageVerificationCode = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setPackageInformation({
+            ...packageInformation,
+            packageVerificationCode: {
+                ...packageInformation.packageVerificationCode,
+                [e.target.name]: e.target.value,
+            },
         })
     }
 
@@ -195,121 +279,27 @@ const EditPackageInformation = ({
 
                         {isModeFull && (
                             <>
-                                {' '}
                                 <tr className='spdx-full'>
-                                    <td colSpan={3}>
-                                        <div className='form-group'>
-                                            <label className='lableSPDX'>7.5 Package supplier</label>
-                                            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                                    <input
-                                                        className='spdx-radio'
-                                                        type='radio'
-                                                        name='_sw360_portlet_components_SUPPLIER'
-                                                        value='EXIST'
-                                                        onClick={() => setPackageSupplier(true)}
-                                                        checked={packageSupplier}
-                                                    />
-                                                    <select
-                                                        id='supplierType'
-                                                        style={{ flex: 2, marginRight: '1rem' }}
-                                                        className='form-control'
-                                                        disabled={!packageSupplier}
-                                                    >
-                                                        <option>Organization</option>
-                                                        <option>Person</option>
-                                                    </select>
-                                                    <input
-                                                        disabled={!packageSupplier}
-                                                        style={{ flex: 6, marginRight: '1rem' }}
-                                                        id='supplierValue'
-                                                        className='form-control'
-                                                        type='text'
-                                                        name='_sw360_portlet_components_SUPPLIER_VALUE'
-                                                        placeholder='Enter package supplier'
-                                                        value={packageInformation.supplier.substring(14) ?? ''}
-                                                    />
-                                                </div>
-                                                <div style={{ flex: 2 }}>
-                                                    <input
-                                                        className='spdx-radio lableSPDX'
-                                                        id='supplierNoAssertion'
-                                                        type='radio'
-                                                        onClick={() => setPackageSupplier(false)}
-                                                        checked={!packageSupplier}
-                                                        name='_sw360_portlet_components_SUPPLIER'
-                                                        value='NOASSERTION'
-                                                    />
-                                                    <label
-                                                        className='form-check-label radio-label lableSPDX'
-                                                        htmlFor='supplierNoAssertion'
-                                                    >
-                                                        NOASSERTION
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <PackageSupplier
+                                        dataPackageSupplier={dataPackageSupplier}
+                                        setDataPackageSupplier={setDataPackageSupplier}
+                                        setPackageSupplierToPackage={setPackageSupplierToPackage}
+                                    />
                                 </tr>
                                 <tr className='spdx-full'>
-                                    <td colSpan={3}>
-                                        <div className='form-group'>
-                                            <label className='lableSPDX'>7.6 Package originator</label>
-                                            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                                    <input
-                                                        className='spdx-radio'
-                                                        type='radio'
-                                                        name='_sw360_portlet_components_ORIGINATOR'
-                                                        value='EXIST'
-                                                        onClick={() => setPackageOriginator(true)}
-                                                        checked={packageOriginator}
-                                                    />
-                                                    <select
-                                                        id='originatorType'
-                                                        style={{ flex: 2, marginRight: '1rem' }}
-                                                        className='form-control'
-                                                        disabled={!packageOriginator}
-                                                    >
-                                                        <option>Organization</option>
-                                                        <option>Person</option>
-                                                    </select>
-                                                    <input
-                                                        style={{ flex: 6, marginRight: '1rem' }}
-                                                        className='form-control'
-                                                        id='originatorValue'
-                                                        type='text'
-                                                        name='_sw360_portlet_components_ORIGINATOR_VALUE'
-                                                        placeholder='Enter package originator'
-                                                        value={packageInformation.originator.substring(14) ?? ''}
-                                                        disabled={!packageOriginator}
-                                                    />
-                                                </div>
-                                                <div style={{ flex: 2 }}>
-                                                    <input
-                                                        className='spdx-radio'
-                                                        id='originatorNoAssertion'
-                                                        type='radio'
-                                                        name='_sw360_portlet_components_ORIGINATOR'
-                                                        value='NOASSERTION'
-                                                        onClick={() => setPackageOriginator(false)}
-                                                        checked={!packageOriginator}
-                                                    />
-                                                    <label
-                                                        className='form-check-label radio-label lableSPDX'
-                                                        htmlFor='originatorNoAssertion'
-                                                    >
-                                                        NOASSERTION
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <PackageOriginator
+                                        dataPackageOriginator={dataPackageOriginator}
+                                        setDataPackageOriginator={setDataPackageOriginator}
+                                        setPackageOriginatorToPackage={setPackageOriginatorToPackage}
+                                    />
                                 </tr>
                             </>
                         )}
                         <tr>
-                            <PackageDownloadLocation packageInformation={packageInformation} />
+                            <PackageDownloadLocation
+                                packageInformation={packageInformation}
+                                updateField={updateField}
+                            />
                         </tr>
                         <tr>
                             <td colSpan={3}>
@@ -323,7 +313,7 @@ const EditPackageInformation = ({
                                                 type='radio'
                                                 name='_sw360_portlet_components_FILES_ANALYZED'
                                                 onClick={() => setFilesAnalyzed(true)}
-                                                checked={filesAnalyzed ? true : false}
+                                                checked={filesAnalyzed}
                                             />
                                             <label
                                                 style={{ marginRight: '2rem' }}
@@ -339,7 +329,7 @@ const EditPackageInformation = ({
                                                 name='_sw360_portlet_components_FILES_ANALYZED'
                                                 value='false'
                                                 onClick={() => setFilesAnalyzed(false)}
-                                                checked={filesAnalyzed ? false : true}
+                                                checked={!filesAnalyzed}
                                             />
                                             <label
                                                 className='form-check-label radio-label lableSPDX'
@@ -365,8 +355,10 @@ const EditPackageInformation = ({
                                                     style={{ marginBottom: '0.75rem' }}
                                                     className='form-control'
                                                     id='verificationCodeValue'
-                                                    name='_sw360_portlet_components_VERIFICATION_CODE_VALUE'
+                                                    name='excludedFiles'
                                                     placeholder='Enter verification code value'
+                                                    disabled={!filesAnalyzed}
+                                                    onChange={updateFieldPackageVerificationCode}
                                                     value={
                                                         packageInformation.packageVerificationCode?.excludedFiles ?? ''
                                                     }
@@ -375,8 +367,10 @@ const EditPackageInformation = ({
                                                     className='form-control'
                                                     id='excludedFiles'
                                                     rows={5}
-                                                    name='_sw360_portlet_components_EXCLUDED_FILES'
+                                                    name='value'
                                                     placeholder='Enter excluded files'
+                                                    disabled={!filesAnalyzed}
+                                                    onChange={updateFieldPackageVerificationCode}
                                                     value={packageInformation.packageVerificationCode.value ?? ''}
                                                 ></textarea>
                                             </div>
@@ -389,7 +383,11 @@ const EditPackageInformation = ({
                                             <label className='lableSPDX'>7.10 Package checksum</label>
                                             <div style={{ display: 'flex' }}>
                                                 <label className='sub-title lableSPDX'>Checksum</label>
-                                                <CheckSums inputList={checkSums} setInputList={setCheckSums} />
+                                                <CheckSums
+                                                    inputList={checkSums}
+                                                    setInputList={setCheckSums}
+                                                    setDataCheckSums={setDataCheckSums}
+                                                />
                                             </div>
                                         </div>
                                     </td>
@@ -397,7 +395,7 @@ const EditPackageInformation = ({
                             </>
                         )}
                         <tr>
-                            <PackageHomePage packageInformation={packageInformation} />
+                            <PackageHomePage packageInformation={packageInformation} updateField={updateField} />
                         </tr>
                         {isModeFull && (
                             <tr className='spdx-full'>
@@ -422,15 +420,21 @@ const EditPackageInformation = ({
                             </tr>
                         )}
                         <tr>
-                            <PackageConcludedLicense packageInformation={packageInformation} />
+                            <PackageConcludedLicense
+                                packageInformation={packageInformation}
+                                updateField={updateField}
+                            />
                         </tr>
                         {isModeFull && (
                             <tr>
-                                <PackageAllLicensesInformation packageInformation={packageInformation} />
+                                <PackageAllLicensesInformation
+                                    packageInformation={packageInformation}
+                                    updateField={updateField}
+                                />
                             </tr>
                         )}
                         <tr>
-                            <PackageDeclaredLicense packageInformation={packageInformation} />
+                            <PackageDeclaredLicense packageInformation={packageInformation} updateField={updateField} />
                         </tr>
                         <tr className='spdx-full'>
                             <td colSpan={3}>
@@ -453,7 +457,7 @@ const EditPackageInformation = ({
                             </td>
                         </tr>
                         <tr>
-                            <PackageCopyrightText packageInformation={packageInformation} />
+                            <PackageCopyrightText packageInformation={packageInformation} updateField={updateField} />
                         </tr>
                         {isModeFull && (
                             <>

@@ -12,10 +12,11 @@ import PackageInformation from '../../../../../../../../object-types/spdx/Packag
 // import { useTranslations } from 'next-intl'
 
 interface Props {
-    packageInformation: PackageInformation
+    packageInformation?: PackageInformation
+    updateField?: any
 }
 
-function PackageCopyrightText({ packageInformation }: Props) {
+function PackageCopyrightText({ packageInformation, updateField }: Props) {
     //copyrightText
     const [copyrightTextExist, setCopyrightTextExist] = useState(true)
     const [copyrightTextNone, setCopyrightTextNone] = useState(false)
@@ -57,8 +58,9 @@ function PackageCopyrightText({ packageInformation }: Props) {
                             id='licenseInfoInFileValue'
                             rows={5}
                             className='form-control'
-                            name='_sw360_portlet_components_LICENSE_INFO_IN_FILE_SOURCE'
+                            name='copyrightText'
                             placeholder='Enter copyright text'
+                            onChange={updateField}
                             value={packageInformation.copyrightText ?? ''}
                             disabled={copyrightTextNone || copyrightTextNoasserttion}
                         ></textarea>

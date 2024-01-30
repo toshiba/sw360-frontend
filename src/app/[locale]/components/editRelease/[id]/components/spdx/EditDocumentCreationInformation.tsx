@@ -62,7 +62,9 @@ const EditDocumentCreationInformation = ({
 
     useEffect(() => {
         if (typeof documentCreationInformation?.creator !== 'undefined') {
-            setCreator(convertCreator(documentCreationInformation.creator))
+            if (!isAnonymous) {
+                setCreator(convertCreator(documentCreationInformation.creator))
+            }
         }
     }, [documentCreationInformation])
 
@@ -78,12 +80,59 @@ const EditDocumentCreationInformation = ({
         return inputs
     }
 
+    const convertInputToCreator = (datas: InputKeyValue[]) => {
+        if (datas === null) {
+            return null
+        }
+        const creators: Creator[] = []
+        // const index: number = 0
+        datas.forEach((data: InputKeyValue, index: number) => {
+            const creator: Creator = {
+                type: data.key,
+                value: data.value,
+                index: index,
+            }
+            creators.push(creator)
+        })
+
+        return creators
+    }
+
     const [isAnonymous, setIsAnonymous] = useState(false)
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         setDocumentCreationInformation({
             ...documentCreationInformation,
             [e.target.name]: e.target.value,
+        })
+    }
+
+    const [date, setDate] = useState('')
+    const [time, setTime] = useState('')
+
+    const updateDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDate(e.target.value)
+        setDocumentCreationInformation({
+            ...documentCreationInformation,
+            created: CommonUtils.readDateTime(date, time),
+        })
+    }
+
+    const updateTime = (e: any) => {
+        setTime(e.target.value)
+        setDocumentCreationInformation({
+            ...documentCreationInformation,
+            created: CommonUtils.readDateTime(date, time),
+        })
+    }
+
+    const setDataCreators = (inputs: InputKeyValue[]) => {
+        if (isAnonymous) {
+            inputs = inputs.filter((input) => input.key != 'Organization').filter((input) => input.key != 'Person')
+        }
+        setDocumentCreationInformation({
+            ...documentCreationInformation,
+            creator: convertInputToCreator(inputs),
         })
     }
 
@@ -383,6 +432,7 @@ const EditDocumentCreationInformation = ({
                                                 inputList={creator}
                                                 setInputList={setCreator}
                                                 isAnonymous={isAnonymous}
+                                                setDataCreators={setDataCreators}
                                             />
                                         </div>
                                         <input
@@ -411,18 +461,22 @@ const EditDocumentCreationInformation = ({
                                             <input
                                                 id='createdDate'
                                                 type='date'
+                                                name='date'
                                                 className='form-control spdx-date needs-validation'
                                                 placeholder='created.date.yyyy.mm.dd'
+                                                onChange={updateDate}
                                                 value={CommonUtils.fillDate(documentCreationInformation.created) ?? ''}
                                             />
                                         </div>
                                         <div>
                                             <input
+                                                name='time'
                                                 id='createdTime'
                                                 type='time'
                                                 step='1'
                                                 className='form-control spdx-time needs-validation'
                                                 placeholder='created.time.hh.mm.ss'
+                                                onChange={updateTime}
                                                 value={CommonUtils.fillTime(documentCreationInformation.created) ?? ''}
                                             />
                                         </div>

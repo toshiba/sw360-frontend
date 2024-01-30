@@ -12,10 +12,11 @@ import PackageInformation from '../../../../../../../../object-types/spdx/Packag
 // import { useTranslations } from 'next-intl'
 
 interface Props {
-    packageInformation: PackageInformation
+    packageInformation?: PackageInformation
+    updateField?: any
 }
 
-function PackageConcludedLicense({ packageInformation }: Props) {
+function PackageConcludedLicense({ packageInformation, updateField }: Props) {
     //concludedLicense
     const [concludedLicenseExist, setConcludedLicenseExist] = useState(true)
     const [concludedLicenseNone, setConcludedLicenseNone] = useState(false)
@@ -57,8 +58,9 @@ function PackageConcludedLicense({ packageInformation }: Props) {
                             id='spdxConcludedLicenseValue'
                             className='form-control'
                             type='text'
-                            name='_sw360_portlet_components_CONCLUDED_LICENSE_VALUE'
+                            name='licenseConcluded'
                             placeholder='Enter concluded license'
+                            onChange={updateField}
                             value={packageInformation.licenseConcluded ?? ''}
                             disabled={concludedLicenseNone || concludedLicenseNoasserttion}
                         />

@@ -15,23 +15,24 @@ interface Props {
     // setDataInputList?: RolesType
     setInputList?: React.Dispatch<React.SetStateAction<InputKeyValue[]>>
     inputList?: InputKeyValue[]
+    setDataCheckSums?: any
 }
 
-function CheckSums({ inputList, setInputList }: Props) {
+function CheckSums({ inputList, setInputList, setDataCheckSums }: Props) {
     // const t = useTranslations('default')
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>, index: number) => {
         const { name, value } = e.target
         const list: InputKeyValue[] = [...inputList]
         list[index][name as keyof InputKeyValue] = value
         setInputList(list)
-        // setDataInputList(list)
+        setDataCheckSums(list)
     }
 
     const handleRemoveClick = (index: number) => {
         const list = [...inputList]
         list.splice(index, 1)
         setInputList(list)
-        // setDataInputList(list)
+        setDataCheckSums(list)
     }
 
     const handleAddClick = () => {
@@ -46,6 +47,7 @@ function CheckSums({ inputList, setInputList }: Props) {
                         <input
                             style={{ flex: 2, marginRight: '1rem' }}
                             type='text'
+                            name='key'
                             value={elem.key}
                             className='form-control checksum-algorithm'
                             placeholder='Enter algorithm'
@@ -55,6 +57,7 @@ function CheckSums({ inputList, setInputList }: Props) {
                             style={{ flex: 6, marginRight: '2rem' }}
                             type='text'
                             className='form-control checksum-value'
+                            name='value'
                             value={elem.value}
                             placeholder='Enter value'
                             onChange={(e) => handleInputChange(e, j)}

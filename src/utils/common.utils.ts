@@ -264,6 +264,14 @@ const fillTime = (value: any) => {
     )
 }
 
+const readDateTime = (datePicker: any, timePicker: any) => {
+    if (datePicker == '' || timePicker == '') {
+        return ''
+    }
+    const localDate = new Date(datePicker + ' ' + timePicker)
+    return localDate.toISOString().slice(0, -5) + 'Z'
+}
+
 const CommonUtils = {
     isNullOrUndefined,
     isNullEmptyOrUndefinedString,
@@ -279,6 +287,7 @@ const CommonUtils = {
     truncateText,
     fillDate,
     fillTime,
+    readDateTime,
 }
 
 export default CommonUtils

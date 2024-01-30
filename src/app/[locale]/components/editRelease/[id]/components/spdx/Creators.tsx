@@ -16,27 +16,32 @@ interface Props {
     setInputList?: React.Dispatch<React.SetStateAction<InputKeyValue[]>>
     inputList?: InputKeyValue[]
     isAnonymous?: boolean
+    setDataCreators?: any
 }
 
-function Creators({ inputList, setInputList, isAnonymous }: Props) {
+function Creators({ inputList, setInputList, isAnonymous, setDataCreators }: Props) {
     // const t = useTranslations('default')
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>, index: number) => {
         const { name, value } = e.target
+        console.log('------name---')
+        console.log('------value---')
+        console.log(name)
+        console.log(value)
         const list: InputKeyValue[] = [...inputList]
         list[index][name as keyof InputKeyValue] = value
         setInputList(list)
-        // setDataInputList(list)
+        setDataCreators(list)
     }
 
     const handleRemoveClick = (index: number) => {
         const list = [...inputList]
         list.splice(index, 1)
         setInputList(list)
-        // setDataInputList(list)
+        setDataCreators(list)
     }
 
     const handleAddClick = () => {
-        setInputList([...inputList, { key: 'Tool', value: '' }])
+        setInputList([...inputList, { key: 'Organization', value: '' }])
     }
 
     return (
@@ -49,6 +54,7 @@ function Creators({ inputList, setInputList, isAnonymous }: Props) {
                             value={elem.key}
                             className='form-control creator-type'
                             disabled={isAnonymous && (elem.key === 'Organization' || elem.key === 'Person')}
+                            name='key'
                             onChange={(e) => handleInputChange(e, j)}
                         >
                             <option value='Organization'>Organization</option>
@@ -59,6 +65,7 @@ function Creators({ inputList, setInputList, isAnonymous }: Props) {
                             style={{ flex: 6, marginRight: '2rem' }}
                             type='text'
                             value={elem.value}
+                            name='value'
                             className='form-control creator-value'
                             placeholder='Enter creator'
                             onChange={(e) => handleInputChange(e, j)}

@@ -12,10 +12,11 @@ import PackageInformation from '../../../../../../../../object-types/spdx/Packag
 // import { useTranslations } from 'next-intl'
 
 interface Props {
-    packageInformation: PackageInformation
+    packageInformation?: PackageInformation
+    updateField?: any
 }
 
-function PackageAllLicensesInformation({ packageInformation }: Props) {
+function PackageAllLicensesInformation({ packageInformation, updateField }: Props) {
     //allLicensesInformationExist
 
     const [allLicensesInformationExist, setAllLicensesInformationExist] = useState(true)
@@ -58,8 +59,9 @@ function PackageAllLicensesInformation({ packageInformation }: Props) {
                             id='licenseInfoInFileValue'
                             rows={5}
                             className='form-control'
-                            name='_sw360_portlet_components_LICENSE_INFO_IN_FILE_SOURCE'
+                            name='licenseInfoFromFiles'
                             placeholder='Enter all licenses information from files'
+                            onChange={updateField}
                             value={packageInformation.licenseInfoFromFiles}
                             disabled={allLicensesInformationNone || allLicensesInformationNoasserttion}
                         ></textarea>

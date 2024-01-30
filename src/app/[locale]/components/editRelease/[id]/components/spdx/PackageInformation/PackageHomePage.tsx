@@ -12,10 +12,11 @@ import PackageInformation from '../../../../../../../../object-types/spdx/Packag
 // import { useTranslations } from 'next-intl'
 
 interface Props {
-    packageInformation: PackageInformation
+    packageInformation?: PackageInformation
+    updateField?: any
 }
 
-function PackageHomePage({ packageInformation }: Props) {
+function PackageHomePage({ packageInformation, updateField }: Props) {
     //packageHomePage
     const [packageHomePageExist, setPackageHomePageExist] = useState(true)
     const [packageHomePageNone, setPackageHomePageNone] = useState(false)
@@ -57,8 +58,9 @@ function PackageHomePage({ packageInformation }: Props) {
                             id='packageHomePage'
                             className='form-control'
                             type='text'
-                            name='packageHomePage'
+                            name='homepage'
                             placeholder='Enter package homepage'
+                            onChange={updateField}
                             value={packageInformation.homepage ?? ''}
                             disabled={packageHomePageNone || packageHomePageNoasserttion}
                         />

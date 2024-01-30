@@ -12,10 +12,11 @@ import PackageInformation from '../../../../../../../../object-types/spdx/Packag
 // import { useTranslations } from 'next-intl'
 
 interface Props {
-    packageInformation: PackageInformation
+    packageInformation?: PackageInformation
+    updateField?: any
 }
 
-function PackageDownloadLocation({ packageInformation }: Props) {
+function PackageDownloadLocation({ packageInformation, updateField }: Props) {
     // PackageDownloadLocation
     const [packageDownloadLocationExist, setPackageDownloadLocationExist] = useState(true)
     const [packageDownloadLocationNone, setPackageDownloadLocationNone] = useState(false)
@@ -57,8 +58,9 @@ function PackageDownloadLocation({ packageInformation }: Props) {
                             id='spdxConcludedLicenseValue'
                             className='form-control'
                             type='text'
-                            name='_sw360_portlet_components_CONCLUDED_LICENSE_VALUE'
+                            name='downloadLocation'
                             placeholder='Enter package supplier'
+                            onChange={updateField}
                             value={packageInformation.downloadLocation ?? ''}
                             disabled={packageDownloadLocationNone || packageDownloadLocationNoasserttion}
                         />
