@@ -22,16 +22,15 @@ import SnippetLicenseInformation from './SnippetInformation/SnippetLicenseInform
 import SnippetRanges from './SnippetRanges'
 
 interface Props {
-    // snippetInformations?: Array<SnippetInformation>
-    snippetInformation?: SnippetInformation
-    setSnippetInformation?: React.Dispatch<React.SetStateAction<SnippetInformation>>
+    indexSnippetInformation?: number
+    setIndexSnippetInformation?: React.Dispatch<React.SetStateAction<number>>
     snippetInformations?: SnippetInformation[]
     setSnippetInformations?: React.Dispatch<React.SetStateAction<SnippetInformation[]>>
 }
 
 const EditSnippetInformation = ({
-    snippetInformation,
-    setSnippetInformation,
+    indexSnippetInformation,
+    setIndexSnippetInformation,
     snippetInformations,
     setSnippetInformations,
 }: Props) => {
@@ -39,19 +38,26 @@ const EditSnippetInformation = ({
     const [snippetRanges, setSnippetRanges] = useState<SnippetRange[]>([])
 
     const setDataSnippetRanges = (inputs: SnippetRange[]) => {
-        setSnippetInformation({
-            ...snippetInformation,
-            snippetRanges: inputs,
-        })
+        setSnippetInformations((currents) =>
+            currents.map((snippet, index) => {
+                if (index === indexSnippetInformation) {
+                    return {
+                        ...snippet,
+                        snippetRanges: inputs,
+                    }
+                }
+                return snippet
+            })
+        )
     }
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setSnippetInformation(snippetInformations[+index])
+        setIndexSnippetInformation(+index)
     }
 
     const addSnippet = () => {
-        const arrayExternals: SnippetInformation[] = snippetInformations
+        const arrayExternals: SnippetInformation[] = [...snippetInformations]
         const snippetInformation: SnippetInformation = {
             SPDXID: '', // 9.1
             snippetFromFile: '', // 9.2
@@ -67,18 +73,17 @@ const EditSnippetInformation = ({
         }
         arrayExternals.push(snippetInformation)
         setSnippetInformations(arrayExternals)
-        setSnippetInformation(snippetInformation)
     }
 
     useEffect(() => {
-        if (typeof snippetInformation?.snippetRanges !== 'undefined') {
-            setSnippetRanges(convertSnippetRanges(snippetInformation.snippetRanges))
+        if (typeof snippetInformations[indexSnippetInformation]?.snippetRanges !== 'undefined') {
+            setSnippetRanges(convertSnippetRanges(snippetInformations[indexSnippetInformation].snippetRanges))
         }
 
-        if (typeof snippetInformation?.snippetFromFile !== 'undefined') {
-            setDataSnippetFromFile(handleSnippetFromFile(snippetInformation.snippetFromFile))
+        if (typeof snippetInformations[indexSnippetInformation]?.snippetFromFile !== 'undefined') {
+            setDataSnippetFromFile(handleSnippetFromFile(snippetInformations[indexSnippetInformation].snippetFromFile))
         }
-    }, [snippetInformation])
+    }, [indexSnippetInformation, snippetInformations])
 
     const convertSnippetRanges = (snippetRanges: SnippetRange[]) => {
         const inputs: SnippetRange[] = []
@@ -96,31 +101,45 @@ const EditSnippetInformation = ({
     }
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
-        setSnippetInformation({
-            ...snippetInformation,
-            [e.target.name]: e.target.value,
-        })
+        setSnippetInformations((currents) =>
+            currents.map((snippet, index) => {
+                if (index === indexSnippetInformation) {
+                    return {
+                        ...snippet,
+                        [e.target.name]: e.target.value,
+                    }
+                }
+                return snippet
+            })
+        )
     }
 
     const [dataSnippetFromFile, setDataSnippetFromFile] = useState<InputKeyValue>()
 
     const handleSnippetFromFile = (data: string) => {
         const input: InputKeyValue = {
-            key: data.split(':')[0],
-            value: data.split(':')[1],
+            key: data.split('-')[0],
+            value: data.split('-')[1],
         }
         return input
     }
 
     const handleInputKeyToSnippetFromFile = (data: InputKeyValue) => {
-        return data.key + ':' + data.value
+        return data.key + '-' + data.value
     }
 
     const setSnippetFromFileToSnippet = (input: InputKeyValue) => {
-        setSnippetInformation({
-            ...snippetInformation,
-            snippetFromFile: handleInputKeyToSnippetFromFile(input),
-        })
+        setSnippetInformations((currents) =>
+            currents.map((snippet, index) => {
+                if (index === indexSnippetInformation) {
+                    return {
+                        ...snippet,
+                        snippetFromFile: handleInputKeyToSnippetFromFile(input),
+                    }
+                }
+                return snippet
+            })
+        )
     }
 
     return (
@@ -136,7 +155,7 @@ const EditSnippetInformation = ({
                 </tr>
             </thead>
             <tbody hidden={toggle}>
-                {snippetInformation && (
+                {snippetInformations[indexSnippetInformation] && (
                     <>
                         <tr>
                             <td colSpan={3}>
@@ -154,7 +173,6 @@ const EditSnippetInformation = ({
                                             className='form-control spdx-select'
                                             onChange={displayIndex}
                                         >
-                                            {' '}
                                             {snippetInformations.map((item) => (
                                                 <option key={item.index} value={item.index}>
                                                     {item.index + 1}
@@ -185,9 +203,11 @@ const EditSnippetInformation = ({
                                             name='SPDXID'
                                             onChange={updateField}
                                             value={
-                                                snippetInformation.SPDXID?.startsWith('SPDXRef-')
-                                                    ? snippetInformation.SPDXID?.substring(8)
-                                                    : snippetInformation.SPDXID
+                                                snippetInformations[indexSnippetInformation].SPDXID?.startsWith(
+                                                    'SPDXRef-'
+                                                )
+                                                    ? snippetInformations[indexSnippetInformation].SPDXID?.substring(8)
+                                                    : snippetInformations[indexSnippetInformation].SPDXID
                                             }
                                         />
                                     </div>
@@ -213,13 +233,13 @@ const EditSnippetInformation = ({
                         </tr>
                         <tr>
                             <SnippetConcludedLicense
-                                snippetInformation={snippetInformation}
+                                snippetInformation={snippetInformations[indexSnippetInformation]}
                                 updateField={updateField}
                             />
                         </tr>
                         <tr>
                             <SnippetLicenseInformation
-                                snippetInformation={snippetInformation}
+                                snippetInformation={snippetInformations[indexSnippetInformation]}
                                 updateField={updateField}
                             />
                         </tr>
@@ -236,13 +256,16 @@ const EditSnippetInformation = ({
                                         placeholder='Enter snippet comments on license'
                                         name='licenseComments'
                                         onChange={updateField}
-                                        value={snippetInformation.licenseComments ?? ''}
+                                        value={snippetInformations[indexSnippetInformation].licenseComments ?? ''}
                                     ></textarea>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <SnippetCopyrightText snippetInformation={snippetInformation} updateField={updateField} />
+                            <SnippetCopyrightText
+                                snippetInformation={snippetInformations[indexSnippetInformation]}
+                                updateField={updateField}
+                            />
                         </tr>
                         <tr>
                             <td colSpan={3}>
@@ -257,7 +280,7 @@ const EditSnippetInformation = ({
                                         placeholder='Enter snippet comment'
                                         name='comment'
                                         onChange={updateField}
-                                        value={snippetInformation.comment ?? ''}
+                                        value={snippetInformations[indexSnippetInformation].comment ?? ''}
                                     ></textarea>
                                 </div>
                             </td>
@@ -275,7 +298,7 @@ const EditSnippetInformation = ({
                                         placeholder='Enter snippet name'
                                         name='name'
                                         onChange={updateField}
-                                        value={snippetInformation.name ?? ''}
+                                        value={snippetInformations[indexSnippetInformation].name ?? ''}
                                     />
                                 </div>
                             </td>
@@ -293,7 +316,9 @@ const EditSnippetInformation = ({
                                         placeholder='Enter snippet attribution text'
                                         name='snippetAttributionText'
                                         onChange={updateField}
-                                        value={snippetInformation.snippetAttributionText ?? ''}
+                                        value={
+                                            snippetInformations[indexSnippetInformation].snippetAttributionText ?? ''
+                                        }
                                     ></textarea>
                                 </div>
                             </td>

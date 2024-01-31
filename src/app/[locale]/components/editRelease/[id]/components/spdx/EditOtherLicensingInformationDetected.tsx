@@ -15,17 +15,17 @@ import OtherLicensingInformationDetected from '../../../../../../../object-types
 import styles from '../detail.module.css'
 
 interface Props {
-    otherLicensingInformationDetected?: OtherLicensingInformationDetected
-    setOtherLicensingInformationDetected?: React.Dispatch<React.SetStateAction<OtherLicensingInformationDetected>>
     isModeFull?: boolean
+    indexOtherLicense?: number
+    setIndexOtherLicense?: any
     otherLicensingInformationDetecteds?: OtherLicensingInformationDetected[]
     setOtherLicensingInformationDetecteds?: React.Dispatch<React.SetStateAction<OtherLicensingInformationDetected[]>>
 }
 
 const EditOtherLicensingInformationDetected = ({
-    otherLicensingInformationDetected,
-    setOtherLicensingInformationDetected,
     isModeFull,
+    indexOtherLicense,
+    setIndexOtherLicense,
     otherLicensingInformationDetecteds,
     setOtherLicensingInformationDetecteds,
 }: Props) => {
@@ -34,7 +34,7 @@ const EditOtherLicensingInformationDetected = ({
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setOtherLicensingInformationDetected(otherLicensingInformationDetecteds[+index])
+        setIndexOtherLicense(+index)
     }
 
     const addOtherLicensingInformationDetecteds = () => {
@@ -49,14 +49,20 @@ const EditOtherLicensingInformationDetected = ({
         }
         arrayExternals.push(externalDocumentReference)
         setOtherLicensingInformationDetecteds(arrayExternals)
-        setOtherLicensingInformationDetected(externalDocumentReference)
     }
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
-        setOtherLicensingInformationDetected({
-            ...otherLicensingInformationDetected,
-            [e.target.name]: e.target.value,
-        })
+        setOtherLicensingInformationDetecteds((currents) =>
+            currents.map((otherLicensing, index) => {
+                if (index === indexOtherLicense) {
+                    return {
+                        ...otherLicensing,
+                        [e.target.name]: e.target.value,
+                    }
+                }
+                return otherLicensing
+            })
+        )
     }
 
     return (
@@ -106,7 +112,7 @@ const EditOtherLicensingInformationDetected = ({
                         </div>
                     </td>
                 </tr>
-                {otherLicensingInformationDetected && (
+                {otherLicensingInformationDetecteds[indexOtherLicense] && (
                     <>
                         <tr>
                             <td>
@@ -124,9 +130,13 @@ const EditOtherLicensingInformationDetected = ({
                                             name='licenseId'
                                             onChange={updateField}
                                             value={
-                                                otherLicensingInformationDetected.licenseId?.startsWith('LicenseRef-')
-                                                    ? otherLicensingInformationDetected.licenseId?.substring(11)
-                                                    : otherLicensingInformationDetected.licenseId
+                                                otherLicensingInformationDetecteds[
+                                                    indexOtherLicense
+                                                ].licenseId?.startsWith('LicenseRef-')
+                                                    ? otherLicensingInformationDetecteds[
+                                                          indexOtherLicense
+                                                      ].licenseId?.substring(11)
+                                                    : otherLicensingInformationDetecteds[indexOtherLicense].licenseId
                                             }
                                         />
                                     </div>
@@ -146,7 +156,9 @@ const EditOtherLicensingInformationDetected = ({
                                         name='extractedText'
                                         onChange={updateField}
                                         placeholder='Enter extracted text'
-                                        value={otherLicensingInformationDetected.extractedText ?? ''}
+                                        value={
+                                            otherLicensingInformationDetecteds[indexOtherLicense].extractedText ?? ''
+                                        }
                                     ></textarea>
                                 </div>
                             </td>
@@ -174,7 +186,10 @@ const EditOtherLicensingInformationDetected = ({
                                                 placeholder='Enter license name'
                                                 name='licenseName'
                                                 onChange={updateField}
-                                                value={otherLicensingInformationDetected.licenseName ?? ''}
+                                                value={
+                                                    otherLicensingInformationDetecteds[indexOtherLicense].licenseName ??
+                                                    ''
+                                                }
                                                 disabled={!licenseName}
                                             />
                                         </div>
@@ -213,7 +228,10 @@ const EditOtherLicensingInformationDetected = ({
                                             placeholder='Enter license cross reference'
                                             name='licenseCrossRefs'
                                             onChange={updateField}
-                                            value={otherLicensingInformationDetected.licenseCrossRefs ?? ''}
+                                            value={
+                                                otherLicensingInformationDetecteds[indexOtherLicense]
+                                                    .licenseCrossRefs ?? ''
+                                            }
                                         ></textarea>
                                     </div>
                                 </td>
@@ -232,7 +250,9 @@ const EditOtherLicensingInformationDetected = ({
                                         placeholder='Enter license comment'
                                         name='licenseComment'
                                         onChange={updateField}
-                                        value={otherLicensingInformationDetected.licenseComment ?? ''}
+                                        value={
+                                            otherLicensingInformationDetecteds[indexOtherLicense].licenseComment ?? ''
+                                        }
                                     ></textarea>
                                 </div>
                             </td>
