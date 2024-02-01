@@ -18,6 +18,7 @@ import ExternalReference from '../../../../../../../object-types/spdx/ExternalRe
 import PackageInformation from '../../../../../../../object-types/spdx/PackageInformation'
 import styles from '../detail.module.css'
 import CheckSums from './CheckSums'
+import BuiltDate from './PackageInformation/BuiltDate'
 import PackageAllLicensesInformation from './PackageInformation/PackageAllLicensesInformation'
 import PackageConcludedLicense from './PackageInformation/PackageConcludedLicense'
 import PackageCopyrightText from './PackageInformation/PackageCopyrightText'
@@ -26,6 +27,8 @@ import PackageDownloadLocation from './PackageInformation/PackageDownloadLocatio
 import PackageHomePage from './PackageInformation/PackageHomePage'
 import PackageOriginator from './PackageInformation/PackageOriginator'
 import PackageSupplier from './PackageInformation/PackageSupplier'
+import ReleaseDate from './PackageInformation/ReleaseDate'
+import ValidUntilDate from './PackageInformation/ValidUntilDate'
 
 interface Props {
     packageInformation?: PackageInformation
@@ -148,6 +151,16 @@ const EditPackageInformation = ({
         if (typeof packageInformation?.originator !== 'undefined') {
             setDataPackageOriginator(handlePackageOriginator(packageInformation.originator))
         }
+
+        if (typeof packageInformation?.releaseDate !== 'undefined') {
+            setDataReleaseDate(handleDate(packageInformation.releaseDate))
+        }
+        if (typeof packageInformation?.builtDate !== 'undefined') {
+            setDataBuiltDate(handleDate(packageInformation.builtDate))
+        }
+        if (typeof packageInformation?.validUntilDate !== 'undefined') {
+            setDataValidUntilDate(handleDate(packageInformation.validUntilDate))
+        }
     }, [packageInformation])
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
@@ -177,6 +190,46 @@ const EditPackageInformation = ({
             inputs.push(input)
         })
         return inputs
+    }
+
+    const [dataReleaseDate, setDataReleaseDate] = useState<InputKeyValue>()
+    const [dataBuiltDate, setDataBuiltDate] = useState<InputKeyValue>()
+    const [dataValidUntilDate, setDataValidUntilDate] = useState<InputKeyValue>()
+    const handleDate = (data: string) => {
+        const input: InputKeyValue = {
+            key: CommonUtils.fillDate(data),
+            value: CommonUtils.fillTime(data),
+        }
+        return input
+    }
+
+    const convertInputToDate = (data: InputKeyValue) => {
+        if (data.key == '' || data.value == '') {
+            return ''
+        }
+        const localDate = new Date(data.key + ' ' + data.value)
+        return localDate.toISOString().slice(0, -5) + 'Z'
+    }
+
+    const setBuiltDate = (inputs: InputKeyValue) => {
+        setPackageInformation({
+            ...packageInformation,
+            builtDate: convertInputToDate(inputs),
+        })
+    }
+
+    const setValidUntilDate = (inputs: InputKeyValue) => {
+        setPackageInformation({
+            ...packageInformation,
+            validUntilDate: convertInputToDate(inputs),
+        })
+    }
+
+    const setReleaseDate = (inputs: InputKeyValue) => {
+        setPackageInformation({
+            ...packageInformation,
+            releaseDate: convertInputToDate(inputs),
+        })
     }
 
     return (
@@ -700,122 +753,25 @@ const EditPackageInformation = ({
                                     </td>
                                 </tr>
                                 <tr className='spdx-full'>
-                                    <td colSpan={3}>
-                                        <div className='form-group'>
-                                            <label className='lableSPDX' htmlFor='createdDate'>
-                                                7.25 Release Date
-                                            </label>
-                                            <div
-                                                style={{
-                                                    display: 'flex',
-                                                    flexDirection: 'row',
-                                                    marginBottom: '0.75rem',
-                                                }}
-                                            >
-                                                <div>
-                                                    <input
-                                                        id='createdReleaseDate'
-                                                        type='date'
-                                                        className='form-control spdx-date needs-validation'
-                                                        placeholder='created.date.yyyy.mm.dd'
-                                                        value={
-                                                            CommonUtils.fillDate(packageInformation.releaseDate) ?? ''
-                                                        }
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <input
-                                                        id='createdReleaseTime'
-                                                        type='time'
-                                                        step='1'
-                                                        className='form-control spdx-time needs-validation'
-                                                        placeholder='created.time.hh.mm.ss'
-                                                        value={
-                                                            CommonUtils.fillTime(packageInformation.releaseDate) ?? ''
-                                                        }
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <ReleaseDate
+                                        dataReleaseDate={dataReleaseDate}
+                                        setDataReleaseDate={setDataReleaseDate}
+                                        setReleaseDate={setReleaseDate}
+                                    />
                                 </tr>
                                 <tr className='spdx-full'>
-                                    <td colSpan={3}>
-                                        <div className='form-group'>
-                                            <label className='lableSPDX' htmlFor='createdDate'>
-                                                7.26 Built Date
-                                            </label>
-                                            <div
-                                                style={{
-                                                    display: 'flex',
-                                                    flexDirection: 'row',
-                                                    marginBottom: '0.75rem',
-                                                }}
-                                            >
-                                                <div>
-                                                    <input
-                                                        id='createdReleaseDate'
-                                                        type='date'
-                                                        className='form-control spdx-date needs-validation'
-                                                        placeholder='created.date.yyyy.mm.dd'
-                                                        value={CommonUtils.fillDate(packageInformation.builtDate) ?? ''}
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <input
-                                                        id='createdReleaseTime'
-                                                        type='time'
-                                                        step='1'
-                                                        className='form-control spdx-time needs-validation'
-                                                        placeholder='created.time.hh.mm.ss'
-                                                        value={CommonUtils.fillTime(packageInformation.builtDate) ?? ''}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <BuiltDate
+                                        setBuiltDate={setBuiltDate}
+                                        dataBuiltDate={dataBuiltDate}
+                                        setDataBuiltDate={setDataBuiltDate}
+                                    />
                                 </tr>
                                 <tr className='spdx-full'>
-                                    <td colSpan={3}>
-                                        <div className='form-group'>
-                                            <label className='lableSPDX' htmlFor='createdDate'>
-                                                7.27 Valid Until Date
-                                            </label>
-                                            <div
-                                                style={{
-                                                    display: 'flex',
-                                                    flexDirection: 'row',
-                                                    marginBottom: '0.75rem',
-                                                }}
-                                            >
-                                                <div>
-                                                    <input
-                                                        id='createdReleaseDate'
-                                                        type='date'
-                                                        className='form-control spdx-date needs-validation'
-                                                        placeholder='created.date.yyyy.mm.dd'
-                                                        value={
-                                                            CommonUtils.fillDate(packageInformation.validUntilDate) ??
-                                                            ''
-                                                        }
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <input
-                                                        id='createdReleaseTime'
-                                                        type='time'
-                                                        step='1'
-                                                        className='form-control spdx-time needs-validation'
-                                                        placeholder='created.time.hh.mm.ss'
-                                                        value={
-                                                            CommonUtils.fillTime(packageInformation.validUntilDate) ??
-                                                            ''
-                                                        }
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <ValidUntilDate
+                                        setValidUntilDate={setValidUntilDate}
+                                        dataValidUntilDate={dataValidUntilDate}
+                                        setDataValidUntilDate={setDataValidUntilDate}
+                                    />
                                 </tr>
                             </>
                         )}

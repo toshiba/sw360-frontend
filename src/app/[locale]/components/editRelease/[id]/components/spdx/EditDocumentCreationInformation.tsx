@@ -18,6 +18,7 @@ import DocumentCreationInformation from '../../../../../../../object-types/spdx/
 import ExternalDocumentReferences from '../../../../../../../object-types/spdx/ExternalDocumentReferences'
 import styles from '../detail.module.css'
 import Creators from './Creators'
+import Created from './DocumentCreationInfo/Created'
 
 interface Props {
     documentCreationInformation?: DocumentCreationInformation
@@ -66,6 +67,10 @@ const EditDocumentCreationInformation = ({
                 setCreator(convertCreator(documentCreationInformation.creator))
             }
         }
+
+        if (typeof documentCreationInformation?.created !== 'undefined') {
+            setDataCreated(handleCreated(documentCreationInformation.created))
+        }
     }, [documentCreationInformation])
 
     const convertCreator = (creators: Creator[]) => {
@@ -107,25 +112,6 @@ const EditDocumentCreationInformation = ({
         })
     }
 
-    const [date, setDate] = useState('')
-    const [time, setTime] = useState('')
-
-    const updateDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setDate(e.target.value)
-        setDocumentCreationInformation({
-            ...documentCreationInformation,
-            created: CommonUtils.readDateTime(date, time),
-        })
-    }
-
-    const updateTime = (e: any) => {
-        setTime(e.target.value)
-        setDocumentCreationInformation({
-            ...documentCreationInformation,
-            created: CommonUtils.readDateTime(date, time),
-        })
-    }
-
     const setDataCreators = (inputs: InputKeyValue[]) => {
         if (isAnonymous) {
             inputs = inputs.filter((input) => input.key != 'Organization').filter((input) => input.key != 'Person')
@@ -133,6 +119,30 @@ const EditDocumentCreationInformation = ({
         setDocumentCreationInformation({
             ...documentCreationInformation,
             creator: convertInputToCreator(inputs),
+        })
+    }
+
+    const [dataCreated, setDataCreated] = useState<InputKeyValue>()
+    const handleCreated = (data: string) => {
+        const input: InputKeyValue = {
+            key: CommonUtils.fillDate(data),
+            value: CommonUtils.fillTime(data),
+        }
+        return input
+    }
+
+    const convertInputToCreated = (data: InputKeyValue) => {
+        if (data.key == '' || data.value == '') {
+            return ''
+        }
+        const localDate = new Date(data.key + ' ' + data.value)
+        return localDate.toISOString().slice(0, -5) + 'Z'
+    }
+
+    const setCreated = (inputs: InputKeyValue) => {
+        setDocumentCreationInformation({
+            ...documentCreationInformation,
+            created: convertInputToCreated(inputs),
         })
     }
 
@@ -451,38 +461,11 @@ const EditDocumentCreationInformation = ({
                             </td>
                         </tr>
                         <tr>
-                            <td style={{ display: 'flex', flexDirection: 'column' }} colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX' htmlFor='createdDate'>
-                                        6.9 Created
-                                    </label>
-                                    <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '0.75rem' }}>
-                                        <div>
-                                            <input
-                                                id='createdDate'
-                                                type='date'
-                                                name='date'
-                                                className='form-control spdx-date needs-validation'
-                                                placeholder='created.date.yyyy.mm.dd'
-                                                onChange={updateDate}
-                                                value={CommonUtils.fillDate(documentCreationInformation.created) ?? ''}
-                                            />
-                                        </div>
-                                        <div>
-                                            <input
-                                                name='time'
-                                                id='createdTime'
-                                                type='time'
-                                                step='1'
-                                                className='form-control spdx-time needs-validation'
-                                                placeholder='created.time.hh.mm.ss'
-                                                onChange={updateTime}
-                                                value={CommonUtils.fillTime(documentCreationInformation.created) ?? ''}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
+                            <Created
+                                setCreated={setCreated}
+                                dataCreated={dataCreated}
+                                setDataCreated={setDataCreated}
+                            />
                         </tr>
                         {isModeFull && (
                             <>

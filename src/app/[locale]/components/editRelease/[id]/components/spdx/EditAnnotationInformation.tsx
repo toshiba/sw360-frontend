@@ -15,6 +15,7 @@ import { FaTrashAlt } from 'react-icons/fa'
 import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
 import Annotations from '../../../../../../../object-types/spdx/Annotations'
 import styles from '../detail.module.css'
+import AnnotationDate from './AnnotationInformation/AnnotationDate'
 import Annotator from './AnnotationInformation/Annotator'
 
 interface Props {
@@ -69,8 +70,6 @@ const EditAnnotationInformation = ({
     }
 
     const handleDataAnnotator = (data: string) => {
-        console.log('------data-----')
-        console.log(data)
         const input: InputKeyValue = {
             key: data.split(':')[0],
             value: data.split(':')[1],
@@ -86,6 +85,15 @@ const EditAnnotationInformation = ({
             isSourceSPDXDocument
                 ? setDataAnnotator(handleDataAnnotator(annotationsSPDXs[indexAnnotations]?.annotator))
                 : setDataAnnotator(handleDataAnnotator(annotationsPackages[indexAnnotations]?.annotator))
+        }
+
+        if (
+            typeof annotationsSPDXs[indexAnnotations]?.annotationDate !== 'undefined' &&
+            typeof annotationsPackages[indexAnnotations]?.annotationDate !== 'undefined'
+        ) {
+            isSourceSPDXDocument
+                ? setDataAnnotationDate(handleAnnotationDate(annotationsSPDXs[indexAnnotations]?.annotationDate))
+                : setDataAnnotationDate(handleAnnotationDate(annotationsPackages[indexAnnotations]?.annotationDate))
         }
     }, [isSourceSPDXDocument, indexAnnotations, annotationsSPDXs, annotationsPackages])
 
@@ -167,6 +175,49 @@ const EditAnnotationInformation = ({
                           return {
                               ...annotation,
                               [e.target.name]: e.target.value,
+                          }
+                      }
+                      return annotation
+                  })
+              )
+    }
+
+    const [dataAnnotationDate, setDataAnnotationDate] = useState<InputKeyValue>()
+    const handleAnnotationDate = (data: string) => {
+        const input: InputKeyValue = {
+            key: CommonUtils.fillDate(data),
+            value: CommonUtils.fillTime(data),
+        }
+        return input
+    }
+
+    const convertInputToAnnotationDate = (data: InputKeyValue) => {
+        if (data.key == '' || data.value == '') {
+            return ''
+        }
+        const localDate = new Date(data.key + ' ' + data.value)
+        return localDate.toISOString().slice(0, -5) + 'Z'
+    }
+
+    const setAnnotationDate = (input: InputKeyValue) => {
+        isSourceSPDXDocument
+            ? setAnnotationsSPDXs((currents) =>
+                  currents.map((annotation, index) => {
+                      if (index === indexAnnotations) {
+                          return {
+                              ...annotation,
+                              annotationDate: convertInputToAnnotationDate(input),
+                          }
+                      }
+                      return annotation
+                  })
+              )
+            : setAnnotationsPackages((currents) =>
+                  currents.map((annotation, index) => {
+                      if (index === indexAnnotations) {
+                          return {
+                              ...annotation,
+                              annotationDate: convertInputToAnnotationDate(input),
                           }
                       }
                       return annotation
@@ -257,54 +308,19 @@ const EditAnnotationInformation = ({
                                     setDataAnnotator={setDataAnnotator}
                                     setAnnotatorToAnnotation={setAnnotatorToAnnotation}
                                 />
-                                <div className='form-group' style={{ flex: 1 }}>
-                                    <label htmlFor='annotationCreatedDate'>12.2 Annotation date </label>
-                                    <div style={{ display: 'flex' }}>
-                                        <div>
-                                            <input
-                                                id='annotationCreatedDate'
-                                                style={{ width: '12rem', textAlign: 'center' }}
-                                                type='date'
-                                                className='form-control needs-validation'
-                                                placeholder='creation.date.yyyy.mm.dd'
-                                                value={
-                                                    isSourceSPDXDocument
-                                                        ? CommonUtils.fillDate(
-                                                              annotationsSPDXs[indexAnnotations]?.annotationDate
-                                                          )
-                                                        : CommonUtils.fillDate(
-                                                              annotationsPackages[indexAnnotations]?.annotationDate
-                                                          ) ?? ''
-                                                }
-                                            />
-                                        </div>
-                                        <div>
-                                            <input
-                                                id='annotationCreatedTime'
-                                                style={{ width: '12rem', textAlign: 'center', marginLeft: '10px' }}
-                                                type='time'
-                                                step='1'
-                                                className='form-control needs-validation'
-                                                placeholder='creation.time.hh.mm.ss'
-                                                value={
-                                                    isSourceSPDXDocument
-                                                        ? CommonUtils.fillTime(
-                                                              annotationsSPDXs[indexAnnotations]?.annotationDate
-                                                          )
-                                                        : CommonUtils.fillTime(
-                                                              annotationsPackages[indexAnnotations]?.annotationDate
-                                                          ) ?? ''
-                                                }
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
+                                <AnnotationDate
+                                    dataAnnotationDate={dataAnnotationDate}
+                                    setDataAnnotationDate={setDataAnnotationDate}
+                                    setAnnotationDate={setAnnotationDate}
+                                />
                             </td>
                         </tr>
                         <tr>
                             <td style={{ display: 'flex' }}>
                                 <div className='form-group' style={{ flex: 1 }}>
-                                    ;<label htmlFor='annotationType'>12.3 Annotation type</label>
+                                    <label htmlFor='annotationType' className='lableSPDX'>
+                                        12.3 Annotation type
+                                    </label>
                                     <input
                                         id='annotationType'
                                         className='form-control'
@@ -320,7 +336,9 @@ const EditAnnotationInformation = ({
                                     />
                                 </div>
                                 <div className='form-group' style={{ flex: 1 }}>
-                                    <label htmlFor='spdxIdRef'>12.4 SPDX identifier reference</label>
+                                    <label htmlFor='spdxIdRef' className='lableSPDX'>
+                                        12.4 SPDX identifier reference
+                                    </label>
                                     <input
                                         id='spdxIdRef'
                                         className='form-control'
@@ -340,7 +358,9 @@ const EditAnnotationInformation = ({
                         <tr>
                             <td>
                                 <div className='form-group'>
-                                    <label htmlFor='annotationComment'>12.5 Annotation comment</label>
+                                    <label htmlFor='annotationComment' className='lableSPDX'>
+                                        12.5 Annotation comment
+                                    </label>
                                     <textarea
                                         className='form-control'
                                         id='annotationComment'

@@ -27,7 +27,9 @@ function Annotator({ dataAnnotator, setDataAnnotator, setAnnotatorToAnnotation }
     return (
         dataAnnotator && (
             <div className='form-group' style={{ flex: 3 }}>
-                <label htmlFor='annotator'>12.1 Annotator</label>
+                <label className='lableSPDX' htmlFor='annotator'>
+                    12.1 Annotator
+                </label>
                 <div style={{ display: 'flex' }}>
                     <select
                         id='annotatorType'
