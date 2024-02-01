@@ -42,13 +42,9 @@ interface Props {
 const EditSPDXDocument = ({ releaseId }: Props) => {
     const t = useTranslations('default')
     const [spdxDocument, setSPDXDocument] = useState<SPDXDocument>()
-
+    console.log(spdxDocument)
     const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
     const [packageInformation, setPackageInformation] = useState<PackageInformation>()
-    // const [snippetInformations, setSnippetInformations] = useState<SnippetInformation>()
-    // const [otherLicensingInformationDetecteds, setOtherLicensingInformationDetected] = useState<OtherLicensingInformationDetected>()
-    // const [relationshipsBetweenSPDXElements, setRelationshipsBetweenSPDXElements] = useState<RelationshipsBetweenSPDXElements>()
-    // const [annotations, setAnnotations] = useState<Annotations>()
     const [externalDocumentRef, setExternalDocumentRef] = useState<ExternalDocumentReferences>()
     const [externalDocumentRefs, setExternalDocumentRefs] = useState<ExternalDocumentReferences[]>([])
     const [externalRefsData, setExternalRefsData] = useState<ExternalReference>()
@@ -68,7 +64,7 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
         RelationshipsBetweenSPDXElements[]
     >([])
 
-    const [annotations, setAnnotations] = useState<Annotations>()
+    const [indexAnnotations, setIndexAnnotations] = useState(0)
     const [annotationsSPDXs, setAnnotationsSPDXs] = useState<Annotations[]>([])
     const [annotationsPackages, setAnnotationsPackages] = useState<Annotations[]>([])
 
@@ -133,7 +129,7 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     }
                     //Annotations
                     if (!CommonUtils.isNullEmptyOrUndefinedArray(release._embedded['sw360:spdxDocument'].annotations)) {
-                        setAnnotations(release._embedded['sw360:spdxDocument'].annotations[0])
+                        setIndexAnnotations(0)
                         setAnnotationsSPDXs(
                             release._embedded['sw360:spdxDocument'].annotations.toSorted(
                                 (e1, e2) => e1.index - e2.index
@@ -277,8 +273,6 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         setOtherLicensingInformationDetecteds={setOtherLicensingInformationDetecteds}
                     />
                     <EditRelationshipbetweenSPDXElementsInformation
-                        // relationshipsBetweenSPDXElements={relationshipsBetweenSPDXElements}
-                        // setRelationshipsBetweenSPDXElements={setRelationshipsBetweenSPDXElements}
                         indexRelation={indexRelation}
                         setIndexRelation={setIndexRelation}
                         relationshipsBetweenSPDXElementSPDXs={relationshipsBetweenSPDXElementSPDXs}
@@ -287,8 +281,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         setRelationshipsBetweenSPDXElementPackages={setRelationshipsBetweenSPDXElementPackages}
                     />
                     <AnnotationInformation
-                        annotations={annotations}
-                        setAnnotations={setAnnotations}
+                        indexAnnotations={indexAnnotations}
+                        setIndexAnnotations={setIndexAnnotations}
                         annotationsSPDXs={annotationsSPDXs}
                         setAnnotationsSPDXs={setAnnotationsSPDXs}
                         annotationsPackages={annotationsPackages}

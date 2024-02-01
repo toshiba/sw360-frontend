@@ -10,14 +10,16 @@
 
 'use client'
 import CommonUtils from '@/utils/common.utils'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
+import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
 import Annotations from '../../../../../../../object-types/spdx/Annotations'
 import styles from '../detail.module.css'
+import Annotator from './AnnotationInformation/Annotator'
 
 interface Props {
-    annotations?: Annotations
-    setAnnotations?: React.Dispatch<React.SetStateAction<Annotations>>
+    indexAnnotations?: number
+    setIndexAnnotations?: React.Dispatch<React.SetStateAction<number>>
     annotationsSPDXs: Annotations[]
     setAnnotationsSPDXs: React.Dispatch<React.SetStateAction<Annotations[]>>
     annotationsPackages: Annotations[]
@@ -25,8 +27,8 @@ interface Props {
 }
 
 const EditAnnotationInformation = ({
-    annotations,
-    setAnnotations,
+    indexAnnotations,
+    setIndexAnnotations,
     annotationsSPDXs,
     setAnnotationsSPDXs,
     annotationsPackages,
@@ -34,7 +36,58 @@ const EditAnnotationInformation = ({
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [isSourceSPDXDocument, setIsSourceSPDXDocument] = useState<boolean>(true)
-    const [index, setIndex] = useState(0)
+
+    const [dataAnnotator, setDataAnnotator] = useState<InputKeyValue>()
+    const handleInputKeyToAnnotator = (data: InputKeyValue) => {
+        return data.key + ':' + data.value
+    }
+
+    const setAnnotatorToAnnotation = (input: InputKeyValue) => {
+        isSourceSPDXDocument
+            ? setAnnotationsSPDXs((currents) =>
+                  currents.map((annotation, index) => {
+                      if (index === indexAnnotations) {
+                          return {
+                              ...annotation,
+                              annotator: handleInputKeyToAnnotator(input),
+                          }
+                      }
+                      return annotation
+                  })
+              )
+            : setAnnotationsPackages((currents) =>
+                  currents.map((annotation, index) => {
+                      if (index === indexAnnotations) {
+                          return {
+                              ...annotation,
+                              annotator: handleInputKeyToAnnotator(input),
+                          }
+                      }
+                      return annotation
+                  })
+              )
+    }
+
+    const handleDataAnnotator = (data: string) => {
+        console.log('------data-----')
+        console.log(data)
+        const input: InputKeyValue = {
+            key: data.split(':')[0],
+            value: data.split(':')[1],
+        }
+        return input
+    }
+
+    useEffect(() => {
+        if (
+            typeof annotationsSPDXs[indexAnnotations]?.annotator !== 'undefined' &&
+            typeof annotationsPackages[indexAnnotations]?.annotator !== 'undefined'
+        ) {
+            isSourceSPDXDocument
+                ? setDataAnnotator(handleDataAnnotator(annotationsSPDXs[indexAnnotations]?.annotator))
+                : setDataAnnotator(handleDataAnnotator(annotationsPackages[indexAnnotations]?.annotator))
+        }
+    }, [isSourceSPDXDocument, indexAnnotations, annotationsSPDXs, annotationsPackages])
 
     const changeAnnotationSource = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const relationshipType: string = e.target.value
@@ -42,39 +95,27 @@ const EditAnnotationInformation = ({
             setIsSourceSPDXDocument(true)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsSPDXs)) {
                 setAnnotationsSPDXs(annotationsSPDXs)
-                if (!CommonUtils.isNullOrUndefined(annotationsSPDXs[index])) {
-                    setAnnotations(annotationsSPDXs[index])
-                } else {
-                    setAnnotations(annotationsSPDXs[0])
-                }
             } else {
                 setAnnotationsSPDXs([])
-                setAnnotations(null)
             }
         } else if (relationshipType === 'package') {
             setIsSourceSPDXDocument(false)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
                 setAnnotationsPackages(annotationsPackages)
-                if (!CommonUtils.isNullOrUndefined(annotationsPackages[index])) {
-                    setAnnotations(annotationsPackages[index])
-                } else {
-                    setAnnotations(annotationsPackages[0])
-                }
             } else {
                 setAnnotationsPackages([])
-                setAnnotations(null)
             }
         }
     }
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setIndex(+index)
-        isSourceSPDXDocument ? setAnnotations(annotationsSPDXs[+index]) : setAnnotations(annotationsPackages[+index])
+        setIndexAnnotations(+index)
+        // isSourceSPDXDocument ? setAnnotations(annotationsSPDXs[+index]) : setAnnotations(annotationsPackages[+index])
     }
 
     const addAnnotationsSPDXsSPDX = () => {
-        const arrayExternals: Annotations[] = annotationsSPDXs
+        const arrayExternals: Annotations[] = [...annotationsSPDXs]
         const relationshipsBetweenSPDXElements: Annotations = {
             annotator: '', // 12.1
             annotationDate: '', // 12.2
@@ -85,11 +126,11 @@ const EditAnnotationInformation = ({
         }
         arrayExternals.push(relationshipsBetweenSPDXElements)
         setAnnotationsSPDXs(arrayExternals)
-        setAnnotations(relationshipsBetweenSPDXElements)
+        // setAnnotations(relationshipsBetweenSPDXElements)
     }
 
     const addAnnotationsSPDXsPackage = () => {
-        const arrayExternals: Annotations[] = annotationsPackages
+        const arrayExternals: Annotations[] = [...annotationsPackages]
         const relationshipsBetweenSPDXElements: Annotations = {
             annotator: '', // 12.1
             annotationDate: '', // 12.2
@@ -100,11 +141,37 @@ const EditAnnotationInformation = ({
         }
         arrayExternals.push(relationshipsBetweenSPDXElements)
         setAnnotationsPackages(arrayExternals)
-        setAnnotations(relationshipsBetweenSPDXElements)
+        // setAnnotations(relationshipsBetweenSPDXElements)
     }
 
     const addAnnotation = () => {
         isSourceSPDXDocument ? addAnnotationsSPDXsSPDX() : addAnnotationsSPDXsPackage()
+    }
+
+    const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+        isSourceSPDXDocument
+            ? setAnnotationsSPDXs((currents) =>
+                  currents.map((annotation, index) => {
+                      if (index === indexAnnotations) {
+                          return {
+                              ...annotation,
+                              [e.target.name]: e.target.value,
+                          }
+                      }
+                      return annotation
+                  })
+              )
+            : setAnnotationsPackages((currents) =>
+                  currents.map((annotation, index) => {
+                      if (index === indexAnnotations) {
+                          return {
+                              ...annotation,
+                              [e.target.name]: e.target.value,
+                          }
+                      }
+                      return annotation
+                  })
+              )
     }
 
     return (
@@ -181,32 +248,15 @@ const EditAnnotationInformation = ({
                         </div>
                     </td>
                 </tr>
-                {annotations && (
+                {(isSourceSPDXDocument ? annotationsSPDXs : annotationsPackages) && (
                     <>
                         <tr>
                             <td>
-                                <div className='form-group' style={{ flex: 3 }}>
-                                    <label htmlFor='annotator'>12.1 Annotator</label>
-                                    <div style={{ display: 'flex' }}>
-                                        <select
-                                            id='annotatorType'
-                                            style={{ flex: 2, marginRight: '1rem' }}
-                                            className='form-control'
-                                        >
-                                            <option value='Organization'>Organization</option>
-                                            <option value='Person'>Person</option>
-                                            <option value='Tool'>Tool</option>
-                                        </select>
-                                        <input
-                                            style={{ flex: 6, marginRight: '1rem' }}
-                                            id='annotatorValue'
-                                            type='text'
-                                            className='form-control'
-                                            placeholder='Enter annotator'
-                                            value={annotations.annotator.substring(13) ?? ''}
-                                        />
-                                    </div>
-                                </div>
+                                <Annotator
+                                    dataAnnotator={dataAnnotator}
+                                    setDataAnnotator={setDataAnnotator}
+                                    setAnnotatorToAnnotation={setAnnotatorToAnnotation}
+                                />
                                 <div className='form-group' style={{ flex: 1 }}>
                                     <label htmlFor='annotationCreatedDate'>12.2 Annotation date </label>
                                     <div style={{ display: 'flex' }}>
@@ -217,7 +267,15 @@ const EditAnnotationInformation = ({
                                                 type='date'
                                                 className='form-control needs-validation'
                                                 placeholder='creation.date.yyyy.mm.dd'
-                                                value={CommonUtils.fillDate(annotations.annotationDate) ?? ''}
+                                                value={
+                                                    isSourceSPDXDocument
+                                                        ? CommonUtils.fillDate(
+                                                              annotationsSPDXs[indexAnnotations]?.annotationDate
+                                                          )
+                                                        : CommonUtils.fillDate(
+                                                              annotationsPackages[indexAnnotations]?.annotationDate
+                                                          ) ?? ''
+                                                }
                                             />
                                         </div>
                                         <div>
@@ -228,7 +286,15 @@ const EditAnnotationInformation = ({
                                                 step='1'
                                                 className='form-control needs-validation'
                                                 placeholder='creation.time.hh.mm.ss'
-                                                value={CommonUtils.fillTime(annotations.annotationDate) ?? ''}
+                                                value={
+                                                    isSourceSPDXDocument
+                                                        ? CommonUtils.fillTime(
+                                                              annotationsSPDXs[indexAnnotations]?.annotationDate
+                                                          )
+                                                        : CommonUtils.fillTime(
+                                                              annotationsPackages[indexAnnotations]?.annotationDate
+                                                          ) ?? ''
+                                                }
                                             />
                                         </div>
                                     </div>
@@ -238,13 +304,19 @@ const EditAnnotationInformation = ({
                         <tr>
                             <td style={{ display: 'flex' }}>
                                 <div className='form-group' style={{ flex: 1 }}>
-                                    <label htmlFor='annotationType'>12.3 Annotation type</label>
+                                    ;<label htmlFor='annotationType'>12.3 Annotation type</label>
                                     <input
                                         id='annotationType'
                                         className='form-control'
                                         type='text'
                                         placeholder='Enter annotation type'
-                                        value={annotations.annotationType ?? ''}
+                                        name='annotationType'
+                                        onChange={updateField}
+                                        value={
+                                            isSourceSPDXDocument
+                                                ? annotationsSPDXs[indexAnnotations]?.annotationType
+                                                : annotationsPackages[indexAnnotations]?.annotationType ?? ''
+                                        }
                                     />
                                 </div>
                                 <div className='form-group' style={{ flex: 1 }}>
@@ -252,9 +324,15 @@ const EditAnnotationInformation = ({
                                     <input
                                         id='spdxIdRef'
                                         className='form-control'
+                                        name='spdxIdRef'
                                         type='text'
                                         placeholder='Enter SPDX identifier reference'
-                                        value={annotations.spdxIdRef ?? ''}
+                                        onChange={updateField}
+                                        value={
+                                            isSourceSPDXDocument
+                                                ? annotationsSPDXs[indexAnnotations]?.spdxIdRef
+                                                : annotationsPackages[indexAnnotations]?.spdxIdRef ?? ''
+                                        }
                                     />
                                 </div>
                             </td>
@@ -268,7 +346,13 @@ const EditAnnotationInformation = ({
                                         id='annotationComment'
                                         rows={5}
                                         placeholder='Enter annotation comment'
-                                        value={annotations.annotationComment ?? ''}
+                                        name='annotationComment'
+                                        onChange={updateField}
+                                        value={
+                                            isSourceSPDXDocument
+                                                ? annotationsSPDXs[indexAnnotations]?.annotationComment
+                                                : annotationsPackages[indexAnnotations]?.annotationComment ?? ''
+                                        }
                                     ></textarea>
                                 </div>
                             </td>
