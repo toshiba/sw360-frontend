@@ -7,21 +7,28 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import { useState } from 'react'
 import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
-// import { useTranslations } from 'next-intl'
-
 interface Props {
     packageInformation?: PackageInformation
-    updateField?: any
+    setConcludedLicenseToPackage?: any
+    concludedLicenseExist?: boolean
+    setConcludedLicenseExist?: React.Dispatch<React.SetStateAction<boolean>>
+    concludedLicenseNone?: boolean
+    setConcludedLicenseNone?: React.Dispatch<React.SetStateAction<boolean>>
+    concludedLicenseNoasserttion?: boolean
+    setConcludedLicenseNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function PackageConcludedLicense({ packageInformation, updateField }: Props) {
-    //concludedLicense
-    const [concludedLicenseExist, setConcludedLicenseExist] = useState(true)
-    const [concludedLicenseNone, setConcludedLicenseNone] = useState(false)
-    const [concludedLicenseNoasserttion, setConcludedLicenseNoasserttion] = useState(false)
-
+function PackageConcludedLicense({
+    packageInformation,
+    setConcludedLicenseToPackage,
+    concludedLicenseExist,
+    setConcludedLicenseExist,
+    concludedLicenseNone,
+    setConcludedLicenseNone,
+    concludedLicenseNoasserttion,
+    setConcludedLicenseNoasserttion,
+}: Props) {
     const selectConcludedLicenseExist = () => {
         setConcludedLicenseExist(true)
         setConcludedLicenseNone(false)
@@ -36,6 +43,10 @@ function PackageConcludedLicense({ packageInformation, updateField }: Props) {
         setConcludedLicenseExist(false)
         setConcludedLicenseNone(false)
         setConcludedLicenseNoasserttion(true)
+    }
+
+    const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setConcludedLicenseToPackage(e.target.value)
     }
 
     return (

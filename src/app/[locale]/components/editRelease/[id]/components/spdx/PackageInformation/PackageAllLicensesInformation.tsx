@@ -7,22 +7,30 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import { useState } from 'react'
 import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
 // import { useTranslations } from 'next-intl'
 
 interface Props {
     packageInformation?: PackageInformation
-    updateField?: any
+    setAllLicensesInformationToPackage?: any
+    allLicensesInformationExist?: boolean
+    setAllLicensesInformationExist?: React.Dispatch<React.SetStateAction<boolean>>
+    allLicensesInformationNone?: boolean
+    setAllLicensesInformationNone?: React.Dispatch<React.SetStateAction<boolean>>
+    allLicensesInformationNoasserttion?: boolean
+    setAllLicensesInformationNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function PackageAllLicensesInformation({ packageInformation, updateField }: Props) {
-    //allLicensesInformationExist
-
-    const [allLicensesInformationExist, setAllLicensesInformationExist] = useState(true)
-    const [allLicensesInformationNone, setAllLicensesInformationNone] = useState(false)
-    const [allLicensesInformationNoasserttion, setAllLicensesInformationNoasserttion] = useState(false)
-
+function PackageAllLicensesInformation({
+    packageInformation,
+    setAllLicensesInformationToPackage,
+    allLicensesInformationExist,
+    setAllLicensesInformationExist,
+    allLicensesInformationNone,
+    setAllLicensesInformationNone,
+    allLicensesInformationNoasserttion,
+    setAllLicensesInformationNoasserttion,
+}: Props) {
     const selectAllLicensesInformationExist = () => {
         setAllLicensesInformationExist(true)
         setAllLicensesInformationNone(false)
@@ -39,6 +47,9 @@ function PackageAllLicensesInformation({ packageInformation, updateField }: Prop
         setAllLicensesInformationNoasserttion(true)
     }
 
+    const updateField = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setAllLicensesInformationToPackage(e.target.value)
+    }
     return (
         <td colSpan={3}>
             <div className='form-group'>
@@ -53,6 +64,7 @@ function PackageAllLicensesInformation({ packageInformation, updateField }: Prop
                             value='EXIST'
                             onClick={selectAllLicensesInformationExist}
                             checked={allLicensesInformationExist}
+                            disabled={!packageInformation?.filesAnalyzed}
                         />
                         <textarea
                             style={{ flex: 6, marginRight: '1rem' }}
@@ -63,7 +75,11 @@ function PackageAllLicensesInformation({ packageInformation, updateField }: Prop
                             placeholder='Enter all licenses information from files'
                             onChange={updateField}
                             value={packageInformation.licenseInfoFromFiles}
-                            disabled={allLicensesInformationNone || allLicensesInformationNoasserttion}
+                            disabled={
+                                allLicensesInformationNone ||
+                                allLicensesInformationNoasserttion ||
+                                !packageInformation?.filesAnalyzed
+                            }
                         ></textarea>
                     </div>
                     <div style={{ flex: 2 }}>
@@ -75,6 +91,7 @@ function PackageAllLicensesInformation({ packageInformation, updateField }: Prop
                             value='NONE'
                             onClick={selectAllLicensesInformationNone}
                             checked={allLicensesInformationNone}
+                            disabled={!packageInformation?.filesAnalyzed}
                         />
                         <label
                             style={{ marginRight: '2rem' }}
@@ -91,6 +108,7 @@ function PackageAllLicensesInformation({ packageInformation, updateField }: Prop
                             value='NOASSERTION'
                             onClick={selectAllLicensesInformationNoasserttion}
                             checked={allLicensesInformationNoasserttion}
+                            disabled={!packageInformation?.filesAnalyzed}
                         />
                         <label
                             className='form-check-label radio-label lableSPDX'

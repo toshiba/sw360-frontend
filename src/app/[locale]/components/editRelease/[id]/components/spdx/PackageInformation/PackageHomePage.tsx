@@ -7,21 +7,29 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import { useState } from 'react'
 import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
-// import { useTranslations } from 'next-intl'
 
 interface Props {
     packageInformation?: PackageInformation
-    updateField?: any
+    setPackageHomePageToPackage?: any
+    packageHomePageExist?: boolean
+    setPackageHomePageExist?: React.Dispatch<React.SetStateAction<boolean>>
+    packageHomePageNone?: boolean
+    setPackageHomePageNone?: React.Dispatch<React.SetStateAction<boolean>>
+    packageHomePageNoasserttion?: boolean
+    setPackageHomePageNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function PackageHomePage({ packageInformation, updateField }: Props) {
-    //packageHomePage
-    const [packageHomePageExist, setPackageHomePageExist] = useState(true)
-    const [packageHomePageNone, setPackageHomePageNone] = useState(false)
-    const [packageHomePageNoasserttion, setPackageHomePageNoasserttion] = useState(false)
-
+function PackageHomePage({
+    packageInformation,
+    setPackageHomePageToPackage,
+    packageHomePageExist,
+    setPackageHomePageExist,
+    packageHomePageNone,
+    setPackageHomePageNone,
+    packageHomePageNoasserttion,
+    setPackageHomePageNoasserttion,
+}: Props) {
     const selectPackageHomePageExist = () => {
         setPackageHomePageExist(true)
         setPackageHomePageNone(false)
@@ -36,6 +44,10 @@ function PackageHomePage({ packageInformation, updateField }: Props) {
         setPackageHomePageExist(false)
         setPackageHomePageNone(false)
         setPackageHomePageNoasserttion(true)
+    }
+
+    const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPackageHomePageToPackage(e.target.value)
     }
 
     return (
@@ -70,9 +82,9 @@ function PackageHomePage({ packageInformation, updateField }: Props) {
                             className='spdx-radio'
                             id='packageHomepageNone'
                             type='radio'
-                            name='_sw360_portlet_components_PACKAGE_HOMEPAGE'
+                            name='homepage'
                             value='NONE'
-                            onClick={selectPackageHomePageNone}
+                            onChange={selectPackageHomePageNone}
                             checked={packageHomePageNone}
                         />
                         <label
@@ -86,9 +98,9 @@ function PackageHomePage({ packageInformation, updateField }: Props) {
                             className='spdx-radio'
                             id='packageHomepageNoAssertion'
                             type='radio'
-                            name='_sw360_portlet_components_PACKAGE_HOMEPAGE'
+                            name='homepage'
                             value='NOASSERTION'
-                            onClick={selectPackageHomePageNoasserttion}
+                            onChange={selectPackageHomePageNoasserttion}
                             checked={packageHomePageNoasserttion}
                         />
                         <label className='form-check-label radio-label lableSPDX' htmlFor='packageHomePageNoAssertion'>

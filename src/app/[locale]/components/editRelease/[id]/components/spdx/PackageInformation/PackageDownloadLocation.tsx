@@ -7,21 +7,31 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import { useState } from 'react'
+// import { useState } from 'react'
 import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
 // import { useTranslations } from 'next-intl'
 
 interface Props {
     packageInformation?: PackageInformation
-    updateField?: any
+    setPackageDownloadLocationToPackage?: any
+    packageDownloadLocationExist?: boolean
+    setPackageDownloadLocationExist?: React.Dispatch<React.SetStateAction<boolean>>
+    packageDownloadLocationNone?: boolean
+    setPackageDownloadLocationNone?: React.Dispatch<React.SetStateAction<boolean>>
+    packageDownloadLocationNoasserttion?: boolean
+    setPackageDownloadLocationNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function PackageDownloadLocation({ packageInformation, updateField }: Props) {
-    // PackageDownloadLocation
-    const [packageDownloadLocationExist, setPackageDownloadLocationExist] = useState(true)
-    const [packageDownloadLocationNone, setPackageDownloadLocationNone] = useState(false)
-    const [packageDownloadLocationNoasserttion, setPackageDownloadLocationNoasserttion] = useState(false)
-
+function PackageDownloadLocation({
+    packageInformation,
+    setPackageDownloadLocationToPackage,
+    packageDownloadLocationExist,
+    setPackageDownloadLocationExist,
+    packageDownloadLocationNone,
+    setPackageDownloadLocationNone,
+    packageDownloadLocationNoasserttion,
+    setPackageDownloadLocationNoasserttion,
+}: Props) {
     const selectPackageDownloadLocationExist = () => {
         setPackageDownloadLocationExist(true)
         setPackageDownloadLocationNone(false)
@@ -38,6 +48,10 @@ function PackageDownloadLocation({ packageInformation, updateField }: Props) {
         setPackageDownloadLocationNone(false)
     }
 
+    const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPackageDownloadLocationToPackage(e.target.value)
+    }
+
     return (
         <td colSpan={3}>
             <div className='form-group'>
@@ -50,7 +64,7 @@ function PackageDownloadLocation({ packageInformation, updateField }: Props) {
                             id='downloadLocationExist'
                             name='_sw360_portlet_components_DOWNLOAD_LOCATION'
                             value='EXIST'
-                            onClick={selectPackageDownloadLocationExist}
+                            onChange={selectPackageDownloadLocationExist}
                             checked={packageDownloadLocationExist}
                         />
                         <input
@@ -70,9 +84,9 @@ function PackageDownloadLocation({ packageInformation, updateField }: Props) {
                             className='spdx-radio'
                             id='downloadLocationNone'
                             type='radio'
-                            name='_sw360_portlet_components_DOWNLOAD_LOCATION'
+                            name='downloadLocation'
                             value='NONE'
-                            onClick={selectPackageDownloadLocationNone}
+                            onChange={selectPackageDownloadLocationNone}
                             checked={packageDownloadLocationNone}
                         />
                         <label
@@ -86,9 +100,9 @@ function PackageDownloadLocation({ packageInformation, updateField }: Props) {
                             className='spdx-radio'
                             id='downloadLocationNoAssertion'
                             type='radio'
-                            name='_sw360_portlet_components_DOWNLOAD_LOCATION'
+                            name='downloadLocation'
                             value='NOASSERTION'
-                            onClick={selectPackageDownloadLocationNoasserttion}
+                            onChange={selectPackageDownloadLocationNoasserttion}
                             checked={packageDownloadLocationNoasserttion}
                         />
                         <label className='form-check-label radio-label lableSPDX' htmlFor='downloadLocationNoAssertion'>

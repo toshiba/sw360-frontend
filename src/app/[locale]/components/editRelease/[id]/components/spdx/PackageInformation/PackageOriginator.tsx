@@ -7,16 +7,23 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import { useState } from 'react'
 import InputKeyValue from '../../../../../../../../object-types/InputKeyValue'
 
 interface Props {
     dataPackageOriginator?: InputKeyValue
     setDataPackageOriginator?: React.Dispatch<React.SetStateAction<InputKeyValue>>
     setPackageOriginatorToPackage?: any
+    isPackageOriginator?: boolean
+    setIsPackageOriginator?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function PackageOriginator({ dataPackageOriginator, setDataPackageOriginator, setPackageOriginatorToPackage }: Props) {
+function PackageOriginator({
+    dataPackageOriginator,
+    setDataPackageOriginator,
+    setPackageOriginatorToPackage,
+    isPackageOriginator,
+    setIsPackageOriginator,
+}: Props) {
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         const { name, value } = e.target
         const list: InputKeyValue = dataPackageOriginator
@@ -24,8 +31,6 @@ function PackageOriginator({ dataPackageOriginator, setDataPackageOriginator, se
         setDataPackageOriginator(list)
         setPackageOriginatorToPackage(list)
     }
-
-    const [packageOriginator, setPackageOriginator] = useState(true)
 
     return (
         dataPackageOriginator && (
@@ -39,14 +44,14 @@ function PackageOriginator({ dataPackageOriginator, setDataPackageOriginator, se
                                 type='radio'
                                 name='_sw360_portlet_components_ORIGINATOR'
                                 value='EXIST'
-                                onClick={() => setPackageOriginator(true)}
-                                checked={packageOriginator}
+                                onClick={() => setIsPackageOriginator(true)}
+                                checked={isPackageOriginator}
                             />
                             <select
                                 id='originatorType'
                                 style={{ flex: 2, marginRight: '1rem' }}
                                 className='form-control'
-                                disabled={!packageOriginator}
+                                disabled={!isPackageOriginator}
                                 name='key'
                                 value={dataPackageOriginator.key}
                                 onChange={handleInputChange}
@@ -63,7 +68,7 @@ function PackageOriginator({ dataPackageOriginator, setDataPackageOriginator, se
                                 placeholder='Enter package originator'
                                 onChange={handleInputChange}
                                 value={dataPackageOriginator.value}
-                                disabled={!packageOriginator}
+                                disabled={!isPackageOriginator}
                             />
                         </div>
                         <div style={{ flex: 2 }}>
@@ -73,8 +78,8 @@ function PackageOriginator({ dataPackageOriginator, setDataPackageOriginator, se
                                 type='radio'
                                 name='_sw360_portlet_components_ORIGINATOR'
                                 value='NOASSERTION'
-                                onClick={() => setPackageOriginator(false)}
-                                checked={!packageOriginator}
+                                onClick={() => setIsPackageOriginator(false)}
+                                checked={!isPackageOriginator}
                             />
                             <label className='form-check-label radio-label lableSPDX' htmlFor='originatorNoAssertion'>
                                 NOASSERTION

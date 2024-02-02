@@ -7,21 +7,30 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import { useState } from 'react'
 import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
 // import { useTranslations } from 'next-intl'
 
 interface Props {
     packageInformation?: PackageInformation
-    updateField?: any
+    setCopyrightTextToPackage?: any
+    copyrightTextExist?: boolean
+    setCopyrightTextExist?: React.Dispatch<React.SetStateAction<boolean>>
+    copyrightTextNone?: boolean
+    setCopyrightTextNone?: React.Dispatch<React.SetStateAction<boolean>>
+    copyrightTextNoasserttion?: boolean
+    setCopyrightTextNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function PackageCopyrightText({ packageInformation, updateField }: Props) {
-    //copyrightText
-    const [copyrightTextExist, setCopyrightTextExist] = useState(true)
-    const [copyrightTextNone, setCopyrightTextNone] = useState(false)
-    const [copyrightTextNoasserttion, setCopyrightTextNoasserttion] = useState(false)
-
+function PackageCopyrightText({
+    packageInformation,
+    setCopyrightTextToPackage,
+    copyrightTextExist,
+    setCopyrightTextExist,
+    copyrightTextNone,
+    setCopyrightTextNone,
+    copyrightTextNoasserttion,
+    setCopyrightTextNoasserttion,
+}: Props) {
     const selectCopyrightTextExist = () => {
         setCopyrightTextExist(true)
         setCopyrightTextNone(false)
@@ -36,6 +45,10 @@ function PackageCopyrightText({ packageInformation, updateField }: Props) {
         setCopyrightTextExist(false)
         setCopyrightTextNone(false)
         setCopyrightTextNoasserttion(true)
+    }
+
+    const updateField = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setCopyrightTextToPackage(e.target.value)
     }
 
     return (

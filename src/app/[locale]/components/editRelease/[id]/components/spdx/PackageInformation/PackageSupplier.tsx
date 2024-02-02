@@ -7,7 +7,6 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import { useState } from 'react'
 // import PackageSupplierData from '../../../../../../../../object-types/spdx/PackageSupplierData'
 import InputKeyValue from '../../../../../../../../object-types/InputKeyValue'
 
@@ -15,9 +14,17 @@ interface Props {
     dataPackageSupplier?: InputKeyValue
     setDataPackageSupplier?: React.Dispatch<React.SetStateAction<InputKeyValue>>
     setPackageSupplierToPackage?: any
+    isPackageSupplier?: boolean
+    setIsPackageSupplier?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function PackageSupplier({ dataPackageSupplier, setDataPackageSupplier, setPackageSupplierToPackage }: Props) {
+function PackageSupplier({
+    dataPackageSupplier,
+    setDataPackageSupplier,
+    setPackageSupplierToPackage,
+    isPackageSupplier,
+    setIsPackageSupplier,
+}: Props) {
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         const { name, value } = e.target
         const list: InputKeyValue = dataPackageSupplier
@@ -26,7 +33,7 @@ function PackageSupplier({ dataPackageSupplier, setDataPackageSupplier, setPacka
         setPackageSupplierToPackage(list)
     }
 
-    const [packageSupplier, setPackageSupplier] = useState(true)
+    // const [packageSupplier, setPackageSupplier] = useState(true)
 
     return (
         dataPackageSupplier && (
@@ -40,14 +47,14 @@ function PackageSupplier({ dataPackageSupplier, setDataPackageSupplier, setPacka
                                 type='radio'
                                 name='_sw360_portlet_components_SUPPLIER'
                                 value='EXIST'
-                                onClick={() => setPackageSupplier(true)}
-                                checked={packageSupplier}
+                                onClick={() => setIsPackageSupplier(true)}
+                                checked={isPackageSupplier}
                             />
                             <select
                                 id='supplierType'
                                 style={{ flex: 2, marginRight: '1rem' }}
                                 className='form-control'
-                                disabled={!packageSupplier}
+                                disabled={!isPackageSupplier}
                                 value={dataPackageSupplier.key}
                                 name='key'
                                 onChange={(e) => handleInputChange(e)}
@@ -56,7 +63,7 @@ function PackageSupplier({ dataPackageSupplier, setDataPackageSupplier, setPacka
                                 <option value='Person'>Person</option>
                             </select>
                             <input
-                                disabled={!packageSupplier}
+                                disabled={!isPackageSupplier}
                                 style={{ flex: 6, marginRight: '1rem' }}
                                 id='supplierValue'
                                 className='form-control'
@@ -72,8 +79,8 @@ function PackageSupplier({ dataPackageSupplier, setDataPackageSupplier, setPacka
                                 className='spdx-radio lableSPDX'
                                 id='supplierNoAssertion'
                                 type='radio'
-                                onClick={() => setPackageSupplier(false)}
-                                checked={!packageSupplier}
+                                onClick={() => setIsPackageSupplier(false)}
+                                checked={!isPackageSupplier}
                                 name='_sw360_portlet_components_SUPPLIER'
                                 value='NOASSERTION'
                             />

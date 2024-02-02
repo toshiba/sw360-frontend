@@ -7,21 +7,30 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import { useState } from 'react'
 import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
 // import { useTranslations } from 'next-intl'
 
 interface Props {
     packageInformation?: PackageInformation
-    updateField?: any
+    setDeclaredLicenseToPackage?: any
+    declaredLicenseExist?: boolean
+    setDeclaredLicenseExist?: React.Dispatch<React.SetStateAction<boolean>>
+    declaredLicenseNone?: boolean
+    setDeclaredLicenseNone?: React.Dispatch<React.SetStateAction<boolean>>
+    declaredLicenseNoasserttion?: boolean
+    setDeclaredLicenseNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function PackageDeclaredLicense({ packageInformation, updateField }: Props) {
-    //declaredLicense
-    const [declaredLicenseExist, setDeclaredLicenseExist] = useState(true)
-    const [declaredLicenseNone, setDeclaredLicenseNone] = useState(false)
-    const [declaredLicenseNoasserttion, setDeclaredLicenseNoasserttion] = useState(false)
-
+function PackageDeclaredLicense({
+    packageInformation,
+    setDeclaredLicenseToPackage,
+    declaredLicenseExist,
+    setDeclaredLicenseExist,
+    declaredLicenseNone,
+    setDeclaredLicenseNone,
+    declaredLicenseNoasserttion,
+    setDeclaredLicenseNoasserttion,
+}: Props) {
     const selectDeclaredLicenseExist = () => {
         setDeclaredLicenseExist(true)
         setDeclaredLicenseNone(false)
@@ -36,6 +45,10 @@ function PackageDeclaredLicense({ packageInformation, updateField }: Props) {
         setDeclaredLicenseExist(false)
         setDeclaredLicenseNone(false)
         setDeclaredLicenseNoasserttion(true)
+    }
+
+    const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDeclaredLicenseToPackage(e.target.value)
     }
 
     return (

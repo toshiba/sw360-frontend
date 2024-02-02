@@ -51,8 +51,15 @@ const EditPackageInformation = ({
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [dataPackageSupplier, setDataPackageSupplier] = useState<InputKeyValue>()
-
+    const [isPackageSupplier, setIsPackageSupplier] = useState(true)
     const handlePackageSupplier = (data: string) => {
+        if (data == null) {
+            const input: InputKeyValue = {
+                key: '',
+                value: '',
+            }
+            return input
+        }
         const input: InputKeyValue = {
             key: data.split(':')[0],
             value: data.split(':')[1],
@@ -61,7 +68,8 @@ const EditPackageInformation = ({
     }
 
     const handleInputKeyToPackageSupplier = (data: InputKeyValue) => {
-        return data.key + ':' + data.value
+        const supplier = !isPackageSupplier ? 'NOASSERTION' : data.key + ':' + data.value
+        return supplier
     }
 
     const setPackageSupplierToPackage = (input: InputKeyValue) => {
@@ -72,8 +80,16 @@ const EditPackageInformation = ({
     }
 
     const [dataPackageOriginator, setDataPackageOriginator] = useState<InputKeyValue>()
+    const [isPackageOriginator, setIsPackageOriginator] = useState(true)
 
     const handlePackageOriginator = (data: string) => {
+        if (data == null) {
+            const input: InputKeyValue = {
+                key: '',
+                value: '',
+            }
+            return input
+        }
         const input: InputKeyValue = {
             key: data.split(':')[0],
             value: data.split(':')[1],
@@ -82,7 +98,8 @@ const EditPackageInformation = ({
     }
 
     const handleInputKeyToPackageOriginator = (data: InputKeyValue) => {
-        return data.key + ':' + data.value
+        const originator = !isPackageOriginator ? 'NOASSERTION' : data.key + ':' + data.value
+        return originator
     }
 
     const setPackageOriginatorToPackage = (input: InputKeyValue) => {
@@ -91,8 +108,6 @@ const EditPackageInformation = ({
             originator: handleInputKeyToPackageOriginator(input),
         })
     }
-
-    const [filesAnalyzed, setFilesAnalyzed] = useState(true)
 
     const [checkSums, setCheckSums] = useState<InputKeyValue[]>([])
 
@@ -139,16 +154,120 @@ const EditPackageInformation = ({
         setExternalRefsData(externalReference)
     }
 
+    const [packageDownloadLocationExist, setPackageDownloadLocationExist] = useState(true)
+    const [packageDownloadLocationNone, setPackageDownloadLocationNone] = useState(false)
+    const [packageDownloadLocationNoasserttion, setPackageDownloadLocationNoasserttion] = useState(false)
+
+    const setPackageDownloadLocationToPackage = (data: string) => {
+        if (packageDownloadLocationNone) {
+            data = 'NONE'
+        }
+        if (packageDownloadLocationNoasserttion) {
+            data = 'NOASSERTION'
+        }
+        setPackageInformation({
+            ...packageInformation,
+            downloadLocation: data,
+        })
+    }
+
+    const [packageHomePageExist, setPackageHomePageExist] = useState(true)
+    const [packageHomePageNone, setPackageHomePageNone] = useState(false)
+    const [packageHomePageNoasserttion, setPackageHomePageNoasserttion] = useState(false)
+
+    const setPackageHomePageToPackage = (data: string) => {
+        if (packageHomePageNone) {
+            data = 'NONE'
+        }
+        if (packageHomePageNoasserttion) {
+            data = 'NOASSERTION'
+        }
+        setPackageInformation({
+            ...packageInformation,
+            homepage: data,
+        })
+    }
+
+    const [concludedLicenseExist, setConcludedLicenseExist] = useState(true)
+    const [concludedLicenseNone, setConcludedLicenseNone] = useState(false)
+    const [concludedLicenseNoasserttion, setConcludedLicenseNoasserttion] = useState(false)
+
+    const setConcludedLicenseToPackage = (data: string) => {
+        if (concludedLicenseNone) {
+            data = 'NONE'
+        }
+        if (concludedLicenseNoasserttion) {
+            data = 'NOASSERTION'
+        }
+        setPackageInformation({
+            ...packageInformation,
+            licenseConcluded: data,
+        })
+    }
+
+    const [allLicensesInformationExist, setAllLicensesInformationExist] = useState(true)
+    const [allLicensesInformationNone, setAllLicensesInformationNone] = useState(false)
+    const [allLicensesInformationNoasserttion, setAllLicensesInformationNoasserttion] = useState(false)
+
+    const setAllLicensesInformationToPackage = (data: string) => {
+        if (allLicensesInformationNone) {
+            data = 'NONE'
+        }
+        if (allLicensesInformationNoasserttion) {
+            data = 'NOASSERTION'
+        }
+        setPackageInformation({
+            ...packageInformation,
+            licenseInfoFromFiles: data.split('/n'),
+        })
+    }
+
+    const [declaredLicenseExist, setDeclaredLicenseExist] = useState(true)
+    const [declaredLicenseNone, setDeclaredLicenseNone] = useState(false)
+    const [declaredLicenseNoasserttion, setDeclaredLicenseNoasserttion] = useState(false)
+
+    const setDeclaredLicenseToPackage = (data: string) => {
+        if (declaredLicenseNone) {
+            data = 'NONE'
+        }
+        if (declaredLicenseNoasserttion) {
+            data = 'NOASSERTION'
+        }
+        setPackageInformation({
+            ...packageInformation,
+            licenseDeclared: data,
+        })
+    }
+
+    const [copyrightTextExist, setCopyrightTextExist] = useState(true)
+    const [copyrightTextNone, setCopyrightTextNone] = useState(false)
+    const [copyrightTextNoasserttion, setCopyrightTextNoasserttion] = useState(false)
+
+    const setCopyrightTextToPackage = (data: string) => {
+        if (copyrightTextNone) {
+            data = 'NONE'
+        }
+        if (copyrightTextNoasserttion) {
+            data = 'NOASSERTION'
+        }
+        setPackageInformation({
+            ...packageInformation,
+            licenseDeclared: data,
+        })
+    }
+
     useEffect(() => {
         if (typeof packageInformation?.checksums !== 'undefined') {
             setCheckSums(convertChecksums(packageInformation.checksums))
         }
 
         if (typeof packageInformation?.supplier !== 'undefined') {
+            packageInformation?.supplier == 'NOASSERTION' && setIsPackageSupplier(false)
             setDataPackageSupplier(handlePackageSupplier(packageInformation.supplier))
         }
 
         if (typeof packageInformation?.originator !== 'undefined') {
+            packageInformation?.originator == 'NOASSERTION' && setIsPackageOriginator(false)
             setDataPackageOriginator(handlePackageOriginator(packageInformation.originator))
         }
 
@@ -171,13 +290,20 @@ const EditPackageInformation = ({
     }
 
     const updateFieldPackageVerificationCode = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setPackageInformation({
-            ...packageInformation,
-            packageVerificationCode: {
-                ...packageInformation.packageVerificationCode,
-                [e.target.name]: e.target.value,
-            },
-        })
+        if (!packageInformation?.filesAnalyzed) {
+            setPackageInformation({
+                ...packageInformation,
+                packageVerificationCode: null,
+            })
+        } else {
+            setPackageInformation({
+                ...packageInformation,
+                packageVerificationCode: {
+                    ...packageInformation.packageVerificationCode,
+                    [e.target.name]: e.target.value,
+                },
+            })
+        }
     }
 
     const convertChecksums = (checksums: CheckSum[]) => {
@@ -229,6 +355,13 @@ const EditPackageInformation = ({
         setPackageInformation({
             ...packageInformation,
             releaseDate: convertInputToDate(inputs),
+        })
+    }
+
+    const changeFilesAnalyzed = () => {
+        setPackageInformation({
+            ...packageInformation,
+            filesAnalyzed: !packageInformation.filesAnalyzed,
         })
     }
 
@@ -337,6 +470,8 @@ const EditPackageInformation = ({
                                         dataPackageSupplier={dataPackageSupplier}
                                         setDataPackageSupplier={setDataPackageSupplier}
                                         setPackageSupplierToPackage={setPackageSupplierToPackage}
+                                        isPackageSupplier={isPackageSupplier}
+                                        setIsPackageSupplier={setIsPackageSupplier}
                                     />
                                 </tr>
                                 <tr className='spdx-full'>
@@ -344,6 +479,8 @@ const EditPackageInformation = ({
                                         dataPackageOriginator={dataPackageOriginator}
                                         setDataPackageOriginator={setDataPackageOriginator}
                                         setPackageOriginatorToPackage={setPackageOriginatorToPackage}
+                                        isPackageOriginator={isPackageOriginator}
+                                        setIsPackageOriginator={setIsPackageOriginator}
                                     />
                                 </tr>
                             </>
@@ -351,7 +488,13 @@ const EditPackageInformation = ({
                         <tr>
                             <PackageDownloadLocation
                                 packageInformation={packageInformation}
-                                updateField={updateField}
+                                setPackageDownloadLocationToPackage={setPackageDownloadLocationToPackage}
+                                packageDownloadLocationExist={packageDownloadLocationExist}
+                                setPackageDownloadLocationExist={setPackageDownloadLocationExist}
+                                packageDownloadLocationNone={packageDownloadLocationNone}
+                                setPackageDownloadLocationNone={setPackageDownloadLocationNone}
+                                packageDownloadLocationNoasserttion={packageDownloadLocationNoasserttion}
+                                setPackageDownloadLocationNoasserttion={setPackageDownloadLocationNoasserttion}
                             />
                         </tr>
                         <tr>
@@ -365,8 +508,8 @@ const EditPackageInformation = ({
                                                 id='FilesAnalyzedTrue'
                                                 type='radio'
                                                 name='_sw360_portlet_components_FILES_ANALYZED'
-                                                onClick={() => setFilesAnalyzed(true)}
-                                                checked={filesAnalyzed}
+                                                onClick={changeFilesAnalyzed}
+                                                checked={packageInformation?.filesAnalyzed}
                                             />
                                             <label
                                                 style={{ marginRight: '2rem' }}
@@ -381,8 +524,8 @@ const EditPackageInformation = ({
                                                 type='radio'
                                                 name='_sw360_portlet_components_FILES_ANALYZED'
                                                 value='false'
-                                                onClick={() => setFilesAnalyzed(false)}
-                                                checked={!filesAnalyzed}
+                                                onClick={changeFilesAnalyzed}
+                                                checked={!packageInformation?.filesAnalyzed}
                                             />
                                             <label
                                                 className='form-check-label radio-label lableSPDX'
@@ -410,7 +553,7 @@ const EditPackageInformation = ({
                                                     id='verificationCodeValue'
                                                     name='excludedFiles'
                                                     placeholder='Enter verification code value'
-                                                    disabled={!filesAnalyzed}
+                                                    disabled={!packageInformation?.filesAnalyzed}
                                                     onChange={updateFieldPackageVerificationCode}
                                                     value={
                                                         packageInformation.packageVerificationCode?.excludedFiles ?? ''
@@ -422,7 +565,7 @@ const EditPackageInformation = ({
                                                     rows={5}
                                                     name='value'
                                                     placeholder='Enter excluded files'
-                                                    disabled={!filesAnalyzed}
+                                                    disabled={!packageInformation?.filesAnalyzed}
                                                     onChange={updateFieldPackageVerificationCode}
                                                     value={packageInformation.packageVerificationCode.value ?? ''}
                                                 ></textarea>
@@ -448,7 +591,16 @@ const EditPackageInformation = ({
                             </>
                         )}
                         <tr>
-                            <PackageHomePage packageInformation={packageInformation} updateField={updateField} />
+                            <PackageHomePage
+                                packageInformation={packageInformation}
+                                setPackageHomePageToPackage={setPackageHomePageToPackage}
+                                packageHomePageExist={packageHomePageExist}
+                                setPackageHomePageExist={setPackageHomePageExist}
+                                packageHomePageNone={packageHomePageNone}
+                                setPackageHomePageNone={setPackageHomePageNone}
+                                packageHomePageNoasserttion={packageHomePageNoasserttion}
+                                setPackageHomePageNoasserttion={setPackageHomePageNoasserttion}
+                            />
                         </tr>
                         {isModeFull && (
                             <tr className='spdx-full'>
@@ -475,19 +627,40 @@ const EditPackageInformation = ({
                         <tr>
                             <PackageConcludedLicense
                                 packageInformation={packageInformation}
-                                updateField={updateField}
+                                setConcludedLicenseToPackage={setConcludedLicenseToPackage}
+                                concludedLicenseExist={concludedLicenseExist}
+                                setConcludedLicenseExist={setConcludedLicenseExist}
+                                concludedLicenseNone={concludedLicenseNone}
+                                setConcludedLicenseNone={setConcludedLicenseNone}
+                                concludedLicenseNoasserttion={concludedLicenseNoasserttion}
+                                setConcludedLicenseNoasserttion={setConcludedLicenseNoasserttion}
                             />
                         </tr>
                         {isModeFull && (
                             <tr>
                                 <PackageAllLicensesInformation
                                     packageInformation={packageInformation}
-                                    updateField={updateField}
+                                    setAllLicensesInformationToPackage={setAllLicensesInformationToPackage}
+                                    allLicensesInformationExist={allLicensesInformationExist}
+                                    setAllLicensesInformationExist={setAllLicensesInformationExist}
+                                    allLicensesInformationNone={allLicensesInformationNone}
+                                    setAllLicensesInformationNone={setAllLicensesInformationNone}
+                                    allLicensesInformationNoasserttion={allLicensesInformationNoasserttion}
+                                    setAllLicensesInformationNoasserttion={setAllLicensesInformationNoasserttion}
                                 />
                             </tr>
                         )}
                         <tr>
-                            <PackageDeclaredLicense packageInformation={packageInformation} updateField={updateField} />
+                            <PackageDeclaredLicense
+                                packageInformation={packageInformation}
+                                setDeclaredLicenseToPackage={setDeclaredLicenseToPackage}
+                                declaredLicenseExist={declaredLicenseExist}
+                                setDeclaredLicenseExist={setDeclaredLicenseExist}
+                                declaredLicenseNone={declaredLicenseNone}
+                                setDeclaredLicenseNone={setDeclaredLicenseNone}
+                                declaredLicenseNoasserttion={declaredLicenseNoasserttion}
+                                setDeclaredLicenseNoasserttion={setDeclaredLicenseNoasserttion}
+                            />
                         </tr>
                         <tr className='spdx-full'>
                             <td colSpan={3}>
@@ -510,7 +683,16 @@ const EditPackageInformation = ({
                             </td>
                         </tr>
                         <tr>
-                            <PackageCopyrightText packageInformation={packageInformation} updateField={updateField} />
+                            <PackageCopyrightText
+                                packageInformation={packageInformation}
+                                setCopyrightTextToPackage={setCopyrightTextToPackage}
+                                copyrightTextExist={copyrightTextExist}
+                                setCopyrightTextExist={setCopyrightTextExist}
+                                copyrightTextNone={copyrightTextNone}
+                                setCopyrightTextNone={setCopyrightTextNone}
+                                copyrightTextNoasserttion={copyrightTextNoasserttion}
+                                setCopyrightTextNoasserttion={setCopyrightTextNoasserttion}
+                            />
                         </tr>
                         {isModeFull && (
                             <>
