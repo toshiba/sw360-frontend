@@ -70,6 +70,13 @@ const EditAnnotationInformation = ({
     }
 
     const handleDataAnnotator = (data: string) => {
+        if (CommonUtils.isNullEmptyOrUndefinedString(data)) {
+            const input: InputKeyValue = {
+                key: '',
+                value: '',
+            }
+            return input
+        }
         const input: InputKeyValue = {
             key: data.split(':')[0],
             value: data.split(':')[1],
@@ -79,7 +86,7 @@ const EditAnnotationInformation = ({
 
     useEffect(() => {
         if (
-            typeof annotationsSPDXs[indexAnnotations]?.annotator !== 'undefined' &&
+            typeof annotationsSPDXs[indexAnnotations]?.annotator !== 'undefined' ||
             typeof annotationsPackages[indexAnnotations]?.annotator !== 'undefined'
         ) {
             isSourceSPDXDocument
@@ -88,7 +95,7 @@ const EditAnnotationInformation = ({
         }
 
         if (
-            typeof annotationsSPDXs[indexAnnotations]?.annotationDate !== 'undefined' &&
+            typeof annotationsSPDXs[indexAnnotations]?.annotationDate !== 'undefined' ||
             typeof annotationsPackages[indexAnnotations]?.annotationDate !== 'undefined'
         ) {
             isSourceSPDXDocument

@@ -37,6 +37,8 @@ const EditSnippetInformation = ({
     const [toggle, setToggle] = useState(false)
     const [snippetRanges, setSnippetRanges] = useState<SnippetRange[]>([])
 
+    const [dataSnippetFromFile, setDataSnippetFromFile] = useState<InputKeyValue>()
+
     const setDataSnippetRanges = (inputs: SnippetRange[]) => {
         setSnippetInformations((currents) =>
             currents.map((snippet, index) => {
@@ -54,6 +56,10 @@ const EditSnippetInformation = ({
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
         setIndexSnippetInformation(+index)
+        setDataSnippetFromFile({
+            key: '',
+            value: '',
+        })
     }
 
     const addSnippet = () => {
@@ -106,22 +112,13 @@ const EditSnippetInformation = ({
                 if (index === indexSnippetInformation) {
                     return {
                         ...snippet,
-                        [e.target.name]: e.target.value,
+                        [e.target.name]:
+                            e.target.name === 'licenseInfoInSnippets' ? e.target.value.split('\n') : e.target.value,
                     }
                 }
                 return snippet
             })
         )
-    }
-
-    const [dataSnippetFromFile, setDataSnippetFromFile] = useState<InputKeyValue>()
-
-    const handleSnippetFromFile = (data: string) => {
-        const input: InputKeyValue = {
-            key: data.split('-')[0],
-            value: data.split('-')[1],
-        }
-        return input
     }
 
     const handleInputKeyToSnippetFromFile = (data: InputKeyValue) => {
@@ -140,6 +137,21 @@ const EditSnippetInformation = ({
                 return snippet
             })
         )
+    }
+
+    const handleSnippetFromFile = (data: string) => {
+        if (data == null) {
+            const input: InputKeyValue = {
+                key: '',
+                value: '',
+            }
+            return input
+        }
+        const input: InputKeyValue = {
+            key: data.split('-')[0],
+            value: data.split('-')[1],
+        }
+        return input
     }
 
     return (

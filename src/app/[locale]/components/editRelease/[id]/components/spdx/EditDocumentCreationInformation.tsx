@@ -49,7 +49,7 @@ const EditDocumentCreationInformation = ({
     }
 
     const addDocumentReferences = () => {
-        const arrayExternals: ExternalDocumentReferences[] = externalDocumentRefs
+        const arrayExternals: ExternalDocumentReferences[] = [...externalDocumentRefs]
         const externalDocumentReference: ExternalDocumentReferences = {
             externalDocumentId: '',
             checksum: { algorithm: '', checksumValue: '', index: 0 },

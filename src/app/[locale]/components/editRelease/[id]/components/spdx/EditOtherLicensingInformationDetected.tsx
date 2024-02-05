@@ -38,8 +38,8 @@ const EditOtherLicensingInformationDetected = ({
     }
 
     const addOtherLicensingInformationDetecteds = () => {
-        const arrayExternals: OtherLicensingInformationDetected[] = otherLicensingInformationDetecteds
-        const externalDocumentReference: OtherLicensingInformationDetected = {
+        const arrayExternals: OtherLicensingInformationDetected[] = [...otherLicensingInformationDetecteds]
+        const otherLicensingInformationDetected: OtherLicensingInformationDetected = {
             licenseId: '', // 10.1
             extractedText: '', // 10.2
             licenseName: '', // 10.3
@@ -47,7 +47,7 @@ const EditOtherLicensingInformationDetected = ({
             licenseComment: '', // 10.5
             index: otherLicensingInformationDetecteds.length,
         }
-        arrayExternals.push(externalDocumentReference)
+        arrayExternals.push(otherLicensingInformationDetected)
         setOtherLicensingInformationDetecteds(arrayExternals)
     }
 
@@ -57,7 +57,8 @@ const EditOtherLicensingInformationDetected = ({
                 if (index === indexOtherLicense) {
                     return {
                         ...otherLicensing,
-                        [e.target.name]: e.target.value,
+                        [e.target.name]:
+                            e.target.name === 'licenseCrossRefs' ? e.target.value.split('\n') : e.target.value,
                     }
                 }
                 return otherLicensing

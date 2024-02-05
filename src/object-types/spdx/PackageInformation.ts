@@ -30,9 +30,9 @@ interface PackageInformation {
     description: string // 7.19
     packageComment: string // 7.20
     externalRefs: Array<ExternalReference> //7.21
-    attributionText: Array<string> // 7.22
-    annotations: Array<Annotations> // 7.23
-    primaryPackagePurpose: string // 7.24
+    attributionText: Array<string> // 7.23
+    annotations: Array<Annotations> // 7.24
+    primaryPackagePurpose: string // 7.25
     releaseDate: string // 7.25
     builtDate: string // 7.26
     validUntilDate: string // 7.27

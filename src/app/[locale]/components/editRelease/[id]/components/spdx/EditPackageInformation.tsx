@@ -141,7 +141,7 @@ const EditPackageInformation = ({
     }
 
     const addReferences = () => {
-        const arrayExternals: ExternalReference[] = externalRefsDatas
+        const arrayExternals: ExternalReference[] = [...externalRefsDatas]
         const externalReference: ExternalReference = {
             referenceCategory: '',
             referenceLocator: '',
@@ -218,7 +218,7 @@ const EditPackageInformation = ({
         }
         setPackageInformation({
             ...packageInformation,
-            licenseInfoFromFiles: data.split('/n'),
+            licenseInfoFromFiles: data.split('\n'),
         })
     }
 
@@ -285,7 +285,7 @@ const EditPackageInformation = ({
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         setPackageInformation({
             ...packageInformation,
-            [e.target.name]: e.target.value,
+            [e.target.name]: e.target.name === 'attributionText' ? e.target.value.split('\n') : e.target.value,
         })
     }
 
