@@ -12,18 +12,27 @@
 import { Project } from '@/object-types'
 import LinkedProjects from './component/LinkedReleasesAndProjects/LinkedProjects'
 import LinkedReleases from './component/LinkedReleasesAndProjects/LinkedReleases'
+import { ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP } from '@/utils/env'
+import EditDependencyNetwork from '../EditDepedencyNetwork/EditDependencyNetwork'
 
 interface Props {
+    projectId?: string
     projectPayload: Project
     setProjectPayload: React.Dispatch<React.SetStateAction<Project>>
 }
 
-export default function LinkedReleasesAndProjects({ projectPayload, setProjectPayload }: Props) {
+export default function LinkedReleasesAndProjects({ projectId, projectPayload, setProjectPayload }: Props) {
     return (
         <>
             <div className='ms-1'>
                 <LinkedProjects projectPayload={projectPayload} setProjectPayload={setProjectPayload} />
-                <LinkedReleases />
+                {
+                    ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP === 'true'
+                    ?
+                    <EditDependencyNetwork projectId={projectId}/>
+                    :
+                    <LinkedReleases />
+                }
             </div>
         </>
     )

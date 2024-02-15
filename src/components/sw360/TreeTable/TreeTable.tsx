@@ -39,9 +39,9 @@ const PaddedCell: React.FC<Props> = ({
         <div className={`tree-table-padding-${padLength}`}>
             {parent &&
                 (needExpand ? (
-                    <BsCaretDownFill color='gray' onClick={collapseRow} />
+                    <BsCaretDownFill style={{marginTop: '-4px'}} color='gray' onClick={collapseRow} />
                 ) : (
-                    <BsCaretRightFill color='gray' onClick={expandRow} />
+                    <BsCaretRightFill style={{marginTop: '-4px'}} color='gray' onClick={expandRow} />
                 ))}{' '}
             {children}
         </div>

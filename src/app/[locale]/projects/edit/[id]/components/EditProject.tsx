@@ -349,6 +349,7 @@ function EditProject({ projectId }: { projectId: string }) {
                                         </Tab.Pane>
                                         <Tab.Pane eventKey='linkedProjectsAndReleases'>
                                             <LinkedReleasesAndProjects
+                                                projectId={projectId}
                                                 projectPayload={projectPayload}
                                                 setProjectPayload={setProjectPayload}
                                             />
