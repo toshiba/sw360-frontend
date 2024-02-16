@@ -9,6 +9,7 @@
 // License-Filename: LICENSE
 
 'use client'
+import CommonUtils from '@/utils/common.utils'
 import { useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import OtherLicensingInformationDetected from '../../../../../../../object-types/spdx/OtherLicensingInformationDetected'
@@ -66,6 +67,23 @@ const EditOtherLicensingInformationDetected = ({
         )
     }
 
+    const [numberIndex, setNumberIndex] = useState<number>(0)
+
+    const deleteOtherLicenses = () => {
+        if (otherLicensingInformationDetecteds.length == 1) {
+            setOtherLicensingInformationDetecteds([])
+        } else {
+            let otherLicensingInformationDetecteds: OtherLicensingInformationDetected[] = []
+            otherLicensingInformationDetecteds = otherLicensingInformationDetecteds.filter(
+                (otherLicensingInformationDetected) => numberIndex != otherLicensingInformationDetected.index
+            )
+            setOtherLicensingInformationDetecteds(otherLicensingInformationDetecteds)
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(otherLicensingInformationDetecteds)) {
+                setNumberIndex(otherLicensingInformationDetecteds[0].index)
+            }
+        }
+    }
+
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
             <thead
@@ -101,7 +119,7 @@ const EditOtherLicensingInformationDetected = ({
                                         </option>
                                     ))}
                                 </select>
-                                <FaTrashAlt />
+                                <FaTrashAlt onClick={deleteOtherLicenses} />
                             </div>
                             <button
                                 className='spdx-add-button-main'

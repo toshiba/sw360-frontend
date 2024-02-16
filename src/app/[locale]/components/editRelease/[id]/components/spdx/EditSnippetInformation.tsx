@@ -9,6 +9,7 @@
 // License-Filename: LICENSE
 
 'use client'
+import CommonUtils from '@/utils/common.utils'
 import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
@@ -56,6 +57,7 @@ const EditSnippetInformation = ({
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
         setIndexSnippetInformation(+index)
+        setNumberIndex(+index)
         setDataSnippetFromFile({
             key: '',
             value: '',
@@ -154,6 +156,23 @@ const EditSnippetInformation = ({
         return input
     }
 
+    const [numberIndex, setNumberIndex] = useState<number>(0)
+
+    const deleteSnippetInformations = () => {
+        if (snippetInformations.length == 1) {
+            setSnippetInformations([])
+        } else {
+            let snippetInformationDatas: SnippetInformation[] = []
+            snippetInformationDatas = snippetInformations.filter(
+                (snippetInformation) => numberIndex != snippetInformation.index
+            )
+            setSnippetInformations(snippetInformationDatas)
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(snippetInformationDatas)) {
+                setNumberIndex(snippetInformationDatas[0].index)
+            }
+        }
+    }
+
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
             <thead
@@ -191,7 +210,7 @@ const EditSnippetInformation = ({
                                                 </option>
                                             ))}
                                         </select>
-                                        <FaTrashAlt />
+                                        <FaTrashAlt onClick={deleteSnippetInformations} />
                                     </div>
                                     <button className='spdx-add-button-main' name='add-snippet' onClick={addSnippet}>
                                         Add new Snippet

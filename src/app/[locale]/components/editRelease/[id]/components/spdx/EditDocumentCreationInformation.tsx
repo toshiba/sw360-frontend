@@ -42,9 +42,11 @@ const EditDocumentCreationInformation = ({
     const [toggle, setToggle] = useState(false)
 
     const [creator, setCreator] = useState<InputKeyValue[]>([])
+    const [numberIndex, setNumberIndex] = useState<number>(0)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
+        setNumberIndex(+index)
         setExternalDocumentRef(externalDocumentRefs[+index])
     }
 
@@ -71,7 +73,7 @@ const EditDocumentCreationInformation = ({
         if (typeof documentCreationInformation?.created !== 'undefined') {
             setDataCreated(handleCreated(documentCreationInformation.created))
         }
-    }, [documentCreationInformation])
+    }, [documentCreationInformation, setExternalDocumentRef, setExternalDocumentRefs])
 
     const convertCreator = (creators: Creator[]) => {
         const inputs: InputKeyValue[] = []
@@ -105,7 +107,7 @@ const EditDocumentCreationInformation = ({
 
     const [isAnonymous, setIsAnonymous] = useState(false)
 
-    const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+    const updateField = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setDocumentCreationInformation({
             ...documentCreationInformation,
             [e.target.name]: e.target.value,
@@ -145,6 +147,65 @@ const EditDocumentCreationInformation = ({
             created: convertInputToCreated(inputs),
         })
     }
+
+    const deleteExternalReference = () => {
+        if (externalDocumentRefs.length == 1) {
+            setExternalDocumentRefs([])
+            setExternalDocumentRef({
+                externalDocumentId: '',
+                checksum: {
+                    algorithm: '',
+                    checksumValue: '',
+                    index: 0,
+                },
+                spdxDocument: '',
+                index: 0,
+            })
+        } else {
+            let externalDocuments: ExternalDocumentReferences[] = []
+            externalDocuments = externalDocumentRefs.filter(
+                (externalDocumentRef) => numberIndex != externalDocumentRef.index
+            )
+            setExternalDocumentRefs(externalDocuments)
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(externalDocumentRefs)) {
+                setExternalDocumentRef(externalDocuments[0])
+                setNumberIndex(externalDocuments[0].index)
+            }
+        }
+    }
+
+    // const updateCheckSum = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+    //     setExternalDocumentRefs((currents) =>
+    //         currents.map((externalDocument, index) => {
+    //             if (index === numberIndex) {
+    //                 return {
+    //                     ...externalDocument,
+    //                     checksum: {
+    //                         ...externalDocument.checksum,
+    //                         [e.target.name]: e.target.value,
+    //                     },
+    //                 }
+    //             }
+    //             return externalDocument
+    //         })
+    //     )
+    // }
+
+    // const updateExternalReferens = (
+    //     e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
+    // ) => {
+    //     setExternalDocumentRefs((currents) =>
+    //         currents.map((externalDocument, index) => {
+    //             if (index === numberIndex) {
+    //                 return {
+    //                     ...externalDocument,
+    //                     [e.target.name]: e.target.value,
+    //                 }
+    //             }
+    //             return externalDocument
+    //         })
+    //     )
+    // }
 
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
@@ -302,7 +363,7 @@ const EditDocumentCreationInformation = ({
                                                             </option>
                                                         ))}
                                                     </select>
-                                                    <FaTrashAlt />
+                                                    <FaTrashAlt onClick={deleteExternalReference} />
                                                 </div>
                                                 <button
                                                     className='spdx-add-button-main'
@@ -331,8 +392,10 @@ const EditDocumentCreationInformation = ({
                                                             id='externalDocumentId'
                                                             style={{ width: 'auto', flex: 'auto' }}
                                                             type='text'
+                                                            name='externalDocumentId'
                                                             className='form-control'
                                                             placeholder='Enter external document ID'
+                                                            // onChange={updateExternalReferens}
                                                             value={externalDocumentRef.externalDocumentId ?? ''}
                                                         />
                                                     </div>
@@ -353,8 +416,10 @@ const EditDocumentCreationInformation = ({
                                                             id='externalDocument'
                                                             style={{ width: 'auto', flex: 'auto' }}
                                                             type='text'
+                                                            name='spdxDocument'
                                                             className='form-control'
                                                             placeholder='Enter external document'
+                                                            // onChange={updateExternalReferens}
                                                             value={externalDocumentRef.spdxDocument ?? ''}
                                                         />
                                                     </div>
@@ -373,7 +438,9 @@ const EditDocumentCreationInformation = ({
                                                                     type='text'
                                                                     className='form-control'
                                                                     id='checksumAlgorithm'
+                                                                    name='algorithm'
                                                                     placeholder='Enter algorithm'
+                                                                    // onChange={updateCheckSum}
                                                                     value={
                                                                         externalDocumentRef.checksum?.algorithm ?? ''
                                                                     }
@@ -384,6 +451,8 @@ const EditDocumentCreationInformation = ({
                                                                     className='form-control'
                                                                     id='checksumValue'
                                                                     placeholder='Enter value'
+                                                                    name='checksumValue'
+                                                                    // onChange={updateCheckSum}
                                                                     value={
                                                                         externalDocumentRef.checksum?.checksumValue ??
                                                                         ''

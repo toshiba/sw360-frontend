@@ -137,6 +137,7 @@ const EditPackageInformation = ({
     }
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
+        setNumberIndex(+index)
         setExternalRefsData(externalRefsDatas[+index])
     }
 
@@ -363,6 +364,29 @@ const EditPackageInformation = ({
             ...packageInformation,
             filesAnalyzed: !packageInformation.filesAnalyzed,
         })
+    }
+
+    const [numberIndex, setNumberIndex] = useState<number>(0)
+
+    const deleteExternalRefsDatas = () => {
+        if (externalRefsDatas.length == 1) {
+            setExternalRefsDatas([])
+            setExternalRefsData({
+                referenceCategory: '',
+                referenceLocator: '',
+                referenceType: '',
+                comment: '',
+                index: 0,
+            })
+        } else {
+            let externalRefs: ExternalReference[] = []
+            externalRefs = externalRefsDatas.filter((externalRefsData) => numberIndex != externalRefsData.index)
+            setExternalRefsDatas(externalRefs)
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(externalRefs)) {
+                setExternalRefsData(externalRefs[0])
+                setNumberIndex(externalRefs[0].index)
+            }
+        }
     }
 
     return (
@@ -798,7 +822,7 @@ const EditPackageInformation = ({
                                                                     </option>
                                                                 ))}
                                                             </select>
-                                                            <FaTrashAlt />
+                                                            <FaTrashAlt onClick={deleteExternalRefsDatas} />
                                                         </div>
                                                         <button
                                                             className='spdx-add-button-main'

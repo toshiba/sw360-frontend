@@ -7,6 +7,8 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
+import CommonUtils from '@/utils/common.utils'
+import { useState } from 'react'
 import InputKeyValue from '../../../../../../../../object-types/InputKeyValue'
 
 interface Props {
@@ -16,12 +18,20 @@ interface Props {
 }
 
 function AnnotationDate({ dataAnnotationDate, setDataAnnotationDate, setAnnotationDate }: Props) {
+    const [dataDate, setDataDate] = useState('')
+    const [dataTime, setDataTime] = useState('')
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         const { name, value } = e.target
+        e.target.name === 'key' ? setDataDate(e.target.value) : setDataTime(e.target.value)
         const list: InputKeyValue = dataAnnotationDate
         list[name as keyof InputKeyValue] = value
         setDataAnnotationDate(list)
-        setAnnotationDate(list)
+        if (
+            !CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
+            !CommonUtils.isNullEmptyOrUndefinedString(dataTime)
+        ) {
+            setAnnotationDate(list)
+        }
     }
 
     return (
