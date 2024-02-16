@@ -104,7 +104,13 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setIndexRelation(+index)
+        if (isSourceSPDXDocument) {
+            setIndexRelation(+index)
+            setNumberIndexSPDX(+index)
+        } else {
+            setIndexRelation(+index)
+            setNumberIndexPackage(+index)
+        }
     }
 
     const addRelationshipsBetweenSPDXElementsSPDX = () => {
@@ -161,6 +167,39 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                       return relation
                   })
               )
+    }
+
+    const [numberIndexSPDX, setNumberIndexSPDX] = useState<number>(0)
+    const [numberIndexPackage, setNumberIndexPackage] = useState<number>(0)
+
+    const deleteRelation = () => {
+        if (isSourceSPDXDocument) {
+            if (relationshipsBetweenSPDXElementSPDXs.length == 1) {
+                setRelationshipsBetweenSPDXElementSPDXs([])
+            } else {
+                let relationships: RelationshipsBetweenSPDXElements[] = []
+                relationships = relationshipsBetweenSPDXElementSPDXs.filter(
+                    (relatedSPDXElement) => numberIndexSPDX != relatedSPDXElement.index
+                )
+                setRelationshipsBetweenSPDXElementSPDXs(relationships)
+                if (!CommonUtils.isNullEmptyOrUndefinedArray(relationships)) {
+                    setNumberIndexSPDX(relationships[0].index)
+                }
+            }
+        } else {
+            if (relationshipsBetweenSPDXElementPackages.length == 1) {
+                setRelationshipsBetweenSPDXElementPackages([])
+            } else {
+                let relationships: RelationshipsBetweenSPDXElements[] = []
+                relationships = relationshipsBetweenSPDXElementPackages.filter(
+                    (relatedSPDXElement) => numberIndexPackage != relatedSPDXElement.index
+                )
+                setRelationshipsBetweenSPDXElementPackages(relationships)
+                if (!CommonUtils.isNullEmptyOrUndefinedArray(relationships)) {
+                    setNumberIndexPackage(relationships[0].index)
+                }
+            }
+        }
     }
 
     return (
@@ -229,7 +268,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                                               </option>
                                           ))}
                                 </select>
-                                <FaTrashAlt />
+                                <FaTrashAlt onClick={deleteRelation} />
                             </div>
                             <button className='spdx-add-button-main' name='add-relationship' onClick={addRelations}>
                                 Add new Relationship

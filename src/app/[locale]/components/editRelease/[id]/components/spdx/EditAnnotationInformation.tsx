@@ -125,7 +125,14 @@ const EditAnnotationInformation = ({
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setIndexAnnotations(+index)
+
+        if (isSourceSPDXDocument) {
+            setIndexAnnotations(+index)
+            setNumberIndexSPDX(+index)
+        } else {
+            setIndexAnnotations(+index)
+            setNumberIndexPackage(+index)
+        }
         // isSourceSPDXDocument ? setAnnotations(annotationsSPDXs[+index]) : setAnnotations(annotationsPackages[+index])
     }
 
@@ -232,6 +239,35 @@ const EditAnnotationInformation = ({
               )
     }
 
+    const [numberIndexSPDX, setNumberIndexSPDX] = useState<number>(0)
+    const [numberIndexPackage, setNumberIndexPackage] = useState<number>(0)
+
+    const deleteAnnotation = () => {
+        if (isSourceSPDXDocument) {
+            if (annotationsSPDXs.length == 1) {
+                setAnnotationsSPDXs([])
+            } else {
+                let annotations: Annotations[] = []
+                annotations = annotationsSPDXs.filter((annotations) => numberIndexSPDX != annotations.index)
+                setAnnotationsSPDXs(annotations)
+                if (!CommonUtils.isNullEmptyOrUndefinedArray(annotations)) {
+                    setNumberIndexSPDX(annotations[0].index)
+                }
+            }
+        } else {
+            if (annotationsPackages.length == 1) {
+                setAnnotationsPackages([])
+            } else {
+                let annotations: Annotations[] = []
+                annotations = annotationsPackages.filter((annotations) => numberIndexPackage != annotations.index)
+                setAnnotationsPackages(annotations)
+                if (!CommonUtils.isNullEmptyOrUndefinedArray(annotations)) {
+                    setNumberIndexPackage(annotations[0].index)
+                }
+            }
+        }
+    }
+
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
             <thead
@@ -298,7 +334,7 @@ const EditAnnotationInformation = ({
                                               </option>
                                           ))}
                                 </select>
-                                <FaTrashAlt />
+                                <FaTrashAlt onClick={deleteAnnotation} />
                             </div>
                             <button className='spdx-add-button-main' name='add-annotation' onClick={addAnnotation}>
                                 Add new Annotation

@@ -73,13 +73,13 @@ const EditOtherLicensingInformationDetected = ({
         if (otherLicensingInformationDetecteds.length == 1) {
             setOtherLicensingInformationDetecteds([])
         } else {
-            let otherLicensingInformationDetecteds: OtherLicensingInformationDetected[] = []
-            otherLicensingInformationDetecteds = otherLicensingInformationDetecteds.filter(
+            let otherLicensingInformationDetectedDatas: OtherLicensingInformationDetected[] = []
+            otherLicensingInformationDetectedDatas = otherLicensingInformationDetecteds.filter(
                 (otherLicensingInformationDetected) => numberIndex != otherLicensingInformationDetected.index
             )
-            setOtherLicensingInformationDetecteds(otherLicensingInformationDetecteds)
-            if (!CommonUtils.isNullEmptyOrUndefinedArray(otherLicensingInformationDetecteds)) {
-                setNumberIndex(otherLicensingInformationDetecteds[0].index)
+            setOtherLicensingInformationDetecteds(otherLicensingInformationDetectedDatas)
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(otherLicensingInformationDetectedDatas)) {
+                setNumberIndex(otherLicensingInformationDetectedDatas[0].index)
             }
         }
     }
