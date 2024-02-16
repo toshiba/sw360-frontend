@@ -377,3 +377,7 @@ th.gridjs-th:last-child {
     text-decoration: underline;
     color: var(--sw360-primary-background-color);
 }
+
+th.gridjs-th .gridjs-th-content {
+    overflow: visible !important;
+}

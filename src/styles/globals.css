@@ -884,3 +884,51 @@ input::-webkit-datetime-edit {
     border-bottom: 1px solid #e7e7ed;
     font-size: 0.875rem;
 }
+
+.state-box {
+    color: #FFF;
+    height: 25px;
+    padding: 0 4px;
+    font-weight: bold;
+    line-height: 25px;
+    text-align: center;
+    display: inline-block;
+}
+
+.clearingStateOpen {
+    background-color: rgba(220, 53, 69, 0.7);
+}
+
+.clearingStateReportAvailable {
+    background-color: #2e5aac;
+}
+
+.clearingStateInProgress {
+    background-color: rgba(255, 193, 7, 0.7);
+}
+
+.clearingStateApproved {
+    background-color: rgba(40, 167, 69, 0.7);
+}
+
+.tab-content {
+    padding-left: 0px !important;
+}
+
+.capsule-left {
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+}
+
+.capsule-right {
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.projectStateActive {
+    background-color: rgba(40, 167, 69, 0.7);
+}
+
+.projectStateInactive {
+    background-color: #dee2e6;
+}
