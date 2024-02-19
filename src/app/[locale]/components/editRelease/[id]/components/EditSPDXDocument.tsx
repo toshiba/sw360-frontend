@@ -45,11 +45,11 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
     console.log(spdxDocument)
     const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
     const [packageInformation, setPackageInformation] = useState<PackageInformation>()
-    const [externalDocumentRef, setExternalDocumentRef] = useState<ExternalDocumentReferences>()
     const [externalDocumentRefs, setExternalDocumentRefs] = useState<ExternalDocumentReferences[]>([])
-    const [externalRefsData, setExternalRefsData] = useState<ExternalReference>()
+    const [indexExternalRefsData, setIndexExternalRefsData] = useState(0)
     const [externalRefsDatas, setExternalRefsDatas] = useState<ExternalReference[]>([])
     const [indexSnippetInformation, setIndexSnippetInformation] = useState(0)
+    const [indexExternalDocumentRef, setIndexExternalDocumentRef] = useState(0)
     const [snippetInformations, setSnippetInformations] = useState<SnippetInformation[]>([])
     const [indexOtherLicense, setIndexOtherLicense] = useState(0)
     const [otherLicensingInformationDetecteds, setOtherLicensingInformationDetecteds] = useState<
@@ -155,11 +155,7 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                                 (e1, e2) => e1.index - e2.index
                             )
                         )
-                        setExternalDocumentRef(
-                            release._embedded['sw360:documentCreationInformation'].externalDocumentRefs.toSorted(
-                                (e1, e2) => e1.index - e2.index
-                            )[0]
-                        )
+                        setIndexExternalDocumentRef(0)
                     }
                 }
 
@@ -179,7 +175,7 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                                 (e1, e2) => e1.index - e2.index
                             )
                         )
-                        setExternalRefsData(release._embedded['sw360:packageInformation'].externalRefs[0])
+                        setIndexExternalRefsData(0)
                     }
 
                     if (
@@ -245,8 +241,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         isModeFull={isModeFull}
                         documentCreationInformation={documentCreationInformation}
                         setDocumentCreationInformation={setDocumentCreationInformation}
-                        externalDocumentRef={externalDocumentRef}
-                        setExternalDocumentRef={setExternalDocumentRef}
+                        setIndexExternalDocumentRef={setIndexExternalDocumentRef}
+                        indexExternalDocumentRef={indexExternalDocumentRef}
                         externalDocumentRefs={externalDocumentRefs}
                         setExternalDocumentRefs={setExternalDocumentRefs}
                     />
@@ -254,8 +250,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         isModeFull={isModeFull}
                         packageInformation={packageInformation}
                         setPackageInformation={setPackageInformation}
-                        externalRefsData={externalRefsData}
-                        setExternalRefsData={setExternalRefsData}
+                        setIndexExternalRefsData={setIndexExternalRefsData}
+                        indexExternalRefsData={indexExternalRefsData}
                         externalRefsDatas={externalRefsDatas}
                         setExternalRefsDatas={setExternalRefsDatas}
                     />
@@ -294,14 +290,15 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     <EditDocumentCreationInformation
                         isModeFull={isModeFull}
                         documentCreationInformation={documentCreationInformation}
-                        externalDocumentRef={externalDocumentRef}
-                        setExternalDocumentRef={setExternalDocumentRef}
+                        setDocumentCreationInformation={setDocumentCreationInformation}
+                        setIndexExternalDocumentRef={setIndexExternalDocumentRef}
+                        indexExternalDocumentRef={indexExternalDocumentRef}
+                        externalDocumentRefs={externalDocumentRefs}
+                        setExternalDocumentRefs={setExternalDocumentRefs}
                     />
                     <EditPackageInformation
                         isModeFull={isModeFull}
                         packageInformation={packageInformation}
-                        externalRefsData={externalRefsData}
-                        setExternalRefsData={setExternalRefsData}
                         externalRefsDatas={externalRefsDatas}
                         setExternalRefsDatas={setExternalRefsDatas}
                     />

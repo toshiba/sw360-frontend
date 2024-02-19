@@ -33,21 +33,21 @@ import ValidUntilDate from './PackageInformation/ValidUntilDate'
 interface Props {
     packageInformation?: PackageInformation
     setPackageInformation?: React.Dispatch<React.SetStateAction<PackageInformation>>
-    externalRefsData?: ExternalReference
-    setExternalRefsData?: React.Dispatch<React.SetStateAction<ExternalReference>>
     isModeFull?: boolean
     externalRefsDatas?: ExternalReference[]
     setExternalRefsDatas?: React.Dispatch<React.SetStateAction<ExternalReference[]>>
+    setIndexExternalRefsData?: React.Dispatch<React.SetStateAction<number>>
+    indexExternalRefsData?: number
 }
 
 const EditPackageInformation = ({
     packageInformation,
-    externalRefsData,
-    setExternalRefsData,
     isModeFull,
     externalRefsDatas,
     setExternalRefsDatas,
     setPackageInformation,
+    indexExternalRefsData,
+    setIndexExternalRefsData,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [dataPackageSupplier, setDataPackageSupplier] = useState<InputKeyValue>()
@@ -137,8 +137,8 @@ const EditPackageInformation = ({
     }
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
+        setIndexExternalRefsData(+index)
         setNumberIndex(+index)
-        setExternalRefsData(externalRefsDatas[+index])
     }
 
     const addReferences = () => {
@@ -152,7 +152,6 @@ const EditPackageInformation = ({
         }
         arrayExternals.push(externalReference)
         setExternalRefsDatas(arrayExternals)
-        setExternalRefsData(externalReference)
     }
 
     const [packageDownloadLocationExist, setPackageDownloadLocationExist] = useState(true)
@@ -371,19 +370,11 @@ const EditPackageInformation = ({
     const deleteExternalRefsDatas = () => {
         if (externalRefsDatas.length == 1) {
             setExternalRefsDatas([])
-            setExternalRefsData({
-                referenceCategory: '',
-                referenceLocator: '',
-                referenceType: '',
-                comment: '',
-                index: 0,
-            })
         } else {
             let externalRefs: ExternalReference[] = []
             externalRefs = externalRefsDatas.filter((externalRefsData) => numberIndex != externalRefsData.index)
             setExternalRefsDatas(externalRefs)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(externalRefs)) {
-                setExternalRefsData(externalRefs[0])
                 setNumberIndex(externalRefs[0].index)
             }
         }
@@ -785,7 +776,7 @@ const EditPackageInformation = ({
                         </tr>
                         {isModeFull && (
                             <>
-                                {externalRefsData && (
+                                {externalRefsDatas[indexExternalRefsData] && (
                                     <tr className='spdx-full'>
                                         <td colSpan={3}>
                                             <div className='form-group section section-external-ref'>
@@ -844,6 +835,10 @@ const EditPackageInformation = ({
                                                                 id='referenceCategory'
                                                                 className='form-control'
                                                                 name='_sw360_portlet_components_REFERENCE_CATEGORY'
+                                                                value={
+                                                                    externalRefsDatas[indexExternalRefsData]
+                                                                        .referenceCategory ?? ''
+                                                                }
                                                             >
                                                                 <option value='SECURITY'>SECURITY</option>
                                                                 <option value='PACKAGE-MANAGER'>PACKAGE-MANAGER</option>
@@ -864,9 +859,13 @@ const EditPackageInformation = ({
                                                                 id='referenceType-1'
                                                                 className='form-control'
                                                                 name='_sw360_portlet_components_REFERENCE_TYPE-1'
+                                                                value={
+                                                                    externalRefsDatas[indexExternalRefsData]
+                                                                        .referenceType ?? ''
+                                                                }
                                                             >
-                                                                <option>cpe22Type</option>
-                                                                <option>cpe23Type</option>
+                                                                <option value='cpe22Type'>cpe22Type</option>
+                                                                <option value='cpe23Type'>cpe23Type</option>
                                                             </select>
                                                             <input
                                                                 style={{ width: 'auto', flex: 'auto', display: 'none' }}
@@ -892,7 +891,10 @@ const EditPackageInformation = ({
                                                                 id='externalReferencesLocator'
                                                                 placeholder='Enter locator'
                                                                 name='_sw360_portlet_components_REFERENCE_LOCATOR'
-                                                                value={externalRefsData.referenceLocator ?? ''}
+                                                                value={
+                                                                    externalRefsDatas[indexExternalRefsData]
+                                                                        .referenceLocator ?? ''
+                                                                }
                                                             />
                                                         </div>
                                                         <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -904,7 +906,10 @@ const EditPackageInformation = ({
                                                                 id='externalReferencesComment'
                                                                 placeholder='Enter comment'
                                                                 name='_sw360_portlet_components_REFERENCE_COMMENT'
-                                                                value={externalRefsData.comment ?? ''}
+                                                                value={
+                                                                    externalRefsDatas[indexExternalRefsData].comment ??
+                                                                    ''
+                                                                }
                                                             ></textarea>
                                                         </div>
                                                     </div>
