@@ -38,6 +38,10 @@ interface Props {
     setExternalRefsDatas?: React.Dispatch<React.SetStateAction<ExternalReference[]>>
     setIndexExternalRefsData?: React.Dispatch<React.SetStateAction<number>>
     indexExternalRefsData?: number
+    setTypeCategory?: React.Dispatch<React.SetStateAction<Array<string>>>
+    typeCategory?: Array<string>
+    isTypeCateGoryEmpty?: boolean
+    setIsTypeCateGoryEmpty?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const EditPackageInformation = ({
@@ -48,6 +52,10 @@ const EditPackageInformation = ({
     setPackageInformation,
     indexExternalRefsData,
     setIndexExternalRefsData,
+    typeCategory,
+    setTypeCategory,
+    isTypeCateGoryEmpty,
+    setIsTypeCateGoryEmpty,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [dataPackageSupplier, setDataPackageSupplier] = useState<InputKeyValue>()
@@ -139,6 +147,45 @@ const EditPackageInformation = ({
         const index: string = e.target.value
         setIndexExternalRefsData(+index)
         setNumberIndex(+index)
+    }
+
+    const handleChangeReferenceCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const referenceCategory: string = e.target.value
+        setExternalRefsDatas((currents) =>
+            currents.map((externalRefData, index) => {
+                if (index === indexExternalRefsData) {
+                    return {
+                        ...externalRefData,
+                        [e.target.name]: e.target.value,
+                    }
+                }
+                return externalRefData
+            })
+        )
+        if (referenceCategory === 'SECURITY') {
+            setTypeCategory(['cpe22Type', 'cpe23Type', 'advisory', 'fix', 'url', 'swid'])
+            setIsTypeCateGoryEmpty(false)
+        } else if (referenceCategory === 'PACKAGE-MANAGER') {
+            setTypeCategory(['maven-central', 'npm', 'nuget', 'bower', 'purl'])
+            setIsTypeCateGoryEmpty(false)
+        } else {
+            setTypeCategory([])
+            setIsTypeCateGoryEmpty(true)
+        }
+    }
+
+    const handleChangeReferenceType = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+        setExternalRefsDatas((currents) =>
+            currents.map((externalRefData, index) => {
+                if (index === indexExternalRefsData) {
+                    return {
+                        ...externalRefData,
+                        [e.target.name]: e.target.value,
+                    }
+                }
+                return externalRefData
+            })
+        )
     }
 
     const addReferences = () => {
@@ -834,7 +881,8 @@ const EditPackageInformation = ({
                                                                 style={{ width: 'auto', flex: 'auto' }}
                                                                 id='referenceCategory'
                                                                 className='form-control'
-                                                                name='_sw360_portlet_components_REFERENCE_CATEGORY'
+                                                                name='referenceCategory'
+                                                                onChange={handleChangeReferenceCategory}
                                                                 value={
                                                                     externalRefsDatas[indexExternalRefsData]
                                                                         .referenceCategory ?? ''
@@ -854,27 +902,42 @@ const EditPackageInformation = ({
                                                             }}
                                                         >
                                                             <label className='sub-title lableSPDX'>Type</label>
-                                                            <select
-                                                                style={{ width: 'auto', flex: 'auto' }}
-                                                                id='referenceType-1'
-                                                                className='form-control'
-                                                                name='_sw360_portlet_components_REFERENCE_TYPE-1'
-                                                                value={
-                                                                    externalRefsDatas[indexExternalRefsData]
-                                                                        .referenceType ?? ''
-                                                                }
-                                                            >
-                                                                <option value='cpe22Type'>cpe22Type</option>
-                                                                <option value='cpe23Type'>cpe23Type</option>
-                                                            </select>
-                                                            <input
-                                                                style={{ width: 'auto', flex: 'auto', display: 'none' }}
-                                                                id='referenceType-2'
-                                                                type='text'
-                                                                className='form-control'
-                                                                placeholder='Enter type'
-                                                                name='_sw360_portlet_components_REFERENCE_TYPE-2'
-                                                            />
+                                                            {isTypeCateGoryEmpty ? (
+                                                                <input
+                                                                    style={{
+                                                                        width: 'auto',
+                                                                        flex: 'auto',
+                                                                    }}
+                                                                    id='referenceType-2'
+                                                                    type='text'
+                                                                    className='form-control'
+                                                                    placeholder='Enter type'
+                                                                    name='referenceType'
+                                                                    onChange={handleChangeReferenceType}
+                                                                    value={
+                                                                        externalRefsDatas[indexExternalRefsData]
+                                                                            .referenceType ?? ''
+                                                                    }
+                                                                />
+                                                            ) : (
+                                                                <select
+                                                                    style={{ width: 'auto', flex: 'auto' }}
+                                                                    id='referenceType-1'
+                                                                    className='form-control'
+                                                                    name='referenceType'
+                                                                    onChange={handleChangeReferenceType}
+                                                                    value={
+                                                                        externalRefsDatas[indexExternalRefsData]
+                                                                            .referenceType ?? ''
+                                                                    }
+                                                                >
+                                                                    {typeCategory?.map((item, index) => (
+                                                                        <option key={index} value={item}>
+                                                                            {item}
+                                                                        </option>
+                                                                    ))}
+                                                                </select>
+                                                            )}
                                                         </div>
                                                         <div
                                                             style={{

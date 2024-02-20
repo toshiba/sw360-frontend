@@ -86,7 +86,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
         },
         [session]
     )
-
+    const [typeCategory, setTypeCategory] = useState<Array<string>>()
+    const [isTypeCateGoryEmpty, setIsTypeCateGoryEmpty] = useState(true)
     useEffect(() => {
         fetchData(`releases/${releaseId}`)
             .then((release: ReleaseDetail) => {
@@ -175,6 +176,16 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                                 (e1, e2) => e1.index - e2.index
                             )
                         )
+                        if (externalRefsDatas[0].referenceCategory === 'SECURITY') {
+                            setTypeCategory(['cpe22Type', 'cpe23Type', 'advisory', 'fix', 'url', 'swid'])
+                            setIsTypeCateGoryEmpty(false)
+                        } else if (externalRefsDatas[0].referenceCategory === 'PACKAGE-MANAGER') {
+                            setTypeCategory(['maven-central', 'npm', 'nuget', 'bower', 'purl'])
+                            setIsTypeCateGoryEmpty(false)
+                        } else {
+                            setTypeCategory([])
+                            setIsTypeCateGoryEmpty(true)
+                        }
                         setIndexExternalRefsData(0)
                     }
 
@@ -254,6 +265,10 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         indexExternalRefsData={indexExternalRefsData}
                         externalRefsDatas={externalRefsDatas}
                         setExternalRefsDatas={setExternalRefsDatas}
+                        setTypeCategory={setTypeCategory}
+                        typeCategory={typeCategory}
+                        isTypeCateGoryEmpty={isTypeCateGoryEmpty}
+                        setIsTypeCateGoryEmpty={setIsTypeCateGoryEmpty}
                     />
                     <EditSnippetInformation
                         snippetInformations={snippetInformations}
@@ -299,8 +314,15 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                     <EditPackageInformation
                         isModeFull={isModeFull}
                         packageInformation={packageInformation}
+                        setPackageInformation={setPackageInformation}
+                        setIndexExternalRefsData={setIndexExternalRefsData}
+                        indexExternalRefsData={indexExternalRefsData}
                         externalRefsDatas={externalRefsDatas}
                         setExternalRefsDatas={setExternalRefsDatas}
+                        setTypeCategory={setTypeCategory}
+                        typeCategory={typeCategory}
+                        isTypeCateGoryEmpty={isTypeCateGoryEmpty}
+                        setIsTypeCateGoryEmpty={setIsTypeCateGoryEmpty}
                     />
                     <EditOtherLicensingInformationDetected
                         isModeFull={isModeFull}
