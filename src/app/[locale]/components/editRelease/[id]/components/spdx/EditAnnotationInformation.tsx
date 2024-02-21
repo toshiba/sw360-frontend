@@ -125,13 +125,20 @@ const EditAnnotationInformation = ({
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-
         if (isSourceSPDXDocument) {
             setIndexAnnotations(+index)
             setNumberIndexSPDX(+index)
+            if (CommonUtils.isNullEmptyOrUndefinedString(annotationsSPDXs[+index].annotationDate)) {
+                setDataDate('')
+                setDataTime('')
+            }
         } else {
             setIndexAnnotations(+index)
             setNumberIndexPackage(+index)
+            if (CommonUtils.isNullEmptyOrUndefinedString(annotationsPackages[+index].annotationDate)) {
+                setDataDate('')
+                setDataTime('')
+            }
         }
         // isSourceSPDXDocument ? setAnnotations(annotationsSPDXs[+index]) : setAnnotations(annotationsPackages[+index])
     }
@@ -212,6 +219,9 @@ const EditAnnotationInformation = ({
         const localDate = new Date(data.key + ' ' + data.value)
         return localDate.toISOString().slice(0, -5) + 'Z'
     }
+
+    const [dataDate, setDataDate] = useState('')
+    const [dataTime, setDataTime] = useState('')
 
     const setAnnotationDate = (input: InputKeyValue) => {
         isSourceSPDXDocument
@@ -352,6 +362,10 @@ const EditAnnotationInformation = ({
                                     setAnnotatorToAnnotation={setAnnotatorToAnnotation}
                                 />
                                 <AnnotationDate
+                                    dataDate={dataDate}
+                                    setDataDate={setDataDate}
+                                    dataTime={dataTime}
+                                    setDataTime={setDataTime}
                                     dataAnnotationDate={dataAnnotationDate}
                                     setDataAnnotationDate={setDataAnnotationDate}
                                     setAnnotationDate={setAnnotationDate}

@@ -174,7 +174,9 @@ const EditPackageInformation = ({
         }
     }
 
-    const handleChangeReferenceType = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+    const handleChangeExternalRefData = (
+        e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
+    ) => {
         setExternalRefsDatas((currents) =>
             currents.map((externalRefData, index) => {
                 if (index === indexExternalRefsData) {
@@ -191,7 +193,7 @@ const EditPackageInformation = ({
     const addReferences = () => {
         const arrayExternals: ExternalReference[] = [...externalRefsDatas]
         const externalReference: ExternalReference = {
-            referenceCategory: '',
+            referenceCategory: 'OTHER',
             referenceLocator: '',
             referenceType: '',
             comment: '',
@@ -299,7 +301,7 @@ const EditPackageInformation = ({
         }
         setPackageInformation({
             ...packageInformation,
-            licenseDeclared: data,
+            copyrightText: data,
         })
     }
 
@@ -913,7 +915,7 @@ const EditPackageInformation = ({
                                                                     className='form-control'
                                                                     placeholder='Enter type'
                                                                     name='referenceType'
-                                                                    onChange={handleChangeReferenceType}
+                                                                    onChange={handleChangeExternalRefData}
                                                                     value={
                                                                         externalRefsDatas[indexExternalRefsData]
                                                                             .referenceType ?? ''
@@ -925,7 +927,7 @@ const EditPackageInformation = ({
                                                                     id='referenceType-1'
                                                                     className='form-control'
                                                                     name='referenceType'
-                                                                    onChange={handleChangeReferenceType}
+                                                                    onChange={handleChangeExternalRefData}
                                                                     value={
                                                                         externalRefsDatas[indexExternalRefsData]
                                                                             .referenceType ?? ''
@@ -953,7 +955,8 @@ const EditPackageInformation = ({
                                                                 className='form-control'
                                                                 id='externalReferencesLocator'
                                                                 placeholder='Enter locator'
-                                                                name='_sw360_portlet_components_REFERENCE_LOCATOR'
+                                                                name='referenceLocator'
+                                                                onChange={handleChangeExternalRefData}
                                                                 value={
                                                                     externalRefsDatas[indexExternalRefsData]
                                                                         .referenceLocator ?? ''
@@ -968,7 +971,8 @@ const EditPackageInformation = ({
                                                                 className='form-control'
                                                                 id='externalReferencesComment'
                                                                 placeholder='Enter comment'
-                                                                name='_sw360_portlet_components_REFERENCE_COMMENT'
+                                                                name='comment'
+                                                                onChange={handleChangeExternalRefData}
                                                                 value={
                                                                     externalRefsDatas[indexExternalRefsData].comment ??
                                                                     ''

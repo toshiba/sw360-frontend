@@ -8,18 +8,27 @@
 // License-Filename: LICENSE
 
 import CommonUtils from '@/utils/common.utils'
-import { useState } from 'react'
 import InputKeyValue from '../../../../../../../../object-types/InputKeyValue'
 
 interface Props {
     setAnnotationDate?: any
     dataAnnotationDate?: InputKeyValue
     setDataAnnotationDate?: React.Dispatch<React.SetStateAction<InputKeyValue>>
+    dataDate?: string
+    setDataDate?: React.Dispatch<React.SetStateAction<string>>
+    dataTime?: string
+    setDataTime?: React.Dispatch<React.SetStateAction<string>>
 }
 
-function AnnotationDate({ dataAnnotationDate, setDataAnnotationDate, setAnnotationDate }: Props) {
-    const [dataDate, setDataDate] = useState('')
-    const [dataTime, setDataTime] = useState('')
+function AnnotationDate({
+    dataAnnotationDate,
+    setDataAnnotationDate,
+    setAnnotationDate,
+    dataDate,
+    dataTime,
+    setDataDate,
+    setDataTime,
+}: Props) {
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         const { name, value } = e.target
         e.target.name === 'key' ? setDataDate(e.target.value) : setDataTime(e.target.value)

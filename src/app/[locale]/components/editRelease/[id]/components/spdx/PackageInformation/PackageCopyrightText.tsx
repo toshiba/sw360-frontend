@@ -68,7 +68,7 @@ function PackageCopyrightText({
                         />
                         <textarea
                             style={{ flex: 6, marginRight: '1rem' }}
-                            id='licenseInfoInFileValue'
+                            id='copyrightText'
                             rows={5}
                             className='form-control'
                             name='copyrightText'
@@ -91,7 +91,7 @@ function PackageCopyrightText({
                         <label
                             style={{ marginRight: '2rem' }}
                             className='form-check-label radio-label lableSPDX'
-                            htmlFor='licenseInfoInFileNone'
+                            htmlFor='copyrightTextNone'
                         >
                             NONE
                         </label>
