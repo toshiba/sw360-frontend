@@ -16,6 +16,7 @@ import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
 import Creator from '../../../../../../../object-types/spdx/Creator'
 import DocumentCreationInformation from '../../../../../../../object-types/spdx/DocumentCreationInformation'
 import ExternalDocumentReferences from '../../../../../../../object-types/spdx/ExternalDocumentReferences'
+import SPDX from '../../../../../../../object-types/spdx/SPDX'
 import styles from '../detail.module.css'
 import Creators from './Creators'
 import Created from './DocumentCreationInfo/Created'
@@ -30,6 +31,8 @@ interface Props {
     setExternalDocumentRefs?: React.Dispatch<React.SetStateAction<ExternalDocumentReferences[]>>
     indexExternalDocumentRef?: number
     setIndexExternalDocumentRef?: React.Dispatch<React.SetStateAction<number>>
+    SPDXPayload?: SPDX
+    setSPDXPayload?: React.Dispatch<React.SetStateAction<SPDX>>
 }
 
 const EditDocumentCreationInformation = ({
@@ -40,6 +43,8 @@ const EditDocumentCreationInformation = ({
     setExternalDocumentRefs,
     indexExternalDocumentRef,
     setIndexExternalDocumentRef,
+    SPDXPayload,
+    setSPDXPayload,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
 
@@ -62,6 +67,13 @@ const EditDocumentCreationInformation = ({
         }
         arrayExternals.push(externalDocumentReference)
         setExternalDocumentRefs(arrayExternals)
+        setSPDXPayload({
+            ...SPDXPayload,
+            documentCreationInformation: {
+                ...SPDXPayload.documentCreationInformation,
+                externalDocumentRefs: arrayExternals,
+            },
+        })
     }
 
     useEffect(() => {
@@ -113,6 +125,13 @@ const EditDocumentCreationInformation = ({
             ...documentCreationInformation,
             [e.target.name]: e.target.value,
         })
+        setSPDXPayload({
+            ...SPDXPayload,
+            documentCreationInformation: {
+                ...SPDXPayload.documentCreationInformation,
+                [e.target.name]: e.target.value,
+            },
+        })
     }
 
     const setDataCreators = (inputs: InputKeyValue[]) => {
@@ -122,6 +141,14 @@ const EditDocumentCreationInformation = ({
         setDocumentCreationInformation({
             ...documentCreationInformation,
             creator: convertInputToCreator(inputs),
+        })
+
+        setSPDXPayload({
+            ...SPDXPayload,
+            documentCreationInformation: {
+                ...SPDXPayload.documentCreationInformation,
+                creator: convertInputToCreator(inputs),
+            },
         })
     }
 
@@ -147,6 +174,14 @@ const EditDocumentCreationInformation = ({
             ...documentCreationInformation,
             created: convertInputToCreated(inputs),
         })
+
+        setSPDXPayload({
+            ...SPDXPayload,
+            documentCreationInformation: {
+                ...SPDXPayload.documentCreationInformation,
+                created: convertInputToCreated(inputs),
+            },
+        })
     }
 
     const deleteExternalReference = () => {
@@ -158,6 +193,13 @@ const EditDocumentCreationInformation = ({
                 (externalDocumentRef) => numberIndex != externalDocumentRef.index
             )
             setExternalDocumentRefs(externalDocuments)
+            setSPDXPayload({
+                ...SPDXPayload,
+                documentCreationInformation: {
+                    ...SPDXPayload.documentCreationInformation,
+                    externalDocumentRefs: externalDocuments,
+                },
+            })
             if (!CommonUtils.isNullEmptyOrUndefinedArray(externalDocumentRefs)) {
                 // setExternalDocumentRef(externalDocuments[0])
                 setNumberIndex(externalDocuments[0].index)
@@ -166,36 +208,49 @@ const EditDocumentCreationInformation = ({
     }
 
     const updateCheckSum = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
-        setExternalDocumentRefs((currents) =>
-            currents.map((externalDocument, index) => {
-                if (index === indexExternalDocumentRef) {
-                    return {
-                        ...externalDocument,
-                        checksum: {
-                            ...externalDocument.checksum,
-                            [e.target.name]: e.target.value,
-                        },
-                    }
+        const externals: ExternalDocumentReferences[] = externalDocumentRefs.map((externalDocument, index) => {
+            if (index === indexExternalDocumentRef) {
+                return {
+                    ...externalDocument,
+                    checksum: {
+                        ...externalDocument.checksum,
+                        [e.target.name]: e.target.value,
+                    },
                 }
-                return externalDocument
-            })
-        )
+            }
+            return externalDocument
+        })
+        setExternalDocumentRefs(externals)
+        setSPDXPayload({
+            ...SPDXPayload,
+            documentCreationInformation: {
+                ...SPDXPayload.documentCreationInformation,
+                externalDocumentRefs: externals,
+            },
+        })
     }
 
     const updateExternalReferens = (
         e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
     ) => {
-        setExternalDocumentRefs((currents) =>
-            currents.map((externalDocument, index) => {
-                if (index === indexExternalDocumentRef) {
-                    return {
-                        ...externalDocument,
-                        [e.target.name]: e.target.value,
-                    }
+        const externals: ExternalDocumentReferences[] = externalDocumentRefs.map((externalDocument, index) => {
+            if (index === indexExternalDocumentRef) {
+                return {
+                    ...externalDocument,
+                    [e.target.name]: e.target.value,
                 }
-                return externalDocument
-            })
-        )
+            }
+            return externalDocument
+        })
+
+        setExternalDocumentRefs(externals)
+        setSPDXPayload({
+            ...SPDXPayload,
+            documentCreationInformation: {
+                ...SPDXPayload.documentCreationInformation,
+                externalDocumentRefs: externals,
+            },
+        })
     }
 
     return (

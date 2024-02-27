@@ -23,6 +23,7 @@ import ExternalReference from '../../../../../../object-types/spdx/ExternalRefer
 import OtherLicensingInformationDetected from '../../../../../../object-types/spdx/OtherLicensingInformationDetected'
 import PackageInformation from '../../../../../../object-types/spdx/PackageInformation'
 import RelationshipsBetweenSPDXElements from '../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
+import SPDX from '../../../../../../object-types/spdx/SPDX'
 import SPDXDocument from '../../../../../../object-types/spdx/SPDXDocument'
 import SnippetInformation from '../../../../../../object-types/spdx/SnippetInformation'
 import styles from './spdx/CssButton.module.css'
@@ -35,11 +36,11 @@ import EditSnippetInformation from './spdx/EditSnippetInformation'
 
 interface Props {
     releaseId: string
-    // releasePayload?: Release
-    // setReleasePayload?: React.Dispatch<React.SetStateAction<Release>>
+    SPDXPayload?: SPDX
+    setSPDXPayload?: React.Dispatch<React.SetStateAction<SPDX>>
 }
 
-const EditSPDXDocument = ({ releaseId }: Props) => {
+const EditSPDXDocument = ({ releaseId, SPDXPayload, setSPDXPayload }: Props) => {
     const t = useTranslations('default')
     const [spdxDocument, setSPDXDocument] = useState<SPDXDocument>()
     console.log(spdxDocument)
@@ -215,7 +216,7 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                 }
             })
             .catch((err) => console.error(err))
-    }, [fetchData, releaseId])
+    }, [fetchData, releaseId, setSPDXPayload])
 
     const changeModeFull = () => {
         setIsModeFull(true)
@@ -256,6 +257,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         indexExternalDocumentRef={indexExternalDocumentRef}
                         externalDocumentRefs={externalDocumentRefs}
                         setExternalDocumentRefs={setExternalDocumentRefs}
+                        SPDXPayload={SPDXPayload}
+                        setSPDXPayload={setSPDXPayload}
                     />
                     <EditPackageInformation
                         isModeFull={isModeFull}
@@ -269,12 +272,16 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         typeCategory={typeCategory}
                         isTypeCateGoryEmpty={isTypeCateGoryEmpty}
                         setIsTypeCateGoryEmpty={setIsTypeCateGoryEmpty}
+                        SPDXPayload={SPDXPayload}
+                        setSPDXPayload={setSPDXPayload}
                     />
                     <EditSnippetInformation
                         snippetInformations={snippetInformations}
                         setSnippetInformations={setSnippetInformations}
                         indexSnippetInformation={indexSnippetInformation}
                         setIndexSnippetInformation={setIndexSnippetInformation}
+                        SPDXPayload={SPDXPayload}
+                        setSPDXPayload={setSPDXPayload}
                     />
                     <EditOtherLicensingInformationDetected
                         isModeFull={isModeFull}
@@ -282,6 +289,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         setIndexOtherLicense={setIndexOtherLicense}
                         otherLicensingInformationDetecteds={otherLicensingInformationDetecteds}
                         setOtherLicensingInformationDetecteds={setOtherLicensingInformationDetecteds}
+                        SPDXPayload={SPDXPayload}
+                        setSPDXPayload={setSPDXPayload}
                     />
                     <EditRelationshipbetweenSPDXElementsInformation
                         indexRelation={indexRelation}
@@ -290,6 +299,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         setRelationshipsBetweenSPDXElementSPDXs={setRelationshipsBetweenSPDXElementSPDXs}
                         relationshipsBetweenSPDXElementPackages={relationshipsBetweenSPDXElementPackages}
                         setRelationshipsBetweenSPDXElementPackages={setRelationshipsBetweenSPDXElementPackages}
+                        SPDXPayload={SPDXPayload}
+                        setSPDXPayload={setSPDXPayload}
                     />
                     <AnnotationInformation
                         indexAnnotations={indexAnnotations}
@@ -298,6 +309,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         setAnnotationsSPDXs={setAnnotationsSPDXs}
                         annotationsPackages={annotationsPackages}
                         setAnnotationsPackages={setAnnotationsPackages}
+                        SPDXPayload={SPDXPayload}
+                        setSPDXPayload={setSPDXPayload}
                     />
                 </div>
             ) : (
@@ -310,6 +323,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         indexExternalDocumentRef={indexExternalDocumentRef}
                         externalDocumentRefs={externalDocumentRefs}
                         setExternalDocumentRefs={setExternalDocumentRefs}
+                        SPDXPayload={SPDXPayload}
+                        setSPDXPayload={setSPDXPayload}
                     />
                     <EditPackageInformation
                         isModeFull={isModeFull}
@@ -323,6 +338,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         typeCategory={typeCategory}
                         isTypeCateGoryEmpty={isTypeCateGoryEmpty}
                         setIsTypeCateGoryEmpty={setIsTypeCateGoryEmpty}
+                        SPDXPayload={SPDXPayload}
+                        setSPDXPayload={setSPDXPayload}
                     />
                     <EditOtherLicensingInformationDetected
                         isModeFull={isModeFull}
@@ -330,6 +347,8 @@ const EditSPDXDocument = ({ releaseId }: Props) => {
                         setIndexOtherLicense={setIndexOtherLicense}
                         otherLicensingInformationDetecteds={otherLicensingInformationDetecteds}
                         setOtherLicensingInformationDetecteds={setOtherLicensingInformationDetecteds}
+                        SPDXPayload={SPDXPayload}
+                        setSPDXPayload={setSPDXPayload}
                     />
                 </div>
             )}

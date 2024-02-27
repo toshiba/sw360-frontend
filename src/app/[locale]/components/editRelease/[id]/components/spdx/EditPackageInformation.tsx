@@ -16,6 +16,7 @@ import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
 import CheckSum from '../../../../../../../object-types/spdx/CheckSum'
 import ExternalReference from '../../../../../../../object-types/spdx/ExternalReference'
 import PackageInformation from '../../../../../../../object-types/spdx/PackageInformation'
+import SPDX from '../../../../../../../object-types/spdx/SPDX'
 import styles from '../detail.module.css'
 import CheckSums from './CheckSums'
 import BuiltDate from './PackageInformation/BuiltDate'
@@ -42,6 +43,8 @@ interface Props {
     typeCategory?: Array<string>
     isTypeCateGoryEmpty?: boolean
     setIsTypeCateGoryEmpty?: React.Dispatch<React.SetStateAction<boolean>>
+    SPDXPayload?: SPDX
+    setSPDXPayload?: React.Dispatch<React.SetStateAction<SPDX>>
 }
 
 const EditPackageInformation = ({
@@ -56,6 +59,8 @@ const EditPackageInformation = ({
     setTypeCategory,
     isTypeCateGoryEmpty,
     setIsTypeCateGoryEmpty,
+    SPDXPayload,
+    setSPDXPayload,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [dataPackageSupplier, setDataPackageSupplier] = useState<InputKeyValue>()
@@ -84,6 +89,14 @@ const EditPackageInformation = ({
         setPackageInformation({
             ...packageInformation,
             supplier: handleInputKeyToPackageSupplier(input),
+        })
+
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                supplier: handleInputKeyToPackageSupplier(input),
+            },
         })
     }
 
@@ -115,6 +128,13 @@ const EditPackageInformation = ({
             ...packageInformation,
             originator: handleInputKeyToPackageOriginator(input),
         })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                originator: handleInputKeyToPackageOriginator(input),
+            },
+        })
     }
 
     const [checkSums, setCheckSums] = useState<InputKeyValue[]>([])
@@ -123,6 +143,14 @@ const EditPackageInformation = ({
         setPackageInformation({
             ...packageInformation,
             checksums: convertInputToChecksums(inputs),
+        })
+
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                checksums: convertInputToChecksums(inputs),
+            },
         })
     }
 
@@ -151,17 +179,17 @@ const EditPackageInformation = ({
 
     const handleChangeReferenceCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const referenceCategory: string = e.target.value
-        setExternalRefsDatas((currents) =>
-            currents.map((externalRefData, index) => {
-                if (index === indexExternalRefsData) {
-                    return {
-                        ...externalRefData,
-                        [e.target.name]: e.target.value,
-                    }
+        const externalRefs: ExternalReference[] = externalRefsDatas.map((externalRefData, index) => {
+            if (index === indexExternalRefsData) {
+                return {
+                    ...externalRefData,
+                    [e.target.name]: e.target.value,
                 }
-                return externalRefData
-            })
-        )
+            }
+            return externalRefData
+        })
+        setExternalRefsDatas(externalRefs)
+
         if (referenceCategory === 'SECURITY') {
             setTypeCategory(['cpe22Type', 'cpe23Type', 'advisory', 'fix', 'url', 'swid'])
             setIsTypeCateGoryEmpty(false)
@@ -172,22 +200,35 @@ const EditPackageInformation = ({
             setTypeCategory([])
             setIsTypeCateGoryEmpty(true)
         }
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                externalRefs: externalRefs,
+            },
+        })
     }
 
     const handleChangeExternalRefData = (
         e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
     ) => {
-        setExternalRefsDatas((currents) =>
-            currents.map((externalRefData, index) => {
-                if (index === indexExternalRefsData) {
-                    return {
-                        ...externalRefData,
-                        [e.target.name]: e.target.value,
-                    }
+        const externalRefs: ExternalReference[] = externalRefsDatas.map((externalRefData, index) => {
+            if (index === indexExternalRefsData) {
+                return {
+                    ...externalRefData,
+                    [e.target.name]: e.target.value,
                 }
-                return externalRefData
-            })
-        )
+            }
+            return externalRefData
+        })
+        setExternalRefsDatas(externalRefs)
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                externalRefs: externalRefs,
+            },
+        })
     }
 
     const addReferences = () => {
@@ -201,6 +242,13 @@ const EditPackageInformation = ({
         }
         arrayExternals.push(externalReference)
         setExternalRefsDatas(arrayExternals)
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                externalRefs: arrayExternals,
+            },
+        })
     }
 
     const [packageDownloadLocationExist, setPackageDownloadLocationExist] = useState(true)
@@ -217,6 +265,13 @@ const EditPackageInformation = ({
         setPackageInformation({
             ...packageInformation,
             downloadLocation: data,
+        })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                downloadLocation: data,
+            },
         })
     }
 
@@ -235,6 +290,13 @@ const EditPackageInformation = ({
             ...packageInformation,
             homepage: data,
         })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                homepage: data,
+            },
+        })
     }
 
     const [concludedLicenseExist, setConcludedLicenseExist] = useState(true)
@@ -251,6 +313,13 @@ const EditPackageInformation = ({
         setPackageInformation({
             ...packageInformation,
             licenseConcluded: data,
+        })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                licenseConcluded: data,
+            },
         })
     }
 
@@ -269,6 +338,13 @@ const EditPackageInformation = ({
             ...packageInformation,
             licenseInfoFromFiles: data.split('\n'),
         })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                licenseInfoFromFiles: data.split('\n'),
+            },
+        })
     }
 
     const [declaredLicenseExist, setDeclaredLicenseExist] = useState(true)
@@ -286,6 +362,13 @@ const EditPackageInformation = ({
             ...packageInformation,
             licenseDeclared: data,
         })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                licenseDeclared: data,
+            },
+        })
     }
 
     const [copyrightTextExist, setCopyrightTextExist] = useState(true)
@@ -302,6 +385,13 @@ const EditPackageInformation = ({
         setPackageInformation({
             ...packageInformation,
             copyrightText: data,
+        })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                copyrightText: data,
+            },
         })
     }
 
@@ -336,6 +426,13 @@ const EditPackageInformation = ({
             ...packageInformation,
             [e.target.name]: e.target.name === 'attributionText' ? e.target.value.split('\n') : e.target.value,
         })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                [e.target.name]: e.target.name === 'attributionText' ? e.target.value.split('\n') : e.target.value,
+            },
+        })
     }
 
     const updateFieldPackageVerificationCode = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -344,11 +441,25 @@ const EditPackageInformation = ({
                 ...packageInformation,
                 packageVerificationCode: null,
             })
+            setSPDXPayload({
+                ...SPDXPayload,
+                packageInformation: {
+                    ...SPDXPayload.packageInformation,
+                    packageVerificationCode: null,
+                },
+            })
         } else {
             setPackageInformation({
                 ...packageInformation,
                 packageVerificationCode: {
                     ...packageInformation.packageVerificationCode,
+                    [e.target.name]: e.target.value,
+                },
+            })
+            setSPDXPayload({
+                ...SPDXPayload,
+                packageInformation: {
+                    ...SPDXPayload.packageInformation,
                     [e.target.name]: e.target.value,
                 },
             })
@@ -391,12 +502,26 @@ const EditPackageInformation = ({
             ...packageInformation,
             builtDate: convertInputToDate(inputs),
         })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                builtDate: convertInputToDate(inputs),
+            },
+        })
     }
 
     const setValidUntilDate = (inputs: InputKeyValue) => {
         setPackageInformation({
             ...packageInformation,
             validUntilDate: convertInputToDate(inputs),
+        })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                validUntilDate: convertInputToDate(inputs),
+            },
         })
     }
 
@@ -405,12 +530,26 @@ const EditPackageInformation = ({
             ...packageInformation,
             releaseDate: convertInputToDate(inputs),
         })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                releaseDate: convertInputToDate(inputs),
+            },
+        })
     }
 
     const changeFilesAnalyzed = () => {
         setPackageInformation({
             ...packageInformation,
             filesAnalyzed: !packageInformation.filesAnalyzed,
+        })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                filesAnalyzed: !packageInformation.filesAnalyzed,
+            },
         })
     }
 
@@ -423,6 +562,13 @@ const EditPackageInformation = ({
             let externalRefs: ExternalReference[] = []
             externalRefs = externalRefsDatas.filter((externalRefsData) => numberIndex != externalRefsData.index)
             setExternalRefsDatas(externalRefs)
+            setSPDXPayload({
+                ...SPDXPayload,
+                packageInformation: {
+                    ...SPDXPayload.packageInformation,
+                    externalRefs: externalRefs,
+                },
+            })
             if (!CommonUtils.isNullEmptyOrUndefinedArray(externalRefs)) {
                 setNumberIndex(externalRefs[0].index)
             }

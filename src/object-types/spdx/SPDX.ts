@@ -9,12 +9,14 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
-interface SnippetRange {
-    rangeType: string
-    startPointer: string
-    endPointer: string
-    reference: string
-    index: number
+import DocumentCreationInformation from './DocumentCreationInformation'
+import PackageInformation from './PackageInformation'
+import SPDXDocument from './SPDXDocument'
+
+interface SPDX {
+    spdxDocument?: SPDXDocument
+    documentCreationInformation?: DocumentCreationInformation
+    packageInformation?: PackageInformation
 }
 
-export default SnippetRange
+export default SPDX

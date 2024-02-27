@@ -13,6 +13,7 @@ import CommonUtils from '@/utils/common.utils'
 import { useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import OtherLicensingInformationDetected from '../../../../../../../object-types/spdx/OtherLicensingInformationDetected'
+import SPDX from '../../../../../../../object-types/spdx/SPDX'
 import styles from '../detail.module.css'
 
 interface Props {
@@ -21,6 +22,8 @@ interface Props {
     setIndexOtherLicense?: any
     otherLicensingInformationDetecteds?: OtherLicensingInformationDetected[]
     setOtherLicensingInformationDetecteds?: React.Dispatch<React.SetStateAction<OtherLicensingInformationDetected[]>>
+    SPDXPayload?: SPDX
+    setSPDXPayload?: React.Dispatch<React.SetStateAction<SPDX>>
 }
 
 const EditOtherLicensingInformationDetected = ({
@@ -29,6 +32,8 @@ const EditOtherLicensingInformationDetected = ({
     setIndexOtherLicense,
     otherLicensingInformationDetecteds,
     setOtherLicensingInformationDetecteds,
+    SPDXPayload,
+    setSPDXPayload,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [licenseName, setLicenseName] = useState(true)
@@ -50,11 +55,18 @@ const EditOtherLicensingInformationDetected = ({
         }
         arrayExternals.push(otherLicensingInformationDetected)
         setOtherLicensingInformationDetecteds(arrayExternals)
+        setSPDXPayload({
+            ...SPDXPayload,
+            spdxDocument: {
+                ...SPDXPayload.spdxDocument,
+                otherLicensingInformationDetecteds: arrayExternals,
+            },
+        })
     }
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
-        setOtherLicensingInformationDetecteds((currents) =>
-            currents.map((otherLicensing, index) => {
+        const otherLicensings: OtherLicensingInformationDetected[] = otherLicensingInformationDetecteds.map(
+            (otherLicensing, index) => {
                 if (index === indexOtherLicense) {
                     return {
                         ...otherLicensing,
@@ -63,8 +75,16 @@ const EditOtherLicensingInformationDetected = ({
                     }
                 }
                 return otherLicensing
-            })
+            }
         )
+        setOtherLicensingInformationDetecteds(otherLicensings)
+        setSPDXPayload({
+            ...SPDXPayload,
+            spdxDocument: {
+                ...SPDXPayload.spdxDocument,
+                otherLicensingInformationDetecteds: otherLicensings,
+            },
+        })
     }
 
     const [numberIndex, setNumberIndex] = useState<number>(0)
@@ -78,6 +98,13 @@ const EditOtherLicensingInformationDetected = ({
                 (otherLicensingInformationDetected) => numberIndex != otherLicensingInformationDetected.index
             )
             setOtherLicensingInformationDetecteds(otherLicensingInformationDetectedDatas)
+            setSPDXPayload({
+                ...SPDXPayload,
+                spdxDocument: {
+                    ...SPDXPayload.spdxDocument,
+                    otherLicensingInformationDetecteds: otherLicensingInformationDetectedDatas,
+                },
+            })
             if (!CommonUtils.isNullEmptyOrUndefinedArray(otherLicensingInformationDetectedDatas)) {
                 setNumberIndex(otherLicensingInformationDetectedDatas[0].index)
             }

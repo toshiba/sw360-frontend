@@ -13,6 +13,7 @@ import CommonUtils from '@/utils/common.utils'
 import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
+import SPDX from '../../../../../../../object-types/spdx/SPDX'
 import SnippetInformation from '../../../../../../../object-types/spdx/SnippetInformation'
 import SnippetRange from '../../../../../../../object-types/spdx/SnippetRange'
 import styles from '../detail.module.css'
@@ -27,6 +28,8 @@ interface Props {
     setIndexSnippetInformation?: React.Dispatch<React.SetStateAction<number>>
     snippetInformations?: SnippetInformation[]
     setSnippetInformations?: React.Dispatch<React.SetStateAction<SnippetInformation[]>>
+    SPDXPayload?: SPDX
+    setSPDXPayload?: React.Dispatch<React.SetStateAction<SPDX>>
 }
 
 const EditSnippetInformation = ({
@@ -34,6 +37,8 @@ const EditSnippetInformation = ({
     setIndexSnippetInformation,
     snippetInformations,
     setSnippetInformations,
+    SPDXPayload,
+    setSPDXPayload,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [snippetRanges, setSnippetRanges] = useState<SnippetRange[]>([])
@@ -81,6 +86,13 @@ const EditSnippetInformation = ({
         }
         arrayExternals.push(snippetInformation)
         setSnippetInformations(arrayExternals)
+        setSPDXPayload({
+            ...SPDXPayload,
+            spdxDocument: {
+                ...SPDXPayload.spdxDocument,
+                snippets: arrayExternals,
+            },
+        })
     }
 
     useEffect(() => {
@@ -109,18 +121,24 @@ const EditSnippetInformation = ({
     }
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
-        setSnippetInformations((currents) =>
-            currents.map((snippet, index) => {
-                if (index === indexSnippetInformation) {
-                    return {
-                        ...snippet,
-                        [e.target.name]:
-                            e.target.name === 'licenseInfoInSnippets' ? e.target.value.split('\n') : e.target.value,
-                    }
+        const snippets: SnippetInformation[] = snippetInformations.map((snippet, index) => {
+            if (index === indexSnippetInformation) {
+                return {
+                    ...snippet,
+                    [e.target.name]:
+                        e.target.name === 'licenseInfoInSnippets' ? e.target.value.split('\n') : e.target.value,
                 }
-                return snippet
-            })
-        )
+            }
+            return snippet
+        })
+        setSnippetInformations(snippets)
+        setSPDXPayload({
+            ...SPDXPayload,
+            spdxDocument: {
+                ...SPDXPayload.spdxDocument,
+                snippets: snippets,
+            },
+        })
     }
 
     const handleInputKeyToSnippetFromFile = (data: InputKeyValue) => {
@@ -128,17 +146,23 @@ const EditSnippetInformation = ({
     }
 
     const setSnippetFromFileToSnippet = (input: InputKeyValue) => {
-        setSnippetInformations((currents) =>
-            currents.map((snippet, index) => {
-                if (index === indexSnippetInformation) {
-                    return {
-                        ...snippet,
-                        snippetFromFile: handleInputKeyToSnippetFromFile(input),
-                    }
+        const snippets: SnippetInformation[] = snippetInformations.map((snippet, index) => {
+            if (index === indexSnippetInformation) {
+                return {
+                    ...snippet,
+                    snippetFromFile: handleInputKeyToSnippetFromFile(input),
                 }
-                return snippet
-            })
-        )
+            }
+            return snippet
+        })
+        setSnippetInformations(snippets)
+        setSPDXPayload({
+            ...SPDXPayload,
+            spdxDocument: {
+                ...SPDXPayload.spdxDocument,
+                snippets: snippets,
+            },
+        })
     }
 
     const handleSnippetFromFile = (data: string) => {
@@ -167,6 +191,13 @@ const EditSnippetInformation = ({
                 (snippetInformation) => numberIndex != snippetInformation.index
             )
             setSnippetInformations(snippetInformationDatas)
+            setSPDXPayload({
+                ...SPDXPayload,
+                spdxDocument: {
+                    ...SPDXPayload.spdxDocument,
+                    snippets: snippetInformationDatas,
+                },
+            })
             if (!CommonUtils.isNullEmptyOrUndefinedArray(snippetInformationDatas)) {
                 setNumberIndex(snippetInformationDatas[0].index)
             }

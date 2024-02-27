@@ -38,6 +38,7 @@ import {
 } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils'
 import { PageButtonHeader, SideBar, ToastMessage } from 'next-sw360'
+import SPDX from '../../../../../../object-types/spdx/SPDX'
 import DeleteReleaseModal from '../../../detail/[id]/components/DeleteReleaseModal'
 import EditClearingDetails from './EditClearingDetails'
 import EditECCDetails from './EditECCDetails'
@@ -60,6 +61,11 @@ const EditRelease = ({ releaseId }: Props) => {
     const [componentId, setComponentId] = useState('')
     const [deletingRelease, setDeletingRelease] = useState('')
     const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+    const [SPDXPayload, setSPDXPayload] = useState<SPDX>({
+        spdxDocument: null,
+        documentCreationInformation: null,
+        packageInformation: null,
+    })
 
     useEffect(() => {
         const controller = new AbortController()
@@ -75,6 +81,12 @@ const EditRelease = ({ releaseId }: Props) => {
                     return notFound()
                 }
                 const release: ReleaseDetail = await response.json()
+                const SPDXPayload: SPDX = {
+                    spdxDocument: release._embedded['sw360:spdxDocument'],
+                    documentCreationInformation: release._embedded['sw360:documentCreationInformation'],
+                    packageInformation: release._embedded['sw360:packageInformation'],
+                }
+                setSPDXPayload(SPDXPayload)
                 setRelease(release)
                 setDeletingRelease(releaseId)
                 setComponentId(CommonUtils.getIdFromUrl(release['_links']['sw360:component']['href']))
@@ -238,6 +250,7 @@ const EditRelease = ({ releaseId }: Props) => {
     }
 
     const submit = async () => {
+        console.log(SPDXPayload)
         const response = await ApiUtils.PATCH(`releases/${releaseId}`, releasePayload, session.user.access_token)
         if (response.status == HttpStatus.OK) {
             const release = (await response.json()) as ReleaseDetail
@@ -322,8 +335,8 @@ const EditRelease = ({ releaseId }: Props) => {
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.SPDX_DOCUMENT ? true : false}>
                             <EditSPDXDocument
                                 releaseId={releaseId}
-                                // releasePayload={releasePayload}
-                                // setReleasePayload={setReleasePayload}
+                                SPDXPayload={SPDXPayload}
+                                setSPDXPayload={setSPDXPayload}
                             />
                         </div>
                         <div className='row' hidden={selectedTab !== ReleaseTabIds.LINKED_RELEASES ? true : false}>

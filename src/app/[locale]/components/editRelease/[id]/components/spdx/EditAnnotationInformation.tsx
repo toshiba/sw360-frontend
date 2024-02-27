@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
 import Annotations from '../../../../../../../object-types/spdx/Annotations'
+import SPDX from '../../../../../../../object-types/spdx/SPDX'
 import styles from '../detail.module.css'
 import AnnotationDate from './AnnotationInformation/AnnotationDate'
 import Annotator from './AnnotationInformation/Annotator'
@@ -25,6 +26,8 @@ interface Props {
     setAnnotationsSPDXs: React.Dispatch<React.SetStateAction<Annotations[]>>
     annotationsPackages: Annotations[]
     setAnnotationsPackages: React.Dispatch<React.SetStateAction<Annotations[]>>
+    SPDXPayload?: SPDX
+    setSPDXPayload?: React.Dispatch<React.SetStateAction<SPDX>>
 }
 
 const EditAnnotationInformation = ({
@@ -34,6 +37,8 @@ const EditAnnotationInformation = ({
     setAnnotationsSPDXs,
     annotationsPackages,
     setAnnotationsPackages,
+    SPDXPayload,
+    setSPDXPayload,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [isSourceSPDXDocument, setIsSourceSPDXDocument] = useState<boolean>(true)
@@ -110,15 +115,43 @@ const EditAnnotationInformation = ({
             setIsSourceSPDXDocument(true)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsSPDXs)) {
                 setAnnotationsSPDXs(annotationsSPDXs)
+                setSPDXPayload({
+                    ...SPDXPayload,
+                    spdxDocument: {
+                        ...SPDXPayload.spdxDocument,
+                        annotations: annotationsSPDXs,
+                    },
+                })
             } else {
                 setAnnotationsSPDXs([])
+                setSPDXPayload({
+                    ...SPDXPayload,
+                    spdxDocument: {
+                        ...SPDXPayload.spdxDocument,
+                        annotations: [],
+                    },
+                })
             }
         } else if (relationshipType === 'package') {
             setIsSourceSPDXDocument(false)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
                 setAnnotationsPackages(annotationsPackages)
+                setSPDXPayload({
+                    ...SPDXPayload,
+                    packageInformation: {
+                        ...SPDXPayload.packageInformation,
+                        annotations: annotationsPackages,
+                    },
+                })
             } else {
                 setAnnotationsPackages([])
+                setSPDXPayload({
+                    ...SPDXPayload,
+                    packageInformation: {
+                        ...SPDXPayload.packageInformation,
+                        annotations: [],
+                    },
+                })
             }
         }
     }
@@ -155,7 +188,13 @@ const EditAnnotationInformation = ({
         }
         arrayExternals.push(relationshipsBetweenSPDXElements)
         setAnnotationsSPDXs(arrayExternals)
-        // setAnnotations(relationshipsBetweenSPDXElements)
+        setSPDXPayload({
+            ...SPDXPayload,
+            spdxDocument: {
+                ...SPDXPayload.spdxDocument,
+                annotations: arrayExternals,
+            },
+        })
     }
 
     const addAnnotationsSPDXsPackage = () => {
@@ -170,7 +209,13 @@ const EditAnnotationInformation = ({
         }
         arrayExternals.push(relationshipsBetweenSPDXElements)
         setAnnotationsPackages(arrayExternals)
-        // setAnnotations(relationshipsBetweenSPDXElements)
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                annotations: arrayExternals,
+            },
+        })
     }
 
     const addAnnotation = () => {
@@ -178,29 +223,34 @@ const EditAnnotationInformation = ({
     }
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
-        isSourceSPDXDocument
-            ? setAnnotationsSPDXs((currents) =>
-                  currents.map((annotation, index) => {
-                      if (index === indexAnnotations) {
-                          return {
-                              ...annotation,
-                              [e.target.name]: e.target.value,
-                          }
-                      }
-                      return annotation
-                  })
-              )
-            : setAnnotationsPackages((currents) =>
-                  currents.map((annotation, index) => {
-                      if (index === indexAnnotations) {
-                          return {
-                              ...annotation,
-                              [e.target.name]: e.target.value,
-                          }
-                      }
-                      return annotation
-                  })
-              )
+        const annotationUpdates: Annotations[] = annotationsSPDXs.map((annotation, index) => {
+            if (index === indexAnnotations) {
+                return {
+                    ...annotation,
+                    [e.target.name]: e.target.value,
+                }
+            }
+            return annotation
+        })
+        if (isSourceSPDXDocument) {
+            setAnnotationsPackages(annotationUpdates)
+            setSPDXPayload({
+                ...SPDXPayload,
+                spdxDocument: {
+                    ...SPDXPayload.spdxDocument,
+                    annotations: annotationUpdates,
+                },
+            })
+        } else {
+            setAnnotationsPackages(annotationUpdates)
+            setSPDXPayload({
+                ...SPDXPayload,
+                packageInformation: {
+                    ...SPDXPayload.packageInformation,
+                    annotations: annotationUpdates,
+                },
+            })
+        }
     }
 
     const [dataAnnotationDate, setDataAnnotationDate] = useState<InputKeyValue>()
