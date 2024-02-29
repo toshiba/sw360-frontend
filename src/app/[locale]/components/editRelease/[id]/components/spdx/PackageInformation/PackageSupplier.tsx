@@ -7,7 +7,6 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-// import PackageSupplierData from '../../../../../../../../object-types/spdx/PackageSupplierData'
 import InputKeyValue from '../../../../../../../../object-types/InputKeyValue'
 
 interface Props {
@@ -33,7 +32,19 @@ function PackageSupplier({
         setPackageSupplierToPackage(list)
     }
 
-    // const [packageSupplier, setPackageSupplier] = useState(true)
+    const selectPackageSupplierNoasserttion = () => {
+        setIsPackageSupplier(false)
+        const data: InputKeyValue = {
+            key: '',
+            value: 'NOASSERTION',
+        }
+        setPackageSupplierToPackage(data)
+    }
+
+    const selectPackageSupplierExist = () => {
+        setIsPackageSupplier(true)
+        setPackageSupplierToPackage(dataPackageSupplier)
+    }
 
     return (
         dataPackageSupplier && (
@@ -47,7 +58,7 @@ function PackageSupplier({
                                 type='radio'
                                 name='_sw360_portlet_components_SUPPLIER'
                                 value='EXIST'
-                                onClick={() => setIsPackageSupplier(true)}
+                                onClick={selectPackageSupplierExist}
                                 checked={isPackageSupplier}
                             />
                             <select
@@ -79,7 +90,7 @@ function PackageSupplier({
                                 className='spdx-radio lableSPDX'
                                 id='supplierNoAssertion'
                                 type='radio'
-                                onClick={() => setIsPackageSupplier(false)}
+                                onClick={selectPackageSupplierNoasserttion}
                                 checked={!isPackageSupplier}
                                 name='_sw360_portlet_components_SUPPLIER'
                                 value='NOASSERTION'

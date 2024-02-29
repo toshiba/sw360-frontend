@@ -7,11 +7,7 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
-// import { useTranslations } from 'next-intl'
-
 interface Props {
-    packageInformation?: PackageInformation
     setDeclaredLicenseToPackage?: any
     declaredLicenseExist?: boolean
     setDeclaredLicenseExist?: React.Dispatch<React.SetStateAction<boolean>>
@@ -19,10 +15,10 @@ interface Props {
     setDeclaredLicenseNone?: React.Dispatch<React.SetStateAction<boolean>>
     declaredLicenseNoasserttion?: boolean
     setDeclaredLicenseNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
+    declaredLicense?: string
 }
 
 function PackageDeclaredLicense({
-    packageInformation,
     setDeclaredLicenseToPackage,
     declaredLicenseExist,
     setDeclaredLicenseExist,
@@ -30,21 +26,25 @@ function PackageDeclaredLicense({
     setDeclaredLicenseNone,
     declaredLicenseNoasserttion,
     setDeclaredLicenseNoasserttion,
+    declaredLicense,
 }: Props) {
     const selectDeclaredLicenseExist = () => {
         setDeclaredLicenseExist(true)
         setDeclaredLicenseNone(false)
         setDeclaredLicenseNoasserttion(false)
+        setDeclaredLicenseToPackage(declaredLicense)
     }
-    const selectDeclaredLicenseNone = () => {
+    const selectDeclaredLicenseNone = (e: React.ChangeEvent<HTMLInputElement>) => {
         setDeclaredLicenseExist(false)
         setDeclaredLicenseNone(true)
         setDeclaredLicenseNoasserttion(false)
+        setDeclaredLicenseToPackage(e.target.value)
     }
-    const selectDeclaredLicenseNoasserttion = () => {
+    const selectDeclaredLicenseNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
         setDeclaredLicenseExist(false)
         setDeclaredLicenseNone(false)
         setDeclaredLicenseNoasserttion(true)
+        setDeclaredLicenseToPackage(e.target.value)
     }
 
     const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +74,7 @@ function PackageDeclaredLicense({
                             name='licenseDeclared'
                             placeholder='Enter declared license'
                             onChange={updateField}
-                            value={packageInformation.licenseDeclared ?? ''}
+                            value={declaredLicense ?? ''}
                             disabled={declaredLicenseNone || declaredLicenseNoasserttion}
                         />
                     </div>
@@ -85,7 +85,7 @@ function PackageDeclaredLicense({
                             type='radio'
                             name='_sw360_portlet_components_DECLARED_LICENSE'
                             value='NONE'
-                            onClick={selectDeclaredLicenseNone}
+                            onChange={selectDeclaredLicenseNone}
                             checked={declaredLicenseNone}
                         />
                         <label
@@ -101,7 +101,7 @@ function PackageDeclaredLicense({
                             type='radio'
                             name='_sw360_portlet_components_DECLARED_LICENSE'
                             value='NOASSERTION'
-                            onClick={selectDeclaredLicenseNoasserttion}
+                            onChange={selectDeclaredLicenseNoasserttion}
                             checked={declaredLicenseNoasserttion}
                         />
                         <label className='form-check-label radio-label lableSPDX' htmlFor='licenseDeclaredNoAssertion'>

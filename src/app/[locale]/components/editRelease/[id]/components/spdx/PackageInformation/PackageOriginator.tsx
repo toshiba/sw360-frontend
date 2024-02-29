@@ -32,6 +32,20 @@ function PackageOriginator({
         setPackageOriginatorToPackage(list)
     }
 
+    const selectPackageOriginatorNoasserttion = () => {
+        setIsPackageOriginator(false)
+        const data: InputKeyValue = {
+            key: '',
+            value: 'NOASSERTION',
+        }
+        setPackageOriginatorToPackage(data)
+    }
+
+    const selectPackageOriginatorExist = () => {
+        setIsPackageOriginator(true)
+        setPackageOriginatorToPackage(dataPackageOriginator)
+    }
+
     return (
         dataPackageOriginator && (
             <td colSpan={3}>
@@ -44,7 +58,7 @@ function PackageOriginator({
                                 type='radio'
                                 name='_sw360_portlet_components_ORIGINATOR'
                                 value='EXIST'
-                                onClick={() => setIsPackageOriginator(true)}
+                                onClick={selectPackageOriginatorExist}
                                 checked={isPackageOriginator}
                             />
                             <select
@@ -78,7 +92,7 @@ function PackageOriginator({
                                 type='radio'
                                 name='_sw360_portlet_components_ORIGINATOR'
                                 value='NOASSERTION'
-                                onClick={() => setIsPackageOriginator(false)}
+                                onClick={selectPackageOriginatorNoasserttion}
                                 checked={!isPackageOriginator}
                             />
                             <label className='form-check-label radio-label lableSPDX' htmlFor='originatorNoAssertion'>

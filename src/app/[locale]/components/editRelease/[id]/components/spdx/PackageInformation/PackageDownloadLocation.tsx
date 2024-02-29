@@ -8,11 +8,9 @@
 // License-Filename: LICENSE
 
 // import { useState } from 'react'
-import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
-// import { useTranslations } from 'next-intl'
+import { ChangeEvent } from 'react'
 
 interface Props {
-    packageInformation?: PackageInformation
     setPackageDownloadLocationToPackage?: any
     packageDownloadLocationExist?: boolean
     setPackageDownloadLocationExist?: React.Dispatch<React.SetStateAction<boolean>>
@@ -20,10 +18,10 @@ interface Props {
     setPackageDownloadLocationNone?: React.Dispatch<React.SetStateAction<boolean>>
     packageDownloadLocationNoasserttion?: boolean
     setPackageDownloadLocationNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
+    packageDownloadLocation?: string
 }
 
 function PackageDownloadLocation({
-    packageInformation,
     setPackageDownloadLocationToPackage,
     packageDownloadLocationExist,
     setPackageDownloadLocationExist,
@@ -31,21 +29,25 @@ function PackageDownloadLocation({
     setPackageDownloadLocationNone,
     packageDownloadLocationNoasserttion,
     setPackageDownloadLocationNoasserttion,
+    packageDownloadLocation,
 }: Props) {
     const selectPackageDownloadLocationExist = () => {
         setPackageDownloadLocationExist(true)
         setPackageDownloadLocationNone(false)
         setPackageDownloadLocationNoasserttion(false)
+        setPackageDownloadLocationToPackage(packageDownloadLocation)
     }
-    const selectPackageDownloadLocationNone = () => {
+    const selectPackageDownloadLocationNone = (e: ChangeEvent<HTMLInputElement>) => {
         setPackageDownloadLocationNone(true)
         setPackageDownloadLocationExist(false)
         setPackageDownloadLocationNoasserttion(false)
+        setPackageDownloadLocationToPackage(e.target.value)
     }
-    const selectPackageDownloadLocationNoasserttion = () => {
+    const selectPackageDownloadLocationNoasserttion = (e: ChangeEvent<HTMLInputElement>) => {
         setPackageDownloadLocationNoasserttion(true)
         setPackageDownloadLocationExist(false)
         setPackageDownloadLocationNone(false)
+        setPackageDownloadLocationToPackage(e.target.value)
     }
 
     const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,7 +77,7 @@ function PackageDownloadLocation({
                             name='downloadLocation'
                             placeholder='Enter package supplier'
                             onChange={updateField}
-                            value={packageInformation.downloadLocation ?? ''}
+                            value={packageDownloadLocation ?? ''}
                             disabled={packageDownloadLocationNone || packageDownloadLocationNoasserttion}
                         />
                     </div>

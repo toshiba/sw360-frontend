@@ -7,10 +7,7 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
-
 interface Props {
-    packageInformation?: PackageInformation
     setPackageHomePageToPackage?: any
     packageHomePageExist?: boolean
     setPackageHomePageExist?: React.Dispatch<React.SetStateAction<boolean>>
@@ -18,10 +15,10 @@ interface Props {
     setPackageHomePageNone?: React.Dispatch<React.SetStateAction<boolean>>
     packageHomePageNoasserttion?: boolean
     setPackageHomePageNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
+    packageHomePage?: string
 }
 
 function PackageHomePage({
-    packageInformation,
     setPackageHomePageToPackage,
     packageHomePageExist,
     setPackageHomePageExist,
@@ -29,21 +26,25 @@ function PackageHomePage({
     setPackageHomePageNone,
     packageHomePageNoasserttion,
     setPackageHomePageNoasserttion,
+    packageHomePage,
 }: Props) {
     const selectPackageHomePageExist = () => {
         setPackageHomePageExist(true)
         setPackageHomePageNone(false)
         setPackageHomePageNoasserttion(false)
+        setPackageHomePageToPackage(packageHomePage)
     }
-    const selectPackageHomePageNone = () => {
+    const selectPackageHomePageNone = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPackageHomePageExist(false)
         setPackageHomePageNone(true)
         setPackageHomePageNoasserttion(false)
+        setPackageHomePageToPackage(e.target.value)
     }
-    const selectPackageHomePageNoasserttion = () => {
+    const selectPackageHomePageNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPackageHomePageExist(false)
         setPackageHomePageNone(false)
         setPackageHomePageNoasserttion(true)
+        setPackageHomePageToPackage(e.target.value)
     }
 
     const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +74,7 @@ function PackageHomePage({
                             name='homepage'
                             placeholder='Enter package homepage'
                             onChange={updateField}
-                            value={packageInformation.homepage ?? ''}
+                            value={packageHomePage ?? ''}
                             disabled={packageHomePageNone || packageHomePageNoasserttion}
                         />
                     </div>

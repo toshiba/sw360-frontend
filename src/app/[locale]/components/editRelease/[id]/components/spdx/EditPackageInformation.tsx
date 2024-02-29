@@ -73,6 +73,13 @@ const EditPackageInformation = ({
             }
             return input
         }
+        if (data === 'NOASSERTION') {
+            const input: InputKeyValue = {
+                key: dataPackageSupplier.key,
+                value: dataPackageSupplier.value,
+            }
+            return input
+        }
         const input: InputKeyValue = {
             key: data.split(':')[0],
             value: data.split(':')[1],
@@ -81,8 +88,7 @@ const EditPackageInformation = ({
     }
 
     const handleInputKeyToPackageSupplier = (data: InputKeyValue) => {
-        const supplier = !isPackageSupplier ? 'NOASSERTION' : data.key + ':' + data.value
-        return supplier
+        return data.value === 'NOASSERTION' ? 'NOASSERTION' : data.key + ':' + data.value
     }
 
     const setPackageSupplierToPackage = (input: InputKeyValue) => {
@@ -111,6 +117,13 @@ const EditPackageInformation = ({
             }
             return input
         }
+        if (data === 'NOASSERTION') {
+            const input: InputKeyValue = {
+                key: dataPackageOriginator.key,
+                value: dataPackageOriginator.value,
+            }
+            return input
+        }
         const input: InputKeyValue = {
             key: data.split(':')[0],
             value: data.split(':')[1],
@@ -119,8 +132,7 @@ const EditPackageInformation = ({
     }
 
     const handleInputKeyToPackageOriginator = (data: InputKeyValue) => {
-        const originator = !isPackageOriginator ? 'NOASSERTION' : data.key + ':' + data.value
-        return originator
+        return data.value === 'NOASSERTION' ? 'NOASSERTION' : data.key + ':' + data.value
     }
 
     const setPackageOriginatorToPackage = (input: InputKeyValue) => {
@@ -251,17 +263,12 @@ const EditPackageInformation = ({
         })
     }
 
+    const [packageDownloadLocation, setPackageDownloadLocation] = useState('')
     const [packageDownloadLocationExist, setPackageDownloadLocationExist] = useState(true)
     const [packageDownloadLocationNone, setPackageDownloadLocationNone] = useState(false)
     const [packageDownloadLocationNoasserttion, setPackageDownloadLocationNoasserttion] = useState(false)
 
     const setPackageDownloadLocationToPackage = (data: string) => {
-        if (packageDownloadLocationNone) {
-            data = 'NONE'
-        }
-        if (packageDownloadLocationNoasserttion) {
-            data = 'NOASSERTION'
-        }
         setPackageInformation({
             ...packageInformation,
             downloadLocation: data,
@@ -275,17 +282,12 @@ const EditPackageInformation = ({
         })
     }
 
+    const [packageHomePage, setPackageHomePage] = useState('')
     const [packageHomePageExist, setPackageHomePageExist] = useState(true)
     const [packageHomePageNone, setPackageHomePageNone] = useState(false)
     const [packageHomePageNoasserttion, setPackageHomePageNoasserttion] = useState(false)
 
     const setPackageHomePageToPackage = (data: string) => {
-        if (packageHomePageNone) {
-            data = 'NONE'
-        }
-        if (packageHomePageNoasserttion) {
-            data = 'NOASSERTION'
-        }
         setPackageInformation({
             ...packageInformation,
             homepage: data,
@@ -299,6 +301,7 @@ const EditPackageInformation = ({
         })
     }
 
+    const [concludedLicense, setConcludedLicense] = useState('')
     const [concludedLicenseExist, setConcludedLicenseExist] = useState(true)
     const [concludedLicenseNone, setConcludedLicenseNone] = useState(false)
     const [concludedLicenseNoasserttion, setConcludedLicenseNoasserttion] = useState(false)
@@ -323,6 +326,7 @@ const EditPackageInformation = ({
         })
     }
 
+    // const [allLicensesInformation, setAllLicensesInformation] = useState<Array<string>>()
     const [allLicensesInformationExist, setAllLicensesInformationExist] = useState(true)
     const [allLicensesInformationNone, setAllLicensesInformationNone] = useState(false)
     const [allLicensesInformationNoasserttion, setAllLicensesInformationNoasserttion] = useState(false)
@@ -347,6 +351,7 @@ const EditPackageInformation = ({
         })
     }
 
+    const [declaredLicense, setDeclaredLicense] = useState('')
     const [declaredLicenseExist, setDeclaredLicenseExist] = useState(true)
     const [declaredLicenseNone, setDeclaredLicenseNone] = useState(false)
     const [declaredLicenseNoasserttion, setDeclaredLicenseNoasserttion] = useState(false)
@@ -371,6 +376,7 @@ const EditPackageInformation = ({
         })
     }
 
+    const [copyrightText, setCopyrightText] = useState('')
     const [copyrightTextExist, setCopyrightTextExist] = useState(true)
     const [copyrightTextNone, setCopyrightTextNone] = useState(false)
     const [copyrightTextNoasserttion, setCopyrightTextNoasserttion] = useState(false)
@@ -409,6 +415,66 @@ const EditPackageInformation = ({
             packageInformation?.originator == 'NOASSERTION' && setIsPackageOriginator(false)
             setDataPackageOriginator(handlePackageOriginator(packageInformation.originator))
         }
+
+        if (typeof packageInformation?.downloadLocation !== 'undefined') {
+            if (
+                packageInformation.downloadLocation === 'NONE' ||
+                packageInformation.downloadLocation === 'NOASSERTION'
+            ) {
+                const data: string = packageDownloadLocation
+                setPackageDownloadLocation(data)
+            } else {
+                setPackageDownloadLocation(packageInformation.downloadLocation)
+            }
+        }
+
+        if (typeof packageInformation?.homepage !== 'undefined') {
+            if (packageInformation.homepage === 'NONE' || packageInformation.homepage === 'NOASSERTION') {
+                const data: string = packageHomePage
+                setPackageHomePage(data)
+            } else {
+                setPackageHomePage(packageInformation.homepage)
+            }
+        }
+
+        if (typeof packageInformation?.licenseConcluded !== 'undefined') {
+            if (
+                packageInformation.licenseConcluded === 'NONE' ||
+                packageInformation.licenseConcluded === 'NOASSERTION'
+            ) {
+                const data: string = concludedLicense
+                setConcludedLicense(data)
+            } else {
+                setConcludedLicense(packageInformation.licenseConcluded)
+            }
+        }
+
+        if (typeof packageInformation?.licenseDeclared !== 'undefined') {
+            if (packageInformation.licenseDeclared === 'NONE' || packageInformation.licenseDeclared === 'NOASSERTION') {
+                const data: string = declaredLicense
+                setDeclaredLicense(data)
+            } else {
+                setDeclaredLicense(packageInformation.licenseDeclared)
+            }
+        }
+
+        if (typeof packageInformation?.copyrightText !== 'undefined') {
+            if (packageInformation.copyrightText === 'NONE' || packageInformation.copyrightText === 'NOASSERTION') {
+                const data: string = copyrightText
+                setCopyrightText(data)
+            } else {
+                setCopyrightText(packageInformation.copyrightText)
+            }
+        }
+
+        // if (typeof packageInformation?.licenseInfoFromFiles !== 'undefined') {
+        //     if(packageInformation.licenseInfoFromFiles === 'NONE' || packageInformation.licenseInfoFromFiles === 'NOASSERTION') {
+        //         const data: string = packageHomePage
+        //         setAllLicensesInformation(data)
+        //     } else {
+        //         setAllLicensesInformation(packageInformation.licenseInfoFromFiles)
+        //     }
+        // }
 
         if (typeof packageInformation?.releaseDate !== 'undefined') {
             setDataReleaseDate(handleDate(packageInformation.releaseDate))
@@ -697,7 +763,6 @@ const EditPackageInformation = ({
                         )}
                         <tr>
                             <PackageDownloadLocation
-                                packageInformation={packageInformation}
                                 setPackageDownloadLocationToPackage={setPackageDownloadLocationToPackage}
                                 packageDownloadLocationExist={packageDownloadLocationExist}
                                 setPackageDownloadLocationExist={setPackageDownloadLocationExist}
@@ -705,6 +770,7 @@ const EditPackageInformation = ({
                                 setPackageDownloadLocationNone={setPackageDownloadLocationNone}
                                 packageDownloadLocationNoasserttion={packageDownloadLocationNoasserttion}
                                 setPackageDownloadLocationNoasserttion={setPackageDownloadLocationNoasserttion}
+                                packageDownloadLocation={packageDownloadLocation}
                             />
                         </tr>
                         <tr>
@@ -802,7 +868,6 @@ const EditPackageInformation = ({
                         )}
                         <tr>
                             <PackageHomePage
-                                packageInformation={packageInformation}
                                 setPackageHomePageToPackage={setPackageHomePageToPackage}
                                 packageHomePageExist={packageHomePageExist}
                                 setPackageHomePageExist={setPackageHomePageExist}
@@ -810,6 +875,7 @@ const EditPackageInformation = ({
                                 setPackageHomePageNone={setPackageHomePageNone}
                                 packageHomePageNoasserttion={packageHomePageNoasserttion}
                                 setPackageHomePageNoasserttion={setPackageHomePageNoasserttion}
+                                packageHomePage={packageHomePage}
                             />
                         </tr>
                         {isModeFull && (
@@ -836,7 +902,6 @@ const EditPackageInformation = ({
                         )}
                         <tr>
                             <PackageConcludedLicense
-                                packageInformation={packageInformation}
                                 setConcludedLicenseToPackage={setConcludedLicenseToPackage}
                                 concludedLicenseExist={concludedLicenseExist}
                                 setConcludedLicenseExist={setConcludedLicenseExist}
@@ -844,6 +909,7 @@ const EditPackageInformation = ({
                                 setConcludedLicenseNone={setConcludedLicenseNone}
                                 concludedLicenseNoasserttion={concludedLicenseNoasserttion}
                                 setConcludedLicenseNoasserttion={setConcludedLicenseNoasserttion}
+                                concludedLicense={concludedLicense}
                             />
                         </tr>
                         {isModeFull && (
@@ -862,7 +928,6 @@ const EditPackageInformation = ({
                         )}
                         <tr>
                             <PackageDeclaredLicense
-                                packageInformation={packageInformation}
                                 setDeclaredLicenseToPackage={setDeclaredLicenseToPackage}
                                 declaredLicenseExist={declaredLicenseExist}
                                 setDeclaredLicenseExist={setDeclaredLicenseExist}
@@ -870,6 +935,7 @@ const EditPackageInformation = ({
                                 setDeclaredLicenseNone={setDeclaredLicenseNone}
                                 declaredLicenseNoasserttion={declaredLicenseNoasserttion}
                                 setDeclaredLicenseNoasserttion={setDeclaredLicenseNoasserttion}
+                                declaredLicense={declaredLicense}
                             />
                         </tr>
                         <tr className='spdx-full'>
@@ -894,7 +960,7 @@ const EditPackageInformation = ({
                         </tr>
                         <tr>
                             <PackageCopyrightText
-                                packageInformation={packageInformation}
+                                copyrightText={copyrightText}
                                 setCopyrightTextToPackage={setCopyrightTextToPackage}
                                 copyrightTextExist={copyrightTextExist}
                                 setCopyrightTextExist={setCopyrightTextExist}

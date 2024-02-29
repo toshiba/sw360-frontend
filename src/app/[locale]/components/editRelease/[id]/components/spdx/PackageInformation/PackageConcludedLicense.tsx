@@ -7,9 +7,8 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
 interface Props {
-    packageInformation?: PackageInformation
+    concludedLicense?: string
     setConcludedLicenseToPackage?: any
     concludedLicenseExist?: boolean
     setConcludedLicenseExist?: React.Dispatch<React.SetStateAction<boolean>>
@@ -20,7 +19,6 @@ interface Props {
 }
 
 function PackageConcludedLicense({
-    packageInformation,
     setConcludedLicenseToPackage,
     concludedLicenseExist,
     setConcludedLicenseExist,
@@ -28,21 +26,24 @@ function PackageConcludedLicense({
     setConcludedLicenseNone,
     concludedLicenseNoasserttion,
     setConcludedLicenseNoasserttion,
+    concludedLicense,
 }: Props) {
     const selectConcludedLicenseExist = () => {
         setConcludedLicenseExist(true)
         setConcludedLicenseNone(false)
         setConcludedLicenseNoasserttion(false)
     }
-    const selectConcludedLicenseNone = () => {
+    const selectConcludedLicenseNone = (e: React.ChangeEvent<HTMLInputElement>) => {
         setConcludedLicenseExist(false)
         setConcludedLicenseNone(true)
         setConcludedLicenseNoasserttion(false)
+        setConcludedLicenseToPackage(e.target.value)
     }
-    const selectConcludedLicenseNoasserttion = () => {
+    const selectConcludedLicenseNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
         setConcludedLicenseExist(false)
         setConcludedLicenseNone(false)
         setConcludedLicenseNoasserttion(true)
+        setConcludedLicenseToPackage(e.target.value)
     }
 
     const updateField = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,7 +73,7 @@ function PackageConcludedLicense({
                             name='licenseConcluded'
                             placeholder='Enter concluded license'
                             onChange={updateField}
-                            value={packageInformation.licenseConcluded ?? ''}
+                            value={concludedLicense ?? ''}
                             disabled={concludedLicenseNone || concludedLicenseNoasserttion}
                         />
                     </div>
@@ -83,7 +84,7 @@ function PackageConcludedLicense({
                             type='radio'
                             name='_sw360_portlet_components_LICENSE_CONCLUDED'
                             value='NONE'
-                            onClick={selectConcludedLicenseNone}
+                            onChange={selectConcludedLicenseNone}
                             checked={concludedLicenseNone}
                         />
                         <label
@@ -99,7 +100,7 @@ function PackageConcludedLicense({
                             type='radio'
                             name='_sw360_portlet_components_LICENSE_CONCLUDED'
                             value='NOASSERTION'
-                            onClick={selectConcludedLicenseNoasserttion}
+                            onChange={selectConcludedLicenseNoasserttion}
                             checked={concludedLicenseNoasserttion}
                         />
                         <label className='form-check-label radio-label lableSPDX' htmlFor='licenseConcludedNoAssertion'>

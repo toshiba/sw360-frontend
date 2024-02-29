@@ -7,11 +7,8 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
-// import { useTranslations } from 'next-intl'
-
 interface Props {
-    packageInformation?: PackageInformation
+    copyrightText?: string
     setCopyrightTextToPackage?: any
     copyrightTextExist?: boolean
     setCopyrightTextExist?: React.Dispatch<React.SetStateAction<boolean>>
@@ -22,7 +19,7 @@ interface Props {
 }
 
 function PackageCopyrightText({
-    packageInformation,
+    copyrightText,
     setCopyrightTextToPackage,
     copyrightTextExist,
     setCopyrightTextExist,
@@ -35,16 +32,19 @@ function PackageCopyrightText({
         setCopyrightTextExist(true)
         setCopyrightTextNone(false)
         setCopyrightTextNoasserttion(false)
+        setCopyrightTextToPackage(copyrightText)
     }
-    const selectCopyrightTextNone = () => {
+    const selectCopyrightTextNone = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCopyrightTextExist(false)
         setCopyrightTextNone(true)
         setCopyrightTextNoasserttion(false)
+        setCopyrightTextToPackage(e.target.value)
     }
-    const selectCopyrightTextNoasserttion = () => {
+    const selectCopyrightTextNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCopyrightTextExist(false)
         setCopyrightTextNone(false)
         setCopyrightTextNoasserttion(true)
+        setCopyrightTextToPackage(e.target.value)
     }
 
     const updateField = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -74,7 +74,7 @@ function PackageCopyrightText({
                             name='copyrightText'
                             placeholder='Enter copyright text'
                             onChange={updateField}
-                            value={packageInformation.copyrightText ?? ''}
+                            value={copyrightText ?? ''}
                             disabled={copyrightTextNone || copyrightTextNoasserttion}
                         ></textarea>
                     </div>
@@ -85,7 +85,7 @@ function PackageCopyrightText({
                             type='radio'
                             name='_sw360_portlet_components_COPYRIGHT_TEXT'
                             value='NONE'
-                            onClick={selectCopyrightTextNone}
+                            onChange={selectCopyrightTextNone}
                             checked={copyrightTextNone}
                         />
                         <label
@@ -101,7 +101,7 @@ function PackageCopyrightText({
                             type='radio'
                             name='_sw360_portlet_components_COPYRIGHT_TEXT'
                             value='NOASSERTION'
-                            onClick={selectCopyrightTextNoasserttion}
+                            onChange={selectCopyrightTextNoasserttion}
                             checked={copyrightTextNoasserttion}
                         />
                         <label className='form-check-label radio-label lableSPDX' htmlFor='copyrightTextNoAssertion'>
