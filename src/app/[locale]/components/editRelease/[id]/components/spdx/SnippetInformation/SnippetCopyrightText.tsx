@@ -7,33 +7,46 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import { useState } from 'react'
-import SnippetInformation from '../../../../../../../../object-types/spdx/SnippetInformation'
 interface Props {
-    snippetInformation?: SnippetInformation
+    snippetCopyrightText?: string
+    setSnippetConcludedLicenseToSnippet?: any
+    snippetCopyrightTextExist?: boolean
+    setSnippetCopyrightTextExist?: React.Dispatch<React.SetStateAction<boolean>>
+    snippetCopyrightTextNone?: boolean
+    setSnippetCopyrightTextNone?: React.Dispatch<React.SetStateAction<boolean>>
+    snippetCopyrightTextNoasserttion?: boolean
+    setSnippetCopyrightTextNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
     updateField?: any
 }
 
-function SnippetCopyrightText({ snippetInformation, updateField }: Props) {
-    // snippetCopyrightText
-    const [snippetCopyrightTextExist, setSnippetCopyrightTextExist] = useState(true)
-    const [snippetCopyrightTextNone, setSnippetCopyrightTextNone] = useState(false)
-    const [snippetCopyrightTextNoasserttion, setSnippetCopyrightTextNoasserttion] = useState(false)
-
+function SnippetCopyrightText({
+    snippetCopyrightText,
+    setSnippetConcludedLicenseToSnippet,
+    snippetCopyrightTextExist,
+    setSnippetCopyrightTextExist,
+    snippetCopyrightTextNone,
+    setSnippetCopyrightTextNone,
+    snippetCopyrightTextNoasserttion,
+    setSnippetCopyrightTextNoasserttion,
+    updateField,
+}: Props) {
     const selectSnippetCopyrightTextExist = () => {
         setSnippetCopyrightTextExist(true)
         setSnippetCopyrightTextNone(false)
         setSnippetCopyrightTextNoasserttion(false)
+        setSnippetConcludedLicenseToSnippet(snippetCopyrightText)
     }
-    const selectSnippetCopyrightTextNone = () => {
+    const selectSnippetCopyrightTextNone = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSnippetCopyrightTextExist(false)
         setSnippetCopyrightTextNone(true)
         setSnippetCopyrightTextNoasserttion(false)
+        setSnippetConcludedLicenseToSnippet(e.target.value)
     }
-    const selectSnippetCopyrightTextNoasserttion = () => {
+    const selectSnippetCopyrightTextNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSnippetCopyrightTextExist(false)
         setSnippetCopyrightTextNone(false)
         setSnippetCopyrightTextNoasserttion(true)
+        setSnippetConcludedLicenseToSnippet(e.target.value)
     }
 
     return (
@@ -59,7 +72,7 @@ function SnippetCopyrightText({ snippetInformation, updateField }: Props) {
                             name='copyrightText'
                             placeholder='Enter snippet copyright text'
                             onChange={updateField}
-                            value={snippetInformation.copyrightText ?? ''}
+                            value={snippetCopyrightText ?? ''}
                             disabled={snippetCopyrightTextNone || snippetCopyrightTextNoasserttion}
                         ></textarea>
                     </div>
@@ -68,9 +81,9 @@ function SnippetCopyrightText({ snippetInformation, updateField }: Props) {
                             className='spdx-radio'
                             id='snippetCopyrightTextNone'
                             type='radio'
-                            name='_sw360_portlet_components_SNIPPET_COPYRIGHT_TEXT'
+                            name='copyrightText'
                             value='NONE'
-                            onClick={selectSnippetCopyrightTextNone}
+                            onChange={selectSnippetCopyrightTextNone}
                             checked={snippetCopyrightTextNone}
                         />
                         <label
@@ -84,9 +97,9 @@ function SnippetCopyrightText({ snippetInformation, updateField }: Props) {
                             className='spdx-radio'
                             id='snippetCopyrightTextNoAssertion'
                             type='radio'
-                            name='_sw360_portlet_components_SNIPPET_COPYRIGHT_TEXT'
+                            name='copyrightText'
                             value='NOASSERTION'
-                            onClick={selectSnippetCopyrightTextNoasserttion}
+                            onChange={selectSnippetCopyrightTextNoasserttion}
                             checked={snippetCopyrightTextNoasserttion}
                         />
                         <label

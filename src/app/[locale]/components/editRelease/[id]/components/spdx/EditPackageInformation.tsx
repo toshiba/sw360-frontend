@@ -307,12 +307,6 @@ const EditPackageInformation = ({
     const [concludedLicenseNoasserttion, setConcludedLicenseNoasserttion] = useState(false)
 
     const setConcludedLicenseToPackage = (data: string) => {
-        if (concludedLicenseNone) {
-            data = 'NONE'
-        }
-        if (concludedLicenseNoasserttion) {
-            data = 'NOASSERTION'
-        }
         setPackageInformation({
             ...packageInformation,
             licenseConcluded: data,
@@ -357,12 +351,6 @@ const EditPackageInformation = ({
     const [declaredLicenseNoasserttion, setDeclaredLicenseNoasserttion] = useState(false)
 
     const setDeclaredLicenseToPackage = (data: string) => {
-        if (declaredLicenseNone) {
-            data = 'NONE'
-        }
-        if (declaredLicenseNoasserttion) {
-            data = 'NOASSERTION'
-        }
         setPackageInformation({
             ...packageInformation,
             licenseDeclared: data,
@@ -382,12 +370,6 @@ const EditPackageInformation = ({
     const [copyrightTextNoasserttion, setCopyrightTextNoasserttion] = useState(false)
 
     const setCopyrightTextToPackage = (data: string) => {
-        if (copyrightTextNone) {
-            data = 'NONE'
-        }
-        if (copyrightTextNoasserttion) {
-            data = 'NOASSERTION'
-        }
         setPackageInformation({
             ...packageInformation,
             copyrightText: data,

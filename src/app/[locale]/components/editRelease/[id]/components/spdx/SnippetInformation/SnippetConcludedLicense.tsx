@@ -7,33 +7,46 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import { useState } from 'react'
-import SnippetInformation from '../../../../../../../../object-types/spdx/SnippetInformation'
 interface Props {
-    snippetInformation?: SnippetInformation
+    snippetConcludedLicense?: string
+    setSnippetConcludedLicenseToSnippet?: any
+    snippetConcludedLicenseExist?: boolean
+    setSnippetConcludedLicenseExist?: React.Dispatch<React.SetStateAction<boolean>>
+    snippetConcludedLicenseNone?: boolean
+    setSnippetConcludedLicenseNone?: React.Dispatch<React.SetStateAction<boolean>>
+    snippetConcludedLicenseNoasserttion?: boolean
+    setSnippetConcludedLicenseNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
     updateField?: any
 }
 
-function SnippetConcludedLicense({ snippetInformation, updateField }: Props) {
-    //snippetConcludedLicense
-    const [snippetConcludedLicenseExist, setSnippetConcludedLicenseExist] = useState(true)
-    const [snippetConcludedLicenseNone, setSnippetConcludedLicenseNone] = useState(false)
-    const [snippetConcludedLicenseNoasserttion, setSnippetConcludedLicenseNoasserttion] = useState(false)
-
+function SnippetConcludedLicense({
+    snippetConcludedLicense,
+    setSnippetConcludedLicenseToSnippet,
+    snippetConcludedLicenseExist,
+    setSnippetConcludedLicenseExist,
+    snippetConcludedLicenseNone,
+    setSnippetConcludedLicenseNone,
+    snippetConcludedLicenseNoasserttion,
+    setSnippetConcludedLicenseNoasserttion,
+    updateField,
+}: Props) {
     const selectSnippetConcludedLicenseExist = () => {
         setSnippetConcludedLicenseExist(true)
         setSnippetConcludedLicenseNone(false)
         setSnippetConcludedLicenseNoasserttion(false)
+        setSnippetConcludedLicenseToSnippet(snippetConcludedLicense)
     }
-    const selectSnippetConcludedLicenseNone = () => {
+    const selectSnippetConcludedLicenseNone = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSnippetConcludedLicenseExist(false)
         setSnippetConcludedLicenseNone(true)
         setSnippetConcludedLicenseNoasserttion(false)
+        setSnippetConcludedLicenseToSnippet(e.target.value)
     }
-    const selectSnippetConcludedLicenseNoasserttion = () => {
+    const selectSnippetConcludedLicenseNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSnippetConcludedLicenseExist(false)
         setSnippetConcludedLicenseNone(false)
         setSnippetConcludedLicenseNoasserttion(true)
+        setSnippetConcludedLicenseToSnippet(e.target.value)
     }
 
     return (
@@ -46,7 +59,7 @@ function SnippetConcludedLicense({ snippetInformation, updateField }: Props) {
                             className='spdx-radio'
                             id='spdxConcludedLicenseExist'
                             type='radio'
-                            name='_sw360_portlet_components_CONCLUDED_LICENSE'
+                            name='licenseConcluded'
                             value='EXIST'
                             onClick={selectSnippetConcludedLicenseExist}
                             checked={snippetConcludedLicenseExist}
@@ -59,7 +72,7 @@ function SnippetConcludedLicense({ snippetInformation, updateField }: Props) {
                             name='licenseConcluded'
                             placeholder='Enter snippet concluded license'
                             onChange={updateField}
-                            value={snippetInformation.licenseConcluded ?? ''}
+                            value={snippetConcludedLicense ?? ''}
                             disabled={snippetConcludedLicenseNone || snippetConcludedLicenseNoasserttion}
                         />
                     </div>
@@ -68,9 +81,9 @@ function SnippetConcludedLicense({ snippetInformation, updateField }: Props) {
                             className='spdx-radio'
                             id='spdxConcludedLicenseNone'
                             type='radio'
-                            name='_sw360_portlet_components_CONCLUDED_LICENSE'
+                            name='licenseConcluded'
                             value='NONE'
-                            onClick={selectSnippetConcludedLicenseNone}
+                            onChange={selectSnippetConcludedLicenseNone}
                             checked={snippetConcludedLicenseNone}
                         />
                         <label
@@ -84,9 +97,9 @@ function SnippetConcludedLicense({ snippetInformation, updateField }: Props) {
                             className='spdx-radio'
                             id='spdxConcludedLicenseNoAssertion'
                             type='radio'
-                            name='_sw360_portlet_components_CONCLUDED_LICENSE'
+                            name='licenseConcluded'
                             value='NOASSERTION'
-                            onClick={selectSnippetConcludedLicenseNoasserttion}
+                            onChange={selectSnippetConcludedLicenseNoasserttion}
                             checked={snippetConcludedLicenseNoasserttion}
                         />
                         <label

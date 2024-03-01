@@ -95,6 +95,56 @@ const EditSnippetInformation = ({
         })
     }
 
+    const [snippetConcludedLicense, setSnippetConcludedLicense] = useState('')
+    const [snippetConcludedLicenseExist, setSnippetConcludedLicenseExist] = useState(true)
+    const [snippetConcludedLicenseNone, setSnippetConcludedLicenseNone] = useState(false)
+    const [snippetConcludedLicenseNoasserttion, setSnippetConcludedLicenseNoasserttion] = useState(false)
+
+    const setSnippetConcludedLicenseToSnippet = (data: string) => {
+        const snippets: SnippetInformation[] = snippetInformations.map((snippet, index) => {
+            if (index === indexSnippetInformation) {
+                return {
+                    ...snippet,
+                    licenseConcluded: data,
+                }
+            }
+            return snippet
+        })
+        setSnippetInformations(snippets)
+        setSPDXPayload({
+            ...SPDXPayload,
+            spdxDocument: {
+                ...SPDXPayload.spdxDocument,
+                snippets: snippets,
+            },
+        })
+    }
+
+    const [snippetCopyrightText, setSnippetCopyrightText] = useState('')
+    const [snippetCopyrightTextExist, setSnippetCopyrightTextExist] = useState(true)
+    const [snippetCopyrightTextNone, setSnippetCopyrightTextNone] = useState(false)
+    const [snippetCopyrightTextNoasserttion, setSnippetCopyrightTextNoasserttion] = useState(false)
+
+    const setSnippetCopyrightTextToSnippet = (data: string) => {
+        const snippets: SnippetInformation[] = snippetInformations.map((snippet, index) => {
+            if (index === indexSnippetInformation) {
+                return {
+                    ...snippet,
+                    copyrightText: data,
+                }
+            }
+            return snippet
+        })
+        setSnippetInformations(snippets)
+        setSPDXPayload({
+            ...SPDXPayload,
+            spdxDocument: {
+                ...SPDXPayload.spdxDocument,
+                snippets: snippets,
+            },
+        })
+    }
+
     useEffect(() => {
         if (typeof snippetInformations[indexSnippetInformation]?.snippetRanges !== 'undefined') {
             setSnippetRanges(convertSnippetRanges(snippetInformations[indexSnippetInformation].snippetRanges))
@@ -102,6 +152,30 @@ const EditSnippetInformation = ({
 
         if (typeof snippetInformations[indexSnippetInformation]?.snippetFromFile !== 'undefined') {
             setDataSnippetFromFile(handleSnippetFromFile(snippetInformations[indexSnippetInformation].snippetFromFile))
+        }
+
+        if (typeof snippetInformations[indexSnippetInformation]?.licenseConcluded !== 'undefined') {
+            if (
+                snippetInformations[indexSnippetInformation]?.licenseConcluded === 'NONE' ||
+                snippetInformations[indexSnippetInformation]?.licenseConcluded === 'NOASSERTION'
+            ) {
+                const data: string = snippetConcludedLicense
+                setSnippetConcludedLicense(data)
+            } else {
+                setSnippetConcludedLicense(snippetInformations[indexSnippetInformation].licenseConcluded)
+            }
+        }
+
+        if (typeof snippetInformations[indexSnippetInformation]?.copyrightText !== 'undefined') {
+            if (
+                snippetInformations[indexSnippetInformation]?.copyrightText === 'NONE' ||
+                snippetInformations[indexSnippetInformation]?.copyrightText === 'NOASSERTION'
+            ) {
+                const data: string = snippetCopyrightText
+                setSnippetCopyrightText(data)
+            } else {
+                setSnippetCopyrightText(snippetInformations[indexSnippetInformation].copyrightText)
+            }
         }
     }, [indexSnippetInformation, snippetInformations])
 
@@ -295,7 +369,14 @@ const EditSnippetInformation = ({
                         </tr>
                         <tr>
                             <SnippetConcludedLicense
-                                snippetInformation={snippetInformations[indexSnippetInformation]}
+                                snippetConcludedLicense={snippetConcludedLicense}
+                                setSnippetConcludedLicenseToSnippet={setSnippetConcludedLicenseToSnippet}
+                                snippetConcludedLicenseExist={snippetConcludedLicenseExist}
+                                setSnippetConcludedLicenseExist={setSnippetConcludedLicenseExist}
+                                snippetConcludedLicenseNone={snippetConcludedLicenseNone}
+                                setSnippetConcludedLicenseNone={setSnippetConcludedLicenseNone}
+                                snippetConcludedLicenseNoasserttion={snippetConcludedLicenseNoasserttion}
+                                setSnippetConcludedLicenseNoasserttion={setSnippetConcludedLicenseNoasserttion}
                                 updateField={updateField}
                             />
                         </tr>
@@ -325,7 +406,14 @@ const EditSnippetInformation = ({
                         </tr>
                         <tr>
                             <SnippetCopyrightText
-                                snippetInformation={snippetInformations[indexSnippetInformation]}
+                                snippetCopyrightText={snippetCopyrightText}
+                                setSnippetConcludedLicenseToSnippet={setSnippetCopyrightTextToSnippet}
+                                snippetCopyrightTextExist={snippetCopyrightTextExist}
+                                setSnippetCopyrightTextExist={setSnippetCopyrightTextExist}
+                                snippetCopyrightTextNone={snippetCopyrightTextNone}
+                                setSnippetCopyrightTextNone={setSnippetCopyrightTextNone}
+                                snippetCopyrightTextNoasserttion={snippetCopyrightTextNoasserttion}
+                                setSnippetCopyrightTextNoasserttion={setSnippetCopyrightTextNoasserttion}
                                 updateField={updateField}
                             />
                         </tr>

@@ -10,11 +10,12 @@
 
 'use client'
 import CommonUtils from '@/utils/common.utils'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import OtherLicensingInformationDetected from '../../../../../../../object-types/spdx/OtherLicensingInformationDetected'
 import SPDX from '../../../../../../../object-types/spdx/SPDX'
 import styles from '../detail.module.css'
+import OtherLicenseName from './OtherLicenseName'
 
 interface Props {
     isModeFull?: boolean
@@ -36,7 +37,6 @@ const EditOtherLicensingInformationDetected = ({
     setSPDXPayload,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
-    const [licenseName, setLicenseName] = useState(true)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
@@ -109,6 +109,45 @@ const EditOtherLicensingInformationDetected = ({
                 setNumberIndex(otherLicensingInformationDetectedDatas[0].index)
             }
         }
+    }
+
+    useEffect(() => {
+        if (typeof otherLicensingInformationDetecteds[indexOtherLicense]?.licenseName !== 'undefined') {
+            if (
+                otherLicensingInformationDetecteds[indexOtherLicense]?.licenseName === 'NONE' ||
+                otherLicensingInformationDetecteds[indexOtherLicense]?.licenseName === 'NOASSERTION'
+            ) {
+                const data: string = licenseName
+                setLicenseName(data)
+            } else {
+                setLicenseName(otherLicensingInformationDetecteds[indexOtherLicense].licenseName)
+            }
+        }
+    }, [indexOtherLicense, otherLicensingInformationDetecteds])
+
+    const [licenseName, setLicenseName] = useState('')
+    const [isLicenseName, setIsLicenseName] = useState(true)
+
+    const setLicenseNameToOtherLicense = (data: string) => {
+        const otherLicensings: OtherLicensingInformationDetected[] = otherLicensingInformationDetecteds.map(
+            (otherLicensing, index) => {
+                if (index === indexOtherLicense) {
+                    return {
+                        ...otherLicensing,
+                        licenseName: data,
+                    }
+                }
+                return otherLicensing
+            }
+        )
+        setOtherLicensingInformationDetecteds(otherLicensings)
+        setSPDXPayload({
+            ...SPDXPayload,
+            spdxDocument: {
+                ...SPDXPayload.spdxDocument,
+                otherLicensingInformationDetecteds: otherLicensings,
+            },
+        })
     }
 
     return (
@@ -210,55 +249,13 @@ const EditOtherLicensingInformationDetected = ({
                             </td>
                         </tr>
                         <tr>
-                            <td colSpan={3}>
-                                <div className='form-group'>
-                                    <label className='lableSPDX'>10.3 License name</label>
-                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='licenseNameExist'
-                                                type='radio'
-                                                name='_sw360_portlet_components_LICENSE_NAME'
-                                                value='EXIST'
-                                                onClick={() => setLicenseName(true)}
-                                                checked={licenseName}
-                                            />
-                                            <input
-                                                style={{ flex: 6, marginRight: '1rem' }}
-                                                id='licenseName'
-                                                className='form-control needs-validation'
-                                                type='text'
-                                                placeholder='Enter license name'
-                                                name='licenseName'
-                                                onChange={updateField}
-                                                value={
-                                                    otherLicensingInformationDetecteds[indexOtherLicense].licenseName ??
-                                                    ''
-                                                }
-                                                disabled={!licenseName}
-                                            />
-                                        </div>
-                                        <div style={{ flex: 2 }}>
-                                            <input
-                                                className='spdx-radio'
-                                                id='licenseNameNoAssertion'
-                                                type='radio'
-                                                name='_sw360_portlet_components_LICENSE_NAME'
-                                                value='NOASSERTION'
-                                                onClick={() => setLicenseName(false)}
-                                                checked={!licenseName}
-                                            />
-                                            <label
-                                                className='form-check-label radio-label lableSPDX'
-                                                htmlFor='licenseNameNoAssertion'
-                                            >
-                                                NOASSERTION
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
+                            <OtherLicenseName
+                                licenseName={licenseName}
+                                updateField={updateField}
+                                setLicenseNameToOtherLicense={setLicenseNameToOtherLicense}
+                                isLicenseName={isLicenseName}
+                                setIsLicenseName={setIsLicenseName}
+                            />
                         </tr>
                         {isModeFull && (
                             <tr className='spdx-full'>
