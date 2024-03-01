@@ -131,7 +131,12 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                         <p className='spdx-col-2 ' id='licenseInfoFromFile'>
                             {packageInformation?.licenseInfoFromFiles &&
                                 packageInformation?.licenseInfoFromFiles.map((item) => {
-                                    return <>{item}</>
+                                    return (
+                                        <>
+                                            {item}
+                                            <br></br>
+                                        </>
+                                    )
                                 })}
                         </p>
                     </td>

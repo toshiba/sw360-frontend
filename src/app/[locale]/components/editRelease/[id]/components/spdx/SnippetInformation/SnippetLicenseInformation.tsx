@@ -7,33 +7,50 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import { useState } from 'react'
-import SnippetInformation from '../../../../../../../../object-types/spdx/SnippetInformation'
 interface Props {
-    snippetInformation?: SnippetInformation
-    updateField?: any
+    licenseInfoInSnippets?: string[]
+    setAllLicensesInformationToSnippet?: any
+    licenseInfoInSnippetsExist?: boolean
+    setLicenseInfoInSnippetsExist?: React.Dispatch<React.SetStateAction<boolean>>
+    licenseInfoInSnippetsNone?: boolean
+    setLicenseInfoInSnippetsNone?: React.Dispatch<React.SetStateAction<boolean>>
+    licenseInfoInSnippetsNoasserttion?: boolean
+    setLicenseInfoInSnippetsNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function SnippetLicenseInformation({ snippetInformation, updateField }: Props) {
+function SnippetLicenseInformation({
+    licenseInfoInSnippets,
+    setAllLicensesInformationToSnippet,
+    licenseInfoInSnippetsExist,
+    setLicenseInfoInSnippetsExist,
+    licenseInfoInSnippetsNone,
+    setLicenseInfoInSnippetsNone,
+    licenseInfoInSnippetsNoasserttion,
+    setLicenseInfoInSnippetsNoasserttion,
+}: Props) {
     // licenseInfoSnippet
-    const [licenseInfoSnippetExist, setLicenseInfoSnippetExist] = useState(true)
-    const [licenseInfoSnippetNone, setLicenseInfoSnippetNone] = useState(false)
-    const [licenseInfoSnippetNoasserttion, setLicenseInfoSnippetNoasserttion] = useState(false)
 
     const selectLicenseInfoSnippetExist = () => {
-        setLicenseInfoSnippetExist(true)
-        setLicenseInfoSnippetNone(false)
-        setLicenseInfoSnippetNoasserttion(false)
+        setLicenseInfoInSnippetsExist(true)
+        setLicenseInfoInSnippetsNone(false)
+        setLicenseInfoInSnippetsNoasserttion(false)
+        setAllLicensesInformationToSnippet(licenseInfoInSnippets)
     }
-    const selectLicenseInfoSnippetNone = () => {
-        setLicenseInfoSnippetExist(false)
-        setLicenseInfoSnippetNone(true)
-        setLicenseInfoSnippetNoasserttion(false)
+    const selectLicenseInfoSnippetNone = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLicenseInfoInSnippetsExist(false)
+        setLicenseInfoInSnippetsNone(true)
+        setLicenseInfoInSnippetsNoasserttion(false)
+        setAllLicensesInformationToSnippet(e.target.value)
     }
-    const selectLicenseInfoSnippetNoasserttion = () => {
-        setLicenseInfoSnippetExist(false)
-        setLicenseInfoSnippetNone(false)
-        setLicenseInfoSnippetNoasserttion(true)
+    const selectLicenseInfoSnippetNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLicenseInfoInSnippetsExist(false)
+        setLicenseInfoInSnippetsNone(false)
+        setLicenseInfoInSnippetsNoasserttion(true)
+        setAllLicensesInformationToSnippet(e.target.value)
+    }
+
+    const updateField = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setAllLicensesInformationToSnippet(e.target.value.split('\n'))
     }
 
     return (
@@ -46,10 +63,10 @@ function SnippetLicenseInformation({ snippetInformation, updateField }: Props) {
                             className='spdx-radio'
                             id='licenseInfoInFile'
                             type='radio'
-                            name='_sw360_portlet_components_LICENSE_INFO_IN_FILE'
+                            name='licenseInfoInSnippets'
                             value='EXIST'
                             onClick={selectLicenseInfoSnippetExist}
-                            checked={licenseInfoSnippetExist}
+                            checked={licenseInfoInSnippetsExist}
                         />
                         <textarea
                             style={{ flex: 6, marginRight: '1rem' }}
@@ -59,8 +76,8 @@ function SnippetLicenseInformation({ snippetInformation, updateField }: Props) {
                             name='licenseInfoInSnippets'
                             placeholder='Enter license information in snippet'
                             onChange={updateField}
-                            value={snippetInformation.licenseInfoInSnippets ?? ''}
-                            disabled={licenseInfoSnippetNone || licenseInfoSnippetNoasserttion}
+                            value={licenseInfoInSnippets.toString().replaceAll(',', '\n') ?? ''}
+                            disabled={licenseInfoInSnippetsNone || licenseInfoInSnippetsNoasserttion}
                         ></textarea>
                     </div>
                     <div style={{ flex: 2 }}>
@@ -68,10 +85,10 @@ function SnippetLicenseInformation({ snippetInformation, updateField }: Props) {
                             className='spdx-radio'
                             id='licenseInfoInFileNone'
                             type='radio'
-                            name='_sw360_portlet_components_LICENSE_INFO_IN_FILE'
+                            name='licenseInfoInSnippets'
                             value='NONE'
-                            onClick={selectLicenseInfoSnippetNone}
-                            checked={licenseInfoSnippetNone}
+                            onChange={selectLicenseInfoSnippetNone}
+                            checked={licenseInfoInSnippetsNone}
                         />
                         <label
                             style={{ marginRight: '2rem' }}
@@ -84,10 +101,10 @@ function SnippetLicenseInformation({ snippetInformation, updateField }: Props) {
                             className='spdx-radio'
                             id='licenseInfoInFileNoAssertion'
                             type='radio'
-                            name='_sw360_portlet_components_LICENSE_INFO_IN_FILE'
+                            name='licenseInfoInSnippets'
                             value='NOASSERTION'
-                            onClick={selectLicenseInfoSnippetNoasserttion}
-                            checked={licenseInfoSnippetNoasserttion}
+                            onChange={selectLicenseInfoSnippetNoasserttion}
+                            checked={licenseInfoInSnippetsNoasserttion}
                         />
                         <label
                             className='form-check-label radio-label lableSPDX'

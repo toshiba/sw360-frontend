@@ -320,27 +320,21 @@ const EditPackageInformation = ({
         })
     }
 
-    // const [allLicensesInformation, setAllLicensesInformation] = useState<Array<string>>()
+    const [allLicensesInformation, setAllLicensesInformation] = useState<Array<string>>()
     const [allLicensesInformationExist, setAllLicensesInformationExist] = useState(true)
     const [allLicensesInformationNone, setAllLicensesInformationNone] = useState(false)
     const [allLicensesInformationNoasserttion, setAllLicensesInformationNoasserttion] = useState(false)
 
-    const setAllLicensesInformationToPackage = (data: string) => {
-        if (allLicensesInformationNone) {
-            data = 'NONE'
-        }
-        if (allLicensesInformationNoasserttion) {
-            data = 'NOASSERTION'
-        }
+    const setAllLicensesInformationToPackage = (data: string[]) => {
         setPackageInformation({
             ...packageInformation,
-            licenseInfoFromFiles: data.split('\n'),
+            licenseInfoFromFiles: data,
         })
         setSPDXPayload({
             ...SPDXPayload,
             packageInformation: {
                 ...SPDXPayload.packageInformation,
-                licenseInfoFromFiles: data.split('\n'),
+                licenseInfoFromFiles: data,
             },
         })
     }
@@ -449,14 +443,17 @@ const EditPackageInformation = ({
             }
         }
 
-        // if (typeof packageInformation?.licenseInfoFromFiles !== 'undefined') {
-        //     if(packageInformation.licenseInfoFromFiles === 'NONE' || packageInformation.licenseInfoFromFiles === 'NOASSERTION') {
-        //         const data: string = packageHomePage
-        //         setAllLicensesInformation(data)
-        //     } else {
-        //         setAllLicensesInformation(packageInformation.licenseInfoFromFiles)
-        //     }
-        // }
+        if (typeof packageInformation?.licenseInfoFromFiles !== 'undefined') {
+            if (
+                packageInformation.licenseInfoFromFiles.at(0) === 'NONE' ||
+                packageInformation.licenseInfoFromFiles.at(0) === 'NOASSERTION'
+            ) {
+                const data: string[] = allLicensesInformation
+                setAllLicensesInformation(data)
+            } else {
+                setAllLicensesInformation(packageInformation.licenseInfoFromFiles)
+            }
+        }
 
         if (typeof packageInformation?.releaseDate !== 'undefined') {
             setDataReleaseDate(handleDate(packageInformation.releaseDate))
@@ -898,6 +895,7 @@ const EditPackageInformation = ({
                             <tr>
                                 <PackageAllLicensesInformation
                                     packageInformation={packageInformation}
+                                    allLicensesInformation={allLicensesInformation}
                                     setAllLicensesInformationToPackage={setAllLicensesInformationToPackage}
                                     allLicensesInformationExist={allLicensesInformationExist}
                                     setAllLicensesInformationExist={setAllLicensesInformationExist}

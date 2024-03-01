@@ -166,6 +166,18 @@ const EditSnippetInformation = ({
             }
         }
 
+        if (typeof snippetInformations[indexSnippetInformation]?.licenseInfoInSnippets !== 'undefined') {
+            if (
+                snippetInformations[indexSnippetInformation].licenseInfoInSnippets.at(0) === 'NONE' ||
+                snippetInformations[indexSnippetInformation].licenseInfoInSnippets.at(0) === 'NOASSERTION'
+            ) {
+                const data: string[] = licenseInfoInSnippets
+                setLicenseInfoInSnippets(data)
+            } else {
+                setLicenseInfoInSnippets(snippetInformations[indexSnippetInformation].licenseInfoInSnippets)
+            }
+        }
+
         if (typeof snippetInformations[indexSnippetInformation]?.copyrightText !== 'undefined') {
             if (
                 snippetInformations[indexSnippetInformation]?.copyrightText === 'NONE' ||
@@ -201,6 +213,31 @@ const EditSnippetInformation = ({
                     ...snippet,
                     [e.target.name]:
                         e.target.name === 'licenseInfoInSnippets' ? e.target.value.split('\n') : e.target.value,
+                }
+            }
+            return snippet
+        })
+        setSnippetInformations(snippets)
+        setSPDXPayload({
+            ...SPDXPayload,
+            spdxDocument: {
+                ...SPDXPayload.spdxDocument,
+                snippets: snippets,
+            },
+        })
+    }
+
+    const [licenseInfoInSnippets, setLicenseInfoInSnippets] = useState<Array<string>>()
+    const [licenseInfoInSnippetsExist, setLicenseInfoInSnippetsExist] = useState(true)
+    const [licenseInfoInSnippetsNone, setLicenseInfoInSnippetsNone] = useState(false)
+    const [licenseInfoInSnippetsNoasserttion, setLicenseInfoInSnippetsNoasserttion] = useState(false)
+
+    const setAllLicensesInformationToSnippet = (data: string[]) => {
+        const snippets: SnippetInformation[] = snippetInformations.map((snippet, index) => {
+            if (index === indexSnippetInformation) {
+                return {
+                    ...snippet,
+                    licenseInfoInSnippets: data,
                 }
             }
             return snippet
@@ -382,8 +419,14 @@ const EditSnippetInformation = ({
                         </tr>
                         <tr>
                             <SnippetLicenseInformation
-                                snippetInformation={snippetInformations[indexSnippetInformation]}
-                                updateField={updateField}
+                                licenseInfoInSnippets={licenseInfoInSnippets}
+                                setAllLicensesInformationToSnippet={setAllLicensesInformationToSnippet}
+                                licenseInfoInSnippetsExist={licenseInfoInSnippetsExist}
+                                setLicenseInfoInSnippetsExist={setLicenseInfoInSnippetsExist}
+                                licenseInfoInSnippetsNone={licenseInfoInSnippetsNone}
+                                setLicenseInfoInSnippetsNone={setLicenseInfoInSnippetsNone}
+                                licenseInfoInSnippetsNoasserttion={licenseInfoInSnippetsNoasserttion}
+                                setLicenseInfoInSnippetsNoasserttion={setLicenseInfoInSnippetsNoasserttion}
                             />
                         </tr>
                         <tr>

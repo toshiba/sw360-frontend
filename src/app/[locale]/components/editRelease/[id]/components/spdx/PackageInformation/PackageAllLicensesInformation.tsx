@@ -19,9 +19,11 @@ interface Props {
     setAllLicensesInformationNone?: React.Dispatch<React.SetStateAction<boolean>>
     allLicensesInformationNoasserttion?: boolean
     setAllLicensesInformationNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
+    allLicensesInformation?: string[]
 }
 
 function PackageAllLicensesInformation({
+    allLicensesInformation,
     packageInformation,
     setAllLicensesInformationToPackage,
     allLicensesInformationExist,
@@ -35,20 +37,23 @@ function PackageAllLicensesInformation({
         setAllLicensesInformationExist(true)
         setAllLicensesInformationNone(false)
         setAllLicensesInformationNoasserttion(false)
+        setAllLicensesInformationToPackage(allLicensesInformation)
     }
-    const selectAllLicensesInformationNone = () => {
+    const selectAllLicensesInformationNone = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAllLicensesInformationExist(false)
         setAllLicensesInformationNone(true)
         setAllLicensesInformationNoasserttion(false)
+        setAllLicensesInformationToPackage(e.target.value)
     }
-    const selectAllLicensesInformationNoasserttion = () => {
+    const selectAllLicensesInformationNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAllLicensesInformationExist(false)
         setAllLicensesInformationNone(false)
         setAllLicensesInformationNoasserttion(true)
+        setAllLicensesInformationToPackage(e.target.value)
     }
 
     const updateField = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setAllLicensesInformationToPackage(e.target.value)
+        setAllLicensesInformationToPackage(e.target.value.split('\n'))
     }
     return (
         <td colSpan={3}>
@@ -60,7 +65,7 @@ function PackageAllLicensesInformation({
                             className='spdx-radio'
                             id='licenseInfoFromFilesExist'
                             type='radio'
-                            name='_sw360_portlet_components_LICENSE_INFO_FROM_FILES'
+                            name='licenseInfoFromFiles'
                             value='EXIST'
                             onClick={selectAllLicensesInformationExist}
                             checked={allLicensesInformationExist}
@@ -74,7 +79,7 @@ function PackageAllLicensesInformation({
                             name='licenseInfoFromFiles'
                             placeholder='Enter all licenses information from files'
                             onChange={updateField}
-                            value={packageInformation.licenseInfoFromFiles}
+                            value={allLicensesInformation?.toString().replaceAll(',', '\n')}
                             disabled={
                                 allLicensesInformationNone ||
                                 allLicensesInformationNoasserttion ||
@@ -87,9 +92,9 @@ function PackageAllLicensesInformation({
                             className='spdx-radio'
                             id='licenseInfoFromFilesNone'
                             type='radio'
-                            name='_sw360_portlet_components_LICENSE_INFO_FROM_FILES'
+                            name='licenseInfoFromFiles'
                             value='NONE'
-                            onClick={selectAllLicensesInformationNone}
+                            onChange={selectAllLicensesInformationNone}
                             checked={allLicensesInformationNone}
                             disabled={!packageInformation?.filesAnalyzed}
                         />
@@ -104,9 +109,9 @@ function PackageAllLicensesInformation({
                             className='spdx-radio'
                             id='licenseInfoFromFilesNoAssertion'
                             type='radio'
-                            name='_sw360_portlet_components_LICENSE_INFO_FROM_FILES'
+                            name='licenseInfoFromFiles'
                             value='NOASSERTION'
-                            onClick={selectAllLicensesInformationNoasserttion}
+                            onChange={selectAllLicensesInformationNoasserttion}
                             checked={allLicensesInformationNoasserttion}
                             disabled={!packageInformation?.filesAnalyzed}
                         />
