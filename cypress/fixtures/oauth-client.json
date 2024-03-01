@@ -1,0 +1,14 @@
+{
+    "description": "AdminClient",
+    "client_id": "ff0343b1a22beffebde5c940a100067c",
+    "client_secret": "da97dc63-a8fe-4595-bcf2-57f14c3470d9",
+    "authorities": [
+        "BASIC"
+    ],
+    "scope": [
+        "READ",
+        "WRITE"
+    ],
+    "access_token_validity": 2592000,
+    "refresh_token_validity": 2592000
+}
