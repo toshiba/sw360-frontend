@@ -48,3 +48,7 @@ pnpm-lock.yaml
 
 # Aria
 .hintrc
+
+# cypress
+/cypress/screenshots
+/cypress/downloads
