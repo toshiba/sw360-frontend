@@ -24,8 +24,6 @@ import Created from './DocumentCreationInfo/Created'
 interface Props {
     documentCreationInformation?: DocumentCreationInformation
     setDocumentCreationInformation?: React.Dispatch<React.SetStateAction<DocumentCreationInformation>>
-    externalDocumentRef?: ExternalDocumentReferences
-    setExternalDocumentRef?: React.Dispatch<React.SetStateAction<ExternalDocumentReferences>>
     isModeFull?: boolean
     externalDocumentRefs?: ExternalDocumentReferences[]
     setExternalDocumentRefs?: React.Dispatch<React.SetStateAction<ExternalDocumentReferences[]>>
@@ -134,6 +132,24 @@ const EditDocumentCreationInformation = ({
         })
     }
 
+    const handleClickAnonymous = () => {
+        setIsAnonymous(!isAnonymous)
+        let creators: InputKeyValue[] = []
+        creators = creator.filter((input) => input.key != 'Organization').filter((input) => input.key != 'Person')
+        setDocumentCreationInformation({
+            ...documentCreationInformation,
+            creator: convertInputToCreator(creators),
+        })
+
+        setSPDXPayload({
+            ...SPDXPayload,
+            documentCreationInformation: {
+                ...SPDXPayload.documentCreationInformation,
+                creator: convertInputToCreator(creators),
+            },
+        })
+    }
+
     const setDataCreators = (inputs: InputKeyValue[]) => {
         if (isAnonymous) {
             inputs = inputs.filter((input) => input.key != 'Organization').filter((input) => input.key != 'Person')
@@ -193,6 +209,7 @@ const EditDocumentCreationInformation = ({
                 (externalDocumentRef) => numberIndex != externalDocumentRef.index
             )
             setExternalDocumentRefs(externalDocuments)
+            setIndexExternalDocumentRef(0)
             setSPDXPayload({
                 ...SPDXPayload,
                 documentCreationInformation: {
@@ -201,7 +218,6 @@ const EditDocumentCreationInformation = ({
                 },
             })
             if (!CommonUtils.isNullEmptyOrUndefinedArray(externalDocumentRefs)) {
-                // setExternalDocumentRef(externalDocuments[0])
                 setNumberIndex(externalDocuments[0].index)
             }
         }
@@ -555,7 +571,7 @@ const EditDocumentCreationInformation = ({
                                                 id='creator-anonymous'
                                                 className='spdx-checkbox'
                                                 type='checkbox'
-                                                onClick={() => setIsAnonymous(!isAnonymous)}
+                                                onChange={handleClickAnonymous}
                                             />
                                         </div>
                                         <div style={{ display: 'flex' }}>
@@ -573,11 +589,6 @@ const EditDocumentCreationInformation = ({
                                             style={{ display: 'none' }}
                                             type='text'
                                         />
-                                        {/* <div id="spdxCreator-error-messages">
-                            <div className="invalid-feedback" rule="required">
-                                <liferay-ui:message key="this.field.must.be.not.empty" />
-                            </div>
-                        </div> */}
                                     </div>
                                 </div>
                             </td>

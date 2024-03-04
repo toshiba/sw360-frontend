@@ -241,6 +241,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
         if (isSourceSPDXDocument) {
             if (relationshipsBetweenSPDXElementSPDXs.length == 1) {
                 setRelationshipsBetweenSPDXElementSPDXs([])
+                setIndexRelation(0)
                 setSPDXPayload({
                     ...SPDXPayload,
                     spdxDocument: {
@@ -254,6 +255,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                     (relatedSPDXElement) => numberIndexSPDX != relatedSPDXElement.index
                 )
                 setRelationshipsBetweenSPDXElementSPDXs(relationships)
+                setIndexRelation(0)
                 setSPDXPayload({
                     ...SPDXPayload,
                     spdxDocument: {

@@ -689,6 +689,8 @@
         "Update": "Update",
         "Update Component": "Update Component",
         "Update Release": "Update Release",
+        "Update SPDX Document failed!": "Update SPDX Document failed!",
+        "Update SPDX Document Success!": "Update SPDX Document Success!",
         "Update Vulnerability": "Update Vulnerability",
         "Update create comment": "Update create comment",
         "Upload": "Upload",

@@ -98,6 +98,7 @@ const EditOtherLicensingInformationDetected = ({
                 (otherLicensingInformationDetected) => numberIndex != otherLicensingInformationDetected.index
             )
             setOtherLicensingInformationDetecteds(otherLicensingInformationDetectedDatas)
+            setIndexOtherLicense(0)
             setSPDXPayload({
                 ...SPDXPayload,
                 spdxDocument: {

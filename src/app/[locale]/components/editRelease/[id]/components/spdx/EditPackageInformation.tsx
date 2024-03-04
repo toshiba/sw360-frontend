@@ -607,6 +607,7 @@ const EditPackageInformation = ({
             let externalRefs: ExternalReference[] = []
             externalRefs = externalRefsDatas.filter((externalRefsData) => numberIndex != externalRefsData.index)
             setExternalRefsDatas(externalRefs)
+            setIndexExternalRefsData(0)
             setSPDXPayload({
                 ...SPDXPayload,
                 packageInformation: {

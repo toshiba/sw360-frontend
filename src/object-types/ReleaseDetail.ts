@@ -49,6 +49,7 @@ export default interface ReleaseDetail {
     modifiedOn?: string
     cpeId?: string
     eccInformation?: ECCInformation
+    spdxId?: string
     _links?: {
         'sw360:component': {
             href: string

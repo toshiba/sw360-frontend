@@ -350,6 +350,7 @@ const EditAnnotationInformation = ({
                 let annotations: Annotations[] = []
                 annotations = annotationsSPDXs.filter((annotations) => numberIndexSPDX != annotations.index)
                 setAnnotationsSPDXs(annotations)
+                setIndexAnnotations(0)
                 if (!CommonUtils.isNullEmptyOrUndefinedArray(annotations)) {
                     setNumberIndexSPDX(annotations[0].index)
                 }
@@ -361,6 +362,7 @@ const EditAnnotationInformation = ({
                 let annotations: Annotations[] = []
                 annotations = annotationsPackages.filter((annotations) => numberIndexPackage != annotations.index)
                 setAnnotationsPackages(annotations)
+                setIndexAnnotations(0)
                 if (!CommonUtils.isNullEmptyOrUndefinedArray(annotations)) {
                     setNumberIndexPackage(annotations[0].index)
                 }

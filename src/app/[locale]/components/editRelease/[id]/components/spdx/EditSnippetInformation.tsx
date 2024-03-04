@@ -302,6 +302,7 @@ const EditSnippetInformation = ({
                 (snippetInformation) => numberIndex != snippetInformation.index
             )
             setSnippetInformations(snippetInformationDatas)
+            setIndexSnippetInformation(0)
             setSPDXPayload({
                 ...SPDXPayload,
                 spdxDocument: {
