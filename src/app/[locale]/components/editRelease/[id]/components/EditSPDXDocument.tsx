@@ -27,7 +27,7 @@ import SPDX from '../../../../../../object-types/spdx/SPDX'
 import SPDXDocument from '../../../../../../object-types/spdx/SPDXDocument'
 import SnippetInformation from '../../../../../../object-types/spdx/SnippetInformation'
 import styles from './spdx/CssButton.module.css'
-import AnnotationInformation from './spdx/EditAnnotationInformation'
+import EditAnnotationInformation from './spdx/EditAnnotationInformation'
 import EditDocumentCreationInformation from './spdx/EditDocumentCreationInformation'
 import EditOtherLicensingInformationDetected from './spdx/EditOtherLicensingInformationDetected'
 import EditPackageInformation from './spdx/EditPackageInformation'
@@ -169,6 +169,30 @@ const EditSPDXDocument = ({ releaseId, SPDXPayload, setSPDXPayload }: Props) => 
                     setPackageInformation(release._embedded['sw360:packageInformation'])
                     if (
                         !CommonUtils.isNullEmptyOrUndefinedArray(
+                            release._embedded['sw360:packageInformation'].relationships
+                        )
+                    ) {
+                        setIndexRelation(0)
+                        setRelationshipsBetweenSPDXElementPackages(
+                            release._embedded['sw360:packageInformation'].relationships.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )
+                        )
+                    }
+                    if (
+                        !CommonUtils.isNullEmptyOrUndefinedArray(
+                            release._embedded['sw360:packageInformation'].annotations
+                        )
+                    ) {
+                        setIndexAnnotations(0)
+                        setAnnotationsPackages(
+                            release._embedded['sw360:packageInformation'].annotations.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )
+                        )
+                    }
+                    if (
+                        !CommonUtils.isNullEmptyOrUndefinedArray(
                             release._embedded['sw360:packageInformation'].externalRefs
                         )
                     ) {
@@ -188,30 +212,6 @@ const EditSPDXDocument = ({ releaseId, SPDXPayload, setSPDXPayload }: Props) => 
                             setIsTypeCateGoryEmpty(true)
                         }
                         setIndexExternalRefsData(0)
-                    }
-
-                    if (
-                        !CommonUtils.isNullEmptyOrUndefinedArray(
-                            release._embedded['sw360:packageInformation'].relationships
-                        )
-                    ) {
-                        setRelationshipsBetweenSPDXElementPackages(
-                            release._embedded['sw360:packageInformation'].relationships.toSorted(
-                                (e1, e2) => e1.index - e2.index
-                            )
-                        )
-                    }
-
-                    if (
-                        !CommonUtils.isNullEmptyOrUndefinedArray(
-                            release._embedded['sw360:packageInformation'].annotations
-                        )
-                    ) {
-                        setAnnotationsPackages(
-                            release._embedded['sw360:packageInformation'].annotations.toSorted(
-                                (e1, e2) => e1.index - e2.index
-                            )
-                        )
                     }
                 }
             })
@@ -302,7 +302,7 @@ const EditSPDXDocument = ({ releaseId, SPDXPayload, setSPDXPayload }: Props) => 
                         SPDXPayload={SPDXPayload}
                         setSPDXPayload={setSPDXPayload}
                     />
-                    <AnnotationInformation
+                    <EditAnnotationInformation
                         indexAnnotations={indexAnnotations}
                         setIndexAnnotations={setIndexAnnotations}
                         annotationsSPDXs={annotationsSPDXs}

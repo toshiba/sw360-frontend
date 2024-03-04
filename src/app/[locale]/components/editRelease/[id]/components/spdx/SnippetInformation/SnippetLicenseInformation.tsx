@@ -76,7 +76,7 @@ function SnippetLicenseInformation({
                             name='licenseInfoInSnippets'
                             placeholder='Enter license information in snippet'
                             onChange={updateField}
-                            value={licenseInfoInSnippets.toString().replaceAll(',', '\n') ?? ''}
+                            value={licenseInfoInSnippets?.toString().replaceAll(',', '\n') ?? ''}
                             disabled={licenseInfoInSnippetsNone || licenseInfoInSnippetsNoasserttion}
                         ></textarea>
                     </div>

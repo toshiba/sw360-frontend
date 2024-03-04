@@ -191,18 +191,18 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
     }
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
-        const relationsUpdate: RelationshipsBetweenSPDXElements[] = relationshipsBetweenSPDXElementSPDXs.map(
-            (relation, index) => {
-                if (index === indexRelation) {
-                    return {
-                        ...relation,
-                        [e.target.name]: e.target.value,
-                    }
-                }
-                return relation
-            }
-        )
         if (isSourceSPDXDocument) {
+            const relationsUpdate: RelationshipsBetweenSPDXElements[] = relationshipsBetweenSPDXElementSPDXs.map(
+                (relation, index) => {
+                    if (index === indexRelation) {
+                        return {
+                            ...relation,
+                            [e.target.name]: e.target.value,
+                        }
+                    }
+                    return relation
+                }
+            )
             setRelationshipsBetweenSPDXElementSPDXs(relationsUpdate)
             setSPDXPayload({
                 ...SPDXPayload,
@@ -212,7 +212,18 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                 },
             })
         } else {
-            setRelationshipsBetweenSPDXElementSPDXs(relationsUpdate)
+            const relationsUpdate: RelationshipsBetweenSPDXElements[] = relationshipsBetweenSPDXElementPackages.map(
+                (relation, index) => {
+                    if (index === indexRelation) {
+                        return {
+                            ...relation,
+                            [e.target.name]: e.target.value,
+                        }
+                    }
+                    return relation
+                }
+            )
+            setRelationshipsBetweenSPDXElementPackages(relationsUpdate)
             setSPDXPayload({
                 ...SPDXPayload,
                 packageInformation: {
