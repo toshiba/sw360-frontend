@@ -445,8 +445,8 @@ const EditPackageInformation = ({
 
         if (typeof packageInformation?.licenseInfoFromFiles !== 'undefined') {
             if (
-                packageInformation.licenseInfoFromFiles.at(0) === 'NONE' ||
-                packageInformation.licenseInfoFromFiles.at(0) === 'NOASSERTION'
+                packageInformation.licenseInfoFromFiles.toString() === 'NONE' ||
+                packageInformation.licenseInfoFromFiles.toString() === 'NOASSERTION'
             ) {
                 const data: string[] = allLicensesInformation
                 setAllLicensesInformation(data)
@@ -481,34 +481,31 @@ const EditPackageInformation = ({
     }
 
     const updateFieldPackageVerificationCode = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        if (!packageInformation?.filesAnalyzed) {
-            setPackageInformation({
-                ...packageInformation,
-                packageVerificationCode: null,
-            })
-            setSPDXPayload({
-                ...SPDXPayload,
-                packageInformation: {
-                    ...SPDXPayload.packageInformation,
-                    packageVerificationCode: null,
-                },
-            })
-        } else {
-            setPackageInformation({
-                ...packageInformation,
+        // if (!packageInformation?.filesAnalyzed) {
+        //     setPackageInformation({
+        //         ...packageInformation,
+        //         packageVerificationCode: null,
+        //     })
+        // } else {
+
+        // }
+        setPackageInformation({
+            ...packageInformation,
+            packageVerificationCode: {
+                ...packageInformation.packageVerificationCode,
+                [e.target.name]: e.target.value,
+            },
+        })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
                 packageVerificationCode: {
                     ...packageInformation.packageVerificationCode,
                     [e.target.name]: e.target.value,
                 },
-            })
-            setSPDXPayload({
-                ...SPDXPayload,
-                packageInformation: {
-                    ...SPDXPayload.packageInformation,
-                    [e.target.name]: e.target.value,
-                },
-            })
-        }
+            },
+        })
     }
 
     const convertChecksums = (checksums: CheckSum[]) => {
@@ -584,7 +581,7 @@ const EditPackageInformation = ({
         })
     }
 
-    const changeFilesAnalyzed = () => {
+    const changeFilesAnalyzed = (e: React.ChangeEvent<HTMLInputElement>) => {
         setPackageInformation({
             ...packageInformation,
             filesAnalyzed: !packageInformation.filesAnalyzed,
@@ -596,6 +593,32 @@ const EditPackageInformation = ({
                 filesAnalyzed: !packageInformation.filesAnalyzed,
             },
         })
+        if (e.target.value === 'false') {
+            setSPDXPayload({
+                ...SPDXPayload,
+                packageInformation: {
+                    ...SPDXPayload.packageInformation,
+                    versionInfo: '1111',
+                },
+            })
+            setSPDXPayload({
+                ...SPDXPayload,
+                packageInformation: {
+                    ...SPDXPayload.packageInformation,
+                    licenseInfoFromFiles: [],
+                    packageVerificationCode: null,
+                },
+            })
+        } else {
+            setSPDXPayload({
+                ...SPDXPayload,
+                packageInformation: {
+                    ...SPDXPayload.packageInformation,
+                    licenseInfoFromFiles: allLicensesInformation,
+                    packageVerificationCode: packageInformation.packageVerificationCode,
+                },
+            })
+        }
     }
 
     const [numberIndex, setNumberIndex] = useState<number>(0)
@@ -763,8 +786,9 @@ const EditPackageInformation = ({
                                                 className='spdx-radio'
                                                 id='FilesAnalyzedTrue'
                                                 type='radio'
+                                                value='true'
                                                 name='_sw360_portlet_components_FILES_ANALYZED'
-                                                onClick={changeFilesAnalyzed}
+                                                onChange={changeFilesAnalyzed}
                                                 checked={packageInformation?.filesAnalyzed}
                                             />
                                             <label
@@ -780,7 +804,7 @@ const EditPackageInformation = ({
                                                 type='radio'
                                                 name='_sw360_portlet_components_FILES_ANALYZED'
                                                 value='false'
-                                                onClick={changeFilesAnalyzed}
+                                                onChange={changeFilesAnalyzed}
                                                 checked={!packageInformation?.filesAnalyzed}
                                             />
                                             <label
@@ -823,7 +847,7 @@ const EditPackageInformation = ({
                                                     placeholder='Enter excluded files'
                                                     disabled={!packageInformation?.filesAnalyzed}
                                                     onChange={updateFieldPackageVerificationCode}
-                                                    value={packageInformation.packageVerificationCode.value ?? ''}
+                                                    value={packageInformation.packageVerificationCode?.value ?? ''}
                                                 ></textarea>
                                             </div>
                                         </div>

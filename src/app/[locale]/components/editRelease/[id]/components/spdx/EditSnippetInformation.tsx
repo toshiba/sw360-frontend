@@ -168,8 +168,8 @@ const EditSnippetInformation = ({
 
         if (typeof snippetInformations[indexSnippetInformation]?.licenseInfoInSnippets !== 'undefined') {
             if (
-                snippetInformations[indexSnippetInformation].licenseInfoInSnippets.at(0) === 'NONE' ||
-                snippetInformations[indexSnippetInformation].licenseInfoInSnippets.at(0) === 'NOASSERTION'
+                snippetInformations[indexSnippetInformation].licenseInfoInSnippets.toString() === 'NONE' ||
+                snippetInformations[indexSnippetInformation].licenseInfoInSnippets.toString() === 'NOASSERTION'
             ) {
                 const data: string[] = licenseInfoInSnippets
                 setLicenseInfoInSnippets(data)
