@@ -8,11 +8,9 @@
 // License-Filename: LICENSE
 
 import { InputKeyValue } from '@/object-types'
-// import { useTranslations } from 'next-intl'
 import { FaTrashAlt } from 'react-icons/fa'
 
 interface Props {
-    // setDataInputList?: RolesType
     setInputList?: React.Dispatch<React.SetStateAction<InputKeyValue[]>>
     inputList?: InputKeyValue[]
     isAnonymous?: boolean
@@ -20,7 +18,6 @@ interface Props {
 }
 
 function Creators({ inputList, setInputList, isAnonymous, setDataCreators }: Props) {
-    // const t = useTranslations('default')
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>, index: number) => {
         const { name, value } = e.target
         const list: InputKeyValue[] = [...inputList]

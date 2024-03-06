@@ -481,14 +481,6 @@ const EditPackageInformation = ({
     }
 
     const updateFieldPackageVerificationCode = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        // if (!packageInformation?.filesAnalyzed) {
-        //     setPackageInformation({
-        //         ...packageInformation,
-        //         packageVerificationCode: null,
-        //     })
-        // } else {
-
-        // }
         setPackageInformation({
             ...packageInformation,
             packageVerificationCode: {
@@ -643,6 +635,15 @@ const EditPackageInformation = ({
             }
         }
     }
+
+    const [dataDateRelease, setDataDateRelease] = useState('')
+    const [dataTimeRelease, setDataTimeRelease] = useState('')
+
+    const [dataDateBuilt, setDataDateBuilt] = useState('')
+    const [dataTimeBuilt, setDataTimeBuilt] = useState('')
+
+    const [dataDateValid, setDataDateValid] = useState('')
+    const [dataTimeValid, setDataTimeValid] = useState('')
 
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
@@ -1042,12 +1043,12 @@ const EditPackageInformation = ({
                         </tr>
                         {isModeFull && (
                             <>
-                                {externalRefsDatas[indexExternalRefsData] && (
+                                {
                                     <tr className='spdx-full'>
                                         <td colSpan={3}>
                                             <div className='form-group section section-external-ref'>
                                                 <label className='lableSPDX'>7.21 External references</label>
-                                                {packageInformation?.externalRefs.length !== 0 && (
+                                                {
                                                     <div
                                                         style={{
                                                             display: 'flex',
@@ -1073,7 +1074,7 @@ const EditPackageInformation = ({
                                                                 id='externalReferences'
                                                                 onChange={displayIndex}
                                                             >
-                                                                {externalRefsDatas.map((item) => (
+                                                                {externalRefsDatas?.map((item) => (
                                                                     <option key={item.index} value={item.index}>
                                                                         {item.index + 1}
                                                                     </option>
@@ -1104,7 +1105,7 @@ const EditPackageInformation = ({
                                                                 onChange={handleChangeReferenceCategory}
                                                                 value={
                                                                     externalRefsDatas[indexExternalRefsData]
-                                                                        .referenceCategory ?? ''
+                                                                        ?.referenceCategory ?? ''
                                                                 }
                                                             >
                                                                 <option value='SECURITY'>SECURITY</option>
@@ -1135,7 +1136,7 @@ const EditPackageInformation = ({
                                                                     onChange={handleChangeExternalRefData}
                                                                     value={
                                                                         externalRefsDatas[indexExternalRefsData]
-                                                                            .referenceType ?? ''
+                                                                            ?.referenceType ?? ''
                                                                     }
                                                                 />
                                                             ) : (
@@ -1147,7 +1148,7 @@ const EditPackageInformation = ({
                                                                     onChange={handleChangeExternalRefData}
                                                                     value={
                                                                         externalRefsDatas[indexExternalRefsData]
-                                                                            .referenceType ?? ''
+                                                                            ?.referenceType ?? ''
                                                                     }
                                                                 >
                                                                     {typeCategory?.map((item, index) => (
@@ -1176,7 +1177,7 @@ const EditPackageInformation = ({
                                                                 onChange={handleChangeExternalRefData}
                                                                 value={
                                                                     externalRefsDatas[indexExternalRefsData]
-                                                                        .referenceLocator ?? ''
+                                                                        ?.referenceLocator ?? ''
                                                                 }
                                                             />
                                                         </div>
@@ -1191,17 +1192,17 @@ const EditPackageInformation = ({
                                                                 name='comment'
                                                                 onChange={handleChangeExternalRefData}
                                                                 value={
-                                                                    externalRefsDatas[indexExternalRefsData].comment ??
+                                                                    externalRefsDatas[indexExternalRefsData]?.comment ??
                                                                     ''
                                                                 }
                                                             ></textarea>
                                                         </div>
                                                     </div>
-                                                )}
+                                                }
                                             </div>
                                         </td>
                                     </tr>
-                                )}
+                                }
                             </>
                         )}
 
@@ -1249,6 +1250,10 @@ const EditPackageInformation = ({
                                 </tr>
                                 <tr className='spdx-full'>
                                     <ReleaseDate
+                                        dataDateRelease={dataDateRelease}
+                                        setDataDateRelease={setDataDateRelease}
+                                        dataTimeRelease={dataTimeRelease}
+                                        setDataTimeRelease={setDataTimeRelease}
                                         dataReleaseDate={dataReleaseDate}
                                         setDataReleaseDate={setDataReleaseDate}
                                         setReleaseDate={setReleaseDate}
@@ -1256,6 +1261,10 @@ const EditPackageInformation = ({
                                 </tr>
                                 <tr className='spdx-full'>
                                     <BuiltDate
+                                        dataDateBuilt={dataDateBuilt}
+                                        setDataDateBuilt={setDataDateBuilt}
+                                        dataTimeBuilt={dataTimeBuilt}
+                                        setDataTimeBuilt={setDataTimeBuilt}
                                         setBuiltDate={setBuiltDate}
                                         dataBuiltDate={dataBuiltDate}
                                         setDataBuiltDate={setDataBuiltDate}
@@ -1263,6 +1272,10 @@ const EditPackageInformation = ({
                                 </tr>
                                 <tr className='spdx-full'>
                                     <ValidUntilDate
+                                        dataDateValid={dataDateValid}
+                                        setDataDateValid={setDataDateValid}
+                                        dataTimeValid={dataTimeValid}
+                                        setDataTimeValid={setDataTimeValid}
                                         setValidUntilDate={setValidUntilDate}
                                         dataValidUntilDate={dataValidUntilDate}
                                         setDataValidUntilDate={setDataValidUntilDate}

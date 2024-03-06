@@ -7,6 +7,7 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
+import CommonUtils from '@/utils/common.utils'
 import InputKeyValue from '../../../../../../../../object-types/InputKeyValue'
 
 interface Props {
@@ -43,7 +44,15 @@ function PackageOriginator({
 
     const selectPackageOriginatorExist = () => {
         setIsPackageOriginator(true)
-        setPackageOriginatorToPackage(dataPackageOriginator)
+        if (CommonUtils.isNullEmptyOrUndefinedString(dataPackageOriginator.value)) {
+            const data: InputKeyValue = {
+                key: 'Organization',
+                value: '',
+            }
+            setPackageOriginatorToPackage(data)
+        } else {
+            setPackageOriginatorToPackage(dataPackageOriginator)
+        }
     }
 
     return (

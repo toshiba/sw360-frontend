@@ -7,21 +7,40 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
+import CommonUtils from '@/utils/common.utils'
 import InputKeyValue from '../../../../../../../../object-types/InputKeyValue'
 
 interface Props {
     setBuiltDate?: any
     dataBuiltDate?: InputKeyValue
     setDataBuiltDate?: React.Dispatch<React.SetStateAction<InputKeyValue>>
+    dataDateBuilt?: string
+    setDataDateBuilt?: React.Dispatch<React.SetStateAction<string>>
+    dataTimeBuilt?: string
+    setDataTimeBuilt?: React.Dispatch<React.SetStateAction<string>>
 }
 
-function BuiltDate({ dataBuiltDate, setDataBuiltDate, setBuiltDate }: Props) {
+function BuiltDate({
+    dataBuiltDate,
+    setDataBuiltDate,
+    setBuiltDate,
+    dataDateBuilt,
+    setDataDateBuilt,
+    dataTimeBuilt,
+    setDataTimeBuilt,
+}: Props) {
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         const { name, value } = e.target
+        e.target.name === 'key' ? setDataDateBuilt(e.target.value) : setDataTimeBuilt(e.target.value)
         const list: InputKeyValue = dataBuiltDate
         list[name as keyof InputKeyValue] = value
         setDataBuiltDate(list)
-        setBuiltDate(list)
+        if (
+            !CommonUtils.isNullEmptyOrUndefinedString(dataDateBuilt) &&
+            !CommonUtils.isNullEmptyOrUndefinedString(dataTimeBuilt)
+        ) {
+            setBuiltDate(list)
+        }
     }
 
     return (

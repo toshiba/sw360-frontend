@@ -24,7 +24,6 @@ import OtherLicensingInformationDetected from '../../../../../../object-types/sp
 import PackageInformation from '../../../../../../object-types/spdx/PackageInformation'
 import RelationshipsBetweenSPDXElements from '../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
 import SPDX from '../../../../../../object-types/spdx/SPDX'
-import SPDXDocument from '../../../../../../object-types/spdx/SPDXDocument'
 import SnippetInformation from '../../../../../../object-types/spdx/SnippetInformation'
 import styles from './spdx/CssButton.module.css'
 import EditAnnotationInformation from './spdx/EditAnnotationInformation'
@@ -42,8 +41,6 @@ interface Props {
 
 const EditSPDXDocument = ({ releaseId, SPDXPayload, setSPDXPayload }: Props) => {
     const t = useTranslations('default')
-    const [spdxDocument, setSPDXDocument] = useState<SPDXDocument>()
-    console.log(spdxDocument)
     const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
     const [packageInformation, setPackageInformation] = useState<PackageInformation>()
     const [externalDocumentRefs, setExternalDocumentRefs] = useState<ExternalDocumentReferences[]>([])
@@ -97,7 +94,6 @@ const EditSPDXDocument = ({ releaseId, SPDXPayload, setSPDXPayload }: Props) => 
                     !CommonUtils.isNullOrUndefined(release._embedded) &&
                     !CommonUtils.isNullOrUndefined(release._embedded['sw360:spdxDocument'])
                 ) {
-                    setSPDXDocument(release._embedded['sw360:spdxDocument'])
                     //SnippetInformation
                     if (!CommonUtils.isNullEmptyOrUndefinedArray(release._embedded['sw360:spdxDocument'].snippets)) {
                         setSnippetInformations(

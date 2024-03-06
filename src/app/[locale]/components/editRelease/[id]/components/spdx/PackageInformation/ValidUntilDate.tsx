@@ -7,21 +7,40 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
+import CommonUtils from '@/utils/common.utils'
 import InputKeyValue from '../../../../../../../../object-types/InputKeyValue'
 
 interface Props {
     setValidUntilDate?: any
     dataValidUntilDate?: InputKeyValue
     setDataValidUntilDate?: React.Dispatch<React.SetStateAction<InputKeyValue>>
+    dataDateValid?: string
+    setDataDateValid?: React.Dispatch<React.SetStateAction<string>>
+    dataTimeValid?: string
+    setDataTimeValid?: React.Dispatch<React.SetStateAction<string>>
 }
 
-function ValidUntilDate({ dataValidUntilDate, setDataValidUntilDate, setValidUntilDate }: Props) {
+function ValidUntilDate({
+    dataValidUntilDate,
+    setDataValidUntilDate,
+    setValidUntilDate,
+    dataDateValid,
+    setDataDateValid,
+    dataTimeValid,
+    setDataTimeValid,
+}: Props) {
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         const { name, value } = e.target
+        e.target.name === 'key' ? setDataDateValid(e.target.value) : setDataTimeValid(e.target.value)
         const list: InputKeyValue = dataValidUntilDate
         list[name as keyof InputKeyValue] = value
         setDataValidUntilDate(list)
-        setValidUntilDate(list)
+        if (
+            !CommonUtils.isNullEmptyOrUndefinedString(dataDateValid) &&
+            !CommonUtils.isNullEmptyOrUndefinedString(dataTimeValid)
+        ) {
+            setValidUntilDate(list)
+        }
     }
 
     return (

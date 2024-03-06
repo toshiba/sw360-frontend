@@ -7,21 +7,40 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
+import CommonUtils from '@/utils/common.utils'
 import InputKeyValue from '../../../../../../../../object-types/InputKeyValue'
 
 interface Props {
     setReleaseDate?: any
     dataReleaseDate?: InputKeyValue
     setDataReleaseDate?: React.Dispatch<React.SetStateAction<InputKeyValue>>
+    dataDateRelease?: string
+    setDataDateRelease?: React.Dispatch<React.SetStateAction<string>>
+    dataTimeRelease?: string
+    setDataTimeRelease?: React.Dispatch<React.SetStateAction<string>>
 }
 
-function ReleaseDate({ dataReleaseDate, setDataReleaseDate, setReleaseDate }: Props) {
+function ReleaseDate({
+    dataReleaseDate,
+    setDataReleaseDate,
+    setReleaseDate,
+    dataDateRelease,
+    setDataDateRelease,
+    dataTimeRelease,
+    setDataTimeRelease,
+}: Props) {
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         const { name, value } = e.target
+        e.target.name === 'key' ? setDataDateRelease(e.target.value) : setDataTimeRelease(e.target.value)
         const list: InputKeyValue = dataReleaseDate
         list[name as keyof InputKeyValue] = value
         setDataReleaseDate(list)
-        setReleaseDate(list)
+        if (
+            !CommonUtils.isNullEmptyOrUndefinedString(dataDateRelease) &&
+            !CommonUtils.isNullEmptyOrUndefinedString(dataTimeRelease)
+        ) {
+            setReleaseDate(list)
+        }
     }
 
     return (

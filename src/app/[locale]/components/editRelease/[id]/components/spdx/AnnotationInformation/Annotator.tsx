@@ -37,7 +37,7 @@ function Annotator({ dataAnnotator, setDataAnnotator, setAnnotatorToAnnotation }
                         className='form-control'
                         name='key'
                         onChange={handleInputChange}
-                        value={dataAnnotator.key}
+                        value={dataAnnotator?.key}
                     >
                         <option value='Organization'>Organization</option>
                         <option value='Person'>Person</option>
@@ -51,7 +51,7 @@ function Annotator({ dataAnnotator, setDataAnnotator, setAnnotatorToAnnotation }
                         className='form-control'
                         placeholder='Enter annotator'
                         onChange={handleInputChange}
-                        value={dataAnnotator.value}
+                        value={dataAnnotator?.value}
                     />
                 </div>
             </div>

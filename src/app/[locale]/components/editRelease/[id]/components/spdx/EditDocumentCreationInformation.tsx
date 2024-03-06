@@ -48,6 +48,7 @@ const EditDocumentCreationInformation = ({
 
     const [creator, setCreator] = useState<InputKeyValue[]>([])
     const [numberIndex, setNumberIndex] = useState<number>(0)
+    const [isAnonymous, setIsAnonymous] = useState(false)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
@@ -75,14 +76,29 @@ const EditDocumentCreationInformation = ({
     }
 
     useEffect(() => {
-        if (typeof documentCreationInformation?.creator !== 'undefined') {
+        if (!CommonUtils.isNullEmptyOrUndefinedArray(documentCreationInformation?.creator)) {
             if (!isAnonymous) {
                 setCreator(convertCreator(documentCreationInformation.creator))
             }
         }
 
-        if (typeof documentCreationInformation?.created !== 'undefined') {
+        if (
+            CommonUtils.isNullEmptyOrUndefinedArray(documentCreationInformation?.creator) &&
+            typeof documentCreationInformation?.createdBy !== 'undefined'
+        ) {
+            const creators: InputKeyValue[] = []
+            const creator: InputKeyValue = {
+                key: 'Person',
+                value: documentCreationInformation.createdBy,
+            }
+            creators.push(creator)
+            setCreator(creators)
+        }
+
+        if (!CommonUtils.isNullEmptyOrUndefinedString(documentCreationInformation?.created)) {
             setDataCreated(handleCreated(documentCreationInformation.created))
+        } else {
+            setDataCreated(handleCreated(new Date().toISOString()))
         }
     }, [documentCreationInformation, setExternalDocumentRefs, setIndexExternalDocumentRef])
 
@@ -103,7 +119,6 @@ const EditDocumentCreationInformation = ({
             return null
         }
         const creators: Creator[] = []
-        // const index: number = 0
         datas.forEach((data: InputKeyValue, index: number) => {
             const creator: Creator = {
                 type: data.key,
@@ -115,8 +130,6 @@ const EditDocumentCreationInformation = ({
 
         return creators
     }
-
-    const [isAnonymous, setIsAnonymous] = useState(false)
 
     const updateField = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setDocumentCreationInformation({
@@ -134,20 +147,29 @@ const EditDocumentCreationInformation = ({
 
     const handleClickAnonymous = () => {
         setIsAnonymous(!isAnonymous)
-        let creators: InputKeyValue[] = []
-        creators = creator.filter((input) => input.key != 'Organization').filter((input) => input.key != 'Person')
-        setDocumentCreationInformation({
-            ...documentCreationInformation,
-            creator: convertInputToCreator(creators),
-        })
-
-        setSPDXPayload({
-            ...SPDXPayload,
-            documentCreationInformation: {
-                ...SPDXPayload.documentCreationInformation,
+        if (!isAnonymous) {
+            let creators: InputKeyValue[] = []
+            creators = creator.filter((input) => input.key != 'Organization').filter((input) => input.key != 'Person')
+            setDocumentCreationInformation({
+                ...documentCreationInformation,
                 creator: convertInputToCreator(creators),
-            },
-        })
+            })
+            setSPDXPayload({
+                ...SPDXPayload,
+                documentCreationInformation: {
+                    ...SPDXPayload.documentCreationInformation,
+                    creator: convertInputToCreator(creators),
+                },
+            })
+        } else {
+            setSPDXPayload({
+                ...SPDXPayload,
+                documentCreationInformation: {
+                    ...SPDXPayload.documentCreationInformation,
+                    creator: convertInputToCreator(creator),
+                },
+            })
+        }
     }
 
     const setDataCreators = (inputs: InputKeyValue[]) => {

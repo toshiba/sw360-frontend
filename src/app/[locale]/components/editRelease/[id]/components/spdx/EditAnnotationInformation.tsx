@@ -91,7 +91,7 @@ const EditAnnotationInformation = ({
     const handleDataAnnotator = (data: string) => {
         if (CommonUtils.isNullEmptyOrUndefinedString(data)) {
             const input: InputKeyValue = {
-                key: '',
+                key: 'Organization',
                 value: '',
             }
             return input
@@ -104,22 +104,46 @@ const EditAnnotationInformation = ({
     }
 
     useEffect(() => {
-        if (
-            typeof annotationsSPDXs[indexAnnotations]?.annotator !== 'undefined' ||
-            typeof annotationsPackages[indexAnnotations]?.annotator !== 'undefined'
-        ) {
-            isSourceSPDXDocument
-                ? setDataAnnotator(handleDataAnnotator(annotationsSPDXs[indexAnnotations]?.annotator))
-                : setDataAnnotator(handleDataAnnotator(annotationsPackages[indexAnnotations]?.annotator))
-        }
+        if (isSourceSPDXDocument) {
+            if (CommonUtils.isNullEmptyOrUndefinedString(annotationsSPDXs[indexAnnotations]?.annotator)) {
+                const input: InputKeyValue = {
+                    key: 'Organization',
+                    value: '',
+                }
+                setDataAnnotator(input)
+            } else {
+                setDataAnnotator(handleDataAnnotator(annotationsSPDXs[indexAnnotations]?.annotator))
+            }
 
-        if (
-            typeof annotationsSPDXs[indexAnnotations]?.annotationDate !== 'undefined' ||
-            typeof annotationsPackages[indexAnnotations]?.annotationDate !== 'undefined'
-        ) {
-            isSourceSPDXDocument
-                ? setDataAnnotationDate(handleAnnotationDate(annotationsSPDXs[indexAnnotations]?.annotationDate))
-                : setDataAnnotationDate(handleAnnotationDate(annotationsPackages[indexAnnotations]?.annotationDate))
+            if (CommonUtils.isNullEmptyOrUndefinedString(annotationsSPDXs[indexAnnotations]?.annotationDate)) {
+                const input: InputKeyValue = {
+                    key: '',
+                    value: '',
+                }
+                setDataAnnotationDate(input)
+            } else {
+                setDataAnnotationDate(handleAnnotationDate(annotationsSPDXs[indexAnnotations]?.annotationDate))
+            }
+        } else {
+            if (CommonUtils.isNullEmptyOrUndefinedString(annotationsPackages[indexAnnotations]?.annotator)) {
+                const input: InputKeyValue = {
+                    key: 'Organization',
+                    value: '',
+                }
+                setDataAnnotator(input)
+            } else {
+                setDataAnnotator(handleDataAnnotator(annotationsPackages[indexAnnotations]?.annotator))
+            }
+
+            if (CommonUtils.isNullEmptyOrUndefinedString(annotationsPackages[indexAnnotations]?.annotationDate)) {
+                const input: InputKeyValue = {
+                    key: '',
+                    value: '',
+                }
+                setDataAnnotationDate(input)
+            } else {
+                setDataAnnotationDate(handleAnnotationDate(annotationsPackages[indexAnnotations]?.annotationDate))
+            }
         }
     }, [isSourceSPDXDocument, indexAnnotations, annotationsSPDXs, annotationsPackages])
 
@@ -148,10 +172,7 @@ const EditAnnotationInformation = ({
             }
         } else if (relationshipType === 'package') {
             setIsSourceSPDXDocument(false)
-            console.log('0000')
-            console.log(annotationsPackages)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
-                console.log('1111')
                 setAnnotationsPackages(annotationsPackages)
                 setSPDXPayload({
                     ...SPDXPayload,
@@ -161,7 +182,6 @@ const EditAnnotationInformation = ({
                     },
                 })
             } else {
-                console.log('2222')
                 setAnnotationsPackages([])
                 setSPDXPayload({
                     ...SPDXPayload,
@@ -195,6 +215,11 @@ const EditAnnotationInformation = ({
 
     const addAnnotationsSPDXsSPDX = () => {
         const arrayExternals: Annotations[] = [...annotationsSPDXs]
+        if (CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
+            setIndexAnnotations(0)
+            setDataDate('')
+            setDataTime('')
+        }
         const relationshipsBetweenSPDXElements: Annotations = {
             annotator: '', // 12.1
             annotationDate: '', // 12.2
@@ -216,6 +241,11 @@ const EditAnnotationInformation = ({
 
     const addAnnotationsSPDXsPackage = () => {
         const arrayExternals: Annotations[] = [...annotationsPackages]
+        if (CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
+            setIndexAnnotations(0)
+            setDataDate('')
+            setDataTime('')
+        }
         const relationshipsBetweenSPDXElements: Annotations = {
             annotator: '', // 12.1
             annotationDate: '', // 12.2
@@ -268,6 +298,7 @@ const EditAnnotationInformation = ({
                 }
                 return annotation
             })
+            console.log(annotationUpdates)
             setAnnotationsPackages(annotationUpdates)
             setSPDXPayload({
                 ...SPDXPayload,
@@ -279,6 +310,8 @@ const EditAnnotationInformation = ({
         }
     }
 
+    const [dataDate, setDataDate] = useState('')
+    const [dataTime, setDataTime] = useState('')
     const [dataAnnotationDate, setDataAnnotationDate] = useState<InputKeyValue>()
     const handleAnnotationDate = (data: string) => {
         const input: InputKeyValue = {
@@ -295,9 +328,6 @@ const EditAnnotationInformation = ({
         const localDate = new Date(data.key + ' ' + data.value)
         return localDate.toISOString().slice(0, -5) + 'Z'
     }
-
-    const [dataDate, setDataDate] = useState('')
-    const [dataTime, setDataTime] = useState('')
 
     const setAnnotationDate = (input: InputKeyValue) => {
         if (isSourceSPDXDocument) {

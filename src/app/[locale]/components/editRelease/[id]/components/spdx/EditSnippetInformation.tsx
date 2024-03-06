@@ -169,7 +169,7 @@ const EditSnippetInformation = ({
         if (typeof snippetInformations[indexSnippetInformation]?.licenseInfoInSnippets !== 'undefined') {
             if (
                 snippetInformations[indexSnippetInformation].licenseInfoInSnippets.toString() === 'NONE' ||
-                snippetInformations[indexSnippetInformation].licenseInfoInSnippets.toString() === 'NOASSERTION'
+                snippetInformations[indexSnippetInformation].licenseInfoInSnippets.at(0) === 'NOASSERTION'
             ) {
                 const data: string[] = licenseInfoInSnippets
                 setLicenseInfoInSnippets(data)
@@ -329,38 +329,34 @@ const EditSnippetInformation = ({
                 </tr>
             </thead>
             <tbody hidden={toggle}>
+                <tr>
+                    <td colSpan={3}>
+                        <div style={{ display: 'flex', flexDirection: 'column', paddingLeft: '1rem' }}>
+                            <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '0.75rem' }}>
+                                <label
+                                    htmlFor='selectSnippet'
+                                    style={{ textDecoration: 'underline' }}
+                                    className='sub-title lableSPDX'
+                                >
+                                    Select Snippet
+                                </label>
+                                <select id='selectSnippet' className='form-control spdx-select' onChange={displayIndex}>
+                                    {snippetInformations.map((item) => (
+                                        <option key={item.index} value={item.index}>
+                                            {item.index + 1}
+                                        </option>
+                                    ))}
+                                </select>
+                                <FaTrashAlt onClick={deleteSnippetInformations} />
+                            </div>
+                            <button className='spdx-add-button-main' name='add-snippet' onClick={addSnippet}>
+                                Add new Snippet
+                            </button>
+                        </div>
+                    </td>
+                </tr>
                 {snippetInformations[indexSnippetInformation] && (
                     <>
-                        <tr>
-                            <td colSpan={3}>
-                                <div style={{ display: 'flex', flexDirection: 'column', paddingLeft: '1rem' }}>
-                                    <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '0.75rem' }}>
-                                        <label
-                                            htmlFor='selectSnippet'
-                                            style={{ textDecoration: 'underline' }}
-                                            className='sub-title lableSPDX'
-                                        >
-                                            Select Snippet
-                                        </label>
-                                        <select
-                                            id='selectSnippet'
-                                            className='form-control spdx-select'
-                                            onChange={displayIndex}
-                                        >
-                                            {snippetInformations.map((item) => (
-                                                <option key={item.index} value={item.index}>
-                                                    {item.index + 1}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <FaTrashAlt onClick={deleteSnippetInformations} />
-                                    </div>
-                                    <button className='spdx-add-button-main' name='add-snippet' onClick={addSnippet}>
-                                        Add new Snippet
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
                         <tr>
                             <td style={{ width: '600px' }}>
                                 <div className='form-group' style={{ flex: 1 }}>

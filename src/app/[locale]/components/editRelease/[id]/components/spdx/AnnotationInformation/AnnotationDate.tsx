@@ -59,7 +59,7 @@ function AnnotationDate({
                             className='form-control needs-validation'
                             placeholder='creation.date.yyyy.mm.dd'
                             onChange={handleInputChange}
-                            value={dataAnnotationDate.key ?? ''}
+                            value={dataAnnotationDate?.key ?? ''}
                         />
                     </div>
                     <div>
@@ -72,7 +72,7 @@ function AnnotationDate({
                             className='form-control needs-validation'
                             placeholder='creation.time.hh.mm.ss'
                             onChange={handleInputChange}
-                            value={dataAnnotationDate.value ?? ''}
+                            value={dataAnnotationDate?.value ?? ''}
                         />
                     </div>
                 </div>
