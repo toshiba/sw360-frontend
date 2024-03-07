@@ -46,17 +46,23 @@ const EditSnippetInformation = ({
     const [dataSnippetFromFile, setDataSnippetFromFile] = useState<InputKeyValue>()
 
     const setDataSnippetRanges = (inputs: SnippetRange[]) => {
-        setSnippetInformations((currents) =>
-            currents.map((snippet, index) => {
-                if (index === indexSnippetInformation) {
-                    return {
-                        ...snippet,
-                        snippetRanges: inputs,
-                    }
+        const snippets: SnippetInformation[] = snippetInformations.map((snippet, index) => {
+            if (index === indexSnippetInformation) {
+                return {
+                    ...snippet,
+                    snippetRanges: inputs,
                 }
-                return snippet
-            })
-        )
+            }
+            return snippet
+        })
+        setSnippetInformations(snippets)
+        setSPDXPayload({
+            ...SPDXPayload,
+            spdxDocument: {
+                ...SPDXPayload.spdxDocument,
+                snippets: snippets,
+            },
+        })
     }
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -255,8 +261,10 @@ const EditSnippetInformation = ({
     const handleInputKeyToSnippetFromFile = (data: InputKeyValue) => {
         return data.key + '-' + data.value
     }
-
     const setSnippetFromFileToSnippet = (input: InputKeyValue) => {
+        if (input.key === '') {
+            input.key = 'SPDXRef'
+        }
         const snippets: SnippetInformation[] = snippetInformations.map((snippet, index) => {
             if (index === indexSnippetInformation) {
                 return {
@@ -373,9 +381,13 @@ const EditSnippetInformation = ({
                                             name='SPDXID'
                                             onChange={updateField}
                                             value={
-                                                snippetInformations[indexSnippetInformation].SPDXID?.startsWith(
-                                                    'SPDXRef-'
+                                                CommonUtils.isNullEmptyOrUndefinedString(
+                                                    snippetInformations[indexSnippetInformation].SPDXID
                                                 )
+                                                    ? 'Snippet-'
+                                                    : snippetInformations[indexSnippetInformation].SPDXID?.startsWith(
+                                                          'SPDXRef-'
+                                                      )
                                                     ? snippetInformations[indexSnippetInformation].SPDXID?.substring(8)
                                                     : snippetInformations[indexSnippetInformation].SPDXID
                                             }

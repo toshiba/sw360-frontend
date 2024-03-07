@@ -42,7 +42,7 @@ function SnippetRanges({ inputList, setInputList, setDataSnippetRanges }: Props)
     }
 
     const handleAddClick = () => {
-        setInputList([...inputList, { rangeType: '', startPointer: '', endPointer: '', reference: '', index: 0 }])
+        setInputList([...inputList, { rangeType: 'BYTE', startPointer: '', endPointer: '', reference: '', index: 0 }])
     }
 
     return (

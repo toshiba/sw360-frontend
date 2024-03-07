@@ -8,27 +8,18 @@
 // License-Filename: LICENSE
 
 import CommonUtils from '@/utils/common.utils'
+import { useState } from 'react'
 import InputKeyValue from '../../../../../../../../object-types/InputKeyValue'
 
 interface Props {
     setValidUntilDate?: any
     dataValidUntilDate?: InputKeyValue
     setDataValidUntilDate?: React.Dispatch<React.SetStateAction<InputKeyValue>>
-    dataDateValid?: string
-    setDataDateValid?: React.Dispatch<React.SetStateAction<string>>
-    dataTimeValid?: string
-    setDataTimeValid?: React.Dispatch<React.SetStateAction<string>>
 }
 
-function ValidUntilDate({
-    dataValidUntilDate,
-    setDataValidUntilDate,
-    setValidUntilDate,
-    dataDateValid,
-    setDataDateValid,
-    dataTimeValid,
-    setDataTimeValid,
-}: Props) {
+function ValidUntilDate({ dataValidUntilDate, setDataValidUntilDate, setValidUntilDate }: Props) {
+    const [dataDateValid, setDataDateValid] = useState('')
+    const [dataTimeValid, setDataTimeValid] = useState('')
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         const { name, value } = e.target
         e.target.name === 'key' ? setDataDateValid(e.target.value) : setDataTimeValid(e.target.value)
@@ -37,9 +28,27 @@ function ValidUntilDate({
         setDataValidUntilDate(list)
         if (
             !CommonUtils.isNullEmptyOrUndefinedString(dataDateValid) &&
+            CommonUtils.isNullEmptyOrUndefinedString(dataTimeValid) &&
+            e.target.name === 'value'
+        ) {
+            setValidUntilDate({ key: dataDateValid, value: e.target.value })
+        }
+        if (
+            CommonUtils.isNullEmptyOrUndefinedString(dataDateValid) &&
+            !CommonUtils.isNullEmptyOrUndefinedString(dataTimeValid) &&
+            e.target.name === 'key'
+        ) {
+            setValidUntilDate({ key: e.target.value, value: dataTimeValid })
+        }
+        if (
+            !CommonUtils.isNullEmptyOrUndefinedString(dataDateValid) &&
             !CommonUtils.isNullEmptyOrUndefinedString(dataTimeValid)
         ) {
-            setValidUntilDate(list)
+            if (e.target.name === 'key') {
+                setValidUntilDate({ key: e.target.value, value: dataTimeValid })
+            } else {
+                setValidUntilDate({ key: dataDateValid, value: e.target.value })
+            }
         }
     }
 

@@ -298,7 +298,6 @@ const EditAnnotationInformation = ({
                 }
                 return annotation
             })
-            console.log(annotationUpdates)
             setAnnotationsPackages(annotationUpdates)
             setSPDXPayload({
                 ...SPDXPayload,
@@ -475,7 +474,9 @@ const EditAnnotationInformation = ({
                             </div>
                         </td>
                     </tr>
-                    {(isSourceSPDXDocument ? annotationsSPDXs : annotationsPackages) && (
+                    {(isSourceSPDXDocument
+                        ? annotationsSPDXs[indexAnnotations]
+                        : annotationsPackages[indexAnnotations]) && (
                         <>
                             <tr>
                                 <td>

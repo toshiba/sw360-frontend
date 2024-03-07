@@ -191,27 +191,30 @@ const EditPackageInformation = ({
 
     const handleChangeReferenceCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const referenceCategory: string = e.target.value
-        const externalRefs: ExternalReference[] = externalRefsDatas.map((externalRefData, index) => {
-            if (index === indexExternalRefsData) {
-                return {
-                    ...externalRefData,
-                    [e.target.name]: e.target.value,
-                }
-            }
-            return externalRefData
-        })
-        setExternalRefsDatas(externalRefs)
-
+        let type: string = ''
         if (referenceCategory === 'SECURITY') {
+            type = 'cpe22Type'
             setTypeCategory(['cpe22Type', 'cpe23Type', 'advisory', 'fix', 'url', 'swid'])
             setIsTypeCateGoryEmpty(false)
         } else if (referenceCategory === 'PACKAGE-MANAGER') {
             setTypeCategory(['maven-central', 'npm', 'nuget', 'bower', 'purl'])
             setIsTypeCateGoryEmpty(false)
+            type = 'maven-central'
         } else {
             setTypeCategory([])
             setIsTypeCateGoryEmpty(true)
         }
+        const externalRefs: ExternalReference[] = externalRefsDatas.map((externalRefData, index) => {
+            if (index === indexExternalRefsData) {
+                return {
+                    ...externalRefData,
+                    [e.target.name]: e.target.value,
+                    referenceType: type,
+                }
+            }
+            return externalRefData
+        })
+        setExternalRefsDatas(externalRefs)
         setSPDXPayload({
             ...SPDXPayload,
             packageInformation: {
@@ -480,6 +483,20 @@ const EditPackageInformation = ({
         })
     }
 
+    const updateFieldSPDXIdentifier = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPackageInformation({
+            ...packageInformation,
+            [e.target.name]: e.target.value,
+        })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                [e.target.name]: 'SPDXRef-' + e.target.value,
+            },
+        })
+    }
+
     const updateFieldPackageVerificationCode = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setPackageInformation({
             ...packageInformation,
@@ -636,15 +653,6 @@ const EditPackageInformation = ({
         }
     }
 
-    const [dataDateRelease, setDataDateRelease] = useState('')
-    const [dataTimeRelease, setDataTimeRelease] = useState('')
-
-    const [dataDateBuilt, setDataDateBuilt] = useState('')
-    const [dataTimeBuilt, setDataTimeBuilt] = useState('')
-
-    const [dataDateValid, setDataDateValid] = useState('')
-    const [dataTimeValid, setDataTimeValid] = useState('')
-
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
             <thead
@@ -692,9 +700,12 @@ const EditPackageInformation = ({
                                             type='text'
                                             placeholder='Enter package SPDX identifier'
                                             name='SPDXID'
-                                            onChange={updateField}
+                                            defaultValue='value'
+                                            onChange={updateFieldSPDXIdentifier}
                                             value={
-                                                packageInformation.SPDXID?.startsWith('SPDXRef-')
+                                                CommonUtils.isNullEmptyOrUndefinedString(packageInformation.SPDXID)
+                                                    ? 'Package-'
+                                                    : packageInformation.SPDXID?.startsWith('SPDXRef-')
                                                     ? packageInformation.SPDXID.substring(8)
                                                     : packageInformation.SPDXID
                                             }
@@ -1146,6 +1157,7 @@ const EditPackageInformation = ({
                                                                     className='form-control'
                                                                     name='referenceType'
                                                                     onChange={handleChangeExternalRefData}
+                                                                    // defaultValue={referType}
                                                                     value={
                                                                         externalRefsDatas[indexExternalRefsData]
                                                                             ?.referenceType ?? ''
@@ -1250,10 +1262,6 @@ const EditPackageInformation = ({
                                 </tr>
                                 <tr className='spdx-full'>
                                     <ReleaseDate
-                                        dataDateRelease={dataDateRelease}
-                                        setDataDateRelease={setDataDateRelease}
-                                        dataTimeRelease={dataTimeRelease}
-                                        setDataTimeRelease={setDataTimeRelease}
                                         dataReleaseDate={dataReleaseDate}
                                         setDataReleaseDate={setDataReleaseDate}
                                         setReleaseDate={setReleaseDate}
@@ -1261,10 +1269,6 @@ const EditPackageInformation = ({
                                 </tr>
                                 <tr className='spdx-full'>
                                     <BuiltDate
-                                        dataDateBuilt={dataDateBuilt}
-                                        setDataDateBuilt={setDataDateBuilt}
-                                        dataTimeBuilt={dataTimeBuilt}
-                                        setDataTimeBuilt={setDataTimeBuilt}
                                         setBuiltDate={setBuiltDate}
                                         dataBuiltDate={dataBuiltDate}
                                         setDataBuiltDate={setDataBuiltDate}
@@ -1272,10 +1276,6 @@ const EditPackageInformation = ({
                                 </tr>
                                 <tr className='spdx-full'>
                                     <ValidUntilDate
-                                        dataDateValid={dataDateValid}
-                                        setDataDateValid={setDataDateValid}
-                                        dataTimeValid={dataTimeValid}
-                                        setDataTimeValid={setDataTimeValid}
                                         setValidUntilDate={setValidUntilDate}
                                         dataValidUntilDate={dataValidUntilDate}
                                         setDataValidUntilDate={setDataValidUntilDate}

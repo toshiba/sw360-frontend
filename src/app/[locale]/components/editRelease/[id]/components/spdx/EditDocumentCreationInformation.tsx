@@ -145,6 +145,34 @@ const EditDocumentCreationInformation = ({
         })
     }
 
+    const updateFieldSPDXVersion = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDocumentCreationInformation({
+            ...documentCreationInformation,
+            [e.target.name]: e.target.value,
+        })
+        setSPDXPayload({
+            ...SPDXPayload,
+            documentCreationInformation: {
+                ...SPDXPayload.documentCreationInformation,
+                [e.target.name]: 'SPDX-' + e.target.value,
+            },
+        })
+    }
+
+    const updateFieldSPDXIdentifier = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDocumentCreationInformation({
+            ...documentCreationInformation,
+            [e.target.name]: e.target.value,
+        })
+        setSPDXPayload({
+            ...SPDXPayload,
+            documentCreationInformation: {
+                ...SPDXPayload.documentCreationInformation,
+                [e.target.name]: 'SPDXRef-' + e.target.value,
+            },
+        })
+    }
+
     const handleClickAnonymous = () => {
         setIsAnonymous(!isAnonymous)
         if (!isAnonymous) {
@@ -320,7 +348,7 @@ const EditDocumentCreationInformation = ({
                                             className='form-control needs-validation'
                                             type='text'
                                             placeholder='Enter SPDX version'
-                                            onChange={updateField}
+                                            onChange={updateFieldSPDXVersion}
                                             value={
                                                 documentCreationInformation.spdxVersion?.startsWith('SPDX-')
                                                     ? documentCreationInformation.spdxVersion.substring(5)
@@ -359,7 +387,7 @@ const EditDocumentCreationInformation = ({
                                             className='form-control needs-validation'
                                             type='text'
                                             placeholder='Enter SPDX identifier'
-                                            onChange={updateField}
+                                            onChange={updateFieldSPDXIdentifier}
                                             value={
                                                 documentCreationInformation.SPDXID?.startsWith('SPDXRef-')
                                                     ? documentCreationInformation.SPDXID.substring(8)

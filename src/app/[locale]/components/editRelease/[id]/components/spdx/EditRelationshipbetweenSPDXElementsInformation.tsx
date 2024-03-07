@@ -148,6 +148,9 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
 
     const addRelationshipsBetweenSPDXElementsSPDX = () => {
         const arrayExternals: RelationshipsBetweenSPDXElements[] = [...relationshipsBetweenSPDXElementSPDXs]
+        if (CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementSPDXs)) {
+            setIndexRelation(0)
+        }
         const relationshipsBetweenSPDXElements: RelationshipsBetweenSPDXElements = {
             spdxElementId: '', // 11.1
             relationshipType: '', // 11.1
@@ -168,6 +171,9 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
 
     const addRelationshipsBetweenSPDXElementsPackage = () => {
         const arrayExternals: RelationshipsBetweenSPDXElements[] = [...relationshipsBetweenSPDXElementPackages]
+        if (CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementPackages)) {
+            setIndexRelation(0)
+        }
         const relationshipsBetweenSPDXElements: RelationshipsBetweenSPDXElements = {
             spdxElementId: '', // 11.1
             relationshipType: '', // 11.1
@@ -372,8 +378,8 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                     </td>
                 </tr>
                 {(isSourceSPDXDocument
-                    ? relationshipsBetweenSPDXElementSPDXs
-                    : relationshipsBetweenSPDXElementPackages) && (
+                    ? relationshipsBetweenSPDXElementSPDXs[indexRelation]
+                    : relationshipsBetweenSPDXElementPackages[indexRelation]) && (
                     <>
                         <tr>
                             <td>

@@ -37,9 +37,27 @@ function AnnotationDate({
         setDataAnnotationDate(list)
         if (
             !CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
+            CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
+            e.target.name === 'value'
+        ) {
+            setAnnotationDate({ key: dataDate, value: e.target.value })
+        }
+        if (
+            CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
+            !CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
+            e.target.name === 'key'
+        ) {
+            setAnnotationDate({ key: e.target.value, value: dataTime })
+        }
+        if (
+            !CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
             !CommonUtils.isNullEmptyOrUndefinedString(dataTime)
         ) {
-            setAnnotationDate(list)
+            if (e.target.name === 'key') {
+                setAnnotationDate({ key: e.target.value, value: dataTime })
+            } else {
+                setAnnotationDate({ key: dataDate, value: e.target.value })
+            }
         }
     }
 

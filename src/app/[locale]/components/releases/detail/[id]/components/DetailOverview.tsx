@@ -36,6 +36,7 @@ import {
 } from '@/object-types'
 import DownloadService from '@/services/download.service'
 import { ApiUtils, CommonUtils } from '@/utils'
+import { SPDX_ENABLE } from '@/utils/env'
 import styles from '../detail.module.css'
 import ClearingDetails from './ClearingDetails'
 import CommercialDetails from './CommercialDetails'
@@ -66,7 +67,7 @@ const DetailOverview = ({ releaseId }: Props) => {
     const [changeLogList, setChangeLogList] = useState<Array<Changelogs>>([])
     const [linkProjectModalShow, setLinkProjectModalShow] = useState<boolean>(false)
 
-    const [tabList, setTabList] = useState(ReleaseDetailTabs.WITHOUT_COMMERCIAL_DETAILS)
+    const [tabList, setTabList] = useState(ReleaseDetailTabs.WITHOUT_COMMERCIAL_DETAILS_AND_SPDX)
 
     const fetchData = useCallback(
         async (url: string) => {
@@ -98,8 +99,16 @@ const DetailOverview = ({ releaseId }: Props) => {
                     setEmbeddedAttachments(release._embedded['sw360:attachments'])
                 }
 
-                if (release.componentType === 'COTS') {
+                if (release.componentType === 'COTS' && SPDX_ENABLE !== 'true') {
                     setTabList(ReleaseDetailTabs.WITH_COMMERCIAL_DETAILS)
+                }
+
+                if (release.componentType === 'COTS' && SPDX_ENABLE === 'true') {
+                    setTabList(ReleaseDetailTabs.WITH_COMMERCIAL_DETAILS_AND_SPDX)
+                }
+
+                if (release.componentType !== 'COTS' && SPDX_ENABLE === 'true') {
+                    setTabList(ReleaseDetailTabs.WITH_SPDX)
                 }
                 return release
             })

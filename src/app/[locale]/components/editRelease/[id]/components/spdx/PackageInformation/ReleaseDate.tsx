@@ -8,27 +8,18 @@
 // License-Filename: LICENSE
 
 import CommonUtils from '@/utils/common.utils'
+import { useState } from 'react'
 import InputKeyValue from '../../../../../../../../object-types/InputKeyValue'
 
 interface Props {
     setReleaseDate?: any
     dataReleaseDate?: InputKeyValue
     setDataReleaseDate?: React.Dispatch<React.SetStateAction<InputKeyValue>>
-    dataDateRelease?: string
-    setDataDateRelease?: React.Dispatch<React.SetStateAction<string>>
-    dataTimeRelease?: string
-    setDataTimeRelease?: React.Dispatch<React.SetStateAction<string>>
 }
 
-function ReleaseDate({
-    dataReleaseDate,
-    setDataReleaseDate,
-    setReleaseDate,
-    dataDateRelease,
-    setDataDateRelease,
-    dataTimeRelease,
-    setDataTimeRelease,
-}: Props) {
+function ReleaseDate({ dataReleaseDate, setDataReleaseDate, setReleaseDate }: Props) {
+    const [dataDateRelease, setDataDateRelease] = useState('')
+    const [dataTimeRelease, setDataTimeRelease] = useState('')
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         const { name, value } = e.target
         e.target.name === 'key' ? setDataDateRelease(e.target.value) : setDataTimeRelease(e.target.value)
@@ -37,9 +28,27 @@ function ReleaseDate({
         setDataReleaseDate(list)
         if (
             !CommonUtils.isNullEmptyOrUndefinedString(dataDateRelease) &&
+            CommonUtils.isNullEmptyOrUndefinedString(dataTimeRelease) &&
+            e.target.name === 'value'
+        ) {
+            setReleaseDate({ key: dataDateRelease, value: e.target.value })
+        }
+        if (
+            CommonUtils.isNullEmptyOrUndefinedString(dataDateRelease) &&
+            !CommonUtils.isNullEmptyOrUndefinedString(dataTimeRelease) &&
+            e.target.name === 'key'
+        ) {
+            setReleaseDate({ key: e.target.value, value: dataTimeRelease })
+        }
+        if (
+            !CommonUtils.isNullEmptyOrUndefinedString(dataDateRelease) &&
             !CommonUtils.isNullEmptyOrUndefinedString(dataTimeRelease)
         ) {
-            setReleaseDate(list)
+            if (e.target.name === 'key') {
+                setReleaseDate({ key: e.target.value, value: dataTimeRelease })
+            } else {
+                setReleaseDate({ key: dataDateRelease, value: e.target.value })
+            }
         }
     }
 

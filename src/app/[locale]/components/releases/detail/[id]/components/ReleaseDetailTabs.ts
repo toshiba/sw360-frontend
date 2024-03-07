@@ -10,14 +10,10 @@
 
 import { CommonTabIds, ReleaseTabIds } from '@/object-types'
 
-const WITHOUT_COMMERCIAL_DETAILS = [
+const WITHOUT_COMMERCIAL_DETAILS_AND_SPDX = [
     {
         id: CommonTabIds.SUMMARY,
         name: 'Summary',
-    },
-    {
-        id: ReleaseTabIds.SPDX_DOCUMENT,
-        name: 'SPDX Document',
     },
     {
         id: ReleaseTabIds.LINKED_RELEASES,
@@ -80,9 +76,85 @@ const WITH_COMMERCIAL_DETAILS = [
     },
 ]
 
+const WITH_SPDX = [
+    {
+        id: CommonTabIds.SUMMARY,
+        name: 'Summary',
+    },
+    {
+        id: ReleaseTabIds.SPDX_DOCUMENT,
+        name: 'SPDX Document',
+    },
+    {
+        id: ReleaseTabIds.LINKED_RELEASES,
+        name: 'Linked Releases',
+    },
+    {
+        id: ReleaseTabIds.CLEARING_DETAILS,
+        name: 'Clearing Details',
+    },
+    {
+        id: ReleaseTabIds.ECC_DETAILS,
+        name: 'ECC Details',
+    },
+    {
+        id: CommonTabIds.ATTACHMENTS,
+        name: 'Attachments',
+    },
+    {
+        id: CommonTabIds.VULNERABILITIES,
+        name: 'Vulnerabilities',
+    },
+    {
+        id: CommonTabIds.CHANGE_LOG,
+        name: 'Change Log',
+    },
+]
+
+const WITH_COMMERCIAL_DETAILS_AND_SPDX = [
+    {
+        id: CommonTabIds.SUMMARY,
+        name: 'Summary',
+    },
+    {
+        id: ReleaseTabIds.SPDX_DOCUMENT,
+        name: 'SPDX Document',
+    },
+    {
+        id: ReleaseTabIds.LINKED_RELEASES,
+        name: 'Linked Releases',
+    },
+    {
+        id: ReleaseTabIds.CLEARING_DETAILS,
+        name: 'Clearing Details',
+    },
+    {
+        id: ReleaseTabIds.ECC_DETAILS,
+        name: 'ECC Details',
+    },
+    {
+        id: CommonTabIds.ATTACHMENTS,
+        name: 'Attachments',
+    },
+    {
+        id: ReleaseTabIds.COMMERCIAL_DETAILS,
+        name: 'Commercial Details',
+    },
+    {
+        id: CommonTabIds.VULNERABILITIES,
+        name: 'Vulnerabilities',
+    },
+    {
+        id: CommonTabIds.CHANGE_LOG,
+        name: 'Change Log',
+    },
+]
+
 const ReleaseDetailTabs = {
-    WITHOUT_COMMERCIAL_DETAILS,
     WITH_COMMERCIAL_DETAILS,
+    WITH_SPDX,
+    WITHOUT_COMMERCIAL_DETAILS_AND_SPDX,
+    WITH_COMMERCIAL_DETAILS_AND_SPDX,
 }
 
 export default ReleaseDetailTabs

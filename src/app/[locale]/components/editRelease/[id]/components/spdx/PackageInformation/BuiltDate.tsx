@@ -8,27 +8,18 @@
 // License-Filename: LICENSE
 
 import CommonUtils from '@/utils/common.utils'
+import { useState } from 'react'
 import InputKeyValue from '../../../../../../../../object-types/InputKeyValue'
 
 interface Props {
     setBuiltDate?: any
     dataBuiltDate?: InputKeyValue
     setDataBuiltDate?: React.Dispatch<React.SetStateAction<InputKeyValue>>
-    dataDateBuilt?: string
-    setDataDateBuilt?: React.Dispatch<React.SetStateAction<string>>
-    dataTimeBuilt?: string
-    setDataTimeBuilt?: React.Dispatch<React.SetStateAction<string>>
 }
 
-function BuiltDate({
-    dataBuiltDate,
-    setDataBuiltDate,
-    setBuiltDate,
-    dataDateBuilt,
-    setDataDateBuilt,
-    dataTimeBuilt,
-    setDataTimeBuilt,
-}: Props) {
+function BuiltDate({ dataBuiltDate, setDataBuiltDate, setBuiltDate }: Props) {
+    const [dataDateBuilt, setDataDateBuilt] = useState('')
+    const [dataTimeBuilt, setDataTimeBuilt] = useState('')
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         const { name, value } = e.target
         e.target.name === 'key' ? setDataDateBuilt(e.target.value) : setDataTimeBuilt(e.target.value)
@@ -37,9 +28,27 @@ function BuiltDate({
         setDataBuiltDate(list)
         if (
             !CommonUtils.isNullEmptyOrUndefinedString(dataDateBuilt) &&
+            CommonUtils.isNullEmptyOrUndefinedString(dataTimeBuilt) &&
+            e.target.name === 'value'
+        ) {
+            setBuiltDate({ key: dataDateBuilt, value: e.target.value })
+        }
+        if (
+            CommonUtils.isNullEmptyOrUndefinedString(dataDateBuilt) &&
+            !CommonUtils.isNullEmptyOrUndefinedString(dataTimeBuilt) &&
+            e.target.name === 'key'
+        ) {
+            setBuiltDate({ key: e.target.value, value: dataTimeBuilt })
+        }
+        if (
+            !CommonUtils.isNullEmptyOrUndefinedString(dataDateBuilt) &&
             !CommonUtils.isNullEmptyOrUndefinedString(dataTimeBuilt)
         ) {
-            setBuiltDate(list)
+            if (e.target.name === 'key') {
+                setBuiltDate({ key: e.target.value, value: dataTimeBuilt })
+            } else {
+                setBuiltDate({ key: dataDateBuilt, value: e.target.value })
+            }
         }
     }
 
