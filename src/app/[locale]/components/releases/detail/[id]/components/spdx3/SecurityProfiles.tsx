@@ -45,11 +45,11 @@ const SecurityProfiles = () => {
                 </tr>
                 <tr>
                     <td>3.5 DecisionType</td>
-                    <td>11</td>
+                    <td>act</td>
                 </tr>
                 <tr>
                     <td>3.6 Exploited</td>
-                    <td>11</td>
+                    <td>kev</td>
                 </tr>
                 <tr>
                     <td>3.7 Impact Statement</td>
@@ -61,7 +61,7 @@ const SecurityProfiles = () => {
                 </tr>
                 <tr>
                     <td>3.9 Justification Type</td>
-                    <td>11</td>
+                    <td>component not present</td>
                 </tr>
                 <tr>
                     <td>3.10 Locator</td>
@@ -86,7 +86,7 @@ const SecurityProfiles = () => {
                 </tr>
                 <tr>
                     <td>3.16 Severity</td>
-                    <td>11</td>
+                    <td>critical</td>
                 </tr>
                 <tr>
                     <td>3.17 Status Notes</td>

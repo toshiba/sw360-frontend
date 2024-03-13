@@ -66,7 +66,7 @@ const AIProfiles = () => {
                 </tr>
                 <tr>
                     <td>6.10 Safety Risk Assessment</td>
-                    <td>11</td>
+                    <td>serious</td>
                 </tr>
                 <tr>
                     <td>6.11 SensitivePersonal Information</td>

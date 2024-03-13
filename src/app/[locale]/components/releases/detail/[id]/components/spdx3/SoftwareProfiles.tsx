@@ -29,7 +29,7 @@ const SoftwareProfiles = () => {
             <tbody hidden={toggle}>
                 <tr>
                     <td>2.1 Additional Purpose</td>
-                    <td>11</td>
+                    <td>archive</td>
                 </tr>
                 <tr>
                     <td>2.2 Attribution Text</td>
@@ -77,18 +77,18 @@ const SoftwareProfiles = () => {
                 </tr>
                 <tr>
                     <td>2.13 Primary Purpose</td>
-                    <td>11</td>
+                    <td>application</td>
                 </tr>
                 <tr>
                     <td>2.14 Sbom Type</td>
+                    <td>design</td>
+                </tr>
+                <tr>
+                    <td>2.15 Snippet From File</td>
                     <td>11</td>
                 </tr>
                 <tr>
-                    <td>2.6 Snippet From File</td>
-                    <td>11</td>
-                </tr>
-                <tr>
-                    <td>2.7 Source Info</td>
+                    <td>2.16 Source Info</td>
                     <td>11</td>
                 </tr>
             </tbody>

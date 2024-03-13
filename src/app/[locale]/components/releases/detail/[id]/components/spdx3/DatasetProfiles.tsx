@@ -34,7 +34,7 @@ const DatasetProfiles = () => {
                 </tr>
                 <tr>
                     <td>5.2 Confidentiality Level</td>
-                    <td>11</td>
+                    <td>green</td>
                 </tr>
                 <tr>
                     <td>5.3 Data Collection Process</td>
@@ -46,7 +46,7 @@ const DatasetProfiles = () => {
                 </tr>
                 <tr className='spdx-full'>
                     <td>5.5 Dataset Availability</td>
-                    <td>11</td>
+                    <td>Direct Download</td>
                 </tr>
                 <tr className='spdx-full'>
                     <td>5.6 Dataset Noise</td>
@@ -58,7 +58,7 @@ const DatasetProfiles = () => {
                 </tr>
                 <tr className='spdx-full'>
                     <td>5.8 Dataset Type</td>
-                    <td className='spdx-col-3 spdx-uppercase'>11</td>
+                    <td className='spdx-col-3'>structured</td>
                 </tr>
                 <tr className='spdx-full'>
                     <td>5.9 Dataset Update Mechanism</td>
