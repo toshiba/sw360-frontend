@@ -7,12 +7,12 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import InputKeyValue from '../../../../../../../../object-types/InputKeyValue'
+import { InputKeyValue } from '@/object-types'
 
 interface Props {
     dataSnippetFromFile?: InputKeyValue
     setDataSnippetFromFile?: React.Dispatch<React.SetStateAction<InputKeyValue>>
-    setSnippetFromFileToSnippet?: any
+    setSnippetFromFileToSnippet?: (input: InputKeyValue) => void
 }
 
 function SnippetFileSPDXIdentifier({

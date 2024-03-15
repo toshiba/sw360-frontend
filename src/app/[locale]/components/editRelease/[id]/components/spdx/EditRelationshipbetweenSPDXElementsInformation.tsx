@@ -13,13 +13,12 @@ import { useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import styles from '../detail.module.css'
 
+import { RelationshipsBetweenSPDXElements, SPDX } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
-import RelationshipsBetweenSPDXElements from '../../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
-import SPDX from '../../../../../../../object-types/spdx/SPDX'
 
 interface Props {
     indexRelation?: number
-    setIndexRelation?: any
+    setIndexRelation?: React.Dispatch<React.SetStateAction<number>>
     relationshipsBetweenSPDXElementSPDXs: RelationshipsBetweenSPDXElements[]
     setRelationshipsBetweenSPDXElementSPDXs: React.Dispatch<React.SetStateAction<RelationshipsBetweenSPDXElements[]>>
     relationshipsBetweenSPDXElementPackages: RelationshipsBetweenSPDXElements[]

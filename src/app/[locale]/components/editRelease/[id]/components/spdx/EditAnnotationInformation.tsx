@@ -9,12 +9,10 @@
 // License-Filename: LICENSE
 
 'use client'
+import { Annotations, InputKeyValue, SPDX } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
 import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
-import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
-import Annotations from '../../../../../../../object-types/spdx/Annotations'
-import SPDX from '../../../../../../../object-types/spdx/SPDX'
 import styles from '../detail.module.css'
 import AnnotationDate from './AnnotationInformation/AnnotationDate'
 import Annotator from './AnnotationInformation/Annotator'

@@ -28,8 +28,6 @@ function SnippetLicenseInformation({
     licenseInfoInSnippetsNoasserttion,
     setLicenseInfoInSnippetsNoasserttion,
 }: Props) {
-    // licenseInfoSnippet
-
     const selectLicenseInfoSnippetExist = () => {
         setLicenseInfoInSnippetsExist(true)
         setLicenseInfoInSnippetsNone(false)

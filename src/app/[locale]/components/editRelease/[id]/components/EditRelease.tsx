@@ -259,7 +259,6 @@ const EditRelease = ({ releaseId }: Props) => {
     }
 
     const submit = async () => {
-        console.log(SPDXPayload)
         if (SPDX_ENABLE === 'true') {
             const responseUpdateSPDX = await ApiUtils.PATCH(
                 `releases/${releaseId}/spdx`,

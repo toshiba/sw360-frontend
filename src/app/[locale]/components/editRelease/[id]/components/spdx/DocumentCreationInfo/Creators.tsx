@@ -1,4 +1,5 @@
-// Copyright (C) Siemens AG, 2023. Part of the SW360 Frontend Project.
+// Copyright (C) TOSHIBA CORPORATION, 2023. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2023. Part of the SW360 Frontend Project.
 
 // This program and the accompanying materials are made
 // available under the terms of the Eclipse Public License 2.0
@@ -14,7 +15,7 @@ interface Props {
     setInputList?: React.Dispatch<React.SetStateAction<InputKeyValue[]>>
     inputList?: InputKeyValue[]
     isAnonymous?: boolean
-    setDataCreators?: any
+    setDataCreators?: (inputs: InputKeyValue[]) => void
 }
 
 function Creators({ inputList, setInputList, isAnonymous, setDataCreators }: Props) {

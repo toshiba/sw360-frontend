@@ -9,14 +9,14 @@
 
 interface Props {
     snippetCopyrightText?: string
-    setSnippetConcludedLicenseToSnippet?: any
+    setSnippetConcludedLicenseToSnippet?: (data: string) => void
     snippetCopyrightTextExist?: boolean
     setSnippetCopyrightTextExist?: React.Dispatch<React.SetStateAction<boolean>>
     snippetCopyrightTextNone?: boolean
     setSnippetCopyrightTextNone?: React.Dispatch<React.SetStateAction<boolean>>
     snippetCopyrightTextNoasserttion?: boolean
     setSnippetCopyrightTextNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
-    updateField?: any
+    updateField?: (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => void
 }
 
 function SnippetCopyrightText({

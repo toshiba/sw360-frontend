@@ -1,4 +1,5 @@
-// Copyright (C) Siemens AG, 2023. Part of the SW360 Frontend Project.
+// Copyright (C) TOSHIBA CORPORATION, 2023. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2023. Part of the SW360 Frontend Project.
 
 // This program and the accompanying materials are made
 // available under the terms of the Eclipse Public License 2.0
@@ -9,10 +10,10 @@
 
 interface Props {
     licenseName?: string
-    setLicenseNameToOtherLicense?: any
+    setLicenseNameToOtherLicense?: (data: string) => void
     isLicenseName?: boolean
     setIsLicenseName?: React.Dispatch<React.SetStateAction<boolean>>
-    updateField?: any
+    updateField?: (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => void
 }
 
 function OtherLicenseName({

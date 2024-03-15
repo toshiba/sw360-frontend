@@ -9,12 +9,9 @@
 // License-Filename: LICENSE
 
 'use client'
-import { useState } from 'react'
-// import Annotations from '../../../../../../../../object-types/spdx/Annotations'
+import { Annotations, PackageInformation, SPDXDocument } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
-import Annotations from '../../../../../../../../object-types/spdx/Annotations'
-import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
-import SPDXDocument from '../../../../../../../../object-types/spdx/SPDXDocument'
+import { useState } from 'react'
 import styles from '../../detail.module.css'
 
 interface Props {
