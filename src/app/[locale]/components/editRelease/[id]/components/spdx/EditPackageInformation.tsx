@@ -603,13 +603,6 @@ const EditPackageInformation = ({
                 ...SPDXPayload,
                 packageInformation: {
                     ...SPDXPayload.packageInformation,
-                    versionInfo: '1111',
-                },
-            })
-            setSPDXPayload({
-                ...SPDXPayload,
-                packageInformation: {
-                    ...SPDXPayload.packageInformation,
                     licenseInfoFromFiles: [],
                     packageVerificationCode: null,
                 },
