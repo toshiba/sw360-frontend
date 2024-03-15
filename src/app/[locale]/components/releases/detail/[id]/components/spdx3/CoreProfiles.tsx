@@ -47,17 +47,8 @@ const CoreProfiles = () => {
                     <td>1.5 Comment</td>
                     <td>11</td>
                 </tr>
-                <tr>
-                    <td>1.6 Algorithm</td>
-                    <td>MD5</td>
-                </tr>
                 <tr className='spdx-full'>
-                    <td>1.7 Hash Value </td>
-                    <td>https://datatracker.ietf.org/doc/html/rfc1321</td>
-                </tr>
-
-                <tr className='spdx-full'>
-                    <td>1.8 Annotation </td>
+                    <td>1.6 Annotation </td>
                     <td>
                         <div className='spdx-col-2 section' data-size='4'>
                             <div className='spdx-flex-row'>
@@ -87,7 +78,7 @@ const CoreProfiles = () => {
                 </tr>
 
                 <tr className='spdx-full'>
-                    <td>1.9 Relationship </td>
+                    <td>1.7 Relationship </td>
                     <td>
                         <div className='spdx-col-2 section' data-size='4'>
                             <div className='spdx-flex-row'>
@@ -117,7 +108,7 @@ const CoreProfiles = () => {
                 </tr>
 
                 <tr className='spdx-full'>
-                    <td>1.10 Imports </td>
+                    <td>1.8 Imports </td>
                     <td>
                         <div className='spdx-col-2 section' data-size='4'>
                             <div className='spdx-flex-row'>
@@ -147,7 +138,7 @@ const CoreProfiles = () => {
                 </tr>
 
                 <tr className='spdx-full'>
-                    <td>1.11 External Identifier </td>
+                    <td>1.9 External Identifier </td>
                     <td>
                         <div className='spdx-col-2 section' data-size='4'>
                             <div className='spdx-flex-row'>
@@ -179,30 +170,39 @@ const CoreProfiles = () => {
                         </div>
                     </td>
                 </tr>
-
                 <tr>
-                    <td>1.12 Begin Integer Range</td>
-                    <td>11</td>
+                    <td>1.10 Positive Integer Range</td>
+                    <td>
+                        <div className='spdx-col-2 spdx-flex-col'>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>Begin Integer Range</div>
+                                <div className='spdx-col-3'>11</div>
+                            </div>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>End Integer Range</div>
+                                <div className='spdx-col-3 ' id='excludedFiles'>
+                                    99
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
+
                 <tr className='spdx-full'>
-                    <td>1.13 End Integer Range</td>
-                    <td>99</td>
-                </tr>
-                <tr className='spdx-full'>
-                    <td>1.14 Context</td>
+                    <td>1.11 Context</td>
                     <td>context</td>
                 </tr>
                 <tr className='spdx-full'>
-                    <td>1.15 Data License</td>
+                    <td>1.12 Data License</td>
                     <td>OSBD</td>
                 </tr>
                 <tr className='spdx-full'>
-                    <td>1.16 Extension</td>
+                    <td>1.13 Extension</td>
                     <td>extension</td>
                 </tr>
 
                 <tr className='spdx-full'>
-                    <td>1.17 External Ref</td>
+                    <td>1.14 External Ref</td>
                     <td>
                         <div className='spdx-col-2 section' data-size='4'>
                             <div className='spdx-flex-row'>
@@ -225,85 +225,150 @@ const CoreProfiles = () => {
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Comment</div>
-                                <p className='spdx-col-3'>comment</p>
+                                <div className='spdx-col-3'>comment</div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1.15 Dictionary Entry</td>
+                    <td>
+                        <div className='spdx-col-2 spdx-flex-col'>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>Key</div>
+                                <div className='spdx-col-3'>key</div>
                             </div>
                             <div className='spdx-flex-row'>
-                                <div className='spdx-col-1 spdx-key'>External SpdxId</div>
-                                <div className='spdx-col-3'>external spdxId</div>
+                                <div className='spdx-col-1 spdx-key'>Value</div>
+                                <div className='spdx-col-3 ' id='excludedFiles'>
+                                    value
+                                </div>
                             </div>
                         </div>
                     </td>
                 </tr>
                 <tr className='spdx-full'>
-                    <td>1.18 Dictionary Entry</td>
-                    <td>key value</td>
-                </tr>
-                <tr className='spdx-full'>
-                    <td>1.19 Originated By</td>
+                    <td>1.16 Originated By</td>
                     <td>admin</td>
                 </tr>
                 <tr className='spdx-full'>
-                    <td>1.20 Supplied By</td>
+                    <td>1.17 Supplied By</td>
                     <td>admin</td>
                 </tr>
                 <tr>
-                    <td>1.21 Built Time</td>
+                    <td>1.18 Built Time</td>
                     <td>2024-03-12</td>
                 </tr>
                 <tr className='spdx-full'>
-                    <td>1.21 Release Time</td>
+                    <td>1.19 Release Time</td>
                     <td>2024-03-12</td>
                 </tr>
                 <tr className='spdx-full'>
-                    <td>1.22 Valid Until Time</td>
+                    <td>1.20 Valid Until Time</td>
                     <td>2024-03-12</td>
                 </tr>
                 <tr className='spdx-full'>
-                    <td>1.23 Standard Name</td>
+                    <td>1.21 Standard Name</td>
                     <td>standard name</td>
                 </tr>
                 <tr className='spdx-full'>
-                    <td>1.24 Support Level</td>
+                    <td>1.22 Support Level</td>
                     <td>development</td>
                 </tr>
-                <tr className='spdx-full'>
-                    <td>1.25 Hash Value </td>
-                    <td>hash value</td>
+                <tr>
+                    <td>1.23 Hash</td>
+                    <td>
+                        <div className='spdx-col-2 spdx-flex-col'>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>Algorithm</div>
+                                <div className='spdx-col-3'>Algorithm</div>
+                            </div>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>Comment</div>
+                                <div className='spdx-col-3'>Comment</div>
+                            </div>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>Hash Value</div>
+                                <div className='spdx-col-3 ' id='excludedFiles'>
+                                    Hash Value
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1.24 Package Verification Code</td>
+                    <td>
+                        <div className='spdx-col-2 spdx-flex-col'>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>Hash Value</div>
+                                <div className='spdx-col-3'>Hash Value</div>
+                            </div>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>PackageVerificationCodeExcludedFile</div>
+                                <div className='spdx-col-3 ' id='excludedFiles'>
+                                    PackageVerificationCodeExcludedFile
+                                </div>
+                            </div>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>Comment</div>
+                                <div className='spdx-col-3'>Comment</div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>1.25 Namespace Map</td>
+                    <td>
+                        <div className='spdx-col-2 spdx-flex-col'>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>Prefix</div>
+                                <div className='spdx-col-3'>prefix</div>
+                            </div>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>Namespace</div>
+                                <div className='spdx-col-3 ' id='excludedFiles'>
+                                    namespace
+                                </div>
+                            </div>
+                        </div>
+                        <div className='spdx-col-2 spdx-flex-col'>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>Prefix</div>
+                                <div className='spdx-col-3'>prefix1</div>
+                            </div>
+                            <div className='spdx-flex-row'>
+                                <div className='spdx-col-1 spdx-key'>Namespace</div>
+                                <div className='spdx-col-3 ' id='excludedFiles'>
+                                    namespace1
+                                </div>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                 <tr className='spdx-full'>
-                    <td>1.26 PackageVerificationCodeExcludedFile</td>
+                    <td>1.26 Profile Conformance</td>
                     <td>11</td>
                 </tr>
                 <tr className='spdx-full'>
-                    <td>1.27 Prefix</td>
+                    <td>1.27 Scope</td>
                     <td>11</td>
                 </tr>
                 <tr className='spdx-full'>
-                    <td>1.28 Name Space</td>
+                    <td>1.28 Spec version</td>
                     <td>11</td>
                 </tr>
                 <tr className='spdx-full'>
-                    <td>1.29 Profile Conformance</td>
-                    <td>11</td>
-                </tr>
-                <tr className='spdx-full'>
-                    <td>1.30 Scope</td>
-                    <td>11</td>
-                </tr>
-                <tr className='spdx-full'>
-                    <td>1.31 Spec version</td>
-                    <td>11</td>
-                </tr>
-                <tr className='spdx-full'>
-                    <td>1.32 Created</td>
+                    <td>1.29 Created</td>
                     <td>2024-03-12</td>
                 </tr>
                 <tr className='spdx-full'>
-                    <td>1.33 Created By</td>
+                    <td>1.30 Created By</td>
                     <td>admin</td>
                 </tr>
                 <tr className='spdx-full'>
-                    <td>1.34 Created Using</td>
+                    <td>1.31 Created Using</td>
                     <td>tool</td>
                 </tr>
             </tbody>
