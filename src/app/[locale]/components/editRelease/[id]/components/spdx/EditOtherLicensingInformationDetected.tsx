@@ -9,18 +9,17 @@
 // License-Filename: LICENSE
 
 'use client'
+import { OtherLicensingInformationDetected, SPDX } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
 import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
-import OtherLicensingInformationDetected from '../../../../../../../object-types/spdx/OtherLicensingInformationDetected'
-import SPDX from '../../../../../../../object-types/spdx/SPDX'
 import styles from '../detail.module.css'
 import OtherLicenseName from './OtherLicenseName'
 
 interface Props {
     isModeFull?: boolean
     indexOtherLicense?: number
-    setIndexOtherLicense?: any
+    setIndexOtherLicense?: React.Dispatch<React.SetStateAction<number>>
     otherLicensingInformationDetecteds?: OtherLicensingInformationDetected[]
     setOtherLicensingInformationDetecteds?: React.Dispatch<React.SetStateAction<OtherLicensingInformationDetected[]>>
     SPDXPayload?: SPDX
@@ -289,7 +288,7 @@ const EditOtherLicensingInformationDetected = ({
                                     </label>
                                     <textarea
                                         className='form-control'
-                                        id='licenseCommentOnOtherLicensing'
+                                        id='licenseComment'
                                         rows={5}
                                         placeholder='Enter license comment'
                                         name='licenseComment'

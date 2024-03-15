@@ -9,11 +9,9 @@
 // License-Filename: LICENSE
 
 'use client'
+import { OtherLicensingInformationDetected, SPDXDocument } from '@/object-types'
 import { useState } from 'react'
 import styles from '../../detail.module.css'
-
-import OtherLicensingInformationDetected from '../../../../../../../../object-types/spdx/OtherLicensingInformationDetected'
-import SPDXDocument from '../../../../../../../../object-types/spdx/SPDXDocument'
 
 interface Props {
     spdxDocument?: SPDXDocument

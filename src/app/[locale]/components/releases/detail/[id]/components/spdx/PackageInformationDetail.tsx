@@ -9,9 +9,8 @@
 // License-Filename: LICENSE
 
 'use client'
+import { ExternalReference, PackageInformation } from '@/object-types'
 import { useState } from 'react'
-import ExternalReference from '../../../../../../../../object-types/spdx/ExternalReference'
-import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
 import styles from '../../detail.module.css'
 
 interface Props {

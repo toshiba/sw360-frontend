@@ -10,12 +10,11 @@
 
 'use client'
 
+import { Release } from '@/object-types'
 import { useTranslations } from 'next-intl'
 import React from 'react'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { BiInfoCircle } from 'react-icons/bi'
-
-import { Release } from '@/object-types'
 
 interface Props {
     releasePayload?: Release

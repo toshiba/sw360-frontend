@@ -9,17 +9,13 @@
 // License-Filename: LICENSE
 
 'use client'
+import { CheckSum, ExternalReference, InputKeyValue, PackageInformation, SPDX } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
 import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
-import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
-import CheckSum from '../../../../../../../object-types/spdx/CheckSum'
-import ExternalReference from '../../../../../../../object-types/spdx/ExternalReference'
-import PackageInformation from '../../../../../../../object-types/spdx/PackageInformation'
-import SPDX from '../../../../../../../object-types/spdx/SPDX'
 import styles from '../detail.module.css'
-import CheckSums from './CheckSums'
 import BuiltDate from './PackageInformation/BuiltDate'
+import CheckSums from './PackageInformation/CheckSums'
 import PackageAllLicensesInformation from './PackageInformation/PackageAllLicensesInformation'
 import PackageConcludedLicense from './PackageInformation/PackageConcludedLicense'
 import PackageCopyrightText from './PackageInformation/PackageCopyrightText'
@@ -502,7 +498,7 @@ const EditPackageInformation = ({
             ...packageInformation,
             packageVerificationCode: {
                 ...packageInformation.packageVerificationCode,
-                [e.target.name]: e.target.value,
+                [e.target.name]: e.target.name === 'excludedFiles' ? e.target.value.split('\n') : e.target.value,
             },
         })
         setSPDXPayload({
@@ -511,7 +507,7 @@ const EditPackageInformation = ({
                 ...SPDXPayload.packageInformation,
                 packageVerificationCode: {
                     ...packageInformation.packageVerificationCode,
-                    [e.target.name]: e.target.value,
+                    [e.target.name]: e.target.name === 'excludedFiles' ? e.target.value.split('\n') : e.target.value,
                 },
             },
         })
@@ -603,13 +599,6 @@ const EditPackageInformation = ({
             },
         })
         if (e.target.value === 'false') {
-            setSPDXPayload({
-                ...SPDXPayload,
-                packageInformation: {
-                    ...SPDXPayload.packageInformation,
-                    versionInfo: '1111',
-                },
-            })
             setSPDXPayload({
                 ...SPDXPayload,
                 packageInformation: {
@@ -718,7 +707,7 @@ const EditPackageInformation = ({
                         <tr>
                             <td>
                                 <div className='form-group'>
-                                    <label className='lableSPDX' htmlFor='packageName'>
+                                    <label className='lableSPDX' htmlFor='versionInfo'>
                                         7.3 Package version
                                     </label>
                                     <div style={{ display: 'flex' }}>
@@ -736,7 +725,7 @@ const EditPackageInformation = ({
                             </td>
                             <td>
                                 <div className='form-group'>
-                                    <label className='lableSPDX' htmlFor='packageSPDXId'>
+                                    <label className='lableSPDX' htmlFor='packageFileName'>
                                         7.4 Package file name
                                     </label>
                                     <div style={{ display: 'flex' }}>
@@ -898,13 +887,13 @@ const EditPackageInformation = ({
                             <tr className='spdx-full'>
                                 <td colSpan={3}>
                                     <div className='form-group'>
-                                        <label className='lableSPDX' htmlFor='verificationCodeValue'>
+                                        <label className='lableSPDX' htmlFor='sourceInformation'>
                                             7.12 Source information
                                         </label>
                                         <div>
                                             <textarea
                                                 className='form-control'
-                                                id='excludedFiles'
+                                                id='sourceInformation'
                                                 rows={5}
                                                 name='sourceInfo'
                                                 onChange={updateField}
@@ -958,13 +947,13 @@ const EditPackageInformation = ({
                         <tr className='spdx-full'>
                             <td colSpan={3}>
                                 <div className='form-group'>
-                                    <label className='lableSPDX' htmlFor='verificationCodeValue'>
+                                    <label className='lableSPDX' htmlFor='commentsOnLicense'>
                                         7.16 Comments on license
                                     </label>
                                     <div>
                                         <textarea
                                             className='form-control'
-                                            id='excludedFiles'
+                                            id='commentsOnLicense'
                                             rows={5}
                                             placeholder='Enter excluded files'
                                             name='licenseComments'
@@ -993,13 +982,13 @@ const EditPackageInformation = ({
                                 <tr className='spdx-full'>
                                     <td colSpan={3}>
                                         <div className='form-group'>
-                                            <label className='lableSPDX' htmlFor='verificationCodeValue'>
+                                            <label className='lableSPDX' htmlFor='packageSummaryDescription'>
                                                 7.18 Package summary description
                                             </label>
                                             <div>
                                                 <textarea
                                                     className='form-control'
-                                                    id='excludedFiles'
+                                                    id='packageSummaryDescription'
                                                     rows={5}
                                                     name='summary'
                                                     onChange={updateField}
@@ -1013,13 +1002,13 @@ const EditPackageInformation = ({
                                 <tr className='spdx-full'>
                                     <td colSpan={3}>
                                         <div className='form-group'>
-                                            <label className='lableSPDX' htmlFor='verificationCodeValue'>
+                                            <label className='lableSPDX' htmlFor='packageDetailedDescription'>
                                                 7.19 Package detailed description
                                             </label>
                                             <div>
                                                 <textarea
                                                     className='form-control'
-                                                    id='excludedFiles'
+                                                    id='packageDetailedDescription'
                                                     rows={5}
                                                     name='description'
                                                     onChange={updateField}
@@ -1035,13 +1024,13 @@ const EditPackageInformation = ({
                         <tr className='spdx-full'>
                             <td colSpan={3}>
                                 <div className='form-group'>
-                                    <label className='lableSPDX' htmlFor='verificationCodeValue'>
+                                    <label className='lableSPDX' htmlFor='packageComment'>
                                         7.20 Package comment
                                     </label>
                                     <div>
                                         <textarea
                                             className='form-control'
-                                            id='excludedFiles'
+                                            id='packageComment'
                                             rows={5}
                                             name='packageComment'
                                             onChange={updateField}
@@ -1223,13 +1212,13 @@ const EditPackageInformation = ({
                                 <tr className='spdx-full'>
                                     <td colSpan={3}>
                                         <div className='form-group'>
-                                            <label className='lableSPDX' htmlFor='verificationCodeValue'>
+                                            <label className='lableSPDX' htmlFor='packageAttributionText'>
                                                 7.23 Package attribution text
                                             </label>
                                             <div>
                                                 <textarea
                                                     className='form-control'
-                                                    id='excludedFiles'
+                                                    id='packageAttributionText'
                                                     rows={5}
                                                     name='attributionText'
                                                     onChange={updateField}
@@ -1243,13 +1232,13 @@ const EditPackageInformation = ({
                                 <tr className='spdx-full'>
                                     <td colSpan={3}>
                                         <div className='form-group'>
-                                            <label className='lableSPDX' htmlFor='verificationCodeValue'>
+                                            <label className='lableSPDX' htmlFor='primaryPackagePurpose'>
                                                 7.24 Primary Package Purpose
                                             </label>
                                             <div>
                                                 <textarea
                                                     className='form-control'
-                                                    id='excludedFiles'
+                                                    id='primaryPackagePurpose'
                                                     rows={5}
                                                     name='primaryPackagePurpose'
                                                     onChange={updateField}

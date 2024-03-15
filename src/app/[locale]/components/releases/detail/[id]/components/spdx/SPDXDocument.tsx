@@ -10,29 +10,32 @@
 
 'use client'
 
+import {
+    Annotations,
+    DocumentCreationInformation,
+    ExternalDocumentReferences,
+    ExternalReference,
+    HttpStatus,
+    OtherLicensingInformationDetected,
+    PackageInformation,
+    RelationshipsBetweenSPDXElements,
+    ReleaseDetail,
+    SPDXDocument,
+    SnippetInformation,
+} from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
 import { ApiUtils } from '@/utils/index'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
-import ReleaseDetail from '../../../../../../../../object-types/ReleaseDetail'
-import HttpStatus from '../../../../../../../../object-types/enums/HttpStatus'
-import Annotations from '../../../../../../../../object-types/spdx/Annotations'
-import DocumentCreationInformation from '../../../../../../../../object-types/spdx/DocumentCreationInformation'
-import ExternalDocumentReferences from '../../../../../../../../object-types/spdx/ExternalDocumentReferences'
-import ExternalReference from '../../../../../../../../object-types/spdx/ExternalReference'
-import OtherLicensingInformationDetected from '../../../../../../../../object-types/spdx/OtherLicensingInformationDetected'
-import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
-import RelationshipsBetweenSPDXElements from '../../../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
-import SPDXDocument from '../../../../../../../../object-types/spdx/SPDXDocument'
-import SnippetInformation from '../../../../../../../../object-types/spdx/SnippetInformation'
-import SnippetInformationDetail from './ SnippetInformation'
+
 import AnnotationInformation from './AnnotationInformation'
 import styles from './CssButton.module.css'
 import DocumentCreationInformationDetail from './DocumentCreationInformation'
 import OtherLicensingInformationDetectedDetail from './OtherLicensingInformationDetectedDetail'
 import PackageInformationDetail from './PackageInformationDetail'
 import RelationshipbetweenSPDXElementsInformation from './RelationshipbetweenSPDXElementsInformation'
+import SnippetInformationDetail from './SnippetInformation'
 
 interface Props {
     releaseId: string
@@ -43,10 +46,6 @@ const SPDXDocument = ({ releaseId }: Props) => {
     const [spdxDocument, setSPDXDocument] = useState<SPDXDocument>()
     const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
     const [packageInformation, setPackageInformation] = useState<PackageInformation>()
-    // const [snippetInformations, setSnippetInformations] = useState<SnippetInformation>()
-    // const [otherLicensingInformationDetecteds, setOtherLicensingInformationDetected] = useState<OtherLicensingInformationDetected>()
-    // const [relationshipsBetweenSPDXElements, setRelationshipsBetweenSPDXElements] = useState<RelationshipsBetweenSPDXElements>()
-    // const [annotations, setAnnotations] = useState<Annotations>()
     const [externalDocumentRef, setExternalDocumentRef] = useState<ExternalDocumentReferences>()
     const [externalRefsData, setExternalRefsData] = useState<ExternalReference>()
     const [snippetInformation, setSnippetInformation] = useState<SnippetInformation>()

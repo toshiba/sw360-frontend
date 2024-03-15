@@ -9,13 +9,10 @@
 // License-Filename: LICENSE
 
 'use client'
+import { PackageInformation, RelationshipsBetweenSPDXElements, SPDXDocument } from '@/object-types'
+import CommonUtils from '@/utils/common.utils'
 import { useState } from 'react'
 import styles from '../../detail.module.css'
-
-import CommonUtils from '@/utils/common.utils'
-import PackageInformation from '../../../../../../../../object-types/spdx/PackageInformation'
-import RelationshipsBetweenSPDXElements from '../../../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
-import SPDXDocument from '../../../../../../../../object-types/spdx/SPDXDocument'
 
 interface Props {
     spdxDocument?: SPDXDocument

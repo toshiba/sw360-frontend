@@ -25,6 +25,8 @@ import {
     ClearingInformation,
     CommonTabIds,
     ComponentOwner,
+    Creator,
+    DocumentCreationInformation,
     DocumentTypes,
     ECCInformation,
     HttpStatus,
@@ -68,6 +70,20 @@ const EditRelease = ({ releaseId }: Props) => {
         packageInformation: null,
     })
 
+    const handleCreators = (data: string) => {
+        if (CommonUtils.isNullEmptyOrUndefinedString(data)) {
+            return []
+        }
+        const creators: Array<Creator> = []
+        const creator: Creator = {
+            type: 'Person',
+            value: data,
+            index: 0,
+        }
+        creators.push(creator)
+        return creators
+    }
+
     useEffect(() => {
         const controller = new AbortController()
         const signal = controller.signal
@@ -82,9 +98,38 @@ const EditRelease = ({ releaseId }: Props) => {
                     return notFound()
                 }
                 const release: ReleaseDetail = await response.json()
+                let createdDate = release._embedded['sw360:documentCreationInformation'].created
+                if (CommonUtils.isNullEmptyOrUndefinedString(createdDate)) {
+                    createdDate = new Date().toISOString()
+                }
+                let creators: Creator[] = release._embedded['sw360:documentCreationInformation'].creator
+                if (CommonUtils.isNullEmptyOrUndefinedArray(creators)) {
+                    creators = handleCreators(release._embedded['sw360:documentCreationInformation'].createdBy)
+                }
+                const documentCreationInfomation: DocumentCreationInformation = {
+                    id: release._embedded['sw360:documentCreationInformation'].id,
+                    spdxDocumentId: release._embedded['sw360:documentCreationInformation'].spdxDocumentId, // Id of the parent SPDX Document
+                    spdxVersion: release._embedded['sw360:documentCreationInformation'].spdxVersion, // 6.1
+                    dataLicense: release._embedded['sw360:documentCreationInformation'].dataLicense, // 6.2
+                    SPDXID: release._embedded['sw360:documentCreationInformation'].SPDXID, // 6.3
+                    name: release._embedded['sw360:documentCreationInformation'].name, // 6.4
+                    documentNamespace: release._embedded['sw360:documentCreationInformation'].documentNamespace, // 6.5
+                    externalDocumentRefs: release._embedded['sw360:documentCreationInformation'].externalDocumentRefs, // 6.6
+                    licenseListVersion: release._embedded['sw360:documentCreationInformation'].licenseListVersion, // 6.7
+                    creator: creators, // 6.8
+                    created: createdDate, // 6.9
+                    creatorComment: release._embedded['sw360:documentCreationInformation'].creatorComment, // 6.10
+                    documentComment: release._embedded['sw360:documentCreationInformation'].documentComment, // 6.11
+                    // Information for ModerationRequests
+                    documentState: release._embedded['sw360:documentCreationInformation'].documentState,
+                    permissions: release._embedded['sw360:documentCreationInformation'].permissions,
+                    createdBy: release._embedded['sw360:documentCreationInformation'].createdBy,
+                    moderators: release._embedded['sw360:documentCreationInformation'].moderators, // people who can modify the data
+                }
+
                 const SPDXPayload: SPDX = {
                     spdxDocument: release._embedded['sw360:spdxDocument'],
-                    documentCreationInformation: release._embedded['sw360:documentCreationInformation'],
+                    documentCreationInformation: documentCreationInfomation,
                     packageInformation: release._embedded['sw360:packageInformation'],
                 }
                 setSPDXPayload(SPDXPayload)
@@ -159,6 +204,7 @@ const EditRelease = ({ releaseId }: Props) => {
         releaseIdToRelationship: null,
         cotsDetails: null,
         attachmentDTOs: null,
+        spdxId: '',
     })
 
     const [eccInformation, setEccInformation] = useState<ECCInformation>({
@@ -259,7 +305,6 @@ const EditRelease = ({ releaseId }: Props) => {
     }
 
     const submit = async () => {
-        console.log(SPDXPayload)
         if (SPDX_ENABLE === 'true') {
             const responseUpdateSPDX = await ApiUtils.PATCH(
                 `releases/${releaseId}/spdx`,

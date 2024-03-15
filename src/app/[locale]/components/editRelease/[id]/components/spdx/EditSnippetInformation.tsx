@@ -9,19 +9,16 @@
 // License-Filename: LICENSE
 
 'use client'
+import { InputKeyValue, SPDX, SnippetInformation, SnippetRange } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
 import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
-import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
-import SPDX from '../../../../../../../object-types/spdx/SPDX'
-import SnippetInformation from '../../../../../../../object-types/spdx/SnippetInformation'
-import SnippetRange from '../../../../../../../object-types/spdx/SnippetRange'
 import styles from '../detail.module.css'
 import SnippetConcludedLicense from './SnippetInformation/SnippetConcludedLicense'
 import SnippetCopyrightText from './SnippetInformation/SnippetCopyrightText'
 import SnippetFileSPDXIdentifier from './SnippetInformation/SnippetFileSPDXIdentifier'
 import SnippetLicenseInformation from './SnippetInformation/SnippetLicenseInformation'
-import SnippetRanges from './SnippetRanges'
+import SnippetRanges from './SnippetInformation/SnippetRanges'
 
 interface Props {
     indexSnippetInformation?: number

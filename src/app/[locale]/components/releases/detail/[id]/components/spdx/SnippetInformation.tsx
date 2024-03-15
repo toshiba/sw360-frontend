@@ -9,14 +9,11 @@
 // License-Filename: LICENSE
 
 'use client'
+import { SPDXDocument, SnippetInformation } from '@/object-types'
 import { useState } from 'react'
-// import SnippetInformation from '../../../../../../../../object-types/spdx/SnippetInformation'
-import SPDXDocument from '../../../../../../../../object-types/spdx/SPDXDocument'
-import SnippetInformation from '../../../../../../../../object-types/spdx/SnippetInformation'
 import styles from '../../detail.module.css'
 
 interface Props {
-    // snippetInformations?: Array<SnippetInformation>
     spdxDocument?: SPDXDocument
     snippetInformation?: SnippetInformation
     setSnippetInformation?: React.Dispatch<React.SetStateAction<SnippetInformation>>

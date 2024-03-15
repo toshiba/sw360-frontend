@@ -9,14 +9,14 @@
 
 interface Props {
     snippetConcludedLicense?: string
-    setSnippetConcludedLicenseToSnippet?: any
+    setSnippetConcludedLicenseToSnippet?: (data: string) => void
     snippetConcludedLicenseExist?: boolean
     setSnippetConcludedLicenseExist?: React.Dispatch<React.SetStateAction<boolean>>
     snippetConcludedLicenseNone?: boolean
     setSnippetConcludedLicenseNone?: React.Dispatch<React.SetStateAction<boolean>>
     snippetConcludedLicenseNoasserttion?: boolean
     setSnippetConcludedLicenseNoasserttion?: React.Dispatch<React.SetStateAction<boolean>>
-    updateField?: any
+    updateField?: (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => void
 }
 
 function SnippetConcludedLicense({

@@ -9,17 +9,13 @@
 // License-Filename: LICENSE
 
 'use client'
+import { Creator, DocumentCreationInformation, ExternalDocumentReferences, InputKeyValue, SPDX } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
 import React, { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
-import InputKeyValue from '../../../../../../../object-types/InputKeyValue'
-import Creator from '../../../../../../../object-types/spdx/Creator'
-import DocumentCreationInformation from '../../../../../../../object-types/spdx/DocumentCreationInformation'
-import ExternalDocumentReferences from '../../../../../../../object-types/spdx/ExternalDocumentReferences'
-import SPDX from '../../../../../../../object-types/spdx/SPDX'
 import styles from '../detail.module.css'
-import Creators from './Creators'
 import Created from './DocumentCreationInfo/Created'
+import Creators from './DocumentCreationInfo/Creators'
 
 interface Props {
     documentCreationInformation?: DocumentCreationInformation

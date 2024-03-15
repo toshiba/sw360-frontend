@@ -1,4 +1,5 @@
-// Copyright (C) Siemens AG, 2023. Part of the SW360 Frontend Project.
+// Copyright (C) TOSHIBA CORPORATION, 2023. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2023. Part of the SW360 Frontend Project.
 
 // This program and the accompanying materials are made
 // available under the terms of the Eclipse Public License 2.0
@@ -7,13 +8,13 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
+import { InputKeyValue } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
-import InputKeyValue from '../../../../../../../../object-types/InputKeyValue'
 
 interface Props {
     dataPackageOriginator?: InputKeyValue
     setDataPackageOriginator?: React.Dispatch<React.SetStateAction<InputKeyValue>>
-    setPackageOriginatorToPackage?: any
+    setPackageOriginatorToPackage?: (input: InputKeyValue) => void
     isPackageOriginator?: boolean
     setIsPackageOriginator?: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -30,7 +31,15 @@ function PackageOriginator({
         const list: InputKeyValue = dataPackageOriginator
         list[name as keyof InputKeyValue] = value
         setDataPackageOriginator(list)
-        setPackageOriginatorToPackage(list)
+        if (CommonUtils.isNullEmptyOrUndefinedString(list.key)) {
+            const data: InputKeyValue = {
+                key: 'Organization',
+                value: list.value,
+            }
+            setPackageOriginatorToPackage(data)
+        } else {
+            setPackageOriginatorToPackage(list)
+        }
     }
 
     const selectPackageOriginatorNoasserttion = () => {

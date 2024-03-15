@@ -16,15 +16,19 @@ import { ApiUtils } from '@/utils/index'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
-import Annotations from '../../../../../../object-types/spdx/Annotations'
-import DocumentCreationInformation from '../../../../../../object-types/spdx/DocumentCreationInformation'
-import ExternalDocumentReferences from '../../../../../../object-types/spdx/ExternalDocumentReferences'
-import ExternalReference from '../../../../../../object-types/spdx/ExternalReference'
-import OtherLicensingInformationDetected from '../../../../../../object-types/spdx/OtherLicensingInformationDetected'
-import PackageInformation from '../../../../../../object-types/spdx/PackageInformation'
-import RelationshipsBetweenSPDXElements from '../../../../../../object-types/spdx/RelationshipsBetweenSPDXElements'
-import SPDX from '../../../../../../object-types/spdx/SPDX'
-import SnippetInformation from '../../../../../../object-types/spdx/SnippetInformation'
+
+import {
+    Annotations,
+    DocumentCreationInformation,
+    ExternalDocumentReferences,
+    ExternalReference,
+    OtherLicensingInformationDetected,
+    PackageInformation,
+    RelationshipsBetweenSPDXElements,
+    SnippetInformation,
+    SPDX,
+} from '@/object-types'
+
 import styles from './spdx/CssButton.module.css'
 import EditAnnotationInformation from './spdx/EditAnnotationInformation'
 import EditDocumentCreationInformation from './spdx/EditDocumentCreationInformation'
