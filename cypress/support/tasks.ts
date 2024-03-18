@@ -51,6 +51,7 @@ const clearUserByEmail = () => {
 const cleanDB = () => {
     console.log("----------------------------Clean up database--------------------------------")
     const bashs = [
+        runShellCommand('bash cypress/support/common.sh deleteOauthClient'),
         runShellCommand('bash cypress/support/common.sh deleteAllReleases'),
         runShellCommand('bash cypress/support/common.sh deleteAllComponents'),
         runShellCommand('bash cypress/support/common.sh deleteAllProjects'),
@@ -65,7 +66,11 @@ const initData = () => {
     console.log("----------------------------Init data-------------------------------")
     const vendorNames = ['ven001', 'ven002', 'ven003']
     const licenseNames = ['AAL-1.01', 'Abstyles-2024', 'AFL-4.5']
-    const bashs = []
+
+    const bashs = [
+        runShellCommand('bash cypress/support/common.sh createOauthClient')
+    ]
+
     for (const vendorName of vendorNames) {
         bashs.push(runShellCommand(`bash cypress/support/common.sh createVendor ${vendorName}`))
     }

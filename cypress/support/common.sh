@@ -16,6 +16,7 @@ DB_NAME=$(jq -r '.couchdb_dbname' ./cypress.env.json)
 COUCHDB_USERNAME=$(jq -r '.couchdb_username' ./cypress.env.json)
 COUCHDB_PASSWORD=$(jq -r '.couchdb_password' ./cypress.env.json)
 USER_DB_NAME=$(jq -r '.couchdb_users_dbname' ./cypress.env.json)
+OAUTH_DB_NAME=$(jq -r '.couchdb_oauth_clients_dbname' ./cypress.env.json)
 
 delete_all_components() {
     curl -X POST "http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT/$DB_NAME/_find" -H "Content-Type: application/json" -d '{
@@ -152,6 +153,24 @@ delete_user_by_email() {
             }" | jq -r '.docs[] | "curl -X DELETE 'http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT'/'$USER_DB_NAME'/" + ._id + "?rev=" + ._rev' | sh
 }
 
+create_oauth_client() {
+    oauth_client_data=$(jq "." "cypress/fixtures/oauth-client.json")
+    curl -X POST "http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT/$OAUTH_DB_NAME" \
+        -H "Content-Type: application/json" \
+        -d "$oauth_client_data"
+}
+
+delete_oauth_client() {
+    oauth_client_id=$(jq ".client_id" "cypress/fixtures/oauth-client.json")
+    curl -X POST "http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT/$OAUTH_DB_NAME/_find" -H "Content-Type: application/json" -d "{
+        \"selector\": {
+            \"client_id\": $oauth_client_id
+        },
+        \"fields\": [\"_id\", \"_rev\"],
+        \"limit\": 1
+    }" | jq -r '.docs[] | "curl -X DELETE 'http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT'/'$OAUTH_DB_NAME'/" + ._id + "?rev=" + ._rev' | sh
+}
+
 # Run function
 case $option in
     deleteAllComponents)
@@ -192,6 +211,14 @@ case $option in
 
     deleteUserByEmail)
         delete_user_by_email "$2"
+        ;;
+
+    createOauthClient)
+        create_oauth_client
+        ;;
+
+    deleteOauthClient)
+        delete_oauth_client "$2"
         ;;
 
     *) ;;
