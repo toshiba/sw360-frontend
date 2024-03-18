@@ -31,7 +31,15 @@ function PackageOriginator({
         const list: InputKeyValue = dataPackageOriginator
         list[name as keyof InputKeyValue] = value
         setDataPackageOriginator(list)
-        setPackageOriginatorToPackage(list)
+        if (CommonUtils.isNullEmptyOrUndefinedString(list.key)) {
+            const data: InputKeyValue = {
+                key: 'Organization',
+                value: list.value,
+            }
+            setPackageOriginatorToPackage(data)
+        } else {
+            setPackageOriginatorToPackage(list)
+        }
     }
 
     const selectPackageOriginatorNoasserttion = () => {

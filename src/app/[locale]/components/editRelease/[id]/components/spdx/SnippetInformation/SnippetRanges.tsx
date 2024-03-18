@@ -29,6 +29,8 @@ function SnippetRanges({ inputList, setInputList, setDataSnippetRanges }: Props)
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>, index: number) => {
         const { name, value } = e.target
         const list: SnippetRange[] = [...inputList]
+        console.log(inputList)
+        console.log(list)
         list[index][name as keyof SnippetRangeInput] = value
         setInputList(list)
         setDataSnippetRanges(list)
@@ -42,7 +44,14 @@ function SnippetRanges({ inputList, setInputList, setDataSnippetRanges }: Props)
     }
 
     const handleAddClick = () => {
-        setInputList([...inputList, { rangeType: 'BYTE', startPointer: '', endPointer: '', reference: '', index: 0 }])
+        let index: number = 0
+        if (inputList.length !== 0) {
+            index = inputList.length
+        }
+        setInputList([
+            ...inputList,
+            { rangeType: 'BYTE', startPointer: '', endPointer: '', reference: '', index: index },
+        ])
     }
 
     return (

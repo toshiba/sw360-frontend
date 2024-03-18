@@ -498,7 +498,7 @@ const EditPackageInformation = ({
             ...packageInformation,
             packageVerificationCode: {
                 ...packageInformation.packageVerificationCode,
-                [e.target.name]: e.target.value,
+                [e.target.name]: e.target.name === 'excludedFiles' ? e.target.value.split('\n') : e.target.value,
             },
         })
         setSPDXPayload({
@@ -507,7 +507,7 @@ const EditPackageInformation = ({
                 ...SPDXPayload.packageInformation,
                 packageVerificationCode: {
                     ...packageInformation.packageVerificationCode,
-                    [e.target.name]: e.target.value,
+                    [e.target.name]: e.target.name === 'excludedFiles' ? e.target.value.split('\n') : e.target.value,
                 },
             },
         })

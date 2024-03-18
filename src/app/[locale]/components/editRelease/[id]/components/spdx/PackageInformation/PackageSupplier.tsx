@@ -31,7 +31,15 @@ function PackageSupplier({
         const list: InputKeyValue = dataPackageSupplier
         list[name as keyof InputKeyValue] = value
         setDataPackageSupplier(list)
-        setPackageSupplierToPackage(list)
+        if (CommonUtils.isNullEmptyOrUndefinedString(list.key)) {
+            const data: InputKeyValue = {
+                key: 'Organization',
+                value: list.value,
+            }
+            setPackageSupplierToPackage(data)
+        } else {
+            setPackageSupplierToPackage(list)
+        }
     }
 
     const selectPackageSupplierNoasserttion = () => {
