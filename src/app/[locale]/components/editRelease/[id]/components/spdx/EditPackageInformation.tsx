@@ -181,8 +181,8 @@ const EditPackageInformation = ({
     }
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setIndexExternalRefsData(+index)
-        setNumberIndex(+index)
+        setIndexExternalRefsData(parseInt(index))
+        setNumberIndex(parseInt(index))
     }
 
     const handleChangeReferenceCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {

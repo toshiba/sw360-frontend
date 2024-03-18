@@ -30,7 +30,7 @@ const OtherLicensingInformationDetectedDetail = ({
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setOtherLicensingInformationDetected(spdxDocument.otherLicensingInformationDetecteds[+index])
+        setOtherLicensingInformationDetected(spdxDocument.otherLicensingInformationDetecteds[parseInt(index)])
     }
 
     return (

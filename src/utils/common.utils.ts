@@ -232,7 +232,7 @@ const truncateText = (text: string, maxLength = 80) => {
     return truncatedText
 }
 
-const fillDate = (value: any) => {
+const fillDate = (value: string) => {
     const timeStamp = Date.parse(value)
 
     const date = new Date(timeStamp)
@@ -250,7 +250,7 @@ const fillDate = (value: any) => {
     )
 }
 
-const fillTime = (value: any) => {
+const fillTime = (value: string) => {
     const timeStamp = Date.parse(value)
 
     const date = new Date(timeStamp)
@@ -264,7 +264,7 @@ const fillTime = (value: any) => {
     )
 }
 
-const readDateTime = (datePicker: any, timePicker: any) => {
+const readDateTime = (datePicker: string, timePicker: string) => {
     if (datePicker == '' || timePicker == '') {
         return ''
     }

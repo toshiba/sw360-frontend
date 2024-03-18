@@ -48,8 +48,8 @@ const EditDocumentCreationInformation = ({
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setIndexExternalDocumentRef(+index)
-        setNumberIndex(+index)
+        setIndexExternalDocumentRef(parseInt(index))
+        setNumberIndex(parseInt(index))
     }
 
     const addDocumentReferences = () => {
