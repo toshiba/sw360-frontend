@@ -25,7 +25,7 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setExternalRefsData(packageInformation.externalRefs[+index])
+        setExternalRefsData(packageInformation.externalRefs[parseInt(index)])
     }
 
     return (

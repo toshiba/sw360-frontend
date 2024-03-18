@@ -195,16 +195,16 @@ const EditAnnotationInformation = ({
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
         if (isSourceSPDXDocument) {
-            setIndexAnnotations(+index)
-            setNumberIndexSPDX(+index)
-            if (CommonUtils.isNullEmptyOrUndefinedString(annotationsSPDXs[+index].annotationDate)) {
+            setIndexAnnotations(parseInt(index))
+            setNumberIndexSPDX(parseInt(index))
+            if (CommonUtils.isNullEmptyOrUndefinedString(annotationsSPDXs[parseInt(index)].annotationDate)) {
                 setDataDate('')
                 setDataTime('')
             }
         } else {
-            setIndexAnnotations(+index)
-            setNumberIndexPackage(+index)
-            if (CommonUtils.isNullEmptyOrUndefinedString(annotationsPackages[+index].annotationDate)) {
+            setIndexAnnotations(parseInt(index))
+            setNumberIndexPackage(parseInt(index))
+            if (CommonUtils.isNullEmptyOrUndefinedString(annotationsPackages[parseInt(index)].annotationDate)) {
                 setDataDate('')
                 setDataTime('')
             }

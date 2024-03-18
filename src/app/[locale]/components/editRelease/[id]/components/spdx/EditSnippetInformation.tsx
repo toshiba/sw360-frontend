@@ -64,8 +64,8 @@ const EditSnippetInformation = ({
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setIndexSnippetInformation(+index)
-        setNumberIndex(+index)
+        setIndexSnippetInformation(parseInt(index))
+        setNumberIndex(parseInt(index))
         setDataSnippetFromFile({
             key: '',
             value: '',

@@ -30,7 +30,7 @@ const DocumentCreationInformationDetail = ({
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setExternalDocumentRef(documentCreationInformation.externalDocumentRefs[+index])
+        setExternalDocumentRef(documentCreationInformation.externalDocumentRefs[parseInt(index)])
     }
 
     return (

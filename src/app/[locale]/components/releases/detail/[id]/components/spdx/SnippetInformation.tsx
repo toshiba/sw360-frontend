@@ -24,7 +24,7 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setSnippetInformation(spdxDocument.snippets[+index])
+        setSnippetInformation(spdxDocument.snippets[parseInt(index)])
     }
 
     return (

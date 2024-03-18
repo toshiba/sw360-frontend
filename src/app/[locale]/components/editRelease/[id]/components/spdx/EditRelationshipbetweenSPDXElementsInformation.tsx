@@ -136,11 +136,11 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
         if (isSourceSPDXDocument) {
-            setIndexRelation(+index)
-            setNumberIndexSPDX(+index)
+            setIndexRelation(parseInt(index))
+            setNumberIndexSPDX(parseInt(index))
         } else {
-            setIndexRelation(+index)
-            setNumberIndexPackage(+index)
+            setIndexRelation(parseInt(index))
+            setNumberIndexPackage(parseInt(index))
         }
     }
 

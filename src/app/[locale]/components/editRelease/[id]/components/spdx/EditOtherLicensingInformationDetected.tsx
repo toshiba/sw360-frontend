@@ -39,7 +39,7 @@ const EditOtherLicensingInformationDetected = ({
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setIndexOtherLicense(+index)
+        setIndexOtherLicense(parseInt(index))
     }
 
     const addOtherLicensingInformationDetecteds = () => {

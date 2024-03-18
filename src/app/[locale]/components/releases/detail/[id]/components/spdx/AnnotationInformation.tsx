@@ -60,10 +60,10 @@ const AnnotationInformation = ({
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setIndex(+index)
+        setIndex(parseInt(index))
         isSourceSPDXDocument
-            ? setAnnotations(spdxDocument.annotations[+index])
-            : setAnnotations(packageInformation.annotations[+index])
+            ? setAnnotations(spdxDocument.annotations[parseInt(index)])
+            : setAnnotations(packageInformation.annotations[parseInt(index)])
     }
 
     return (

@@ -61,10 +61,10 @@ const RelationshipbetweenSPDXElementsInformation = ({
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setIndex(+index)
+        setIndex(parseInt(index))
         isSourceSPDXDocument
-            ? setRelationshipsBetweenSPDXElements(spdxDocument.relationships[+index])
-            : setRelationshipsBetweenSPDXElements(packageInformation.relationships[+index])
+            ? setRelationshipsBetweenSPDXElements(spdxDocument.relationships[parseInt(index)])
+            : setRelationshipsBetweenSPDXElements(packageInformation.relationships[parseInt(index)])
     }
 
     return (
