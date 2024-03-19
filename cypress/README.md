@@ -29,9 +29,8 @@ SW360 auto E2E testing is a system by using Cypress that is a next generation fr
 
 - Clone source code for testing
     ```sh
-    $ git clone https://github.com/toshiba/sw360-frontend.git
+    $ git clone https://github.com/eclipse-sw360/sw360-frontend.git
     $ cd sw360-frontend
-    $ git checkout dev/cypress
     ```
 - Install dependencies
     ```sh

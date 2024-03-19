@@ -52,7 +52,6 @@ const execute = (testId) => {
         selectProjectToLink(testData.linkedProject)
         verifySuccessMessage(testData)
         checkUsedByProjectTable()
-        cy.deleteProjectByNameAndVersion(testData.linkedProject.name, testData.linkedProject.version)
     })
 }
 
