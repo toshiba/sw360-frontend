@@ -83,7 +83,7 @@ describe('Register a component', () => {
     cy.login('admin')
   })
 
-  it.skip('TC01 + TC02: Add a component and release with vendor present and verify', () => {
+  it('TC01 + TC02: Add a component and release with vendor present and verify', () => {
     registerAndVerifyComponent('TC01_REQUIRED_FIELDS')
     registerAndVerifyRelease('TC01_RELEASE_WITH_CPEID')
     updateAndVerifyReleaseAfterUpdate('TC01_ADD_NEW_VENDOR_AND_ATTACHMENT')
