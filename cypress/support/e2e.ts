@@ -9,3 +9,8 @@
 // License-Filename: LICENSE
 
 import './commands'
+
+Cypress.on('uncaught:exception', (err, runnable) => {
+    console.error('Uncaught exception occurred:', err);
+    return false;
+})
