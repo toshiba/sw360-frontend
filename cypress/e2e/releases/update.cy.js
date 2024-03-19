@@ -19,6 +19,10 @@ const createRelease = (componentId, version) => {
     cy.createRelease(componentId, version)
 }
 
+const verifyAfterUpdate = () => {
+    // TODO: Add assertion after fix frontend bug: add attachment
+}
+
 describe('Update a release', () => {
     before(() => {
         createComponent('Test Comp', 'OSS', ['libaries']).then((componentId) => {
@@ -34,6 +38,7 @@ describe('Update a release', () => {
         gotoViewComponentPage('Test Comp')
         gotoUpdateReleasePageFromViewComponentPage('v1')
         updateRelease('TC07_ADD_ATTACH_FOR_RELEASE')
+        verifyAfterUpdate()
     })
 
     after(() => {

@@ -1,5 +1,5 @@
 // Copyright (C) TOSHIBA CORPORATION, 2024. Part of the SW360 Frontend Project.
-// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2023. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2024. Part of the SW360 Frontend Project.
 
 // This program and the accompanying materials are made
 // available under the terms of the Eclipse Public License 2.0
@@ -49,7 +49,7 @@ const clearUserByEmail = () => {
 }
 
 const cleanDB = () => {
-    console.log("----------------------------Clean up database--------------------------------")
+    console.log("[Info] Clean up database")
     const bashs = [
         runShellCommand('bash cypress/support/common.sh deleteOauthClient'),
         runShellCommand('bash cypress/support/common.sh deleteAllReleases'),
@@ -63,7 +63,7 @@ const cleanDB = () => {
 }
 
 const initData = () => {
-    console.log("----------------------------Init data-------------------------------")
+    console.log("[Info] Init data")
     const vendorNames = ['ven001', 'ven002', 'ven003']
     const licenseNames = ['AAL-1.01', 'Abstyles-2024', 'AFL-4.5']
 

@@ -215,3 +215,11 @@ export function gotoViewReleasePageFromViewComponentPage(releaseVersion) {
   cy.get(':nth-child(3) > .row > :nth-child(2) > .gridjs').should('be.visible')
   cy.get('a:contains(' + releaseVersion + ')').click()
 }
+
+export function createComponent (name, componentType, categories) {
+  return cy.createComponent(name, componentType, categories).then((component) => component.id)
+}
+
+export function createRelease (componentId, version) {
+  cy.createRelease(componentId, version)
+}

@@ -83,3 +83,9 @@ SW360 auto E2E testing is a system by using Cypress that is a next generation fr
     ```sh
     $ npx cypress run --browser chrome --spec <file.cy.js> <file1.cy.js> <file2.cy.js> ...
     ```
+
+## 3. Limitation
+
+- Currently, the SW360 rest APIs use Liferay users to authenticate. However, there is no Liferay API to support creating users in Liferay. So to run this test code, we need to create a user manually to log into the system:
+    - username: admin@sw360.org
+    - password: 12345

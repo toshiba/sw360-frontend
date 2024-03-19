@@ -62,7 +62,6 @@ describe('Link a release to the project', () => {
             Object.values(data).forEach(testData => {
                 cy.createProject(testData.linkedProject.name, testData.linkedProject.version)
                 createComponent(testData.release.name, testData.release.componentType, testData.release.categories).then((componentId) => {
-                    cy.log(testData.release.version)
                     cy.createRelease(componentId, testData.release.version)
                 })
             })

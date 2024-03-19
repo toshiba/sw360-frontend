@@ -50,5 +50,6 @@ pnpm-lock.yaml
 .hintrc
 
 # cypress
+cypress.env.json
 /cypress/screenshots
 /cypress/downloads
