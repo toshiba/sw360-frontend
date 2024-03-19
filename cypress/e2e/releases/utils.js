@@ -235,7 +235,6 @@ export function fillDataRelease(dataTest) {
         break
     }
   }
-  // })
 }
 
 function verifyReleaseAfterCreated(testId) {
@@ -332,6 +331,7 @@ export function registerSimpleRelease(releaseVersion) {
     .click()
   cy.contains('Update Release')
 }
+
 export function registerRelease(testId) {
   gotoRegisterReleasePage()
   cy.fixture('releases/register').then((release) => {
@@ -342,12 +342,10 @@ export function registerRelease(testId) {
     .click()
 }
 
-
 export function registerAndVerifyRelease(testId) {
   registerRelease(testId)
   verifyReleaseAfterCreated(testId)
 }
-
 
 function addAttachment(fileNames, shouldUnAttachFile) {
   let openDialog = ':nth-child(7) > :nth-child(2) > .fw-bold'
@@ -394,7 +392,7 @@ function uploadAttachment(dataTest) {
 }
 
 function updateClearingDetails(dataTest) {
-  cy.log('------Fill test data on clearing details page------')
+  cy.log('[Info] Fill test data on clearing details page')
   cy.get('#tab-ClearingDetails').click()
   cy.contains('Clearing Details')
   const nStep = Object.keys(dataTest).length
@@ -441,7 +439,7 @@ function updateClearingDetails(dataTest) {
 }
 
 function updateECCDetails(dataTest) {
-  cy.log('------Fill test data on clearing details page------')
+  cy.log('[Info] Fill test data on clearing details page')
   cy.get('#tab-EccDetails').click()
   cy.contains('ECC Information')
   const nStep = Object.keys(dataTest).length
@@ -467,7 +465,7 @@ function updateECCDetails(dataTest) {
 }
 
 export function fillUpdatedData(dataTest) {
-  cy.log('------Fill datatest------')
+  cy.log('[Info] Fill datatest')
   fillDataRelease(dataTest)
   const nStep = Object.keys(dataTest).length
   for (let i = 0; i < nStep; i++) {
@@ -489,7 +487,7 @@ export function fillUpdatedData(dataTest) {
 }
 
 function verifyReleaseAfterUpdate(dataTest) {
-  cy.log('------Varify data after update------')
+  cy.log('[Info] Verify data after update')
   const nStep = Object.keys(dataTest).length
   for (let i = 0; i < nStep; i++) {
     const keyFieldName = Object.keys(dataTest)[i]

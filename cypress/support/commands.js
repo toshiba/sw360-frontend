@@ -1,5 +1,5 @@
 // Copyright (C) TOSHIBA CORPORATION, 2024. Part of the SW360 Frontend Project.
-// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2023. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2024. Part of the SW360 Frontend Project.
 
 // This program and the accompanying materials are made
 // available under the terms of the Eclipse Public License 2.0
@@ -41,14 +41,6 @@ Cypress.Commands.add('openDialog', (selectorOpen, selectorDialog) => {
   cy.get(selectorDialog).should('be.visible')
 })
 
-Cypress.Commands.add('shouldHaveValue', (selector, value, ignoreCase = false) => {
-  cy.get(selector).should('have.value', value)
-})
-
-Cypress.Commands.add('shouldContainText', (selector, value, ignoreCase = false) => {
-  cy.get(selector).should('contain.text', value)
-})
-
 Cypress.Commands.add('shouldBeHyperLink', (selector, value, isEmail) => {
   if (isEmail) {
     // Verify email
@@ -88,7 +80,7 @@ Cypress.Commands.add('selectOrAddVendor', (dialogButtonsSelector, vendorSelector
 
 Cypress.Commands.add('removeDownloadedFiles', () => {
   cy.task('removeDownloadedFiles').then(() => {
-    cy.log('File removed successfully')
+    cy.log('[Info] File removed successfully')
   })
 })
 

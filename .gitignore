@@ -52,3 +52,4 @@ pnpm-lock.yaml
 # cypress
 /cypress/screenshots
 /cypress/downloads
+cypress.env.json
