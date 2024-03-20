@@ -29,13 +29,13 @@ import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
 
-import SnippetInformationDetail from './ SnippetInformation'
 import AnnotationInformation from './AnnotationInformation'
 import styles from './CssButton.module.css'
 import DocumentCreationInformationDetail from './DocumentCreationInformation'
 import OtherLicensingInformationDetectedDetail from './OtherLicensingInformationDetectedDetail'
 import PackageInformationDetail from './PackageInformationDetail'
 import RelationshipbetweenSPDXElementsInformation from './RelationshipbetweenSPDXElementsInformation'
+import SnippetInformationDetail from './SnippetInformation'
 
 interface Props {
     releaseId: string

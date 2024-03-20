@@ -48,9 +48,13 @@ const OtherLicensingInformationDetectedDetail = ({
             <tbody hidden={toggle}>
                 <tr>
                     <td className='spdx-label-index'>Index</td>
-                    <td className='spdx-flex-row' style={{ height: '50px' }}>
-                        <select id='otherLicensingSelect' className='spdx-col-2' onChange={displayIndex}>
-                            {' '}
+                    <td style={{ height: '50px' }}>
+                        <select
+                            id='otherLicensingSelect'
+                            className='spdx-col-2'
+                            onChange={displayIndex}
+                            style={{ width: '988px' }}
+                        >
                             {spdxDocument?.otherLicensingInformationDetecteds
                                 .toSorted((e1, e2) => e1.index - e2.index)
                                 .map((item) => (

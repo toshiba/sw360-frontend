@@ -71,7 +71,7 @@ const DocumentCreationInformationDetail = ({
                     <>
                         <tr className='spdx-full'>
                             <td>6.6 External document references</td>
-                            <td className='spdx-flex-row'>
+                            <td>
                                 <div className='spdx-col-2 section' data-size='3'>
                                     <div className='spdx-flex-row'>
                                         <div className='spdx-col-1 spdx-label-index'>Index</div>
@@ -122,7 +122,7 @@ const DocumentCreationInformationDetail = ({
                 )}
                 <tr>
                     <td>6.8 Creators</td>
-                    <td className='spdx-flex-row'>
+                    <td>
                         <div className='spdx-col-2' id='creators'>
                             {documentCreationInformation?.creator &&
                                 documentCreationInformation.creator.map((creatorData) => {

@@ -42,8 +42,13 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
             <tbody hidden={toggle}>
                 <tr>
                     <td className='spdx-label-index'>Index</td>
-                    <td className='spdx-flex-row'>
-                        <select id='snippetInfoSelect' className='spdx-col-2' onChange={displayIndex}>
+                    <td>
+                        <select
+                            id='snippetInfoSelect'
+                            className='spdx-col-2'
+                            onChange={displayIndex}
+                            style={{ width: '988px' }}
+                        >
                             {spdxDocument?.snippets
                                 .toSorted((e1, e2) => e1.index - e2.index)
                                 .map((item) => (
@@ -66,7 +71,7 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                         </tr>
                         <tr data-index={snippetInformation.index}>
                             <td>9.3 & 9.4 Snippet ranges</td>
-                            <td className='spdx-flex-row'>
+                            <td>
                                 <div
                                     className='spdx-col-2 spdx-flex-col'
                                     id={`snippetLicenseComments-${snippetInformation.index}`}
@@ -102,7 +107,7 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                         </tr>
                         <tr data-index={snippetInformation.index}>
                             <td>9.6 License information in snippet</td>
-                            <td className='spdx-flex-row'>
+                            <td>
                                 <p className='spdx-col-2 '>
                                     {snippetInformation?.licenseInfoInSnippets &&
                                         snippetInformation?.licenseInfoInSnippets.map((licenseInfoInSnippetData) => {
@@ -113,7 +118,7 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                         </tr>
                         <tr data-index={snippetInformation.index}>
                             <td>9.7 Snippet comments on license</td>
-                            <td className='spdx-flex-row'>
+                            <td>
                                 <p className='spdx-col-2 ' id={`snippetLicenseComments-${snippetInformation.index}`}>
                                     {snippetInformation.licenseComments}
                                 </p>
@@ -121,7 +126,7 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                         </tr>
                         <tr data-index={snippetInformation.index}>
                             <td>9.8 Snippet copyright text</td>
-                            <td className='spdx-flex-row'>
+                            <td>
                                 <p className='spdx-col-2 ' id={`snippetLicenseComments-${snippetInformation.index}`}>
                                     {snippetInformation.copyrightText}
                                 </p>
@@ -129,7 +134,7 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                         </tr>
                         <tr data-index={snippetInformation.index}>
                             <td>9.9 Snippet comment</td>
-                            <td className='spdx-flex-row'>
+                            <td>
                                 <p className='spdx-col-2 ' id={`snippetLicenseComments-${snippetInformation.index}`}>
                                     {snippetInformation.comment}
                                 </p>
@@ -137,7 +142,7 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                         </tr>
                         <tr data-index={snippetInformation.index}>
                             <td>9.10 Snippet name</td>
-                            <td className='spdx-flex-row'>
+                            <td>
                                 <p className='spdx-col-2 '>{snippetInformation?.name}</p>
                             </td>
                         </tr>

@@ -95,8 +95,13 @@ const RelationshipbetweenSPDXElementsInformation = ({
                 </tr>
                 <tr>
                     <td className='spdx-label-index'>Index</td>
-                    <td className='spdx-flex-row' style={{ height: '50.5px' }}>
-                        <select id='relationshipSelect' className='spdx-col-2' onChange={displayIndex}>
+                    <td style={{ height: '50.5px' }}>
+                        <select
+                            id='relationshipSelect'
+                            className='spdx-col-2'
+                            onChange={displayIndex}
+                            style={{ width: '988px' }}
+                        >
                             {indexRelationShip &&
                                 indexRelationShip
                                     .toSorted((e1, e2) => e1.index - e2.index)

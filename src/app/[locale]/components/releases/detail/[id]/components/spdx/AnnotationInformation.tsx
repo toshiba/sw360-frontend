@@ -81,8 +81,13 @@ const AnnotationInformation = ({
             <tbody hidden={toggle}>
                 <tr>
                     <td className='spdx-label-index'>Source</td>
-                    <td className='spdx-flex-row' style={{ height: '50px' }}>
-                        <select id='annotationSourceSelect' className='spdx-col-2' onChange={changeAnnotationSource}>
+                    <td style={{ height: '50px' }}>
+                        <select
+                            id='annotationSourceSelect'
+                            className='spdx-col-2'
+                            onChange={changeAnnotationSource}
+                            style={{ width: '988px' }}
+                        >
                             <option value='spdxDoucument'>SPDX Document</option>
                             <option value='package'>Package</option>
                         </select>
@@ -90,8 +95,13 @@ const AnnotationInformation = ({
                 </tr>
                 <tr>
                     <td className='spdx-label-index'>Index</td>
-                    <td className='spdx-flex-row' style={{ height: '50px' }}>
-                        <select id='annotationSelect' className='spdx-col-2' onChange={displayIndex}>
+                    <td style={{ height: '50px' }}>
+                        <select
+                            id='annotationSelect'
+                            className='spdx-col-2'
+                            onChange={displayIndex}
+                            style={{ width: '988px' }}
+                        >
                             {indexAnnotations &&
                                 indexAnnotations
                                     .toSorted((e1, e2) => e1.index - e2.index)
