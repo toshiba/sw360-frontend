@@ -79,6 +79,7 @@ const DocumentCreationInformationDetail = ({
                                             className='spdx-col-3'
                                             id='externalDocumentRefs'
                                             onChange={displayIndex}
+                                            disabled={documentCreationInformation?.externalDocumentRefs.length == 0}
                                         >
                                             {documentCreationInformation?.externalDocumentRefs
                                                 .toSorted((e1, e2) => e1.index - e2.index)

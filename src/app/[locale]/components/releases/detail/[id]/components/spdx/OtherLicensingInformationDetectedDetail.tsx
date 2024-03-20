@@ -54,6 +54,7 @@ const OtherLicensingInformationDetectedDetail = ({
                             className='spdx-col-2'
                             onChange={displayIndex}
                             style={{ width: '988px' }}
+                            disabled={spdxDocument?.otherLicensingInformationDetecteds.length == 0}
                         >
                             {spdxDocument?.otherLicensingInformationDetecteds
                                 .toSorted((e1, e2) => e1.index - e2.index)

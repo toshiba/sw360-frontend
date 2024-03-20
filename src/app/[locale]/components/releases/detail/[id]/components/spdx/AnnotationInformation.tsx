@@ -101,6 +101,7 @@ const AnnotationInformation = ({
                             className='spdx-col-2'
                             onChange={displayIndex}
                             style={{ width: '988px' }}
+                            disabled={CommonUtils.isNullEmptyOrUndefinedArray(indexAnnotations)}
                         >
                             {indexAnnotations &&
                                 indexAnnotations

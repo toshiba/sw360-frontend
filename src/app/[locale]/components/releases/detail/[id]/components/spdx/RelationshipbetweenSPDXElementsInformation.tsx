@@ -101,6 +101,7 @@ const RelationshipbetweenSPDXElementsInformation = ({
                             className='spdx-col-2'
                             onChange={displayIndex}
                             style={{ width: '988px' }}
+                            disabled={CommonUtils.isNullEmptyOrUndefinedArray(indexRelationShip)}
                         >
                             {indexRelationShip &&
                                 indexRelationShip

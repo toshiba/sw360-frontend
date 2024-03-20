@@ -48,6 +48,7 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                             className='spdx-col-2'
                             onChange={displayIndex}
                             style={{ width: '988px' }}
+                            disabled={spdxDocument?.snippets.length == 0}
                         >
                             {spdxDocument?.snippets
                                 .toSorted((e1, e2) => e1.index - e2.index)
