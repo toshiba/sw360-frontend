@@ -355,6 +355,15 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                                     id='selectRelationship'
                                     className='form-control spdx-select'
                                     onChange={displayIndex}
+                                    disabled={
+                                        isSourceSPDXDocument
+                                            ? CommonUtils.isNullEmptyOrUndefinedArray(
+                                                  relationshipsBetweenSPDXElementSPDXs
+                                              )
+                                            : CommonUtils.isNullEmptyOrUndefinedArray(
+                                                  relationshipsBetweenSPDXElementPackages
+                                              )
+                                    }
                                 >
                                     {isSourceSPDXDocument
                                         ? relationshipsBetweenSPDXElementSPDXs.map((item) => (

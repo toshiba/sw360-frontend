@@ -451,6 +451,11 @@ const EditAnnotationInformation = ({
                                         id='selectAnnotation'
                                         className='form-control spdx-select'
                                         onChange={displayIndex}
+                                        disabled={
+                                            isSourceSPDXDocument
+                                                ? CommonUtils.isNullEmptyOrUndefinedArray(annotationsSPDXs)
+                                                : CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)
+                                        }
                                     >
                                         {isSourceSPDXDocument
                                             ? annotationsSPDXs.map((item) => (

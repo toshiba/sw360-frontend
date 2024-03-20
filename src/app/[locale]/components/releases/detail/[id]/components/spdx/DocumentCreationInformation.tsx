@@ -105,7 +105,7 @@ const DocumentCreationInformationDetail = ({
                                             <div className='spdx-flex-row'>
                                                 <div className='spdx-col-2 spdx-key'>Checksum</div>
                                                 <div className='spdx-col-3'>
-                                                    {externalDocumentRef.checksum.algorithm}:
+                                                    {externalDocumentRef.checksum.algorithm} :{' '}
                                                     {externalDocumentRef.checksum.checksumValue}
                                                 </div>
                                             </div>

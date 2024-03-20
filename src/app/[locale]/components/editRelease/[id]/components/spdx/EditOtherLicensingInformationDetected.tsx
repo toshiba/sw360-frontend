@@ -178,6 +178,9 @@ const EditOtherLicensingInformationDetected = ({
                                     id='selectOtherLicensing'
                                     className='form-control spdx-select'
                                     onChange={displayIndex}
+                                    disabled={CommonUtils.isNullEmptyOrUndefinedArray(
+                                        otherLicensingInformationDetecteds
+                                    )}
                                 >
                                     {otherLicensingInformationDetecteds.map((item) => (
                                         <option key={item.index} value={item.index}>

@@ -464,6 +464,9 @@ const EditDocumentCreationInformation = ({
                                                         id='externalDocumentRefs'
                                                         className='form-control spdx-select'
                                                         onChange={displayIndex}
+                                                        disabled={CommonUtils.isNullEmptyOrUndefinedArray(
+                                                            externalDocumentRefs
+                                                        )}
                                                     >
                                                         {externalDocumentRefs.map((item) => (
                                                             <option key={item.index} value={item.index}>

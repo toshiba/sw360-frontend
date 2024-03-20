@@ -897,7 +897,7 @@ const EditPackageInformation = ({
                                                 rows={5}
                                                 name='sourceInfo'
                                                 onChange={updateField}
-                                                placeholder='Enter excluded files'
+                                                placeholder='Enter source information'
                                                 value={packageInformation.sourceInfo ?? ''}
                                             ></textarea>
                                         </div>
@@ -955,7 +955,7 @@ const EditPackageInformation = ({
                                             className='form-control'
                                             id='commentsOnLicense'
                                             rows={5}
-                                            placeholder='Enter excluded files'
+                                            placeholder='Enter comments on license'
                                             name='licenseComments'
                                             onChange={updateField}
                                             value={packageInformation.licenseComments ?? ''}
@@ -992,7 +992,7 @@ const EditPackageInformation = ({
                                                     rows={5}
                                                     name='summary'
                                                     onChange={updateField}
-                                                    placeholder='Enter excluded files'
+                                                    placeholder='Enter package summary description'
                                                     value={packageInformation.summary ?? ''}
                                                 ></textarea>
                                             </div>
@@ -1012,7 +1012,7 @@ const EditPackageInformation = ({
                                                     rows={5}
                                                     name='description'
                                                     onChange={updateField}
-                                                    placeholder='Enter excluded files'
+                                                    placeholder='Enter package detailed description'
                                                     value={packageInformation.description ?? ''}
                                                 ></textarea>
                                             </div>
@@ -1034,7 +1034,7 @@ const EditPackageInformation = ({
                                             rows={5}
                                             name='packageComment'
                                             onChange={updateField}
-                                            placeholder='Enter excluded files'
+                                            placeholder='Enter package comment'
                                             value={packageInformation.packageComment ?? ''}
                                         ></textarea>
                                     </div>
@@ -1073,6 +1073,9 @@ const EditPackageInformation = ({
                                                                 className='form-control spdx-select'
                                                                 id='externalReferences'
                                                                 onChange={displayIndex}
+                                                                disabled={CommonUtils.isNullEmptyOrUndefinedArray(
+                                                                    externalRefsDatas
+                                                                )}
                                                             >
                                                                 {externalRefsDatas?.map((item) => (
                                                                     <option key={item.index} value={item.index}>
@@ -1222,7 +1225,7 @@ const EditPackageInformation = ({
                                                     rows={5}
                                                     name='attributionText'
                                                     onChange={updateField}
-                                                    placeholder='Enter excluded files'
+                                                    placeholder='Enter package attribution text'
                                                     value={packageInformation.attributionText ?? ''}
                                                 ></textarea>
                                             </div>
@@ -1242,7 +1245,7 @@ const EditPackageInformation = ({
                                                     rows={5}
                                                     name='primaryPackagePurpose'
                                                     onChange={updateField}
-                                                    placeholder='Enter excluded files'
+                                                    placeholder='Enter primary package purpose'
                                                     value={packageInformation.primaryPackagePurpose ?? ''}
                                                 ></textarea>
                                             </div>

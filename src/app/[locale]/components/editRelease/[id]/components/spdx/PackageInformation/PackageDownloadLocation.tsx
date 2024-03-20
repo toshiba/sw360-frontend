@@ -75,7 +75,7 @@ function PackageDownloadLocation({
                             className='form-control'
                             type='text'
                             name='downloadLocation'
-                            placeholder='Enter package supplier'
+                            placeholder='Enter package download location'
                             onChange={updateField}
                             value={packageDownloadLocation ?? ''}
                             disabled={packageDownloadLocationNone || packageDownloadLocationNoasserttion}

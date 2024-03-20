@@ -58,7 +58,7 @@ function PackageAllLicensesInformation({
     return (
         <td colSpan={3}>
             <div className='form-group'>
-                <label className='lableSPDX'>7.14 All licenses information from file</label>
+                <label className='lableSPDX'>7.14 All licenses information from files</label>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
                         <input

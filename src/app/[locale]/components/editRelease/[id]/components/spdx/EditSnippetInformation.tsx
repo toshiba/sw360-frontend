@@ -345,7 +345,12 @@ const EditSnippetInformation = ({
                                 >
                                     Select Snippet
                                 </label>
-                                <select id='selectSnippet' className='form-control spdx-select' onChange={displayIndex}>
+                                <select
+                                    id='selectSnippet'
+                                    className='form-control spdx-select'
+                                    onChange={displayIndex}
+                                    disabled={CommonUtils.isNullEmptyOrUndefinedArray(snippetInformations)}
+                                >
                                     {snippetInformations.map((item) => (
                                         <option key={item.index} value={item.index}>
                                             {item.index + 1}
