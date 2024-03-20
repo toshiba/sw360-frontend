@@ -186,28 +186,28 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                 </tr>
                 {isModeFull && (
                     <>
-                        {externalRefsData && (
-                            <tr className='spdx-full' data-index={packageInformation?.index}>
-                                <td>7.21 External references </td>
-                                <td>
-                                    {packageInformation?.externalRefs.length !== 0 && (
-                                        <div className='spdx-col-2 section' data-size='4'>
-                                            <div className='spdx-flex-row'>
-                                                <div className='spdx-col-1 spdx-label-index'>Index</div>
-                                                <select
-                                                    id='externalReferenceSelect${package.index}'
-                                                    className='spdx-col-3'
-                                                    onChange={displayIndex}
-                                                >
-                                                    {packageInformation?.externalRefs
-                                                        .toSorted((e1, e2) => e1.index - e2.index)
-                                                        .map((item) => (
-                                                            <option key={item.index} value={item.index}>
-                                                                {item.index + 1}
-                                                            </option>
-                                                        ))}
-                                                </select>
-                                            </div>
+                        <tr className='spdx-full' data-index={packageInformation?.index}>
+                            <td>7.21 External references </td>
+                            <td>
+                                <div className='spdx-col-2 section' data-size='4'>
+                                    <div className='spdx-flex-row'>
+                                        <div className='spdx-col-1 spdx-label-index'>Index</div>
+                                        <select
+                                            id='externalReferenceSelect${package.index}'
+                                            className='spdx-col-3'
+                                            onChange={displayIndex}
+                                        >
+                                            {packageInformation?.externalRefs
+                                                .toSorted((e1, e2) => e1.index - e2.index)
+                                                .map((item) => (
+                                                    <option key={item.index} value={item.index}>
+                                                        {item.index + 1}
+                                                    </option>
+                                                ))}
+                                        </select>
+                                    </div>
+                                    {externalRefsData && (
+                                        <>
                                             <div className='spdx-flex-row' data-index={externalRefsData.index}>
                                                 <div className='spdx-col-1 spdx-key'>Category</div>
                                                 <div className='spdx-col-3 spdx-uppercase'>
@@ -231,11 +231,12 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                                                     {externalRefsData.comment}
                                                 </p>
                                             </div>
-                                        </div>
+                                        </>
                                     )}
-                                </td>
-                            </tr>
-                        )}
+                                </div>
+                            </td>
+                        </tr>
+
                         <tr className='spdx-full' data-index={packageInformation?.index}>
                             <td>7.23 Package attribution text</td>
                             <td>
