@@ -167,13 +167,13 @@ const SPDXDocument = ({ releaseId }: Props) => {
                         className={`btn ${isModeFull ? styles['btn-full'] : styles['btn-lite']}`}
                         onClick={changeModeFull}
                     >
-                        {t('SPDX FULL')}
+                        {t('SPDX Full')}
                     </button>
                     <button
                         className={`btn ${isModeFull ? styles['btn-lite'] : styles['btn-full']}`}
                         onClick={changeModeLite}
                     >
-                        {t('SPDX LITE')}
+                        {t('SPDX Lite')}
                     </button>
                 </div>
             </div>
