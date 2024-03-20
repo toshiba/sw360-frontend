@@ -74,23 +74,23 @@ const SecurityProfiles = () => {
                         <div className='spdx-col-2 section' data-size='4'>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Assessed Element</div>
-                                <div className='spdx-col-3 spdx-uppercase'>assessed element</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Assessed element</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Score</div>
-                                <div className='spdx-col-3 spdx-uppercase'>score</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Score</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Severity</div>
-                                <div className='spdx-col-3'>severity</div>
+                                <div className='spdx-col-3'>Severity</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Vector</div>
-                                <div className='spdx-col-3'>vector</div>
+                                <div className='spdx-col-3'>Vector</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Relationship Type</div>
-                                <div className='spdx-col-3'>hasCvssV3AssesmentFor</div>
+                                <div className='spdx-col-3'>HasCvssV3AssesmentFor</div>
                             </div>
                         </div>
                     </td>
@@ -102,15 +102,15 @@ const SecurityProfiles = () => {
                         <div className='spdx-col-2 section' data-size='4'>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Assessed Element</div>
-                                <div className='spdx-col-3 spdx-uppercase'>assessed element</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Assessed element</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Probability</div>
-                                <div className='spdx-col-3 spdx-uppercase'>probability</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Probability</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Severity</div>
-                                <div className='spdx-col-3'>severity</div>
+                                <div className='spdx-col-3'>Severity</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Relationship Type</div>
@@ -126,11 +126,11 @@ const SecurityProfiles = () => {
                         <div className='spdx-col-2 section' data-size='4'>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Assessed Element</div>
-                                <div className='spdx-col-3 spdx-uppercase'>assessed element</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Assessed element</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Decision Type</div>
-                                <div className='spdx-col-3 spdx-uppercase'>decision type</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Decision type</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Relationship Type</div>
@@ -146,11 +146,11 @@ const SecurityProfiles = () => {
                         <div className='spdx-col-2 section' data-size='4'>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Assessed Element</div>
-                                <div className='spdx-col-3 spdx-uppercase'>assessed element</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Assessed element</div>
                             </div>
                             <div className='spdx-flex-row'>
-                                <div className='spdx-col-1 spdx-key'>exploited</div>
-                                <div className='spdx-col-3 spdx-uppercase'>exploited</div>
+                                <div className='spdx-col-1 spdx-key'>Exploited</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Exploited</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Catalog Type</div>
@@ -158,11 +158,11 @@ const SecurityProfiles = () => {
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Locator</div>
-                                <div className='spdx-col-3 spdx-uppercase'>locator</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Locator</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Relationship Type</div>
-                                <div className='spdx-col-3'>hasExploitCatalogAssessmentFor</div>
+                                <div className='spdx-col-3'>HasExploitCatalogAssessmentFor</div>
                             </div>
                         </div>
                     </td>
@@ -174,7 +174,7 @@ const SecurityProfiles = () => {
                         <div className='spdx-col-2 section' data-size='4'>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Assessed Element</div>
-                                <div className='spdx-col-3 spdx-uppercase'>assessed element</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Assessed element</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Vex Published</div>
@@ -186,11 +186,11 @@ const SecurityProfiles = () => {
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Action Statement</div>
-                                <div className='spdx-col-3 spdx-uppercase'>action</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Action</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Relationship Type</div>
-                                <div className='spdx-col-3'>affects</div>
+                                <div className='spdx-col-3'>Affects</div>
                             </div>
                         </div>
                     </td>
@@ -202,7 +202,7 @@ const SecurityProfiles = () => {
                         <div className='spdx-col-2 section' data-size='4'>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Assessed Element</div>
-                                <div className='spdx-col-3 spdx-uppercase'>assessed element</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Assessed element</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Vex Published</div>
@@ -214,7 +214,7 @@ const SecurityProfiles = () => {
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Impact</div>
-                                <div className='spdx-col-3 spdx-uppercase'>impact</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Impact</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Justification</div>
@@ -222,7 +222,7 @@ const SecurityProfiles = () => {
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Relationship Type</div>
-                                <div className='spdx-col-3'>affects</div>
+                                <div className='spdx-col-3'>Affects</div>
                             </div>
                         </div>
                     </td>
@@ -234,7 +234,7 @@ const SecurityProfiles = () => {
                         <div className='spdx-col-2 section' data-size='4'>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Assessed Element</div>
-                                <div className='spdx-col-3 spdx-uppercase'>assessed element</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Assessed element</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Vex Published</div>
@@ -246,7 +246,7 @@ const SecurityProfiles = () => {
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Relationship Type</div>
-                                <div className='spdx-col-3'>affects</div>
+                                <div className='spdx-col-3'>Affects</div>
                             </div>
                         </div>
                     </td>
@@ -258,7 +258,7 @@ const SecurityProfiles = () => {
                         <div className='spdx-col-2 section' data-size='4'>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Assessed Element</div>
-                                <div className='spdx-col-3 spdx-uppercase'>assessed element</div>
+                                <div className='spdx-col-3 spdx-uppercase'>Assessed element</div>
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Vex Published</div>
@@ -270,7 +270,7 @@ const SecurityProfiles = () => {
                             </div>
                             <div className='spdx-flex-row'>
                                 <div className='spdx-col-1 spdx-key'>Relationship Type</div>
-                                <div className='spdx-col-3'>affects</div>
+                                <div className='spdx-col-3'>Affects</div>
                             </div>
                         </div>
                     </td>

@@ -17,7 +17,6 @@ import BuildProfiles from './BuildProfiles'
 import CoreProfiles from './CoreProfiles'
 import styles from './CssButton.module.css'
 import DatasetProfiles from './DatasetProfiles'
-import ExtensionProfiles from './ExtensionProfiles'
 import LicenseProfiles from './LicenseProfiles'
 import SecurityProfiles from './SecurityProfiles'
 import SoftwareProfiles from './SoftwareProfiles'
@@ -62,7 +61,7 @@ const SPDXDocument3 = () => {
                 <DatasetProfiles />
                 <AIProfiles />
                 <BuildProfiles />
-                <ExtensionProfiles />
+                {/* <ExtensionProfiles /> */}
             </div>
         </>
     )

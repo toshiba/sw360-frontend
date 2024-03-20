@@ -35,7 +35,7 @@ const BuildProfiles = () => {
                 </tr>
                 <tr>
                     <td>7.2 Build Id</td>
-                    <td>11</td>
+                    <td>Build-id</td>
                 </tr>
                 <tr>
                     <td>7.3 Build Start Time</td>
@@ -43,27 +43,27 @@ const BuildProfiles = () => {
                 </tr>
                 <tr>
                     <td>7.4 Build Type</td>
-                    <td>11</td>
+                    <td>Build-type</td>
                 </tr>
                 <tr>
                     <td>7.5 Config Source Digest</td>
-                    <td>11</td>
+                    <td>d6a770ba38583ed4bb4525bd96e50461655d2759</td>
                 </tr>
                 <tr>
                     <td>7.6 Config Source Entrypoint</td>
-                    <td>11</td>
+                    <td>Config Source Entrypoint</td>
                 </tr>
                 <tr>
                     <td>7.7 Config Source Uri</td>
-                    <td>11</td>
+                    <td>Config Source Uri</td>
                 </tr>
                 <tr>
                     <td>7.8 Environment</td>
-                    <td>11</td>
+                    <td>Environment</td>
                 </tr>
                 <tr>
                     <td>7.9 Parameters</td>
-                    <td>11</td>
+                    <td>Parameters</td>
                 </tr>
             </tbody>
         </table>

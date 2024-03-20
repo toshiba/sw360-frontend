@@ -8,28 +8,28 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-'use client'
-import { useState } from 'react'
-import styles from '../../detail.module.css'
+// 'use client'
+// import { useState } from 'react'
+// import styles from '../../detail.module.css'
 
-const ExtensionProfiles = () => {
-    const [toggle, setToggle] = useState(false)
+// const ExtensionProfiles = () => {
+//     const [toggle, setToggle] = useState(false)
 
-    return (
-        <table className={`table label-value-table ${styles['summary-table']}`}>
-            <thead
-                title='Click to expand or collapse'
-                onClick={() => {
-                    setToggle(!toggle)
-                }}
-            >
-                <tr>
-                    <th colSpan={2}>8. Extension Profiles</th>
-                </tr>
-            </thead>
-            <tbody hidden={toggle}></tbody>
-        </table>
-    )
-}
+//     return (
+//         <table className={`table label-value-table ${styles['summary-table']}`}>
+//             <thead
+//                 title='Click to expand or collapse'
+//                 onClick={() => {
+//                     setToggle(!toggle)
+//                 }}
+//             >
+//                 <tr>
+//                     <th colSpan={2}>8. Extension Profiles</th>
+//                 </tr>
+//             </thead>
+//             <tbody hidden={toggle}></tbody>
+//         </table>
+//     )
+// }
 
-export default ExtensionProfiles
+// export default ExtensionProfiles

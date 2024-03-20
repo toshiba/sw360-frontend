@@ -30,55 +30,55 @@ const AIProfiles = () => {
             <tbody hidden={toggle}>
                 <tr>
                     <td>6.1 Autonomy Type</td>
-                    <td>11</td>
+                    <td>yes</td>
                 </tr>
                 <tr>
                     <td>6.2 Domain</td>
-                    <td>11</td>
+                    <td>Open Source</td>
                 </tr>
                 <tr>
                     <td>6.3 Energy Consumption</td>
-                    <td>11</td>
+                    <td>Energy Consumption</td>
                 </tr>
                 <tr>
                     <td>6.4 Hyper Parameter</td>
-                    <td>11</td>
+                    <td>Hyper Parameter</td>
                 </tr>
                 <tr>
                     <td>6.5 Information About Training</td>
-                    <td>11</td>
+                    <td>Information About Training</td>
                 </tr>
                 <tr>
                     <td>6.6 Limitation</td>
-                    <td>11</td>
+                    <td>Limitation</td>
                 </tr>
                 <tr>
                     <td>6.7 Metric</td>
-                    <td>11</td>
+                    <td>Metric</td>
                 </tr>
                 <tr>
                     <td>6.8 Metric Decision Threshold</td>
-                    <td>11</td>
+                    <td>Metric Decision Threshold</td>
                 </tr>
                 <tr>
                     <td>6.9 Model Data Preprocessing</td>
-                    <td>11</td>
+                    <td>Model Data Preprocessing</td>
                 </tr>
                 <tr>
                     <td>6.10 Safety Risk Assessment</td>
-                    <td>serious</td>
+                    <td>Serious</td>
                 </tr>
                 <tr>
                     <td>6.11 SensitivePersonal Information</td>
-                    <td>11</td>
+                    <td>NoAssertion</td>
                 </tr>
                 <tr>
                     <td>6.12 Standard Compliance</td>
-                    <td>11</td>
+                    <td>Standard Compliance</td>
                 </tr>
                 <tr>
                     <td>6.13 Type Of Model</td>
-                    <td>11</td>
+                    <td>Type Of Model</td>
                 </tr>
             </tbody>
         </table>
