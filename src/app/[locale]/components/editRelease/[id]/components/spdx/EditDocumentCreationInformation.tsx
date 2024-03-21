@@ -456,7 +456,7 @@ const EditDocumentCreationInformation = ({
                                                     <label
                                                         className='lableSPDX sub-title'
                                                         htmlFor='externalDocumentRefs'
-                                                        style={{ textDecoration: 'underline' }}
+                                                        style={{ textDecoration: 'underline', marginRight: '2.5rem' }}
                                                     >
                                                         Select Reference
                                                     </label>
@@ -474,7 +474,10 @@ const EditDocumentCreationInformation = ({
                                                             </option>
                                                         ))}
                                                     </select>
-                                                    <FaTrashAlt onClick={deleteExternalReference} />
+                                                    <FaTrashAlt
+                                                        className='spdx-delete-icon-main-index'
+                                                        onClick={deleteExternalReference}
+                                                    />
                                                 </div>
                                                 <button
                                                     className='spdx-add-button-main'

@@ -340,7 +340,7 @@ const EditSnippetInformation = ({
                             <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '0.75rem' }}>
                                 <label
                                     htmlFor='selectSnippet'
-                                    style={{ textDecoration: 'underline' }}
+                                    style={{ textDecoration: 'underline', marginRight: '2.5rem' }}
                                     className='sub-title lableSPDX'
                                 >
                                     Select Snippet
@@ -357,7 +357,10 @@ const EditSnippetInformation = ({
                                         </option>
                                     ))}
                                 </select>
-                                <FaTrashAlt onClick={deleteSnippetInformations} />
+                                <FaTrashAlt
+                                    className='spdx-delete-icon-main-index'
+                                    onClick={deleteSnippetInformations}
+                                />
                             </div>
                             <button className='spdx-add-button-main' name='add-snippet' onClick={addSnippet}>
                                 Add new Snippet

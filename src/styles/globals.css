@@ -753,3 +753,19 @@ input[type='date'] {
     overflow-wrap: break-word;
     word-wrap: break-word;
 }
+
+.spdx-delete-icon-main {
+    margin-top: 0.3rem;
+    margin-right: 1rem;
+    width: 0.85rem;
+    height: auto;
+    cursor: pointer;
+}
+
+.spdx-delete-icon-main-index {
+    margin-top: 0.3rem;
+    margin-right: 1rem;
+    width: 1rem;
+    height: auto;
+    cursor: pointer;
+}

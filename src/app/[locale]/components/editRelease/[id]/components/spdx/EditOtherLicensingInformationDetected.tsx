@@ -169,7 +169,7 @@ const EditOtherLicensingInformationDetected = ({
                             <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '0.75rem' }}>
                                 <label
                                     htmlFor='selectOtherLicensing'
-                                    style={{ textDecoration: 'underline' }}
+                                    style={{ textDecoration: 'underline', width: '190px' }}
                                     className='sub-title lableSPDX'
                                 >
                                     Select Other Licensing
@@ -188,7 +188,7 @@ const EditOtherLicensingInformationDetected = ({
                                         </option>
                                     ))}
                                 </select>
-                                <FaTrashAlt onClick={deleteOtherLicenses} />
+                                <FaTrashAlt className='spdx-delete-icon-main' onClick={deleteOtherLicenses} />
                             </div>
                             <button
                                 className='spdx-add-button-main'
@@ -207,9 +207,12 @@ const EditOtherLicensingInformationDetected = ({
                                 <div className='form-group'>
                                     <label className='mandatory lableSPDX' htmlFor='licenseId'>
                                         10.1 License identifier
+                                        <span className='text-red' style={{ color: '#F7941E' }}>
+                                            *
+                                        </span>
                                     </label>
                                     <div style={{ display: 'flex' }}>
-                                        <label className='sub-label lableSPDX'>LicenseRef-</label>
+                                        <label className='sub-label'>LicenseRef-</label>
                                         <input
                                             id='licenseId'
                                             className='form-control needs-validation'
@@ -236,6 +239,9 @@ const EditOtherLicensingInformationDetected = ({
                                 <div className='form-group'>
                                     <label className='mandatory lableSPDX' htmlFor='extractedText'>
                                         10.2 Extracted text
+                                        <span className='text-red' style={{ color: '#F7941E' }}>
+                                            *
+                                        </span>
                                     </label>
                                     <textarea
                                         className='form-control needs-validation'

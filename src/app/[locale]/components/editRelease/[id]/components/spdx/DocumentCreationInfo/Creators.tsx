@@ -65,7 +65,7 @@ function Creators({ inputList, setInputList, isAnonymous, setDataCreators }: Pro
                             onChange={(e) => handleInputChange(e, j)}
                             disabled={isAnonymous && (elem.key === 'Organization' || elem.key === 'Person')}
                         />
-                        <FaTrashAlt onClick={() => handleRemoveClick(j)} />
+                        <FaTrashAlt className='spdx-delete-icon-main' onClick={() => handleRemoveClick(j)} />
                     </div>
                 )
             })}

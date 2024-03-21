@@ -212,6 +212,9 @@ const EditSPDXDocument = ({ releaseId, SPDXPayload, setSPDXPayload }: Props) => 
                             setIsTypeCateGoryEmpty(true)
                         }
                         setIndexExternalRefsData(0)
+                    } else {
+                        setTypeCategory(['cpe22Type', 'cpe23Type', 'advisory', 'fix', 'url', 'swid'])
+                        setIsTypeCateGoryEmpty(false)
                     }
                 }
             })

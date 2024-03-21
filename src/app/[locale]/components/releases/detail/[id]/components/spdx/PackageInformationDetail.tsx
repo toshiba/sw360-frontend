@@ -57,14 +57,19 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                     <td>7.4 Package file name</td>
                     <td>{packageInformation?.packageFileName}</td>
                 </tr>
-                <tr className='spdx-full' data-index={packageInformation?.index}>
-                    <td>7.5 Package supplier</td>
-                    <td>{packageInformation?.supplier}</td>
-                </tr>
-                <tr className='spdx-full' data-index={packageInformation?.index}>
-                    <td>7.6 Package originator</td>
-                    <td>{packageInformation?.originator}</td>
-                </tr>
+                {isModeFull && (
+                    <>
+                        <tr className='spdx-full' data-index={packageInformation?.index}>
+                            <td>7.5 Package supplier</td>
+                            <td>{packageInformation?.supplier}</td>
+                        </tr>
+                        <tr className='spdx-full' data-index={packageInformation?.index}>
+                            <td>7.6 Package originator</td>
+                            <td>{packageInformation?.originator}</td>
+                        </tr>
+                    </>
+                )}
+
                 <tr className='spdx-full' data-index={packageInformation?.index}>
                     <td>7.7 Package download location</td>
                     <td>{packageInformation?.downloadLocation}</td>
@@ -73,73 +78,94 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                     <td>7.8 Files analyzed</td>
                     <td className='spdx-col-3 spdx-uppercase'>{packageInformation?.filesAnalyzed.toString()}</td>
                 </tr>
-                <tr className='spdx-full' data-index={packageInformation?.index}>
-                    <td>7.9 Package verification code</td>
-                    <td>
-                        <div className='spdx-col-2 spdx-flex-col'>
-                            <div className='spdx-flex-row'>
-                                <div className='spdx-col-1 spdx-key'>Value</div>
-                                <div className='spdx-col-3'>{packageInformation?.packageVerificationCode.value}</div>
-                            </div>
-                            <div className='spdx-flex-row'>
-                                <div className='spdx-col-1 spdx-key'>Excluded files</div>
-                                <p className='spdx-col-3 ' id='excludedFiles'>
-                                    {packageInformation?.packageVerificationCode.excludedFiles &&
-                                        packageInformation?.packageVerificationCode.excludedFiles.map((item) => {
-                                            return (
-                                                <>
-                                                    {item}
-                                                    <br></br>
-                                                </>
-                                            )
-                                        })}
-                                </p>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr className='spdx-full' data-index={packageInformation?.index}>
-                    <td>7.10 Package checksum</td>
-                    <td>
-                        {packageInformation?.checksums &&
-                            packageInformation?.checksums.map((item) => {
-                                return (
-                                    <div key={item.index} className='spdx-flex-row checksum' data-index={item.index}>
-                                        <div className='spdx-col-1 spdx-key'>{item.algorithm}</div>
-                                        <div className='spdx-col-3'>{item.checksumValue}</div>
+                {isModeFull && (
+                    <>
+                        <tr className='spdx-full' data-index={packageInformation?.index}>
+                            <td>7.9 Package verification code</td>
+                            <td>
+                                <div className='spdx-col-2 spdx-flex-col'>
+                                    <div className='spdx-flex-row'>
+                                        <div className='spdx-col-1 spdx-key'>Value</div>
+                                        <div className='spdx-col-3'>
+                                            {packageInformation?.packageVerificationCode.value}
+                                        </div>
                                     </div>
-                                )
-                            })}
-                    </td>
-                </tr>
+                                    <div className='spdx-flex-row'>
+                                        <div className='spdx-col-1 spdx-key'>Excluded files</div>
+                                        <p className='spdx-col-3 ' id='excludedFiles'>
+                                            {packageInformation?.packageVerificationCode.excludedFiles &&
+                                                packageInformation?.packageVerificationCode.excludedFiles.map(
+                                                    (item) => {
+                                                        return (
+                                                            <>
+                                                                {item}
+                                                                <br></br>
+                                                            </>
+                                                        )
+                                                    }
+                                                )}
+                                        </p>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr className='spdx-full' data-index={packageInformation?.index}>
+                            <td>7.10 Package checksum</td>
+                            <td>
+                                {packageInformation?.checksums &&
+                                    packageInformation?.checksums.map((item) => {
+                                        return (
+                                            <div
+                                                key={item.index}
+                                                className='spdx-flex-row checksum'
+                                                data-index={item.index}
+                                            >
+                                                <div className='spdx-col-1 spdx-key'>{item.algorithm}</div>
+                                                <div className='spdx-col-3'>{item.checksumValue}</div>
+                                            </div>
+                                        )
+                                    })}
+                            </td>
+                        </tr>
+                    </>
+                )}
+
                 <tr data-index={packageInformation?.index} className='spdx-full'>
                     <td>7.11 Package home page</td>
                     <td>{packageInformation?.homepage}</td>
                 </tr>
-                <tr className='spdx-full' data-index={packageInformation?.index}>
-                    <td>7.12 Source information</td>
-                    <td>{packageInformation?.sourceInfo}</td>
-                </tr>
+
+                {isModeFull && (
+                    <tr className='spdx-full' data-index={packageInformation?.index}>
+                        <td>7.12 Source information</td>
+                        <td>{packageInformation?.sourceInfo}</td>
+                    </tr>
+                )}
+
                 <tr data-index={packageInformation?.index} className='spdx-full'>
                     <td>7.13 Concluded license</td>
                     <td>{packageInformation?.licenseConcluded}</td>
                 </tr>
-                <tr className='spdx-full' data-index={packageInformation?.index}>
-                    <td>7.14 All licenses information from files</td>
-                    <td>
-                        <p className='spdx-col-2 ' id='licenseInfoFromFile'>
-                            {packageInformation?.licenseInfoFromFiles &&
-                                packageInformation?.licenseInfoFromFiles.map((item) => {
-                                    return (
-                                        <>
-                                            {item}
-                                            <br></br>
-                                        </>
-                                    )
-                                })}
-                        </p>
-                    </td>
-                </tr>
+
+                {isModeFull && (
+                    <tr className='spdx-full' data-index={packageInformation?.index}>
+                        <td>7.14 All licenses information from files</td>
+                        <td>
+                            <p className='spdx-col-2 ' id='licenseInfoFromFile'>
+                                {packageInformation?.licenseInfoFromFiles &&
+                                    packageInformation?.licenseInfoFromFiles.map((item) => {
+                                        return (
+                                            <>
+                                                {item}
+                                                <br></br>
+                                            </>
+                                        )
+                                    })}
+                            </p>
+                        </td>
+                    </tr>
+                )}
+
                 <tr data-index={packageInformation?.index} className='spdx-full'>
                     <td>7.15 Declared license</td>
                     <td>{packageInformation?.licenseDeclared}</td>
@@ -160,22 +186,28 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                         </p>
                     </td>
                 </tr>
-                <tr className='spdx-full' data-index={packageInformation?.index}>
-                    <td>7.18 Package summary description</td>
-                    <td>
-                        <p className='spdx-col-2 ' id='summary'>
-                            {packageInformation?.summary}
-                        </p>
-                    </td>
-                </tr>
-                <tr className='spdx-full' data-index={packageInformation?.index}>
-                    <td>7.19 Package detailed description</td>
-                    <td>
-                        <p className='spdx-col-2 ' id='description'>
-                            {packageInformation?.description}
-                        </p>
-                    </td>
-                </tr>
+
+                {isModeFull && (
+                    <>
+                        <tr className='spdx-full' data-index={packageInformation?.index}>
+                            <td>7.18 Package summary description</td>
+                            <td>
+                                <p className='spdx-col-2 ' id='summary'>
+                                    {packageInformation?.summary}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr className='spdx-full' data-index={packageInformation?.index}>
+                            <td>7.19 Package detailed description</td>
+                            <td>
+                                <p className='spdx-col-2 ' id='description'>
+                                    {packageInformation?.description}
+                                </p>
+                            </td>
+                        </tr>
+                    </>
+                )}
+
                 <tr data-index={packageInformation?.index}>
                     <td>7.20 Package comment</td>
                     <td>

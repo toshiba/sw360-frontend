@@ -60,7 +60,7 @@ function CheckSums({ inputList, setInputList, setDataCheckSums }: Props) {
                             placeholder='Enter value'
                             onChange={(e) => handleInputChange(e, j)}
                         />
-                        <FaTrashAlt onClick={() => handleRemoveClick(j)} />
+                        <FaTrashAlt className='spdx-delete-icon-main' onClick={() => handleRemoveClick(j)} />
                     </div>
                 )
             })}

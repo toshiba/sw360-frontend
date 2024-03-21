@@ -423,7 +423,7 @@ const EditAnnotationInformation = ({
                             >
                                 <label
                                     htmlFor='selectAnnotationSource'
-                                    style={{ textDecoration: 'underline' }}
+                                    style={{ textDecoration: 'underline', marginRight: '2.5rem' }}
                                     className='sub-title lableSPDX'
                                 >
                                     Select Source
@@ -442,7 +442,7 @@ const EditAnnotationInformation = ({
                                 <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '0.75rem' }}>
                                     <label
                                         htmlFor='selectAnnotation'
-                                        style={{ textDecoration: 'underline' }}
+                                        style={{ textDecoration: 'underline', marginRight: '2.5rem' }}
                                         className='sub-title lableSPDX'
                                     >
                                         Select Annotation
@@ -469,7 +469,7 @@ const EditAnnotationInformation = ({
                                                   </option>
                                               ))}
                                     </select>
-                                    <FaTrashAlt onClick={deleteAnnotation} />
+                                    <FaTrashAlt className='spdx-delete-icon-main-index' onClick={deleteAnnotation} />
                                 </div>
                                 <button className='spdx-add-button-main' name='add-annotation' onClick={addAnnotation}>
                                     Add new Annotation

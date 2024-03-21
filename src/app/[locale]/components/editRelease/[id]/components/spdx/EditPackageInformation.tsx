@@ -244,10 +244,12 @@ const EditPackageInformation = ({
 
     const addReferences = () => {
         const arrayExternals: ExternalReference[] = [...externalRefsDatas]
+        // setTypeCategory(['cpe22Type', 'cpe23Type', 'advisory', 'fix', 'url', 'swid'])
+        // setIsTypeCateGoryEmpty(false)
         const externalReference: ExternalReference = {
-            referenceCategory: 'OTHER',
+            referenceCategory: 'SECURITY',
             referenceLocator: '',
-            referenceType: '',
+            referenceType: 'cpe22Type',
             comment: '',
             index: externalRefsDatas.length,
         }
@@ -836,9 +838,7 @@ const EditPackageInformation = ({
                                                     placeholder='Enter verification code value'
                                                     disabled={!packageInformation?.filesAnalyzed}
                                                     onChange={updateFieldPackageVerificationCode}
-                                                    value={
-                                                        packageInformation.packageVerificationCode?.excludedFiles ?? ''
-                                                    }
+                                                    value={packageInformation.packageVerificationCode?.value ?? ''}
                                                 ></input>
                                                 <textarea
                                                     className='form-control'
@@ -848,7 +848,9 @@ const EditPackageInformation = ({
                                                     placeholder='Enter excluded files'
                                                     disabled={!packageInformation?.filesAnalyzed}
                                                     onChange={updateFieldPackageVerificationCode}
-                                                    value={packageInformation.packageVerificationCode?.value ?? ''}
+                                                    value={
+                                                        packageInformation.packageVerificationCode?.excludedFiles ?? ''
+                                                    }
                                                 ></textarea>
                                             </div>
                                         </div>
@@ -1064,7 +1066,10 @@ const EditPackageInformation = ({
                                                             }}
                                                         >
                                                             <label
-                                                                style={{ textDecoration: 'underline' }}
+                                                                style={{
+                                                                    textDecoration: 'underline',
+                                                                    marginRight: '2.5rem',
+                                                                }}
                                                                 className='sub-title lableSPDX'
                                                             >
                                                                 Select Reference
@@ -1083,7 +1088,10 @@ const EditPackageInformation = ({
                                                                     </option>
                                                                 ))}
                                                             </select>
-                                                            <FaTrashAlt onClick={deleteExternalRefsDatas} />
+                                                            <FaTrashAlt
+                                                                className='spdx-delete-icon-main-index'
+                                                                onClick={deleteExternalRefsDatas}
+                                                            />
                                                         </div>
                                                         <button
                                                             className='spdx-add-button-main'
@@ -1110,6 +1118,9 @@ const EditPackageInformation = ({
                                                                     externalRefsDatas[indexExternalRefsData]
                                                                         ?.referenceCategory ?? ''
                                                                 }
+                                                                disabled={CommonUtils.isNullEmptyOrUndefinedArray(
+                                                                    externalRefsDatas
+                                                                )}
                                                             >
                                                                 <option value='SECURITY'>SECURITY</option>
                                                                 <option value='PACKAGE-MANAGER'>PACKAGE-MANAGER</option>
@@ -1141,6 +1152,9 @@ const EditPackageInformation = ({
                                                                         externalRefsDatas[indexExternalRefsData]
                                                                             ?.referenceType ?? ''
                                                                     }
+                                                                    disabled={CommonUtils.isNullEmptyOrUndefinedArray(
+                                                                        externalRefsDatas
+                                                                    )}
                                                                 />
                                                             ) : (
                                                                 <select
@@ -1154,6 +1168,9 @@ const EditPackageInformation = ({
                                                                         externalRefsDatas[indexExternalRefsData]
                                                                             ?.referenceType ?? ''
                                                                     }
+                                                                    disabled={CommonUtils.isNullEmptyOrUndefinedArray(
+                                                                        externalRefsDatas
+                                                                    )}
                                                                 >
                                                                     {typeCategory?.map((item, index) => (
                                                                         <option key={index} value={item}>
@@ -1183,6 +1200,9 @@ const EditPackageInformation = ({
                                                                     externalRefsDatas[indexExternalRefsData]
                                                                         ?.referenceLocator ?? ''
                                                                 }
+                                                                disabled={CommonUtils.isNullEmptyOrUndefinedArray(
+                                                                    externalRefsDatas
+                                                                )}
                                                             />
                                                         </div>
                                                         <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -1199,6 +1219,9 @@ const EditPackageInformation = ({
                                                                     externalRefsDatas[indexExternalRefsData]?.comment ??
                                                                     ''
                                                                 }
+                                                                disabled={CommonUtils.isNullEmptyOrUndefinedArray(
+                                                                    externalRefsDatas
+                                                                )}
                                                             ></textarea>
                                                         </div>
                                                     </div>

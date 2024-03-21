@@ -327,7 +327,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                         >
                             <label
                                 htmlFor='selectRelationshipSource'
-                                style={{ textDecoration: 'underline' }}
+                                style={{ textDecoration: 'underline', marginRight: '2.5rem' }}
                                 className='sub-title lableSPDX'
                             >
                                 Select Source
@@ -346,7 +346,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                             <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '0.75rem' }}>
                                 <label
                                     htmlFor='selectRelationship'
-                                    style={{ textDecoration: 'underline' }}
+                                    style={{ textDecoration: 'underline', marginRight: '2.5rem' }}
                                     className='sub-title lableSPDX'
                                 >
                                     Select Relationship
@@ -377,7 +377,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                                               </option>
                                           ))}
                                 </select>
-                                <FaTrashAlt onClick={deleteRelation} />
+                                <FaTrashAlt className='spdx-delete-icon-main-index' onClick={deleteRelation} />
                             </div>
                             <button className='spdx-add-button-main' name='add-relationship' onClick={addRelations}>
                                 Add new Relationship

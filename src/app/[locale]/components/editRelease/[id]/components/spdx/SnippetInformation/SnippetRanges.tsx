@@ -96,7 +96,7 @@ function SnippetRanges({ inputList, setInputList, setDataSnippetRanges }: Props)
                             value={elem.reference}
                             onChange={(e) => handleInputChange(e, j)}
                         />
-                        <FaTrashAlt onClick={() => handleRemoveClick(j)} />
+                        <FaTrashAlt className='spdx-delete-icon-main' onClick={() => handleRemoveClick(j)} />
                     </div>
                 )
             })}
