@@ -93,17 +93,14 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                                     <div className='spdx-flex-row'>
                                         <div className='spdx-col-1 spdx-key'>Excluded files</div>
                                         <p className='spdx-col-3 ' id='excludedFiles'>
-                                            {packageInformation?.packageVerificationCode.excludedFiles &&
-                                                packageInformation?.packageVerificationCode.excludedFiles.map(
-                                                    (item) => {
-                                                        return (
-                                                            <>
-                                                                {item}
-                                                                <br></br>
-                                                            </>
-                                                        )
-                                                    }
-                                                )}
+                                            {packageInformation?.packageVerificationCode?.excludedFiles.map((item) => {
+                                                return (
+                                                    <>
+                                                        {item}
+                                                        <br></br>
+                                                    </>
+                                                )
+                                            })}
                                         </p>
                                     </div>
                                 </div>
@@ -112,19 +109,18 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                         <tr className='spdx-full' data-index={packageInformation?.index}>
                             <td>7.10 Package checksum</td>
                             <td>
-                                {packageInformation?.checksums &&
-                                    packageInformation?.checksums.map((item) => {
-                                        return (
-                                            <div
-                                                key={item.index}
-                                                className='spdx-flex-row checksum'
-                                                data-index={item.index}
-                                            >
-                                                <div className='spdx-col-1 spdx-key'>{item.algorithm}</div>
-                                                <div className='spdx-col-3'>{item.checksumValue}</div>
-                                            </div>
-                                        )
-                                    })}
+                                {packageInformation?.checksums.map((item) => {
+                                    return (
+                                        <div
+                                            key={item.index}
+                                            className='spdx-flex-row checksum'
+                                            data-index={item.index}
+                                        >
+                                            <div className='spdx-col-1 spdx-key'>{item.checksumValue}</div>
+                                            <div className='spdx-col-3'>{item.algorithm}</div>
+                                        </div>
+                                    )
+                                })}
                             </td>
                         </tr>
                     </>
@@ -138,7 +134,16 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                 {isModeFull && (
                     <tr className='spdx-full' data-index={packageInformation?.index}>
                         <td>7.12 Source information</td>
-                        <td>{packageInformation?.sourceInfo}</td>
+                        <td>
+                            {packageInformation?.sourceInfo.split('\n').map((item) => {
+                                return (
+                                    <>
+                                        {item}
+                                        <br></br>
+                                    </>
+                                )
+                            })}
+                        </td>
                     </tr>
                 )}
 
@@ -152,15 +157,14 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                         <td>7.14 All licenses information from files</td>
                         <td>
                             <p className='spdx-col-2 ' id='licenseInfoFromFile'>
-                                {packageInformation?.licenseInfoFromFiles &&
-                                    packageInformation?.licenseInfoFromFiles.map((item) => {
-                                        return (
-                                            <>
-                                                {item}
-                                                <br></br>
-                                            </>
-                                        )
-                                    })}
+                                {packageInformation?.licenseInfoFromFiles.map((item) => {
+                                    return (
+                                        <>
+                                            {item}
+                                            <br></br>
+                                        </>
+                                    )
+                                })}
                             </p>
                         </td>
                     </tr>
@@ -174,7 +178,14 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                     <td>7.16 Comments on license</td>
                     <td>
                         <p className='spdx-col-2 ' id='licenseComments'>
-                            {packageInformation?.licenseComments}
+                            {packageInformation?.licenseComments.split('\n').map((item) => {
+                                return (
+                                    <>
+                                        {item}
+                                        <br></br>
+                                    </>
+                                )
+                            })}
                         </p>
                     </td>
                 </tr>
@@ -182,7 +193,14 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                     <td>7.17 Copyright text</td>
                     <td>
                         <p className='spdx-col-2 ' id='copyrightText'>
-                            {packageInformation?.copyrightText}
+                            {packageInformation?.copyrightText.split('\n').map((item) => {
+                                return (
+                                    <>
+                                        {item}
+                                        <br></br>
+                                    </>
+                                )
+                            })}
                         </p>
                     </td>
                 </tr>
@@ -193,7 +211,14 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                             <td>7.18 Package summary description</td>
                             <td>
                                 <p className='spdx-col-2 ' id='summary'>
-                                    {packageInformation?.summary}
+                                    {packageInformation?.summary.split('\n').map((item) => {
+                                        return (
+                                            <>
+                                                {item}
+                                                <br></br>
+                                            </>
+                                        )
+                                    })}
                                 </p>
                             </td>
                         </tr>
@@ -201,7 +226,14 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                             <td>7.19 Package detailed description</td>
                             <td>
                                 <p className='spdx-col-2 ' id='description'>
-                                    {packageInformation?.description}
+                                    {packageInformation?.description.split('\n').map((item) => {
+                                        return (
+                                            <>
+                                                {item}
+                                                <br></br>
+                                            </>
+                                        )
+                                    })}
                                 </p>
                             </td>
                         </tr>
@@ -212,7 +244,14 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                     <td>7.20 Package comment</td>
                     <td>
                         <p className='spdx-col-2 ' id='packageComment'>
-                            {packageInformation?.packageComment}
+                            {packageInformation?.packageComment.split('\n').map((item) => {
+                                return (
+                                    <>
+                                        {item}
+                                        <br></br>
+                                    </>
+                                )
+                            })}
                         </p>
                     </td>
                 </tr>
@@ -273,10 +312,9 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                             <td>7.23 Package attribution text</td>
                             <td>
                                 <p className='spdx-col-2 ' id='attributionText'>
-                                    {packageInformation?.attributionText &&
-                                        packageInformation?.attributionText.map((item) => {
-                                            return <>{item}</>
-                                        })}
+                                    {packageInformation?.attributionText.map((item) => {
+                                        return <>{item}</>
+                                    })}
                                 </p>
                             </td>
                         </tr>
@@ -284,7 +322,14 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                             <td>7.24 Primary Package Purpose </td>
                             <td>
                                 <div className='spdx-col-2 ' id='primaryPackagePurpose'>
-                                    {packageInformation?.primaryPackagePurpose}
+                                    {packageInformation?.primaryPackagePurpose.split('\n').map((item) => {
+                                        return (
+                                            <>
+                                                {item}
+                                                <br></br>
+                                            </>
+                                        )
+                                    })}
                                 </div>
                             </td>
                         </tr>

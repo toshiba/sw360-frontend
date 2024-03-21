@@ -27,7 +27,7 @@ function Created({ dataCreated, setDataCreated, setCreated }: Props) {
 
     return (
         dataCreated && (
-            <td style={{ display: 'flex', flexDirection: 'column' }} colSpan={3}>
+            <td style={{ flexDirection: 'column' }} colSpan={3}>
                 <div className='form-group'>
                     <label className='lableSPDX' htmlFor='createdDate'>
                         6.9 Created

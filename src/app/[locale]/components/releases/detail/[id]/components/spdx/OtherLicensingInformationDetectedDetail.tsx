@@ -82,7 +82,14 @@ const OtherLicensingInformationDetectedDetail = ({
                                     id={`extractedText-${otherLicensingInformationDetected.index}`}
                                     style={{ whiteSpace: 'pre-wrap' }}
                                 >
-                                    {otherLicensingInformationDetected.extractedText}
+                                    {otherLicensingInformationDetected?.extractedText.split('\n').map((item) => {
+                                        return (
+                                            <>
+                                                {item}
+                                                <br></br>
+                                            </>
+                                        )
+                                    })}
                                 </p>
                             </td>
                         </tr>
@@ -100,12 +107,11 @@ const OtherLicensingInformationDetectedDetail = ({
                                         className='spdx-col-2 '
                                         id={`licenseCrossRefs-${otherLicensingInformationDetected.index}`}
                                     >
-                                        {otherLicensingInformationDetected?.licenseCrossRefs &&
-                                            otherLicensingInformationDetected.licenseCrossRefs.map(
-                                                (licenseCrossRefsData) => {
-                                                    return <>{licenseCrossRefsData}</>
-                                                }
-                                            )}
+                                        {otherLicensingInformationDetected.licenseCrossRefs.map(
+                                            (licenseCrossRefsData) => {
+                                                return <>{licenseCrossRefsData}</>
+                                            }
+                                        )}
                                     </p>
                                 </td>
                             </tr>
@@ -117,7 +123,14 @@ const OtherLicensingInformationDetectedDetail = ({
                                     className='spdx-col-2 '
                                     id={`otherLicenseComment-${otherLicensingInformationDetected.index}`}
                                 >
-                                    {otherLicensingInformationDetected.licenseComment}
+                                    {otherLicensingInformationDetected?.licenseComment.split('\n').map((item) => {
+                                        return (
+                                            <>
+                                                {item}
+                                                <br></br>
+                                            </>
+                                        )
+                                    })}
                                 </p>
                             </td>
                         </tr>

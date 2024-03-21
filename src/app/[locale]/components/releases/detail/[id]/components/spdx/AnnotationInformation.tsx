@@ -148,7 +148,14 @@ const AnnotationInformation = ({
                             <td>12.5 Annotation comment</td>
                             <td>
                                 <p className='spdx-col-2 ' id='documentAnnotationComment-${annotations.index}'>
-                                    {annotations.annotationComment}
+                                    {annotations?.annotationComment.split('\n').map((item) => {
+                                        return (
+                                            <>
+                                                {item}
+                                                <br></br>
+                                            </>
+                                        )
+                                    })}
                                 </p>
                             </td>
                         </tr>
