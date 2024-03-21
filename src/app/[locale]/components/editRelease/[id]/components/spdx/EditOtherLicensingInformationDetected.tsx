@@ -214,6 +214,7 @@ const EditOtherLicensingInformationDetected = ({
                                     <div style={{ display: 'flex' }}>
                                         <label className='sub-label'>LicenseRef-</label>
                                         <input
+                                            required
                                             id='licenseId'
                                             className='form-control needs-validation'
                                             type='text'
@@ -249,6 +250,7 @@ const EditOtherLicensingInformationDetected = ({
                                         rows={5}
                                         name='extractedText'
                                         onChange={updateField}
+                                        required
                                         placeholder='Enter extracted text'
                                         value={
                                             otherLicensingInformationDetecteds[indexOtherLicense].extractedText ?? ''

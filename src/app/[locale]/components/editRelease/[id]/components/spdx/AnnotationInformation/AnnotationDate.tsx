@@ -64,7 +64,7 @@ function AnnotationDate({
 
     return (
         dataAnnotationDate && (
-            <div className='form-group' style={{ flex: 1 }}>
+            <div className='form-group' style={{ flex: 1, marginLeft: '1.5rem' }}>
                 <label className='lableSPDX' htmlFor='annotationCreatedDate'>
                     12.2 Annotation date{' '}
                 </label>

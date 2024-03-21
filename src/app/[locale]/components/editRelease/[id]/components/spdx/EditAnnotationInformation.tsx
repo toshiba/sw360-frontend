@@ -483,59 +483,63 @@ const EditAnnotationInformation = ({
                         <>
                             <tr>
                                 <td>
-                                    <Annotator
-                                        dataAnnotator={dataAnnotator}
-                                        setDataAnnotator={setDataAnnotator}
-                                        setAnnotatorToAnnotation={setAnnotatorToAnnotation}
-                                    />
-                                    <AnnotationDate
-                                        dataDate={dataDate}
-                                        setDataDate={setDataDate}
-                                        dataTime={dataTime}
-                                        setDataTime={setDataTime}
-                                        dataAnnotationDate={dataAnnotationDate}
-                                        setDataAnnotationDate={setDataAnnotationDate}
-                                        setAnnotationDate={setAnnotationDate}
-                                    />
+                                    <div style={{ display: 'flex' }}>
+                                        <Annotator
+                                            dataAnnotator={dataAnnotator}
+                                            setDataAnnotator={setDataAnnotator}
+                                            setAnnotatorToAnnotation={setAnnotatorToAnnotation}
+                                        />
+                                        <AnnotationDate
+                                            dataDate={dataDate}
+                                            setDataDate={setDataDate}
+                                            dataTime={dataTime}
+                                            setDataTime={setDataTime}
+                                            dataAnnotationDate={dataAnnotationDate}
+                                            setDataAnnotationDate={setDataAnnotationDate}
+                                            setAnnotationDate={setAnnotationDate}
+                                        />
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
-                                <td style={{ display: 'flex' }}>
-                                    <div className='form-group' style={{ flex: 1 }}>
-                                        <label htmlFor='annotationType' className='lableSPDX'>
-                                            12.3 Annotation type
-                                        </label>
-                                        <input
-                                            id='annotationType'
-                                            className='form-control'
-                                            type='text'
-                                            placeholder='Enter annotation type'
-                                            name='annotationType'
-                                            onChange={updateField}
-                                            value={
-                                                isSourceSPDXDocument
-                                                    ? annotationsSPDXs[indexAnnotations]?.annotationType
-                                                    : annotationsPackages[indexAnnotations]?.annotationType ?? ''
-                                            }
-                                        />
-                                    </div>
-                                    <div className='form-group' style={{ flex: 1 }}>
-                                        <label htmlFor='spdxIdRef' className='lableSPDX'>
-                                            12.4 SPDX identifier reference
-                                        </label>
-                                        <input
-                                            id='spdxIdRef'
-                                            className='form-control'
-                                            name='spdxIdRef'
-                                            type='text'
-                                            placeholder='Enter SPDX identifier reference'
-                                            onChange={updateField}
-                                            value={
-                                                isSourceSPDXDocument
-                                                    ? annotationsSPDXs[indexAnnotations]?.spdxIdRef
-                                                    : annotationsPackages[indexAnnotations]?.spdxIdRef ?? ''
-                                            }
-                                        />
+                                <td>
+                                    <div style={{ display: 'flex' }}>
+                                        <div className='form-group' style={{ flex: 1, marginRight: '1rem' }}>
+                                            <label htmlFor='annotationType' className='lableSPDX'>
+                                                12.3 Annotation type
+                                            </label>
+                                            <input
+                                                id='annotationType'
+                                                className='form-control'
+                                                type='text'
+                                                placeholder='Enter annotation type'
+                                                name='annotationType'
+                                                onChange={updateField}
+                                                value={
+                                                    isSourceSPDXDocument
+                                                        ? annotationsSPDXs[indexAnnotations]?.annotationType
+                                                        : annotationsPackages[indexAnnotations]?.annotationType ?? ''
+                                                }
+                                            />
+                                        </div>
+                                        <div className='form-group' style={{ flex: 1 }}>
+                                            <label htmlFor='spdxIdRef' className='lableSPDX'>
+                                                12.4 SPDX identifier reference
+                                            </label>
+                                            <input
+                                                id='spdxIdRef'
+                                                className='form-control'
+                                                name='spdxIdRef'
+                                                type='text'
+                                                placeholder='Enter SPDX identifier reference'
+                                                onChange={updateField}
+                                                value={
+                                                    isSourceSPDXDocument
+                                                        ? annotationsSPDXs[indexAnnotations]?.spdxIdRef
+                                                        : annotationsPackages[indexAnnotations]?.spdxIdRef ?? ''
+                                                }
+                                            />
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
