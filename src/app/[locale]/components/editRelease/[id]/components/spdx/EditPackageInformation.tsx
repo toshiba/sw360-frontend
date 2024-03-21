@@ -59,7 +59,10 @@ const EditPackageInformation = ({
     setSPDXPayload,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
-    const [dataPackageSupplier, setDataPackageSupplier] = useState<InputKeyValue>()
+    const [dataPackageSupplier, setDataPackageSupplier] = useState<InputKeyValue>({
+        key: '',
+        value: '',
+    })
     const [isPackageSupplier, setIsPackageSupplier] = useState(true)
     const handlePackageSupplier = (data: string) => {
         if (data == null) {
@@ -102,7 +105,10 @@ const EditPackageInformation = ({
         })
     }
 
-    const [dataPackageOriginator, setDataPackageOriginator] = useState<InputKeyValue>()
+    const [dataPackageOriginator, setDataPackageOriginator] = useState<InputKeyValue>({
+        key: '',
+        value: '',
+    })
     const [isPackageOriginator, setIsPackageOriginator] = useState(true)
 
     const handlePackageOriginator = (data: string) => {
