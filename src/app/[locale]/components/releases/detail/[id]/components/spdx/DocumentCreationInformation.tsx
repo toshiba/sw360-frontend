@@ -125,8 +125,9 @@ const DocumentCreationInformationDetail = ({
                     <td>6.8 Creators</td>
                     <td>
                         <div className='spdx-col-2' id='creators'>
-                            {documentCreationInformation?.creator &&
-                                documentCreationInformation.creator.map((creatorData) => {
+                            {documentCreationInformation?.creator
+                                .toSorted((e1, e2) => e1.index - e2.index)
+                                .map((creatorData) => {
                                     return (
                                         <div
                                             key={creatorData.index}

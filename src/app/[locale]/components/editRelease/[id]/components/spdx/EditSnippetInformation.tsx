@@ -230,6 +230,26 @@ const EditSnippetInformation = ({
         })
     }
 
+    const updateFieldSPDXIdentifier = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const snippets: SnippetInformation[] = snippetInformations.map((snippet, index) => {
+            if (index === indexSnippetInformation) {
+                return {
+                    ...snippet,
+                    [e.target.name]: 'SPDXRef-' + e.target.value,
+                }
+            }
+            return snippet
+        })
+        setSnippetInformations(snippets)
+        setSPDXPayload({
+            ...SPDXPayload,
+            spdxDocument: {
+                ...SPDXPayload.spdxDocument,
+                snippets: snippets,
+            },
+        })
+    }
+
     const [licenseInfoInSnippets, setLicenseInfoInSnippets] = useState<Array<string>>()
     const [licenseInfoInSnippetsExist, setLicenseInfoInSnippetsExist] = useState(true)
     const [licenseInfoInSnippetsNone, setLicenseInfoInSnippetsNone] = useState(false)
@@ -384,7 +404,7 @@ const EditSnippetInformation = ({
                                             type='text'
                                             placeholder='Enter snippet SPDX identifier'
                                             name='SPDXID'
-                                            onChange={updateField}
+                                            onChange={updateFieldSPDXIdentifier}
                                             value={
                                                 CommonUtils.isNullEmptyOrUndefinedString(
                                                     snippetInformations[indexSnippetInformation].SPDXID

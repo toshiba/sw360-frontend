@@ -74,13 +74,16 @@ const EditDocumentCreationInformation = ({
     useEffect(() => {
         if (!CommonUtils.isNullEmptyOrUndefinedArray(documentCreationInformation?.creator)) {
             if (!isAnonymous) {
-                setCreator(convertCreator(documentCreationInformation.creator))
+                setCreator(
+                    convertCreator(documentCreationInformation.creator.toSorted((e1, e2) => e1.index - e2.index))
+                )
             }
         }
 
         if (
             CommonUtils.isNullEmptyOrUndefinedArray(documentCreationInformation?.creator) &&
-            typeof documentCreationInformation?.createdBy !== 'undefined'
+            typeof documentCreationInformation?.createdBy !== 'undefined' &&
+            CommonUtils.isNullEmptyOrUndefinedArray(creator)
         ) {
             const creators: InputKeyValue[] = []
             const creator: InputKeyValue = {

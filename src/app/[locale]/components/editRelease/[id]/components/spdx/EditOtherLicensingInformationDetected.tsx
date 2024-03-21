@@ -86,6 +86,28 @@ const EditOtherLicensingInformationDetected = ({
         })
     }
 
+    const updateFieldLicenseIdentifier = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const otherLicensings: OtherLicensingInformationDetected[] = otherLicensingInformationDetecteds.map(
+            (otherLicensing, index) => {
+                if (index === indexOtherLicense) {
+                    return {
+                        ...otherLicensing,
+                        [e.target.name]: 'LicenseRef-' + e.target.value,
+                    }
+                }
+                return otherLicensing
+            }
+        )
+        setOtherLicensingInformationDetecteds(otherLicensings)
+        setSPDXPayload({
+            ...SPDXPayload,
+            spdxDocument: {
+                ...SPDXPayload.spdxDocument,
+                otherLicensingInformationDetecteds: otherLicensings,
+            },
+        })
+    }
+
     const [numberIndex, setNumberIndex] = useState<number>(0)
 
     const deleteOtherLicenses = () => {
@@ -220,7 +242,7 @@ const EditOtherLicensingInformationDetected = ({
                                             type='text'
                                             placeholder='Enter license identifier'
                                             name='licenseId'
-                                            onChange={updateField}
+                                            onChange={updateFieldLicenseIdentifier}
                                             value={
                                                 otherLicensingInformationDetecteds[
                                                     indexOtherLicense
