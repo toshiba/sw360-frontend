@@ -116,8 +116,8 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                                             className='spdx-flex-row checksum'
                                             data-index={item.index}
                                         >
-                                            <div className='spdx-col-1 spdx-key'>{item.checksumValue}</div>
-                                            <div className='spdx-col-3'>{item.algorithm}</div>
+                                            <div className='spdx-col-1 spdx-key'>{item.algorithm}</div>
+                                            <div className='spdx-col-3'>{item.checksumValue}</div>
                                         </div>
                                     )
                                 })}
