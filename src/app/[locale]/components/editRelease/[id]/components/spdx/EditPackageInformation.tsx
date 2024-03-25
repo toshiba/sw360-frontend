@@ -314,6 +314,7 @@ const EditPackageInformation = ({
     const [concludedLicenseNoasserttion, setConcludedLicenseNoasserttion] = useState(false)
 
     const setConcludedLicenseToPackage = (data: string) => {
+        console.log(data)
         setPackageInformation({
             ...packageInformation,
             licenseConcluded: data,
@@ -333,6 +334,7 @@ const EditPackageInformation = ({
     const [allLicensesInformationNoasserttion, setAllLicensesInformationNoasserttion] = useState(false)
 
     const setAllLicensesInformationToPackage = (data: string[]) => {
+        console.log(data)
         setPackageInformation({
             ...packageInformation,
             licenseInfoFromFiles: data,
@@ -352,6 +354,7 @@ const EditPackageInformation = ({
     const [declaredLicenseNoasserttion, setDeclaredLicenseNoasserttion] = useState(false)
 
     const setDeclaredLicenseToPackage = (data: string) => {
+        console.log(data)
         setPackageInformation({
             ...packageInformation,
             licenseDeclared: data,
@@ -371,6 +374,7 @@ const EditPackageInformation = ({
     const [copyrightTextNoasserttion, setCopyrightTextNoasserttion] = useState(false)
 
     const setCopyrightTextToPackage = (data: string) => {
+        console.log(data)
         setPackageInformation({
             ...packageInformation,
             copyrightText: data,
@@ -400,63 +404,108 @@ const EditPackageInformation = ({
         }
 
         if (typeof packageInformation?.downloadLocation !== 'undefined') {
-            if (
-                packageInformation.downloadLocation === 'NONE' ||
-                packageInformation.downloadLocation === 'NOASSERTION'
-            ) {
+            if (packageInformation.downloadLocation === 'NONE') {
                 const data: string = packageDownloadLocation
                 setPackageDownloadLocation(data)
+                setPackageDownloadLocationExist(false)
+                setPackageDownloadLocationNone(true)
+                setPackageDownloadLocationNoasserttion(false)
+            } else if (packageInformation.downloadLocation === 'NOASSERTION') {
+                const data: string = packageDownloadLocation
+                setPackageDownloadLocation(data)
+                setPackageDownloadLocationExist(false)
+                setPackageDownloadLocationNone(false)
+                setPackageDownloadLocationNoasserttion(true)
             } else {
                 setPackageDownloadLocation(packageInformation.downloadLocation)
             }
         }
 
         if (typeof packageInformation?.homepage !== 'undefined') {
-            if (packageInformation.homepage === 'NONE' || packageInformation.homepage === 'NOASSERTION') {
+            if (packageInformation.homepage === 'NONE') {
                 const data: string = packageHomePage
                 setPackageHomePage(data)
+                setPackageHomePageExist(false)
+                setPackageHomePageNone(true)
+                setPackageHomePageNoasserttion(false)
+            } else if (packageInformation.homepage === 'NOASSERTION') {
+                const data: string = packageHomePage
+                setPackageHomePage(data)
+                setPackageHomePageExist(false)
+                setPackageHomePageNone(false)
+                setPackageHomePageNoasserttion(true)
             } else {
                 setPackageHomePage(packageInformation.homepage)
             }
         }
 
         if (typeof packageInformation?.licenseConcluded !== 'undefined') {
-            if (
-                packageInformation.licenseConcluded === 'NONE' ||
-                packageInformation.licenseConcluded === 'NOASSERTION'
-            ) {
+            if (packageInformation?.licenseConcluded === 'NONE') {
                 const data: string = concludedLicense
                 setConcludedLicense(data)
+                setConcludedLicenseExist(false)
+                setConcludedLicenseNone(true)
+                setConcludedLicenseNoasserttion(false)
+            } else if (packageInformation.licenseConcluded === 'NOASSERTION') {
+                const data: string = concludedLicense
+                setConcludedLicense(data)
+                setConcludedLicenseExist(false)
+                setConcludedLicenseNone(false)
+                setConcludedLicenseNoasserttion(true)
             } else {
                 setConcludedLicense(packageInformation.licenseConcluded)
             }
         }
 
         if (typeof packageInformation?.licenseDeclared !== 'undefined') {
-            if (packageInformation.licenseDeclared === 'NONE' || packageInformation.licenseDeclared === 'NOASSERTION') {
+            if (packageInformation?.licenseDeclared === 'NONE') {
                 const data: string = declaredLicense
                 setDeclaredLicense(data)
+                setDeclaredLicenseExist(false)
+                setDeclaredLicenseNone(true)
+                setDeclaredLicenseNoasserttion(false)
+            } else if (packageInformation.licenseDeclared === 'NOASSERTION') {
+                const data: string = declaredLicense
+                setDeclaredLicense(data)
+                setDeclaredLicenseExist(false)
+                setDeclaredLicenseNone(false)
+                setDeclaredLicenseNoasserttion(true)
             } else {
                 setDeclaredLicense(packageInformation.licenseDeclared)
             }
         }
 
         if (typeof packageInformation?.copyrightText !== 'undefined') {
-            if (packageInformation.copyrightText === 'NONE' || packageInformation.copyrightText === 'NOASSERTION') {
+            if (packageInformation?.copyrightText === 'NONE') {
                 const data: string = copyrightText
                 setCopyrightText(data)
+                setCopyrightTextExist(false)
+                setCopyrightTextNone(true)
+                setCopyrightTextNoasserttion(false)
+            } else if (packageInformation.copyrightText === 'NOASSERTION') {
+                const data: string = copyrightText
+                setCopyrightText(data)
+                setCopyrightTextExist(false)
+                setCopyrightTextNone(false)
+                setCopyrightTextNoasserttion(true)
             } else {
                 setCopyrightText(packageInformation.copyrightText)
             }
         }
 
         if (typeof packageInformation?.licenseInfoFromFiles !== 'undefined') {
-            if (
-                packageInformation.licenseInfoFromFiles.toString() === 'NONE' ||
-                packageInformation.licenseInfoFromFiles.toString() === 'NOASSERTION'
-            ) {
+            if (packageInformation?.licenseInfoFromFiles.toString() === 'NONE') {
                 const data: string[] = allLicensesInformation
                 setAllLicensesInformation(data)
+                setAllLicensesInformationExist(false)
+                setAllLicensesInformationNone(true)
+                setAllLicensesInformationNoasserttion(false)
+            } else if (packageInformation.licenseInfoFromFiles.toString() === 'NOASSERTION') {
+                const data: string[] = allLicensesInformation
+                setAllLicensesInformation(data)
+                setAllLicensesInformationExist(false)
+                setAllLicensesInformationNone(false)
+                setAllLicensesInformationNoasserttion(true)
             } else {
                 setAllLicensesInformation(packageInformation.licenseInfoFromFiles)
             }

@@ -41,9 +41,23 @@ interface Props {
     releaseId: string
     SPDXPayload?: SPDX
     setSPDXPayload?: React.Dispatch<React.SetStateAction<SPDX>>
+    errorLicenseIdentifier?: boolean
+    errorExtractedText?: boolean
+    inputValid?: boolean
+    setErrorLicenseIdentifier?: React.Dispatch<React.SetStateAction<boolean>>
+    setErrorExtractedText?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const EditSPDXDocument = ({ releaseId, SPDXPayload, setSPDXPayload }: Props) => {
+const EditSPDXDocument = ({
+    releaseId,
+    SPDXPayload,
+    setSPDXPayload,
+    errorLicenseIdentifier,
+    errorExtractedText,
+    setErrorExtractedText,
+    setErrorLicenseIdentifier,
+    inputValid,
+}: Props) => {
     const t = useTranslations('default')
     const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
     const [packageInformation, setPackageInformation] = useState<PackageInformation>()
@@ -294,6 +308,11 @@ const EditSPDXDocument = ({ releaseId, SPDXPayload, setSPDXPayload }: Props) => 
                         setOtherLicensingInformationDetecteds={setOtherLicensingInformationDetecteds}
                         SPDXPayload={SPDXPayload}
                         setSPDXPayload={setSPDXPayload}
+                        errorLicenseIdentifier={errorLicenseIdentifier}
+                        setErrorLicenseIdentifier={setErrorLicenseIdentifier}
+                        errorExtractedText={errorExtractedText}
+                        setErrorExtractedText={setErrorExtractedText}
+                        inputValid={inputValid}
                     />
                     <EditRelationshipbetweenSPDXElementsInformation
                         indexRelation={indexRelation}
@@ -352,6 +371,11 @@ const EditSPDXDocument = ({ releaseId, SPDXPayload, setSPDXPayload }: Props) => 
                         setOtherLicensingInformationDetecteds={setOtherLicensingInformationDetecteds}
                         SPDXPayload={SPDXPayload}
                         setSPDXPayload={setSPDXPayload}
+                        errorLicenseIdentifier={errorLicenseIdentifier}
+                        setErrorLicenseIdentifier={setErrorLicenseIdentifier}
+                        errorExtractedText={errorExtractedText}
+                        setErrorExtractedText={setErrorExtractedText}
+                        inputValid={inputValid}
                     />
                 </div>
             )}

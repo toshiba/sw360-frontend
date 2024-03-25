@@ -305,30 +305,75 @@ const EditRelease = ({ releaseId }: Props) => {
         })
     }
 
+    const [errorLicenseIdentifier, setErrorLicenseIdentifier] = useState(false)
+    const [errorExtractedText, setErrorExtractedText] = useState(false)
+    const [inputValid, setInputValid] = useState(false)
+
+    const validateLicenseIdentifier = (SPDXPayload: SPDX): boolean => {
+        if (CommonUtils.isNullEmptyOrUndefinedArray(SPDXPayload.spdxDocument.otherLicensingInformationDetecteds)) {
+            return false
+        }
+        let validate: boolean = false
+
+        SPDXPayload.spdxDocument.otherLicensingInformationDetecteds?.map((item) => {
+            if (CommonUtils.isNullEmptyOrUndefinedString(item.licenseId) || item.licenseId === 'LicenseRef-') {
+                setErrorLicenseIdentifier(true)
+                validate = true
+            }
+        })
+        return validate
+    }
+
+    const validateExtractedText = (SPDXPayload: SPDX): boolean => {
+        if (CommonUtils.isNullEmptyOrUndefinedArray(SPDXPayload.spdxDocument.otherLicensingInformationDetecteds)) {
+            return false
+        }
+        let validate: boolean = false
+        SPDXPayload.spdxDocument.otherLicensingInformationDetecteds?.map((item) => {
+            if (CommonUtils.isNullEmptyOrUndefinedString(item.extractedText)) {
+                setErrorExtractedText(true)
+                validate = true
+            }
+        })
+        return validate
+    }
+
     const submit = async () => {
         if (SPDX_ENABLE === 'true') {
-            const responseUpdateSPDX = await ApiUtils.PATCH(
-                `releases/${releaseId}/spdx`,
-                SPDXPayload,
-                session.user.access_token
-            )
-            if (responseUpdateSPDX.status == HttpStatus.OK) {
-                alert(true, 'Success', `Success: SPDX updated successfully!`, 'success')
+            setInputValid(true)
+            if (validateLicenseIdentifier(SPDXPayload) && validateExtractedText(SPDXPayload)) {
+                setErrorLicenseIdentifier(true)
+                setErrorExtractedText(true)
+            }
+            if (validateLicenseIdentifier(SPDXPayload) || validateExtractedText(SPDXPayload)) {
+                return
+            } else {
+                const responseUpdateSPDX = await ApiUtils.PATCH(
+                    `releases/${releaseId}/spdx`,
+                    SPDXPayload,
+                    session.user.access_token
+                )
+                if (responseUpdateSPDX.status == HttpStatus.OK) {
+                    alert(true, 'Success', `Success: SPDX updated successfully!`, 'success')
+                }
             }
         }
-        const response = await ApiUtils.PATCH(`releases/${releaseId}`, releasePayload, session.user.access_token)
-        if (response.status == HttpStatus.OK) {
-            const release = (await response.json()) as ReleaseDetail
-            alert(
-                true,
-                'Success',
-                `Success: Release ${release.name} (${release.version})  updated successfully!`,
-                'success'
-            )
-            const releaseId: string = CommonUtils.getIdFromUrl(release._links.self.href)
-            router.push('/components/releases/detail/' + releaseId)
-        } else {
-            alert(true, 'Error', t('Release Create failed'), 'danger')
+
+        if (!validateLicenseIdentifier(SPDXPayload) && !validateExtractedText(SPDXPayload)) {
+            const response = await ApiUtils.PATCH(`releases/${releaseId}`, releasePayload, session.user.access_token)
+            if (response.status == HttpStatus.OK) {
+                const release = (await response.json()) as ReleaseDetail
+                alert(
+                    true,
+                    'Success',
+                    `Success: Release ${release.name} (${release.version})  updated successfully!`,
+                    'success'
+                )
+                const releaseId: string = CommonUtils.getIdFromUrl(release._links.self.href)
+                router.push('/components/releases/detail/' + releaseId)
+            } else {
+                alert(true, 'Error', t('Release Create failed'), 'danger')
+            }
         }
     }
 
@@ -403,6 +448,11 @@ const EditRelease = ({ releaseId }: Props) => {
                                     releaseId={releaseId}
                                     SPDXPayload={SPDXPayload}
                                     setSPDXPayload={setSPDXPayload}
+                                    errorLicenseIdentifier={errorLicenseIdentifier}
+                                    setErrorLicenseIdentifier={setErrorLicenseIdentifier}
+                                    errorExtractedText={errorExtractedText}
+                                    setErrorExtractedText={setErrorExtractedText}
+                                    inputValid={inputValid}
                                 />
                             </div>
                         )}

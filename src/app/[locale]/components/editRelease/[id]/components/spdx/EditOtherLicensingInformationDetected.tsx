@@ -24,6 +24,11 @@ interface Props {
     setOtherLicensingInformationDetecteds?: React.Dispatch<React.SetStateAction<OtherLicensingInformationDetected[]>>
     SPDXPayload?: SPDX
     setSPDXPayload?: React.Dispatch<React.SetStateAction<SPDX>>
+    errorLicenseIdentifier?: boolean
+    errorExtractedText?: boolean
+    inputValid?: boolean
+    setErrorLicenseIdentifier?: React.Dispatch<React.SetStateAction<boolean>>
+    setErrorExtractedText?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const EditOtherLicensingInformationDetected = ({
@@ -34,6 +39,11 @@ const EditOtherLicensingInformationDetected = ({
     setOtherLicensingInformationDetecteds,
     SPDXPayload,
     setSPDXPayload,
+    errorLicenseIdentifier,
+    errorExtractedText,
+    setErrorExtractedText,
+    setErrorLicenseIdentifier,
+    inputValid,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
 
@@ -64,6 +74,10 @@ const EditOtherLicensingInformationDetected = ({
     }
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+        if (e.target.name === 'extractedText') {
+            setErrorExtractedText(false)
+        }
+
         const otherLicensings: OtherLicensingInformationDetected[] = otherLicensingInformationDetecteds.map(
             (otherLicensing, index) => {
                 if (index === indexOtherLicense) {
@@ -87,6 +101,7 @@ const EditOtherLicensingInformationDetected = ({
     }
 
     const updateFieldLicenseIdentifier = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setErrorLicenseIdentifier(false)
         const otherLicensings: OtherLicensingInformationDetected[] = otherLicensingInformationDetecteds.map(
             (otherLicensing, index) => {
                 if (index === indexOtherLicense) {
@@ -236,10 +251,12 @@ const EditOtherLicensingInformationDetected = ({
                                     <div style={{ display: 'flex' }}>
                                         <label className='sub-label'>LicenseRef-</label>
                                         <input
-                                            required
                                             id='licenseId'
-                                            className='form-control needs-validation'
+                                            className={`form-control ${errorLicenseIdentifier ? 'is-invalid' : ''} ${
+                                                !errorLicenseIdentifier && inputValid ? 'is-valid' : ''
+                                            }`}
                                             type='text'
+                                            style={{ backgroundColor: errorLicenseIdentifier ? '#feefef' : '' }}
                                             placeholder='Enter license identifier'
                                             name='licenseId'
                                             onChange={updateFieldLicenseIdentifier}
@@ -254,6 +271,18 @@ const EditOtherLicensingInformationDetected = ({
                                             }
                                         />
                                     </div>
+                                    {errorLicenseIdentifier && (
+                                        <div
+                                            style={{
+                                                color: '#da1414',
+                                                fontSize: '0.875rem',
+                                                marginTop: '0.25rem',
+                                                width: '100%',
+                                            }}
+                                        >
+                                            <span>This field must be not empty!</span>
+                                        </div>
+                                    )}
                                 </div>
                             </td>
                         </tr>
@@ -267,18 +296,32 @@ const EditOtherLicensingInformationDetected = ({
                                         </span>
                                     </label>
                                     <textarea
-                                        className='form-control needs-validation'
+                                        className={`form-control ${errorExtractedText ? 'is-invalid ' : ''} ${
+                                            !errorExtractedText && inputValid ? 'is-valid' : ''
+                                        }`}
+                                        style={{ backgroundColor: errorExtractedText ? '#feefef' : '' }}
                                         id='extractedText'
                                         rows={5}
                                         name='extractedText'
                                         onChange={updateField}
-                                        required
                                         placeholder='Enter extracted text'
                                         value={
                                             otherLicensingInformationDetecteds[indexOtherLicense].extractedText ?? ''
                                         }
                                     ></textarea>
                                 </div>
+                                {errorExtractedText && (
+                                    <div
+                                        style={{
+                                            color: '#da1414',
+                                            fontSize: '0.875rem',
+                                            marginTop: '0.25rem',
+                                            width: '100%',
+                                        }}
+                                    >
+                                        <span>This field must be not empty!</span>
+                                    </div>
+                                )}
                             </td>
                         </tr>
                         <tr>
