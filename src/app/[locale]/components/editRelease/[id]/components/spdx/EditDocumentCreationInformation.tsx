@@ -56,6 +56,7 @@ const EditDocumentCreationInformation = ({
             setIncreIndex(parseInt(index))
         }
         setIndexExternalDocumentRef(parseInt(index))
+        console.log(externalDocumentRefs)
         setNumberIndex(parseInt(index))
     }
 
@@ -260,13 +261,19 @@ const EditDocumentCreationInformation = ({
     }
 
     const deleteExternalReference = () => {
+        console.log(externalDocumentRefs)
         if (externalDocumentRefs.length == 1) {
             setExternalDocumentRefs([])
         } else {
+            console.log(externalDocumentRefs)
             let externalDocuments: ExternalDocumentReferences[] = []
             externalDocuments = externalDocumentRefs.filter(
                 (externalDocumentRef) => numberIndex != externalDocumentRef.index
             )
+            for (let index = 0; index < externalDocuments.length; index++) {
+                externalDocuments[index].index = index
+            }
+            console.log(externalDocuments)
             setExternalDocumentRefs(externalDocuments)
             setIndexExternalDocumentRef(0)
             setSPDXPayload({

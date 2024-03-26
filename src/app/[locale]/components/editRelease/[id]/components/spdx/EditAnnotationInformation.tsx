@@ -395,6 +395,9 @@ const EditAnnotationInformation = ({
             } else {
                 let annotations: Annotations[] = []
                 annotations = annotationsSPDXs.filter((annotations) => numberIndexSPDX != annotations.index)
+                for (let index = 0; index < annotations.length; index++) {
+                    annotations[index].index = index
+                }
                 setAnnotationsSPDXs(annotations)
                 setIndexAnnotations(0)
                 if (!CommonUtils.isNullEmptyOrUndefinedArray(annotations)) {
@@ -407,6 +410,9 @@ const EditAnnotationInformation = ({
             } else {
                 let annotations: Annotations[] = []
                 annotations = annotationsPackages.filter((annotations) => numberIndexPackage != annotations.index)
+                for (let index = 0; index < annotations.length; index++) {
+                    annotations[index].index = index
+                }
                 setAnnotationsPackages(annotations)
                 setIndexAnnotations(0)
                 if (!CommonUtils.isNullEmptyOrUndefinedArray(annotations)) {

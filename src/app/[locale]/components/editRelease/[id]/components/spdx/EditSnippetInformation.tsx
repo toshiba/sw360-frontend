@@ -337,6 +337,9 @@ const EditSnippetInformation = ({
             snippetInformationDatas = snippetInformations.filter(
                 (snippetInformation) => numberIndex != snippetInformation.index
             )
+            for (let index = 0; index < snippetInformationDatas.length; index++) {
+                snippetInformationDatas[index].index = index
+            }
             setSnippetInformations(snippetInformationDatas)
             setIndexSnippetInformation(0)
             setSPDXPayload({

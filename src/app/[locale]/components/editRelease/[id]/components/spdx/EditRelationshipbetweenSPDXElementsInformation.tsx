@@ -277,6 +277,9 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                 relationships = relationshipsBetweenSPDXElementSPDXs.filter(
                     (relatedSPDXElement) => numberIndexSPDX != relatedSPDXElement.index
                 )
+                for (let index = 0; index < relationships.length; index++) {
+                    relationships[index].index = index
+                }
                 setRelationshipsBetweenSPDXElementSPDXs(relationships)
                 setIndexRelation(0)
                 setSPDXPayload({
@@ -305,6 +308,9 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                 relationships = relationshipsBetweenSPDXElementPackages.filter(
                     (relatedSPDXElement) => numberIndexPackage != relatedSPDXElement.index
                 )
+                for (let index = 0; index < relationships.length; index++) {
+                    relationships[index].index = index
+                }
                 setRelationshipsBetweenSPDXElementPackages(relationships)
                 setSPDXPayload({
                     ...SPDXPayload,

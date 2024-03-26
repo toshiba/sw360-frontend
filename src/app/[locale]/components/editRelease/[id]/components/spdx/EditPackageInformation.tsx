@@ -695,6 +695,9 @@ const EditPackageInformation = ({
         } else {
             let externalRefs: ExternalReference[] = []
             externalRefs = externalRefsDatas.filter((externalRefsData) => numberIndex != externalRefsData.index)
+            for (let index = 0; index < externalRefs.length; index++) {
+                externalRefs[index].index = index
+            }
             setExternalRefsDatas(externalRefs)
             setIndexExternalRefsData(0)
             setSPDXPayload({
