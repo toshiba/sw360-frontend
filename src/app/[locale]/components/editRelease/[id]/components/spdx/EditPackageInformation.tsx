@@ -185,11 +185,6 @@ const EditPackageInformation = ({
 
         return checksums
     }
-    const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const index: string = e.target.value
-        setIndexExternalRefsData(parseInt(index))
-        setNumberIndex(parseInt(index))
-    }
 
     const handleChangeReferenceCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const referenceCategory: string = e.target.value
@@ -247,11 +242,26 @@ const EditPackageInformation = ({
             },
         })
     }
+    const [increIndex, setIncreIndex] = useState(0)
+    const [isAdd, setIsAdd] = useState(false)
+
+    const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const index: string = e.target.value
+        if (parseInt(index) === increIndex) {
+            setIsAdd(true)
+        } else {
+            setIncreIndex(parseInt(index))
+        }
+        setIndexExternalRefsData(parseInt(index))
+        setNumberIndex(parseInt(index))
+    }
 
     const addReferences = () => {
         const arrayExternals: ExternalReference[] = [...externalRefsDatas]
         // setTypeCategory(['cpe22Type', 'cpe23Type', 'advisory', 'fix', 'url', 'swid'])
         // setIsTypeCateGoryEmpty(false)
+        setIncreIndex(externalRefsDatas.length)
+        setIsAdd(true)
         const externalReference: ExternalReference = {
             referenceCategory: 'SECURITY',
             referenceLocator: '',
@@ -259,6 +269,7 @@ const EditPackageInformation = ({
             comment: '',
             index: externalRefsDatas.length,
         }
+        setIndexExternalRefsData(externalRefsDatas.length)
         arrayExternals.push(externalReference)
         setExternalRefsDatas(arrayExternals)
         setSPDXPayload({
@@ -1136,6 +1147,7 @@ const EditPackageInformation = ({
                                                                 disabled={CommonUtils.isNullEmptyOrUndefinedArray(
                                                                     externalRefsDatas
                                                                 )}
+                                                                value={isAdd ? increIndex : ''}
                                                             >
                                                                 {externalRefsDatas?.map((item) => (
                                                                     <option key={item.index} value={item.index}>

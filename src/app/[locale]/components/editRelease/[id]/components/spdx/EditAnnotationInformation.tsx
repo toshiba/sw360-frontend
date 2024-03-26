@@ -192,16 +192,29 @@ const EditAnnotationInformation = ({
         }
     }
 
+    const [increIndex, setIncreIndex] = useState(0)
+    const [isAdd, setIsAdd] = useState(false)
+
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
         if (isSourceSPDXDocument) {
             setIndexAnnotations(parseInt(index))
             setNumberIndexSPDX(parseInt(index))
+            if (parseInt(index) === increIndex) {
+                setIsAdd(true)
+            } else {
+                setIncreIndex(parseInt(index))
+            }
             if (CommonUtils.isNullEmptyOrUndefinedString(annotationsSPDXs[parseInt(index)].annotationDate)) {
                 setDataDate('')
                 setDataTime('')
             }
         } else {
+            if (parseInt(index) === increIndex) {
+                setIsAdd(true)
+            } else {
+                setIncreIndex(parseInt(index))
+            }
             setIndexAnnotations(parseInt(index))
             setNumberIndexPackage(parseInt(index))
             if (CommonUtils.isNullEmptyOrUndefinedString(annotationsPackages[parseInt(index)].annotationDate)) {
@@ -213,6 +226,8 @@ const EditAnnotationInformation = ({
 
     const addAnnotationsSPDXsSPDX = () => {
         const arrayExternals: Annotations[] = [...annotationsSPDXs]
+        setIncreIndex(annotationsSPDXs.length)
+        setIsAdd(true)
         if (CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
             setIndexAnnotations(0)
             setDataDate('')
@@ -226,6 +241,7 @@ const EditAnnotationInformation = ({
             annotationComment: '', // 12.5
             index: annotationsSPDXs.length,
         }
+        setIndexAnnotations(annotationsSPDXs.length)
         arrayExternals.push(relationshipsBetweenSPDXElements)
         setAnnotationsSPDXs(arrayExternals)
         setSPDXPayload({
@@ -239,6 +255,8 @@ const EditAnnotationInformation = ({
 
     const addAnnotationsSPDXsPackage = () => {
         const arrayExternals: Annotations[] = [...annotationsPackages]
+        setIncreIndex(annotationsPackages.length)
+        setIsAdd(true)
         if (CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
             setIndexAnnotations(0)
             setDataDate('')
@@ -252,6 +270,7 @@ const EditAnnotationInformation = ({
             annotationComment: '', // 12.5
             index: annotationsPackages.length,
         }
+        setIndexAnnotations(annotationsPackages.length)
         arrayExternals.push(relationshipsBetweenSPDXElements)
         setAnnotationsPackages(arrayExternals)
         setSPDXPayload({
@@ -456,6 +475,7 @@ const EditAnnotationInformation = ({
                                                 ? CommonUtils.isNullEmptyOrUndefinedArray(annotationsSPDXs)
                                                 : CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)
                                         }
+                                        value={isAdd ? increIndex : ''}
                                     >
                                         {isSourceSPDXDocument
                                             ? annotationsSPDXs.map((item) => (

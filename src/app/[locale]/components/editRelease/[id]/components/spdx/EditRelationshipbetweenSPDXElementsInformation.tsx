@@ -133,13 +133,25 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
             }
         }
     }
+    const [increIndex, setIncreIndex] = useState(0)
+    const [isAdd, setIsAdd] = useState(false)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
         if (isSourceSPDXDocument) {
             setIndexRelation(parseInt(index))
             setNumberIndexSPDX(parseInt(index))
+            if (parseInt(index) === increIndex) {
+                setIsAdd(true)
+            } else {
+                setIncreIndex(parseInt(index))
+            }
         } else {
+            if (parseInt(index) === increIndex) {
+                setIsAdd(true)
+            } else {
+                setIncreIndex(parseInt(index))
+            }
             setIndexRelation(parseInt(index))
             setNumberIndexPackage(parseInt(index))
         }
@@ -150,6 +162,8 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
         if (CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementSPDXs)) {
             setIndexRelation(0)
         }
+        setIncreIndex(relationshipsBetweenSPDXElementSPDXs.length)
+        setIsAdd(true)
         const relationshipsBetweenSPDXElements: RelationshipsBetweenSPDXElements = {
             spdxElementId: '', // 11.1
             relationshipType: '', // 11.1
@@ -157,6 +171,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
             relationshipComment: '', // 11.2
             index: relationshipsBetweenSPDXElementSPDXs.length,
         }
+        setIndexRelation(relationshipsBetweenSPDXElementSPDXs.length)
         arrayExternals.push(relationshipsBetweenSPDXElements)
         setRelationshipsBetweenSPDXElementSPDXs(arrayExternals)
         setSPDXPayload({
@@ -173,6 +188,8 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
         if (CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementPackages)) {
             setIndexRelation(0)
         }
+        setIncreIndex(relationshipsBetweenSPDXElementPackages.length)
+        setIsAdd(true)
         const relationshipsBetweenSPDXElements: RelationshipsBetweenSPDXElements = {
             spdxElementId: '', // 11.1
             relationshipType: '', // 11.1
@@ -180,6 +197,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
             relationshipComment: '', // 11.2
             index: relationshipsBetweenSPDXElementPackages.length,
         }
+        setIndexRelation(relationshipsBetweenSPDXElementPackages.length)
         arrayExternals.push(relationshipsBetweenSPDXElements)
         setRelationshipsBetweenSPDXElementPackages(arrayExternals)
         setSPDXPayload({
@@ -364,6 +382,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                                                   relationshipsBetweenSPDXElementPackages
                                               )
                                     }
+                                    value={isAdd ? increIndex : ''}
                                 >
                                     {isSourceSPDXDocument
                                         ? relationshipsBetweenSPDXElementSPDXs.map((item) => (

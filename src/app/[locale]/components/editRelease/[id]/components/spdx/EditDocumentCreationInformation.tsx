@@ -44,22 +44,32 @@ const EditDocumentCreationInformation = ({
 
     const [creator, setCreator] = useState<InputKeyValue[]>([])
     const [numberIndex, setNumberIndex] = useState<number>(0)
+    const [increIndex, setIncreIndex] = useState(0)
+    const [isAdd, setIsAdd] = useState(false)
     const [isAnonymous, setIsAnonymous] = useState(false)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
+        if (parseInt(index) === increIndex) {
+            setIsAdd(true)
+        } else {
+            setIncreIndex(parseInt(index))
+        }
         setIndexExternalDocumentRef(parseInt(index))
         setNumberIndex(parseInt(index))
     }
 
     const addDocumentReferences = () => {
         const arrayExternals: ExternalDocumentReferences[] = [...externalDocumentRefs]
+        setIncreIndex(externalDocumentRefs.length)
+        setIsAdd(true)
         const externalDocumentReference: ExternalDocumentReferences = {
             externalDocumentId: '',
             checksum: { algorithm: '', checksumValue: '', index: 0 },
             spdxDocument: '',
             index: externalDocumentRefs.length,
         }
+        setIndexExternalDocumentRef(externalDocumentRefs.length)
         arrayExternals.push(externalDocumentReference)
         setExternalDocumentRefs(arrayExternals)
         setSPDXPayload({
@@ -470,6 +480,7 @@ const EditDocumentCreationInformation = ({
                                                         disabled={CommonUtils.isNullEmptyOrUndefinedArray(
                                                             externalDocumentRefs
                                                         )}
+                                                        value={isAdd ? increIndex : ''}
                                                     >
                                                         {externalDocumentRefs.map((item) => (
                                                             <option key={item.index} value={item.index}>

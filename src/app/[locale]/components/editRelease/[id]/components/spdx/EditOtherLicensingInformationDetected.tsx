@@ -47,13 +47,23 @@ const EditOtherLicensingInformationDetected = ({
 }: Props) => {
     const [toggle, setToggle] = useState(false)
 
+    const [increIndex, setIncreIndex] = useState(0)
+    const [isAdd, setIsAdd] = useState(false)
+
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
+        if (parseInt(index) === increIndex) {
+            setIsAdd(true)
+        } else {
+            setIncreIndex(parseInt(index))
+        }
         setIndexOtherLicense(parseInt(index))
     }
 
     const addOtherLicensingInformationDetecteds = () => {
         const arrayExternals: OtherLicensingInformationDetected[] = [...otherLicensingInformationDetecteds]
+        setIncreIndex(otherLicensingInformationDetecteds.length)
+        setIsAdd(true)
         const otherLicensingInformationDetected: OtherLicensingInformationDetected = {
             licenseId: '', // 10.1
             extractedText: '', // 10.2
@@ -62,6 +72,7 @@ const EditOtherLicensingInformationDetected = ({
             licenseComment: '', // 10.5
             index: otherLicensingInformationDetecteds.length,
         }
+        setIndexOtherLicense(otherLicensingInformationDetecteds.length)
         arrayExternals.push(otherLicensingInformationDetected)
         setOtherLicensingInformationDetecteds(arrayExternals)
         setSPDXPayload({
@@ -218,6 +229,7 @@ const EditOtherLicensingInformationDetected = ({
                                     disabled={CommonUtils.isNullEmptyOrUndefinedArray(
                                         otherLicensingInformationDetecteds
                                     )}
+                                    value={isAdd ? increIndex : ''}
                                 >
                                     {otherLicensingInformationDetecteds.map((item) => (
                                         <option key={item.index} value={item.index}>

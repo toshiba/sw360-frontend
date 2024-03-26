@@ -62,8 +62,16 @@ const EditSnippetInformation = ({
         })
     }
 
+    const [increIndex, setIncreIndex] = useState(0)
+    const [isAdd, setIsAdd] = useState(false)
+
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
+        if (parseInt(index) === increIndex) {
+            setIsAdd(true)
+        } else {
+            setIncreIndex(parseInt(index))
+        }
         setIndexSnippetInformation(parseInt(index))
         setNumberIndex(parseInt(index))
         setDataSnippetFromFile({
@@ -74,6 +82,8 @@ const EditSnippetInformation = ({
 
     const addSnippet = () => {
         const arrayExternals: SnippetInformation[] = [...snippetInformations]
+        setIncreIndex(snippetInformations.length)
+        setIsAdd(true)
         const snippetInformation: SnippetInformation = {
             SPDXID: '', // 9.1
             snippetFromFile: '', // 9.2
@@ -87,6 +97,7 @@ const EditSnippetInformation = ({
             snippetAttributionText: '', // 9.11
             index: snippetInformations.length,
         }
+        setIndexSnippetInformation(snippetInformations.length)
         arrayExternals.push(snippetInformation)
         setSnippetInformations(arrayExternals)
         setSPDXPayload({
@@ -370,6 +381,7 @@ const EditSnippetInformation = ({
                                     className='form-control spdx-select'
                                     onChange={displayIndex}
                                     disabled={CommonUtils.isNullEmptyOrUndefinedArray(snippetInformations)}
+                                    value={isAdd ? increIndex : ''}
                                 >
                                     {snippetInformations.map((item) => (
                                         <option key={item.index} value={item.index}>
