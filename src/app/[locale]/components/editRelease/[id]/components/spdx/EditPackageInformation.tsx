@@ -254,6 +254,16 @@ const EditPackageInformation = ({
         }
         setIndexExternalRefsData(parseInt(index))
         setNumberIndex(parseInt(index))
+        if (externalRefsDatas[parseInt(index)].referenceCategory === 'SECURITY') {
+            setTypeCategory(['cpe22Type', 'cpe23Type', 'advisory', 'fix', 'url', 'swid'])
+            setIsTypeCateGoryEmpty(false)
+        } else if (externalRefsDatas[parseInt(index)].referenceCategory === 'PACKAGE-MANAGER') {
+            setTypeCategory(['maven-central', 'npm', 'nuget', 'bower', 'purl'])
+            setIsTypeCateGoryEmpty(false)
+        } else {
+            setIsTypeCateGoryEmpty(true)
+        }
+        console.log(isTypeCateGoryEmpty)
     }
 
     const addReferences = () => {
@@ -413,6 +423,18 @@ const EditPackageInformation = ({
         if (typeof packageInformation?.originator !== 'undefined') {
             packageInformation?.originator == 'NOASSERTION' && setIsPackageOriginator(false)
             setDataPackageOriginator(handlePackageOriginator(packageInformation.originator))
+        }
+
+        if (typeof externalRefsDatas[indexExternalRefsData]?.referenceCategory !== 'undefined') {
+            if (externalRefsDatas[indexExternalRefsData].referenceCategory === 'SECURITY') {
+                setTypeCategory(['cpe22Type', 'cpe23Type', 'advisory', 'fix', 'url', 'swid'])
+                setIsTypeCateGoryEmpty(false)
+            } else if (externalRefsDatas[indexExternalRefsData].referenceCategory === 'PACKAGE-MANAGER') {
+                setTypeCategory(['maven-central', 'npm', 'nuget', 'bower', 'purl'])
+                setIsTypeCateGoryEmpty(false)
+            } else {
+                setIsTypeCateGoryEmpty(true)
+            }
         }
 
         if (typeof packageInformation?.downloadLocation !== 'undefined') {
