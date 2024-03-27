@@ -56,7 +56,6 @@ const EditDocumentCreationInformation = ({
             setIncreIndex(parseInt(index))
         }
         setIndexExternalDocumentRef(parseInt(index))
-        console.log(externalDocumentRefs)
         setNumberIndex(parseInt(index))
     }
 
@@ -495,7 +494,7 @@ const EditDocumentCreationInformation = ({
                                                                 ? isDeleteSucces
                                                                     ? indexExternalDocumentRef
                                                                     : increIndex
-                                                                : ''
+                                                                : numberIndex
                                                         }
                                                     >
                                                         {externalDocumentRefs.map((item) => (

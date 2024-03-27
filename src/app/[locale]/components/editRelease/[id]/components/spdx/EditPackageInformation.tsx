@@ -1159,7 +1159,7 @@ const EditPackageInformation = ({
                                                                         ? isDeleteSucces
                                                                             ? indexExternalRefsData
                                                                             : increIndex
-                                                                        : ''
+                                                                        : numberIndex
                                                                 }
                                                             >
                                                                 {externalRefsDatas?.map((item) => (

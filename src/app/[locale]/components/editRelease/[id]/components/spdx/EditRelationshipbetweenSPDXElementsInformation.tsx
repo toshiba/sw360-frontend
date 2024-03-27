@@ -396,7 +396,15 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                                                   relationshipsBetweenSPDXElementPackages
                                               )
                                     }
-                                    value={isAdd ? (isDeleteSucces ? indexRelation : increIndex) : ''}
+                                    value={
+                                        isAdd
+                                            ? isDeleteSucces
+                                                ? indexRelation
+                                                : increIndex
+                                            : isSourceSPDXDocument
+                                            ? numberIndexSPDX
+                                            : numberIndexPackage
+                                    }
                                 >
                                     {isSourceSPDXDocument
                                         ? relationshipsBetweenSPDXElementSPDXs.map((item) => (

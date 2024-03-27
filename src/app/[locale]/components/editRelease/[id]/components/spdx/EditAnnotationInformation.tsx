@@ -488,7 +488,15 @@ const EditAnnotationInformation = ({
                                                 ? CommonUtils.isNullEmptyOrUndefinedArray(annotationsSPDXs)
                                                 : CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)
                                         }
-                                        value={isAdd ? (isDeleteSucces ? indexAnnotations : increIndex) : ''}
+                                        value={
+                                            isAdd
+                                                ? isDeleteSucces
+                                                    ? indexAnnotations
+                                                    : increIndex
+                                                : isSourceSPDXDocument
+                                                ? numberIndexSPDX
+                                                : numberIndexPackage
+                                        }
                                     >
                                         {isSourceSPDXDocument
                                             ? annotationsSPDXs.map((item) => (

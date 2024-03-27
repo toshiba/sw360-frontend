@@ -58,6 +58,7 @@ const EditOtherLicensingInformationDetected = ({
             setIncreIndex(parseInt(index))
         }
         setIndexOtherLicense(parseInt(index))
+        setNumberIndex(parseInt(index))
     }
 
     const addOtherLicensingInformationDetecteds = () => {
@@ -233,7 +234,7 @@ const EditOtherLicensingInformationDetected = ({
                                     disabled={CommonUtils.isNullEmptyOrUndefinedArray(
                                         otherLicensingInformationDetecteds
                                     )}
-                                    value={isAdd ? (isDeleteSucces ? indexOtherLicense : increIndex) : ''}
+                                    value={isAdd ? (isDeleteSucces ? indexOtherLicense : increIndex) : numberIndex}
                                 >
                                     {otherLicensingInformationDetecteds.map((item) => (
                                         <option key={item.index} value={item.index}>

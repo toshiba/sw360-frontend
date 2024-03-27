@@ -73,6 +73,59 @@ const EditSnippetInformation = ({
             setIncreIndex(parseInt(index))
         }
         setIndexSnippetInformation(parseInt(index))
+        console.log(index)
+        console.log(snippetInformations[parseInt(index)]?.licenseConcluded)
+        if (snippetInformations[parseInt(index)]?.licenseConcluded === 'NONE') {
+            setSnippetConcludedLicense('')
+            setSnippetConcludedLicenseExist(false)
+            setSnippetConcludedLicenseNone(true)
+            setSnippetConcludedLicenseNoasserttion(false)
+        } else if (snippetInformations[parseInt(index)]?.licenseConcluded === 'NOASSERTION') {
+            setSnippetConcludedLicense('')
+            setSnippetConcludedLicenseExist(false)
+            setSnippetConcludedLicenseNone(false)
+            setSnippetConcludedLicenseNoasserttion(true)
+        } else {
+            setSnippetConcludedLicense(snippetInformations[parseInt(index)]?.licenseConcluded)
+            setSnippetConcludedLicenseExist(true)
+            setSnippetConcludedLicenseNone(false)
+            setSnippetConcludedLicenseNoasserttion(false)
+        }
+
+        if (snippetInformations[parseInt(index)]?.licenseInfoInSnippets.toString() === 'NONE') {
+            setLicenseInfoInSnippets([])
+            setLicenseInfoInSnippetsExist(false)
+            setLicenseInfoInSnippetsNone(true)
+            setLicenseInfoInSnippetsNoasserttion(false)
+        } else if (snippetInformations[parseInt(index)]?.licenseInfoInSnippets.toString() === 'NOASSERTION') {
+            setLicenseInfoInSnippets([])
+            setLicenseInfoInSnippetsExist(false)
+            setLicenseInfoInSnippetsNone(false)
+            setLicenseInfoInSnippetsNoasserttion(true)
+        } else {
+            setLicenseInfoInSnippets(snippetInformations[parseInt(index)]?.licenseInfoInSnippets)
+            setLicenseInfoInSnippetsExist(true)
+            setLicenseInfoInSnippetsNone(false)
+            setLicenseInfoInSnippetsNoasserttion(false)
+        }
+
+        if (snippetInformations[parseInt(index)]?.copyrightText === 'NONE') {
+            setSnippetCopyrightText('')
+            setSnippetCopyrightTextExist(false)
+            setSnippetCopyrightTextNone(true)
+            setSnippetCopyrightTextNoasserttion(false)
+        } else if (snippetInformations[parseInt(index)]?.copyrightText === 'NOASSERTION') {
+            setSnippetCopyrightText('')
+            setSnippetCopyrightTextExist(false)
+            setSnippetCopyrightTextNone(false)
+            setSnippetCopyrightTextNoasserttion(true)
+        } else {
+            setSnippetCopyrightText(snippetInformations[parseInt(index)]?.copyrightText)
+            setSnippetCopyrightTextExist(true)
+            setSnippetCopyrightTextNone(false)
+            setSnippetCopyrightTextNoasserttion(false)
+        }
+
         setNumberIndex(parseInt(index))
         setDataSnippetFromFile({
             key: '',
@@ -98,6 +151,10 @@ const EditSnippetInformation = ({
             snippetAttributionText: '', // 9.11
             index: snippetInformations.length,
         }
+        setDataSnippetFromFile({
+            key: '',
+            value: '',
+        })
         setIndexSnippetInformation(snippetInformations.length)
         arrayExternals.push(snippetInformation)
         setSnippetInformations(arrayExternals)
@@ -170,38 +227,58 @@ const EditSnippetInformation = ({
         }
 
         if (typeof snippetInformations[indexSnippetInformation]?.licenseConcluded !== 'undefined') {
-            if (
-                snippetInformations[indexSnippetInformation]?.licenseConcluded === 'NONE' ||
-                snippetInformations[indexSnippetInformation]?.licenseConcluded === 'NOASSERTION'
-            ) {
+            if (snippetInformations[indexSnippetInformation]?.licenseConcluded === 'NONE') {
                 const data: string = snippetConcludedLicense
                 setSnippetConcludedLicense(data)
+                setSnippetConcludedLicenseExist(false)
+                setSnippetConcludedLicenseNone(true)
+                setSnippetConcludedLicenseNoasserttion(false)
+            } else if (snippetInformations[indexSnippetInformation]?.licenseConcluded === 'NOASSERTION') {
+                const data: string = snippetConcludedLicense
+                setSnippetConcludedLicense(data)
+                setSnippetConcludedLicenseExist(false)
+                setSnippetConcludedLicenseNone(false)
+                setSnippetConcludedLicenseNoasserttion(true)
             } else {
-                setSnippetConcludedLicense(snippetInformations[indexSnippetInformation].licenseConcluded)
+                setSnippetConcludedLicense(snippetInformations[indexSnippetInformation]?.licenseConcluded)
             }
         }
 
         if (typeof snippetInformations[indexSnippetInformation]?.licenseInfoInSnippets !== 'undefined') {
-            if (
-                snippetInformations[indexSnippetInformation].licenseInfoInSnippets.toString() === 'NONE' ||
-                snippetInformations[indexSnippetInformation].licenseInfoInSnippets.at(0) === 'NOASSERTION'
+            if (snippetInformations[indexSnippetInformation]?.licenseInfoInSnippets.toString() === 'NONE') {
+                const data: string[] = licenseInfoInSnippets
+                setLicenseInfoInSnippets(data)
+                setLicenseInfoInSnippetsExist(false)
+                setLicenseInfoInSnippetsNone(true)
+                setLicenseInfoInSnippetsNoasserttion(false)
+            } else if (
+                snippetInformations[indexSnippetInformation]?.licenseInfoInSnippets.toString() === 'NOASSERTION'
             ) {
                 const data: string[] = licenseInfoInSnippets
                 setLicenseInfoInSnippets(data)
+                setLicenseInfoInSnippetsExist(false)
+                setLicenseInfoInSnippetsNone(false)
+                setLicenseInfoInSnippetsNoasserttion(true)
             } else {
-                setLicenseInfoInSnippets(snippetInformations[indexSnippetInformation].licenseInfoInSnippets)
+                setLicenseInfoInSnippets(snippetInformations[indexSnippetInformation]?.licenseInfoInSnippets)
             }
         }
 
         if (typeof snippetInformations[indexSnippetInformation]?.copyrightText !== 'undefined') {
-            if (
-                snippetInformations[indexSnippetInformation]?.copyrightText === 'NONE' ||
-                snippetInformations[indexSnippetInformation]?.copyrightText === 'NOASSERTION'
-            ) {
+            if (snippetInformations[indexSnippetInformation]?.copyrightText === 'NONE') {
                 const data: string = snippetCopyrightText
                 setSnippetCopyrightText(data)
+                setSnippetCopyrightTextExist(false)
+                setSnippetCopyrightTextNone(true)
+                setSnippetCopyrightTextNoasserttion(false)
+            } else if (snippetInformations[indexSnippetInformation]?.copyrightText === 'NOASSERTION') {
+                const data: string = snippetCopyrightText
+                setSnippetCopyrightText(data)
+                setSnippetCopyrightTextExist(false)
+                setSnippetCopyrightTextNone(false)
+                setSnippetCopyrightTextNoasserttion(true)
             } else {
-                setSnippetCopyrightText(snippetInformations[indexSnippetInformation].copyrightText)
+                setSnippetCopyrightText(snippetInformations[indexSnippetInformation]?.copyrightText)
             }
         }
     }, [indexSnippetInformation, snippetInformations])
@@ -387,7 +464,9 @@ const EditSnippetInformation = ({
                                     className='form-control spdx-select'
                                     onChange={displayIndex}
                                     disabled={CommonUtils.isNullEmptyOrUndefinedArray(snippetInformations)}
-                                    value={isAdd ? (isDeleteSucces ? indexSnippetInformation : increIndex) : ''}
+                                    value={
+                                        isAdd ? (isDeleteSucces ? indexSnippetInformation : increIndex) : numberIndex
+                                    }
                                 >
                                     {snippetInformations.map((item) => (
                                         <option key={item.index} value={item.index}>
