@@ -163,6 +163,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
             setIndexRelation(0)
         }
         setIncreIndex(relationshipsBetweenSPDXElementSPDXs.length)
+        setNumberIndexSPDX(relationshipsBetweenSPDXElementSPDXs.length)
         setIsAdd(true)
         const relationshipsBetweenSPDXElements: RelationshipsBetweenSPDXElements = {
             spdxElementId: '', // 11.1
@@ -189,6 +190,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
             setIndexRelation(0)
         }
         setIncreIndex(relationshipsBetweenSPDXElementPackages.length)
+        setNumberIndexSPDX(relationshipsBetweenSPDXElementPackages.length)
         setIsAdd(true)
         const relationshipsBetweenSPDXElements: RelationshipsBetweenSPDXElements = {
             spdxElementId: '', // 11.1
@@ -259,6 +261,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
 
     const [numberIndexSPDX, setNumberIndexSPDX] = useState<number>(0)
     const [numberIndexPackage, setNumberIndexPackage] = useState<number>(0)
+    const [isDeleteSucces, setIsDeleteSucces] = useState(false)
 
     const deleteRelation = () => {
         if (isSourceSPDXDocument) {
@@ -282,6 +285,8 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                 }
                 setRelationshipsBetweenSPDXElementSPDXs(relationships)
                 setIndexRelation(0)
+                setNumberIndexSPDX(indexRelation)
+                setIsDeleteSucces(true)
                 setSPDXPayload({
                     ...SPDXPayload,
                     spdxDocument: {
@@ -312,6 +317,9 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                     relationships[index].index = index
                 }
                 setRelationshipsBetweenSPDXElementPackages(relationships)
+                setIndexRelation(0)
+                setNumberIndexPackage(indexRelation)
+                setIsDeleteSucces(true)
                 setSPDXPayload({
                     ...SPDXPayload,
                     packageInformation: {
@@ -388,7 +396,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                                                   relationshipsBetweenSPDXElementPackages
                                               )
                                     }
-                                    value={isAdd ? increIndex : ''}
+                                    value={isAdd ? (isDeleteSucces ? indexRelation : increIndex) : ''}
                                 >
                                     {isSourceSPDXDocument
                                         ? relationshipsBetweenSPDXElementSPDXs.map((item) => (

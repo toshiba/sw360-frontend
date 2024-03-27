@@ -261,6 +261,7 @@ const EditPackageInformation = ({
         // setTypeCategory(['cpe22Type', 'cpe23Type', 'advisory', 'fix', 'url', 'swid'])
         // setIsTypeCateGoryEmpty(false)
         setIncreIndex(externalRefsDatas.length)
+        setNumberIndex(externalRefsDatas.length)
         setIsAdd(true)
         const externalReference: ExternalReference = {
             referenceCategory: 'SECURITY',
@@ -688,6 +689,7 @@ const EditPackageInformation = ({
     }
 
     const [numberIndex, setNumberIndex] = useState<number>(0)
+    const [isDeleteSucces, setIsDeleteSucces] = useState(false)
 
     const deleteExternalRefsDatas = () => {
         if (externalRefsDatas.length == 1) {
@@ -695,11 +697,13 @@ const EditPackageInformation = ({
         } else {
             let externalRefs: ExternalReference[] = []
             externalRefs = externalRefsDatas.filter((externalRefsData) => numberIndex != externalRefsData.index)
+            setNumberIndex(indexExternalRefsData)
             for (let index = 0; index < externalRefs.length; index++) {
                 externalRefs[index].index = index
             }
             setExternalRefsDatas(externalRefs)
             setIndexExternalRefsData(0)
+            setIsDeleteSucces(true)
             setSPDXPayload({
                 ...SPDXPayload,
                 packageInformation: {
@@ -1150,7 +1154,13 @@ const EditPackageInformation = ({
                                                                 disabled={CommonUtils.isNullEmptyOrUndefinedArray(
                                                                     externalRefsDatas
                                                                 )}
-                                                                value={isAdd ? increIndex : ''}
+                                                                value={
+                                                                    isAdd
+                                                                        ? isDeleteSucces
+                                                                            ? indexExternalRefsData
+                                                                            : increIndex
+                                                                        : ''
+                                                                }
                                                             >
                                                                 {externalRefsDatas?.map((item) => (
                                                                     <option key={item.index} value={item.index}>

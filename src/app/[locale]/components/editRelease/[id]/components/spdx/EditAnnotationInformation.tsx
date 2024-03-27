@@ -227,6 +227,7 @@ const EditAnnotationInformation = ({
     const addAnnotationsSPDXsSPDX = () => {
         const arrayExternals: Annotations[] = [...annotationsSPDXs]
         setIncreIndex(annotationsSPDXs.length)
+        setNumberIndexSPDX(annotationsSPDXs.length)
         setIsAdd(true)
         if (CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
             setIndexAnnotations(0)
@@ -257,6 +258,7 @@ const EditAnnotationInformation = ({
         const arrayExternals: Annotations[] = [...annotationsPackages]
         setIncreIndex(annotationsPackages.length)
         setIsAdd(true)
+        setNumberIndexPackage(annotationsPackages.length)
         if (CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
             setIndexAnnotations(0)
             setDataDate('')
@@ -387,6 +389,7 @@ const EditAnnotationInformation = ({
 
     const [numberIndexSPDX, setNumberIndexSPDX] = useState<number>(0)
     const [numberIndexPackage, setNumberIndexPackage] = useState<number>(0)
+    const [isDeleteSucces, setIsDeleteSucces] = useState(false)
 
     const deleteAnnotation = () => {
         if (isSourceSPDXDocument) {
@@ -399,6 +402,8 @@ const EditAnnotationInformation = ({
                     annotations[index].index = index
                 }
                 setAnnotationsSPDXs(annotations)
+                setNumberIndexSPDX(indexAnnotations)
+                setIsDeleteSucces(true)
                 setIndexAnnotations(0)
                 if (!CommonUtils.isNullEmptyOrUndefinedArray(annotations)) {
                     setNumberIndexSPDX(annotations[0].index)
@@ -414,6 +419,8 @@ const EditAnnotationInformation = ({
                     annotations[index].index = index
                 }
                 setAnnotationsPackages(annotations)
+                setNumberIndexPackage(indexAnnotations)
+                setIsDeleteSucces(true)
                 setIndexAnnotations(0)
                 if (!CommonUtils.isNullEmptyOrUndefinedArray(annotations)) {
                     setNumberIndexPackage(annotations[0].index)
@@ -481,7 +488,7 @@ const EditAnnotationInformation = ({
                                                 ? CommonUtils.isNullEmptyOrUndefinedArray(annotationsSPDXs)
                                                 : CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)
                                         }
-                                        value={isAdd ? increIndex : ''}
+                                        value={isAdd ? (isDeleteSucces ? indexAnnotations : increIndex) : ''}
                                     >
                                         {isSourceSPDXDocument
                                             ? annotationsSPDXs.map((item) => (

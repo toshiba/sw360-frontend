@@ -83,6 +83,7 @@ const EditSnippetInformation = ({
     const addSnippet = () => {
         const arrayExternals: SnippetInformation[] = [...snippetInformations]
         setIncreIndex(snippetInformations.length)
+        setNumberIndex(snippetInformations.length)
         setIsAdd(true)
         const snippetInformation: SnippetInformation = {
             SPDXID: '', // 9.1
@@ -328,7 +329,7 @@ const EditSnippetInformation = ({
     }
 
     const [numberIndex, setNumberIndex] = useState<number>(0)
-
+    const [isDeleteSucces, setIsDeleteSucces] = useState(false)
     const deleteSnippetInformations = () => {
         if (snippetInformations.length == 1) {
             setSnippetInformations([])
@@ -337,11 +338,13 @@ const EditSnippetInformation = ({
             snippetInformationDatas = snippetInformations.filter(
                 (snippetInformation) => numberIndex != snippetInformation.index
             )
+            setNumberIndex(indexSnippetInformation)
             for (let index = 0; index < snippetInformationDatas.length; index++) {
                 snippetInformationDatas[index].index = index
             }
             setSnippetInformations(snippetInformationDatas)
             setIndexSnippetInformation(0)
+            setIsDeleteSucces(true)
             setSPDXPayload({
                 ...SPDXPayload,
                 spdxDocument: {
@@ -384,7 +387,7 @@ const EditSnippetInformation = ({
                                     className='form-control spdx-select'
                                     onChange={displayIndex}
                                     disabled={CommonUtils.isNullEmptyOrUndefinedArray(snippetInformations)}
-                                    value={isAdd ? increIndex : ''}
+                                    value={isAdd ? (isDeleteSucces ? indexSnippetInformation : increIndex) : ''}
                                 >
                                     {snippetInformations.map((item) => (
                                         <option key={item.index} value={item.index}>

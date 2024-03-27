@@ -63,6 +63,7 @@ const EditOtherLicensingInformationDetected = ({
     const addOtherLicensingInformationDetecteds = () => {
         const arrayExternals: OtherLicensingInformationDetected[] = [...otherLicensingInformationDetecteds]
         setIncreIndex(otherLicensingInformationDetecteds.length)
+        setNumberIndex(otherLicensingInformationDetecteds.length)
         setIsAdd(true)
         const otherLicensingInformationDetected: OtherLicensingInformationDetected = {
             licenseId: '', // 10.1
@@ -135,6 +136,7 @@ const EditOtherLicensingInformationDetected = ({
     }
 
     const [numberIndex, setNumberIndex] = useState<number>(0)
+    const [isDeleteSucces, setIsDeleteSucces] = useState(false)
 
     const deleteOtherLicenses = () => {
         if (otherLicensingInformationDetecteds.length == 1) {
@@ -144,8 +146,10 @@ const EditOtherLicensingInformationDetected = ({
             otherLicensingInformationDetectedDatas = otherLicensingInformationDetecteds.filter(
                 (otherLicensingInformationDetected) => numberIndex != otherLicensingInformationDetected.index
             )
+            setNumberIndex(indexOtherLicense)
             setOtherLicensingInformationDetecteds(otherLicensingInformationDetectedDatas)
             setIndexOtherLicense(0)
+            setIsDeleteSucces(true)
             setSPDXPayload({
                 ...SPDXPayload,
                 spdxDocument: {
@@ -229,7 +233,7 @@ const EditOtherLicensingInformationDetected = ({
                                     disabled={CommonUtils.isNullEmptyOrUndefinedArray(
                                         otherLicensingInformationDetecteds
                                     )}
-                                    value={isAdd ? increIndex : ''}
+                                    value={isAdd ? (isDeleteSucces ? indexOtherLicense : increIndex) : ''}
                                 >
                                     {otherLicensingInformationDetecteds.map((item) => (
                                         <option key={item.index} value={item.index}>

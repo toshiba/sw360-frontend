@@ -63,6 +63,7 @@ const EditDocumentCreationInformation = ({
     const addDocumentReferences = () => {
         const arrayExternals: ExternalDocumentReferences[] = [...externalDocumentRefs]
         setIncreIndex(externalDocumentRefs.length)
+        setNumberIndex(externalDocumentRefs.length)
         setIsAdd(true)
         const externalDocumentReference: ExternalDocumentReferences = {
             externalDocumentId: '',
@@ -260,8 +261,9 @@ const EditDocumentCreationInformation = ({
         })
     }
 
+    const [isDeleteSucces, setIsDeleteSucces] = useState(false)
+
     const deleteExternalReference = () => {
-        console.log(externalDocumentRefs)
         if (externalDocumentRefs.length == 1) {
             setExternalDocumentRefs([])
         } else {
@@ -270,10 +272,11 @@ const EditDocumentCreationInformation = ({
             externalDocuments = externalDocumentRefs.filter(
                 (externalDocumentRef) => numberIndex != externalDocumentRef.index
             )
+            setNumberIndex(indexExternalDocumentRef)
             for (let index = 0; index < externalDocuments.length; index++) {
                 externalDocuments[index].index = index
             }
-            console.log(externalDocuments)
+            setIsDeleteSucces(true)
             setExternalDocumentRefs(externalDocuments)
             setIndexExternalDocumentRef(0)
             setSPDXPayload({
@@ -487,7 +490,13 @@ const EditDocumentCreationInformation = ({
                                                         disabled={CommonUtils.isNullEmptyOrUndefinedArray(
                                                             externalDocumentRefs
                                                         )}
-                                                        value={isAdd ? increIndex : ''}
+                                                        value={
+                                                            isAdd
+                                                                ? isDeleteSucces
+                                                                    ? indexExternalDocumentRef
+                                                                    : increIndex
+                                                                : ''
+                                                        }
                                                     >
                                                         {externalDocumentRefs.map((item) => (
                                                             <option key={item.index} value={item.index}>
