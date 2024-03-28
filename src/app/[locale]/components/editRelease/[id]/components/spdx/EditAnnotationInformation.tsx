@@ -146,6 +146,9 @@ const EditAnnotationInformation = ({
     }, [isSourceSPDXDocument, indexAnnotations, annotationsSPDXs, annotationsPackages])
 
     const changeAnnotationSource = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        if (annotationsPackages.length < indexAnnotations || annotationsSPDXs.length < indexAnnotations) {
+            setIndexAnnotations(0)
+        }
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDocument') {
             setIsSourceSPDXDocument(true)
@@ -242,6 +245,12 @@ const EditAnnotationInformation = ({
             annotationComment: '', // 12.5
             index: annotationsSPDXs.length,
         }
+        setDataDate('')
+        setDataTime('')
+        setDataAnnotationDate({
+            key: '',
+            value: '',
+        })
         setIndexAnnotations(annotationsSPDXs.length)
         arrayExternals.push(relationshipsBetweenSPDXElements)
         setAnnotationsSPDXs(arrayExternals)
@@ -272,6 +281,12 @@ const EditAnnotationInformation = ({
             annotationComment: '', // 12.5
             index: annotationsPackages.length,
         }
+        setDataDate('')
+        setDataTime('')
+        setDataAnnotationDate({
+            key: '',
+            value: '',
+        })
         setIndexAnnotations(annotationsPackages.length)
         arrayExternals.push(relationshipsBetweenSPDXElements)
         setAnnotationsPackages(arrayExternals)
