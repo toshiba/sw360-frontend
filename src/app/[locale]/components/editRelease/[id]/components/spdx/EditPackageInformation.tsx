@@ -632,6 +632,7 @@ const EditPackageInformation = ({
             return ''
         }
         const localDate = new Date(data.key + ' ' + data.value)
+        if (isNaN(+localDate)) return
         return localDate.toISOString().slice(0, -5) + 'Z'
     }
 

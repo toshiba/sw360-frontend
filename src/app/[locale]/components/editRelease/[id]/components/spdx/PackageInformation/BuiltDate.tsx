@@ -9,8 +9,7 @@
 // License-Filename: LICENSE
 
 import { InputKeyValue } from '@/object-types'
-import CommonUtils from '@/utils/common.utils'
-import { useState } from 'react'
+import React from 'react'
 
 interface Props {
     setBuiltDate?: (inputs: InputKeyValue) => void
@@ -19,82 +18,54 @@ interface Props {
 }
 
 function BuiltDate({ dataBuiltDate, setDataBuiltDate, setBuiltDate }: Props) {
-    const [dataDateBuilt, setDataDateBuilt] = useState('')
-    const [dataTimeBuilt, setDataTimeBuilt] = useState('')
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         const { name, value } = e.target
-        e.target.name === 'key' ? setDataDateBuilt(e.target.value) : setDataTimeBuilt(e.target.value)
         const list: InputKeyValue = dataBuiltDate
         list[name as keyof InputKeyValue] = value
         setDataBuiltDate(list)
-        if (
-            !CommonUtils.isNullEmptyOrUndefinedString(dataDateBuilt) &&
-            CommonUtils.isNullEmptyOrUndefinedString(dataTimeBuilt) &&
-            e.target.name === 'value'
-        ) {
-            setBuiltDate({ key: dataDateBuilt, value: e.target.value })
-        }
-        if (
-            CommonUtils.isNullEmptyOrUndefinedString(dataDateBuilt) &&
-            !CommonUtils.isNullEmptyOrUndefinedString(dataTimeBuilt) &&
-            e.target.name === 'key'
-        ) {
-            setBuiltDate({ key: e.target.value, value: dataTimeBuilt })
-        }
-        if (
-            !CommonUtils.isNullEmptyOrUndefinedString(dataDateBuilt) &&
-            !CommonUtils.isNullEmptyOrUndefinedString(dataTimeBuilt)
-        ) {
-            if (e.target.name === 'key') {
-                setBuiltDate({ key: e.target.value, value: dataTimeBuilt })
-            } else {
-                setBuiltDate({ key: dataDateBuilt, value: e.target.value })
-            }
-        }
+        setBuiltDate(list)
     }
 
     return (
-        dataBuiltDate && (
-            <td colSpan={3}>
-                <div className='form-group'>
-                    <label className='lableSPDX' htmlFor='createdDate'>
-                        7.26 Built Date
-                    </label>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            marginBottom: '0.75rem',
-                        }}
-                    >
-                        <div>
-                            <input
-                                id='createdReleaseDate'
-                                type='date'
-                                className='form-control spdx-date needs-validation'
-                                placeholder='created.date.yyyy.mm.dd'
-                                onChange={handleInputChange}
-                                name='key'
-                                value={dataBuiltDate.key ?? ''}
-                            />
-                        </div>
-                        <div>
-                            <input
-                                id='createdReleaseTime'
-                                type='time'
-                                step='1'
-                                name='value'
-                                className='form-control spdx-time needs-validation'
-                                placeholder='created.time.hh.mm.ss'
-                                onChange={handleInputChange}
-                                value={dataBuiltDate.value ?? ''}
-                            />
-                        </div>
+        <td colSpan={3}>
+            <div className='form-group'>
+                <label className='lableSPDX' htmlFor='createdDate'>
+                    7.26 Built Date
+                </label>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        marginBottom: '0.75rem',
+                    }}
+                >
+                    <div>
+                        <input
+                            id='createdReleaseDate'
+                            type='date'
+                            className='form-control spdx-date needs-validation'
+                            placeholder='created.date.yyyy.mm.dd'
+                            onChange={handleInputChange}
+                            name='key'
+                            value={dataBuiltDate?.key ?? ''}
+                        />
+                    </div>
+                    <div>
+                        <input
+                            id='createdReleaseTime'
+                            type='time'
+                            step='1'
+                            name='value'
+                            className='form-control spdx-time needs-validation'
+                            placeholder='created.time.hh.mm.ss'
+                            onChange={handleInputChange}
+                            value={dataBuiltDate?.value ?? ''}
+                        />
                     </div>
                 </div>
-            </td>
-        )
+            </div>
+        </td>
     )
 }
 
-export default BuiltDate
+export default React.memo(BuiltDate)

@@ -9,8 +9,6 @@
 // License-Filename: LICENSE
 
 import { InputKeyValue } from '@/object-types'
-import CommonUtils from '@/utils/common.utils'
-import { useState } from 'react'
 
 interface Props {
     setValidUntilDate?: (inputs: InputKeyValue) => void
@@ -19,81 +17,53 @@ interface Props {
 }
 
 function ValidUntilDate({ dataValidUntilDate, setDataValidUntilDate, setValidUntilDate }: Props) {
-    const [dataDateValid, setDataDateValid] = useState('')
-    const [dataTimeValid, setDataTimeValid] = useState('')
     const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
         const { name, value } = e.target
-        e.target.name === 'key' ? setDataDateValid(e.target.value) : setDataTimeValid(e.target.value)
         const list: InputKeyValue = dataValidUntilDate
         list[name as keyof InputKeyValue] = value
         setDataValidUntilDate(list)
-        if (
-            !CommonUtils.isNullEmptyOrUndefinedString(dataDateValid) &&
-            CommonUtils.isNullEmptyOrUndefinedString(dataTimeValid) &&
-            e.target.name === 'value'
-        ) {
-            setValidUntilDate({ key: dataDateValid, value: e.target.value })
-        }
-        if (
-            CommonUtils.isNullEmptyOrUndefinedString(dataDateValid) &&
-            !CommonUtils.isNullEmptyOrUndefinedString(dataTimeValid) &&
-            e.target.name === 'key'
-        ) {
-            setValidUntilDate({ key: e.target.value, value: dataTimeValid })
-        }
-        if (
-            !CommonUtils.isNullEmptyOrUndefinedString(dataDateValid) &&
-            !CommonUtils.isNullEmptyOrUndefinedString(dataTimeValid)
-        ) {
-            if (e.target.name === 'key') {
-                setValidUntilDate({ key: e.target.value, value: dataTimeValid })
-            } else {
-                setValidUntilDate({ key: dataDateValid, value: e.target.value })
-            }
-        }
+        setValidUntilDate(list)
     }
 
     return (
-        dataValidUntilDate && (
-            <td colSpan={3}>
-                <div className='form-group'>
-                    <label className='lableSPDX' htmlFor='createdDate'>
-                        7.27 Valid Until Date
-                    </label>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            marginBottom: '0.75rem',
-                        }}
-                    >
-                        <div>
-                            <input
-                                id='createValidUntilDate'
-                                type='date'
-                                className='form-control spdx-date needs-validation'
-                                placeholder='created.date.yyyy.mm.dd'
-                                name='key'
-                                onChange={handleInputChange}
-                                value={dataValidUntilDate.key ?? ''}
-                            />
-                        </div>
-                        <div>
-                            <input
-                                id='createdValidUntilTime'
-                                type='time'
-                                step='1'
-                                className='form-control spdx-time needs-validation'
-                                placeholder='created.time.hh.mm.ss'
-                                name='value'
-                                onChange={handleInputChange}
-                                value={dataValidUntilDate.value ?? ''}
-                            />
-                        </div>
+        <td colSpan={3}>
+            <div className='form-group'>
+                <label className='lableSPDX' htmlFor='createdDate'>
+                    7.27 Valid Until Date
+                </label>
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        marginBottom: '0.75rem',
+                    }}
+                >
+                    <div>
+                        <input
+                            id='createValidUntilDate'
+                            type='date'
+                            className='form-control spdx-date needs-validation'
+                            placeholder='created.date.yyyy.mm.dd'
+                            name='key'
+                            onChange={handleInputChange}
+                            value={dataValidUntilDate?.key ?? ''}
+                        />
+                    </div>
+                    <div>
+                        <input
+                            id='createdValidUntilTime'
+                            type='time'
+                            step='1'
+                            className='form-control spdx-time needs-validation'
+                            placeholder='created.time.hh.mm.ss'
+                            name='value'
+                            onChange={handleInputChange}
+                            value={dataValidUntilDate?.value ?? ''}
+                        />
                     </div>
                 </div>
-            </td>
-        )
+            </div>
+        </td>
     )
 }
 
