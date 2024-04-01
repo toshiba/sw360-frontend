@@ -53,7 +53,7 @@ function PackageAllLicensesInformation({
     }
 
     const updateField = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setAllLicensesInformationToPackage(e.target.value.split('\n'))
+        setAllLicensesInformationToPackage(e.target.value)
     }
     return (
         <td colSpan={3}>

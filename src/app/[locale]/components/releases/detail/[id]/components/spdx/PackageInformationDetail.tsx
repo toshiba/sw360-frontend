@@ -10,6 +10,7 @@
 
 'use client'
 import { ExternalReference, PackageInformation } from '@/object-types'
+import CommonUtils from '@/utils/common.utils'
 import { useState } from 'react'
 import styles from '../../detail.module.css'
 
@@ -157,14 +158,17 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                         <td>7.14 All licenses information from files</td>
                         <td>
                             <p className='spdx-col-2 ' id='licenseInfoFromFile'>
-                                {packageInformation?.licenseInfoFromFiles.map((item) => {
-                                    return (
-                                        <>
-                                            {item}
-                                            <br></br>
-                                        </>
-                                    )
-                                })}
+                                {packageInformation?.licenseInfoFromFiles
+                                    .sort()
+                                    .filter((license) => !CommonUtils.isNullEmptyOrUndefinedString(license))
+                                    .map((item) => {
+                                        return (
+                                            <>
+                                                {item}
+                                                <br></br>
+                                            </>
+                                        )
+                                    })}
                             </p>
                         </td>
                     </tr>

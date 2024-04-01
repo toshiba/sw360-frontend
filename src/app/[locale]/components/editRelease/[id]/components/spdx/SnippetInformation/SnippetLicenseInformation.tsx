@@ -48,7 +48,7 @@ function SnippetLicenseInformation({
     }
 
     const updateField = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setAllLicensesInformationToSnippet(e.target.value.split('\n'))
+        setAllLicensesInformationToSnippet(e.target.value)
     }
 
     return (

@@ -355,17 +355,17 @@ const EditPackageInformation = ({
     const [allLicensesInformationNone, setAllLicensesInformationNone] = useState(false)
     const [allLicensesInformationNoasserttion, setAllLicensesInformationNoasserttion] = useState(false)
 
-    const setAllLicensesInformationToPackage = (data: string[]) => {
-        console.log(data)
+    const setAllLicensesInformationToPackage = (data: string) => {
+        setAllLicensesInformation(data.split('\n'))
         setPackageInformation({
             ...packageInformation,
-            licenseInfoFromFiles: data,
+            licenseInfoFromFiles: data.split('\n'),
         })
         setSPDXPayload({
             ...SPDXPayload,
             packageInformation: {
                 ...SPDXPayload.packageInformation,
-                licenseInfoFromFiles: data,
+                licenseInfoFromFiles: data.split('\n'),
             },
         })
     }
@@ -930,7 +930,7 @@ const EditPackageInformation = ({
                                                     style={{ marginBottom: '0.75rem' }}
                                                     className='form-control'
                                                     id='verificationCodeValue'
-                                                    name='excludedFiles'
+                                                    name='value'
                                                     placeholder='Enter verification code value'
                                                     disabled={!packageInformation?.filesAnalyzed}
                                                     onChange={updateFieldPackageVerificationCode}
@@ -940,7 +940,7 @@ const EditPackageInformation = ({
                                                     className='form-control'
                                                     id='excludedFiles'
                                                     rows={5}
-                                                    name='value'
+                                                    name='excludedFiles'
                                                     placeholder='Enter excluded files'
                                                     disabled={!packageInformation?.filesAnalyzed}
                                                     onChange={updateFieldPackageVerificationCode}

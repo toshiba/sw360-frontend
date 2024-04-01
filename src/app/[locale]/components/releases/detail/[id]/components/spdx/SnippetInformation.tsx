@@ -106,7 +106,12 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                             <td>
                                 <p className='spdx-col-2 '>
                                     {snippetInformation?.licenseInfoInSnippets.map((licenseInfoInSnippetData) => {
-                                        return <>{licenseInfoInSnippetData}</>
+                                        return (
+                                            <>
+                                                {licenseInfoInSnippetData}
+                                                <br></br>
+                                            </>
+                                        )
                                     })}
                                 </p>
                             </td>
