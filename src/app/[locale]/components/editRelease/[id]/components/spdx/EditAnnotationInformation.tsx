@@ -119,8 +119,12 @@ const EditAnnotationInformation = ({
                     value: '',
                 }
                 setDataAnnotationDate(input)
+                // setDataDate('')
+                // setDataTime('')
             } else {
                 setDataAnnotationDate(handleAnnotationDate(annotationsSPDXs[indexAnnotations]?.annotationDate))
+                // setDataDate(CommonUtils.fillDate(annotationsSPDXs[indexAnnotations]?.annotationDate))
+                // setDataTime(CommonUtils.fillTime(annotationsSPDXs[indexAnnotations]?.annotationDate))
             }
         } else {
             if (CommonUtils.isNullEmptyOrUndefinedString(annotationsPackages[indexAnnotations]?.annotator)) {
@@ -141,6 +145,8 @@ const EditAnnotationInformation = ({
                 setDataAnnotationDate(input)
             } else {
                 setDataAnnotationDate(handleAnnotationDate(annotationsPackages[indexAnnotations]?.annotationDate))
+                // setDataDate(CommonUtils.fillDate(annotationsPackages[indexAnnotations]?.annotationDate))
+                // setDataTime(CommonUtils.fillTime(annotationsPackages[indexAnnotations]?.annotationDate))
             }
         }
     }, [isSourceSPDXDocument, indexAnnotations, annotationsSPDXs, annotationsPackages])
@@ -199,6 +205,10 @@ const EditAnnotationInformation = ({
     const [isAdd, setIsAdd] = useState(false)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        console.log(dataDate)
+        console.log(dataTime)
+        console.log(indexAnnotations)
+        console.log(dataAnnotationDate)
         const index: string = e.target.value
         if (isSourceSPDXDocument) {
             setIndexAnnotations(parseInt(index))
@@ -355,14 +365,20 @@ const EditAnnotationInformation = ({
     }
 
     const convertInputToAnnotationDate = (data: InputKeyValue) => {
-        if (data.key == '' || data.value == '') {
-            return ''
-        }
+        // if (data.key == '' || data.value == '') {
+        //     return ''
+        // }
+        // console.log(data.key)
+        // console.log(data.value)
+        // if (isNaN(+localDate)) return new Date(data.key).toISOString().slice(0, -5) + 'Z'
         const localDate = new Date(data.key + ' ' + data.value)
+
         return localDate.toISOString().slice(0, -5) + 'Z'
     }
 
     const setAnnotationDate = (input: InputKeyValue) => {
+        console.log(input)
+        console.log(convertInputToAnnotationDate(input))
         if (isSourceSPDXDocument) {
             const annotationUpdates: Annotations[] = annotationsSPDXs.map((annotation, index) => {
                 if (index === indexAnnotations) {

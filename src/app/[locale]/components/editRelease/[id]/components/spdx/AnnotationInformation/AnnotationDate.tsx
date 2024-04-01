@@ -30,35 +30,60 @@ function AnnotationDate({
     setDataDate,
     setDataTime,
 }: Props) {
-    const handleInputChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         e.target.name === 'key' ? setDataDate(e.target.value) : setDataTime(e.target.value)
         const list: InputKeyValue = dataAnnotationDate
         list[name as keyof InputKeyValue] = value
         setDataAnnotationDate(list)
+
         if (
             !CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
             CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
             e.target.name === 'value'
         ) {
-            setAnnotationDate({ key: dataDate, value: e.target.value })
+            setAnnotationDate(list)
         }
+
+        if (
+            CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
+            !CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
+            e.target.name === 'value'
+        ) {
+            setAnnotationDate(list)
+        }
+
+        // Check Key
         if (
             CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
             !CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
             e.target.name === 'key'
         ) {
-            setAnnotationDate({ key: e.target.value, value: dataTime })
+            setAnnotationDate(list)
         }
+
+        if (
+            !CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
+            CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
+            e.target.name === 'key'
+        ) {
+            setAnnotationDate(list)
+        }
+
         if (
             !CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
             !CommonUtils.isNullEmptyOrUndefinedString(dataTime)
         ) {
-            if (e.target.name === 'key') {
-                setAnnotationDate({ key: e.target.value, value: dataTime })
-            } else {
-                setAnnotationDate({ key: dataDate, value: e.target.value })
-            }
+            setAnnotationDate(list)
+        }
+
+        if (
+            CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
+            CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
+            !CommonUtils.isNullEmptyOrUndefinedString(list.key) &&
+            !CommonUtils.isNullEmptyOrUndefinedString(list.value)
+        ) {
+            setAnnotationDate(list)
         }
     }
 

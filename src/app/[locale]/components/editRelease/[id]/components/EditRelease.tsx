@@ -81,7 +81,6 @@ const EditRelease = ({ releaseId }: Props) => {
             index: 0,
         }
         creators.push(creator)
-        console.log(creators)
         return creators
     }
 
