@@ -486,7 +486,7 @@ const EditAnnotationInformation = ({
                             >
                                 <label
                                     htmlFor='selectAnnotationSource'
-                                    style={{ textDecoration: 'underline', marginRight: '2.5rem' }}
+                                    style={{ textDecoration: 'underline' }}
                                     className='sub-title lableSPDX'
                                 >
                                     Select Source
@@ -505,7 +505,7 @@ const EditAnnotationInformation = ({
                                 <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '0.75rem' }}>
                                     <label
                                         htmlFor='selectAnnotation'
-                                        style={{ textDecoration: 'underline', marginRight: '2.5rem' }}
+                                        style={{ textDecoration: 'underline' }}
                                         className='sub-title lableSPDX'
                                     >
                                         Select Annotation

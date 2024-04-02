@@ -259,11 +259,11 @@ const EditOtherLicensingInformationDetected = ({
             <tbody hidden={toggleOther}>
                 <tr>
                     <td>
-                        <div style={{ display: 'flex', flexDirection: 'column', paddingLeft: '1rem' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column' }}>
                             <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '0.75rem' }}>
                                 <label
                                     htmlFor='selectOtherLicensing'
-                                    style={{ textDecoration: 'underline', width: '190px' }}
+                                    style={{ textDecoration: 'underline', width: '175px', marginRight: 'auto' }}
                                     className='sub-title lableSPDX'
                                 >
                                     Select Other Licensing

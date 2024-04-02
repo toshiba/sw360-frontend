@@ -1179,7 +1179,6 @@ const EditPackageInformation = ({
                                                             <label
                                                                 style={{
                                                                     textDecoration: 'underline',
-                                                                    marginRight: '2.5rem',
                                                                 }}
                                                                 className='sub-title lableSPDX'
                                                             >

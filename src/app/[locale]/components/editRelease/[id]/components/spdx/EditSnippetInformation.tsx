@@ -454,7 +454,7 @@ const EditSnippetInformation = ({
                             <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '0.75rem' }}>
                                 <label
                                     htmlFor='selectSnippet'
-                                    style={{ textDecoration: 'underline', marginRight: '2.5rem' }}
+                                    style={{ textDecoration: 'underline' }}
                                     className='sub-title lableSPDX'
                                 >
                                     Select Snippet

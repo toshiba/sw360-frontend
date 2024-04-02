@@ -478,7 +478,7 @@ const EditDocumentCreationInformation = ({
                                                     <label
                                                         className='lableSPDX sub-title'
                                                         htmlFor='externalDocumentRefs'
-                                                        style={{ textDecoration: 'underline', marginRight: '2.5rem' }}
+                                                        style={{ textDecoration: 'underline' }}
                                                     >
                                                         Select Reference
                                                     </label>
