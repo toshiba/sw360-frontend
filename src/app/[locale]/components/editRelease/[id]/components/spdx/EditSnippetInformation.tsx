@@ -461,7 +461,7 @@ const EditSnippetInformation = ({
                                 </label>
                                 <select
                                     id='selectSnippet'
-                                    className='form-control spdx-select'
+                                    className='form-control spdx-select form-select'
                                     onChange={displayIndex}
                                     disabled={CommonUtils.isNullEmptyOrUndefinedArray(snippetInformations)}
                                     value={

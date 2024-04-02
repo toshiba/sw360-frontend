@@ -82,7 +82,7 @@ function PackageOriginator({
                             <select
                                 id='originatorType'
                                 style={{ flex: 2, marginRight: '1rem' }}
-                                className='form-control'
+                                className='form-control form-select'
                                 disabled={!isPackageOriginator}
                                 name='key'
                                 value={dataPackageOriginator.key}

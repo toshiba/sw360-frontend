@@ -82,7 +82,7 @@ function PackageSupplier({
                             <select
                                 id='supplierType'
                                 style={{ flex: 2, marginRight: '1rem' }}
-                                className='form-control'
+                                className='form-control form-select'
                                 disabled={!isPackageSupplier}
                                 value={dataPackageSupplier.key}
                                 name='key'

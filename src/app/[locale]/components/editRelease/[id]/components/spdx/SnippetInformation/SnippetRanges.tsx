@@ -61,7 +61,7 @@ function SnippetRanges({ inputList, setInputList, setDataSnippetRanges }: Props)
                     <div key={j} style={{ display: 'flex', marginBottom: '0.75rem' }}>
                         <select
                             style={{ flex: 1, marginRight: '1rem' }}
-                            className='form-control range-type'
+                            className='form-control range-type form-select'
                             name='rangeType'
                             value={elem.rangeType}
                             onChange={(e) => handleInputChange(e, j)}

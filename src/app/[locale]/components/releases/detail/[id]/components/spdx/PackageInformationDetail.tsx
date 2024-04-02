@@ -289,6 +289,7 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                                             id='externalReferenceSelect${package.index}'
                                             className='spdx-col-3'
                                             onChange={displayIndex}
+                                            disabled={packageInformation?.externalRefs.length == 0}
                                         >
                                             {packageInformation?.externalRefs
                                                 .toSorted((e1, e2) => e1.index - e2.index)

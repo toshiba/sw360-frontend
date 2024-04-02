@@ -29,6 +29,8 @@ interface Props {
     inputValid?: boolean
     setErrorLicenseIdentifier?: React.Dispatch<React.SetStateAction<boolean>>
     setErrorExtractedText?: React.Dispatch<React.SetStateAction<boolean>>
+    toggleOther?: boolean
+    setToggleOther?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const EditOtherLicensingInformationDetected = ({
@@ -44,9 +46,9 @@ const EditOtherLicensingInformationDetected = ({
     setErrorExtractedText,
     setErrorLicenseIdentifier,
     inputValid,
+    toggleOther,
+    setToggleOther,
 }: Props) => {
-    const [toggle, setToggle] = useState(false)
-
     const [increIndex, setIncreIndex] = useState(0)
     const [isAdd, setIsAdd] = useState(false)
 
@@ -247,14 +249,14 @@ const EditOtherLicensingInformationDetected = ({
             <thead
                 title='Click to expand or collapse'
                 onClick={() => {
-                    setToggle(!toggle)
+                    setToggleOther(!toggleOther)
                 }}
             >
                 <tr>
                     <th colSpan={3}>10. Other Licensing Information Detected</th>
                 </tr>
             </thead>
-            <tbody hidden={toggle}>
+            <tbody hidden={toggleOther}>
                 <tr>
                     <td>
                         <div style={{ display: 'flex', flexDirection: 'column', paddingLeft: '1rem' }}>
@@ -268,7 +270,7 @@ const EditOtherLicensingInformationDetected = ({
                                 </label>
                                 <select
                                     id='selectOtherLicensing'
-                                    className='form-control spdx-select'
+                                    className='form-control spdx-select form-select'
                                     onChange={displayIndex}
                                     disabled={CommonUtils.isNullEmptyOrUndefinedArray(
                                         otherLicensingInformationDetecteds

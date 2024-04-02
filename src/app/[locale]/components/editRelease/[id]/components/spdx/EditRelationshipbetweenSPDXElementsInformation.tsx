@@ -366,7 +366,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                             </label>
                             <select
                                 id='selectRelationshipSource'
-                                className='form-control spdx-select always-enable'
+                                className='form-control spdx-select always-enable form-select'
                                 style={{ marginRight: '4rem' }}
                                 onChange={changeRelationshipSource}
                             >
@@ -385,7 +385,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                                 </label>
                                 <select
                                     id='selectRelationship'
-                                    className='form-control spdx-select'
+                                    className='form-control spdx-select form-select'
                                     onChange={displayIndex}
                                     disabled={
                                         isSourceSPDXDocument
@@ -453,7 +453,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                                             }
                                         />
                                         <select
-                                            className='form-control'
+                                            className='form-control form-select'
                                             id='relationshipType'
                                             name='relationshipType'
                                             style={{ marginRight: '1rem' }}

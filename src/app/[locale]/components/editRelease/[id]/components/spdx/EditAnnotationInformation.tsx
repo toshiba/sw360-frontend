@@ -493,7 +493,7 @@ const EditAnnotationInformation = ({
                                 </label>
                                 <select
                                     id='selectAnnotationSource'
-                                    className='form-control spdx-select always-enable'
+                                    className='form-control spdx-select always-enable form-select'
                                     style={{ marginRight: '4rem' }}
                                     onChange={changeAnnotationSource}
                                 >
@@ -512,7 +512,7 @@ const EditAnnotationInformation = ({
                                     </label>
                                     <select
                                         id='selectAnnotation'
-                                        className='form-control spdx-select'
+                                        className='form-control spdx-select form-select'
                                         onChange={displayIndex}
                                         disabled={
                                             isSourceSPDXDocument

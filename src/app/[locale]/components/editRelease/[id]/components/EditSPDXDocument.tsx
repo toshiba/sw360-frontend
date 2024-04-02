@@ -85,6 +85,7 @@ const EditSPDXDocument = ({
     const [annotationsPackages, setAnnotationsPackages] = useState<Annotations[]>([])
 
     const [isModeFull, setIsModeFull] = useState(true)
+    const [toggleOther, setToggleOther] = useState(false)
 
     const { data: session } = useSession()
 
@@ -301,6 +302,8 @@ const EditSPDXDocument = ({
                         setSPDXPayload={setSPDXPayload}
                     />
                     <EditOtherLicensingInformationDetected
+                        toggleOther={toggleOther}
+                        setToggleOther={setToggleOther}
                         isModeFull={isModeFull}
                         indexOtherLicense={indexOtherLicense}
                         setIndexOtherLicense={setIndexOtherLicense}
@@ -364,6 +367,8 @@ const EditSPDXDocument = ({
                         setSPDXPayload={setSPDXPayload}
                     />
                     <EditOtherLicensingInformationDetected
+                        toggleOther={toggleOther}
+                        setToggleOther={setToggleOther}
                         isModeFull={isModeFull}
                         indexOtherLicense={indexOtherLicense}
                         setIndexOtherLicense={setIndexOtherLicense}

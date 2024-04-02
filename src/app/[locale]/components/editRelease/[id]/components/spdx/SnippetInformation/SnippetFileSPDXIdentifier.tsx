@@ -38,7 +38,7 @@ function SnippetFileSPDXIdentifier({
                     <div style={{ display: 'flex' }}>
                         <select
                             id='snippetFromFile'
-                            className='form-control'
+                            className='form-control form-select'
                             style={{ flex: 1 }}
                             name='key'
                             onChange={handleInputChange}

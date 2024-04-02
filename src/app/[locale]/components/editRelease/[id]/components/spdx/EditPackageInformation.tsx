@@ -755,7 +755,6 @@ const EditPackageInformation = ({
             }
         }
     }
-
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
             <thead
@@ -1187,7 +1186,7 @@ const EditPackageInformation = ({
                                                                 Select Reference
                                                             </label>
                                                             <select
-                                                                className='form-control spdx-select'
+                                                                className='form-control spdx-select form-select'
                                                                 id='externalReferences'
                                                                 onChange={displayIndex}
                                                                 disabled={CommonUtils.isNullEmptyOrUndefinedArray(

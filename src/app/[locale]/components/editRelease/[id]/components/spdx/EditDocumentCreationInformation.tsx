@@ -484,7 +484,7 @@ const EditDocumentCreationInformation = ({
                                                     </label>
                                                     <select
                                                         id='externalDocumentRefs'
-                                                        className='form-control spdx-select'
+                                                        className='form-control spdx-select form-select'
                                                         onChange={displayIndex}
                                                         disabled={CommonUtils.isNullEmptyOrUndefinedArray(
                                                             externalDocumentRefs

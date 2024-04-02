@@ -35,7 +35,7 @@ function Annotator({ dataAnnotator, setDataAnnotator, setAnnotatorToAnnotation }
                     <select
                         id='annotatorType'
                         style={{ flex: 2, marginRight: '1rem' }}
-                        className='form-control'
+                        className='form-control form-select'
                         name='key'
                         onChange={handleInputChange}
                         value={dataAnnotator?.key}
