@@ -46,6 +46,8 @@ interface Props {
     inputValid?: boolean
     setErrorLicenseIdentifier?: React.Dispatch<React.SetStateAction<boolean>>
     setErrorExtractedText?: React.Dispatch<React.SetStateAction<boolean>>
+    errorCreator?: boolean
+    setErrorCreator?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const EditSPDXDocument = ({
@@ -57,6 +59,8 @@ const EditSPDXDocument = ({
     setErrorExtractedText,
     setErrorLicenseIdentifier,
     inputValid,
+    errorCreator,
+    setErrorCreator,
 }: Props) => {
     const t = useTranslations('default')
     const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
@@ -277,6 +281,8 @@ const EditSPDXDocument = ({
                         setExternalDocumentRefs={setExternalDocumentRefs}
                         SPDXPayload={SPDXPayload}
                         setSPDXPayload={setSPDXPayload}
+                        errorCreator={errorCreator}
+                        setErrorCreator={setErrorCreator}
                     />
                     <EditPackageInformation
                         isModeFull={isModeFull}

@@ -27,6 +27,8 @@ interface Props {
     setIndexExternalDocumentRef?: React.Dispatch<React.SetStateAction<number>>
     SPDXPayload?: SPDX
     setSPDXPayload?: React.Dispatch<React.SetStateAction<SPDX>>
+    errorCreator?: boolean
+    setErrorCreator?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const EditDocumentCreationInformation = ({
@@ -39,6 +41,8 @@ const EditDocumentCreationInformation = ({
     setIndexExternalDocumentRef,
     SPDXPayload,
     setSPDXPayload,
+    errorCreator,
+    setErrorCreator,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
 
@@ -47,6 +51,7 @@ const EditDocumentCreationInformation = ({
     const [increIndex, setIncreIndex] = useState(0)
     const [isAdd, setIsAdd] = useState(false)
     const [isAnonymous, setIsAnonymous] = useState(false)
+    const [isDelete, setIsDelete] = useState(false)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
@@ -94,7 +99,8 @@ const EditDocumentCreationInformation = ({
         if (
             CommonUtils.isNullEmptyOrUndefinedArray(documentCreationInformation?.creator) &&
             typeof documentCreationInformation?.createdBy !== 'undefined' &&
-            CommonUtils.isNullEmptyOrUndefinedArray(creator)
+            CommonUtils.isNullEmptyOrUndefinedArray(creator) &&
+            !isDelete
         ) {
             const creators: InputKeyValue[] = []
             const creator: InputKeyValue = {
@@ -211,6 +217,7 @@ const EditDocumentCreationInformation = ({
     }
 
     const setDataCreators = (inputs: InputKeyValue[]) => {
+        setErrorCreator(false)
         if (isAnonymous) {
             inputs = inputs.filter((input) => input.key != 'Organization').filter((input) => input.key != 'Person')
         }
@@ -516,103 +523,106 @@ const EditDocumentCreationInformation = ({
                                                     Add new Reference
                                                 </button>
                                             </div>
-                                            {externalDocumentRefs[indexExternalDocumentRef] && (
-                                                <>
-                                                    <div
-                                                        style={{
-                                                            display: 'flex',
-                                                            flexDirection: 'row',
-                                                            marginBottom: '0.75rem',
-                                                        }}
-                                                    >
-                                                        <label
-                                                            className='sub-title lableSPDX'
-                                                            htmlFor='externalDocumentId'
-                                                        >
-                                                            External document ID
-                                                        </label>
+
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    flexDirection: 'row',
+                                                    marginBottom: '0.75rem',
+                                                }}
+                                            >
+                                                <label className='sub-title lableSPDX' htmlFor='externalDocumentId'>
+                                                    External document ID
+                                                </label>
+                                                <input
+                                                    id='externalDocumentId'
+                                                    style={{ width: 'auto', flex: 'auto' }}
+                                                    type='text'
+                                                    name='externalDocumentId'
+                                                    className='form-control'
+                                                    placeholder='Enter external document ID'
+                                                    onChange={updateExternalReferens}
+                                                    disabled={CommonUtils.isNullEmptyOrUndefinedArray(
+                                                        externalDocumentRefs
+                                                    )}
+                                                    value={
+                                                        externalDocumentRefs[indexExternalDocumentRef]
+                                                            ?.externalDocumentId ?? ''
+                                                    }
+                                                />
+                                            </div>
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    flexDirection: 'row',
+                                                    marginBottom: '0.75rem',
+                                                }}
+                                            >
+                                                <label className='sub-title lableSPDX' htmlFor='externalDocument'>
+                                                    External document
+                                                </label>
+                                                <input
+                                                    id='externalDocument'
+                                                    style={{ width: 'auto', flex: 'auto' }}
+                                                    type='text'
+                                                    name='spdxDocument'
+                                                    className='form-control'
+                                                    placeholder='Enter external document'
+                                                    onChange={updateExternalReferens}
+                                                    disabled={CommonUtils.isNullEmptyOrUndefinedArray(
+                                                        externalDocumentRefs
+                                                    )}
+                                                    value={
+                                                        externalDocumentRefs[indexExternalDocumentRef]?.spdxDocument ??
+                                                        ''
+                                                    }
+                                                />
+                                            </div>
+                                            <div style={{ display: 'flex' }}>
+                                                <label className='sub-title lableSPDX'>Checksum</label>
+                                                <div
+                                                    style={{
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        flex: 7,
+                                                    }}
+                                                >
+                                                    <div style={{ display: 'flex', marginBottom: '0.75rem' }}>
                                                         <input
-                                                            id='externalDocumentId'
-                                                            style={{ width: 'auto', flex: 'auto' }}
+                                                            style={{ flex: 2, marginRight: '1rem' }}
                                                             type='text'
-                                                            name='externalDocumentId'
                                                             className='form-control'
-                                                            placeholder='Enter external document ID'
-                                                            onChange={updateExternalReferens}
+                                                            id='checksumAlgorithm'
+                                                            name='algorithm'
+                                                            placeholder='Enter algorithm'
+                                                            onChange={updateCheckSum}
+                                                            disabled={CommonUtils.isNullEmptyOrUndefinedArray(
+                                                                externalDocumentRefs
+                                                            )}
                                                             value={
-                                                                externalDocumentRefs[indexExternalDocumentRef]
-                                                                    .externalDocumentId ?? ''
+                                                                externalDocumentRefs[indexExternalDocumentRef]?.checksum
+                                                                    ?.algorithm ?? ''
+                                                            }
+                                                        />
+                                                        <input
+                                                            style={{ flex: 6 }}
+                                                            type='text'
+                                                            className='form-control'
+                                                            id='checksumValue'
+                                                            placeholder='Enter value'
+                                                            name='checksumValue'
+                                                            onChange={updateCheckSum}
+                                                            disabled={CommonUtils.isNullEmptyOrUndefinedArray(
+                                                                externalDocumentRefs
+                                                            )}
+                                                            value={
+                                                                externalDocumentRefs[indexExternalDocumentRef]?.checksum
+                                                                    ?.checksumValue ?? ''
                                                             }
                                                         />
                                                     </div>
-                                                    <div
-                                                        style={{
-                                                            display: 'flex',
-                                                            flexDirection: 'row',
-                                                            marginBottom: '0.75rem',
-                                                        }}
-                                                    >
-                                                        <label
-                                                            className='sub-title lableSPDX'
-                                                            htmlFor='externalDocument'
-                                                        >
-                                                            External document
-                                                        </label>
-                                                        <input
-                                                            id='externalDocument'
-                                                            style={{ width: 'auto', flex: 'auto' }}
-                                                            type='text'
-                                                            name='spdxDocument'
-                                                            className='form-control'
-                                                            placeholder='Enter external document'
-                                                            onChange={updateExternalReferens}
-                                                            value={
-                                                                externalDocumentRefs[indexExternalDocumentRef]
-                                                                    .spdxDocument ?? ''
-                                                            }
-                                                        />
-                                                    </div>
-                                                    <div style={{ display: 'flex' }}>
-                                                        <label className='sub-title lableSPDX'>Checksum</label>
-                                                        <div
-                                                            style={{
-                                                                display: 'flex',
-                                                                flexDirection: 'column',
-                                                                flex: 7,
-                                                            }}
-                                                        >
-                                                            <div style={{ display: 'flex', marginBottom: '0.75rem' }}>
-                                                                <input
-                                                                    style={{ flex: 2, marginRight: '1rem' }}
-                                                                    type='text'
-                                                                    className='form-control'
-                                                                    id='checksumAlgorithm'
-                                                                    name='algorithm'
-                                                                    placeholder='Enter algorithm'
-                                                                    onChange={updateCheckSum}
-                                                                    value={
-                                                                        externalDocumentRefs[indexExternalDocumentRef]
-                                                                            .checksum?.algorithm ?? ''
-                                                                    }
-                                                                />
-                                                                <input
-                                                                    style={{ flex: 6 }}
-                                                                    type='text'
-                                                                    className='form-control'
-                                                                    id='checksumValue'
-                                                                    placeholder='Enter value'
-                                                                    name='checksumValue'
-                                                                    onChange={updateCheckSum}
-                                                                    value={
-                                                                        externalDocumentRefs[indexExternalDocumentRef]
-                                                                            .checksum?.checksumValue ?? ''
-                                                                    }
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            )}
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -662,6 +672,7 @@ const EditDocumentCreationInformation = ({
                                                 setInputList={setCreator}
                                                 isAnonymous={isAnonymous}
                                                 setDataCreators={setDataCreators}
+                                                setIsDelete={setIsDelete}
                                             />
                                         </div>
                                         <input
@@ -670,6 +681,21 @@ const EditDocumentCreationInformation = ({
                                             style={{ display: 'none' }}
                                             type='text'
                                         />
+
+                                        {errorCreator && (
+                                            <div>
+                                                <div
+                                                    style={{
+                                                        color: '#da1414',
+                                                        fontSize: '0.875rem',
+                                                        marginTop: '0.25rem',
+                                                        width: '100%',
+                                                    }}
+                                                >
+                                                    <span>This field must be not empty!</span>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </td>

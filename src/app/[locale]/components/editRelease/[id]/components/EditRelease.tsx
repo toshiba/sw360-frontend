@@ -306,7 +306,16 @@ const EditRelease = ({ releaseId }: Props) => {
 
     const [errorLicenseIdentifier, setErrorLicenseIdentifier] = useState(false)
     const [errorExtractedText, setErrorExtractedText] = useState(false)
+    const [errorCreator, setErrorCreator] = useState(false)
     const [inputValid, setInputValid] = useState(false)
+
+    const validateCreator = (SPDXPayload: SPDX): boolean => {
+        if (CommonUtils.isNullEmptyOrUndefinedArray(SPDXPayload.documentCreationInformation.creator)) {
+            setErrorCreator(true)
+            return true
+        }
+        return false
+    }
 
     const validateLicenseIdentifier = (SPDXPayload: SPDX): boolean => {
         if (CommonUtils.isNullEmptyOrUndefinedArray(SPDXPayload.spdxDocument.otherLicensingInformationDetecteds)) {
@@ -344,7 +353,11 @@ const EditRelease = ({ releaseId }: Props) => {
                 setErrorLicenseIdentifier(true)
                 setErrorExtractedText(true)
             }
-            if (validateLicenseIdentifier(SPDXPayload) || validateExtractedText(SPDXPayload)) {
+            if (
+                validateLicenseIdentifier(SPDXPayload) ||
+                validateExtractedText(SPDXPayload) ||
+                validateCreator(SPDXPayload)
+            ) {
                 return
             } else {
                 const responseUpdateSPDX = await ApiUtils.PATCH(
@@ -358,7 +371,11 @@ const EditRelease = ({ releaseId }: Props) => {
             }
         }
 
-        if (!validateLicenseIdentifier(SPDXPayload) && !validateExtractedText(SPDXPayload)) {
+        if (
+            !validateLicenseIdentifier(SPDXPayload) &&
+            !validateExtractedText(SPDXPayload) &&
+            !validateCreator(SPDXPayload)
+        ) {
             const response = await ApiUtils.PATCH(`releases/${releaseId}`, releasePayload, session.user.access_token)
             if (response.status == HttpStatus.OK) {
                 const release = (await response.json()) as ReleaseDetail
@@ -451,6 +468,8 @@ const EditRelease = ({ releaseId }: Props) => {
                                     setErrorLicenseIdentifier={setErrorLicenseIdentifier}
                                     errorExtractedText={errorExtractedText}
                                     setErrorExtractedText={setErrorExtractedText}
+                                    errorCreator={errorCreator}
+                                    setErrorCreator={setErrorCreator}
                                     inputValid={inputValid}
                                 />
                             </div>
