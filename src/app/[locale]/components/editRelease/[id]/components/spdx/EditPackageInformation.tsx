@@ -559,7 +559,23 @@ const EditPackageInformation = ({
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         setPackageInformation({
             ...packageInformation,
-            [e.target.name]: e.target.name === 'attributionText' ? e.target.value.split('\n') : e.target.value,
+            [e.target.name]: e.target.value,
+        })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                [e.target.name]: e.target.value,
+            },
+        })
+    }
+
+    const updateFieldAttributionText = (
+        e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        setPackageInformation({
+            ...packageInformation,
+            [e.target.name]: e.target.value,
         })
         setSPDXPayload({
             ...SPDXPayload,
@@ -1350,7 +1366,7 @@ const EditPackageInformation = ({
                                                     id='packageAttributionText'
                                                     rows={5}
                                                     name='attributionText'
-                                                    onChange={updateField}
+                                                    onChange={updateFieldAttributionText}
                                                     placeholder='Enter package attribution text'
                                                     value={packageInformation.attributionText ?? ''}
                                                 ></textarea>

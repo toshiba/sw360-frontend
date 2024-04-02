@@ -113,6 +113,45 @@ const EditOtherLicensingInformationDetected = ({
         })
     }
 
+    const updateFieldLicenseCrossRefs = (
+        e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        if (e.target.name === 'extractedText') {
+            setErrorExtractedText(false)
+        }
+
+        const otherLicensings: OtherLicensingInformationDetected[] = otherLicensingInformationDetecteds.map(
+            (otherLicensing, index) => {
+                if (index === indexOtherLicense) {
+                    return {
+                        ...otherLicensing,
+                        [e.target.name]:
+                            e.target.name === 'licenseCrossRefs' ? e.target.value.split('\n') : e.target.value,
+                    }
+                }
+                return otherLicensing
+            }
+        )
+        setOtherLicensingInformationDetecteds(
+            otherLicensingInformationDetecteds.map((otherLicensing, index) => {
+                if (index === indexOtherLicense) {
+                    return {
+                        ...otherLicensing,
+                        [e.target.name]: e.target.value,
+                    }
+                }
+                return otherLicensing
+            })
+        )
+        setSPDXPayload({
+            ...SPDXPayload,
+            spdxDocument: {
+                ...SPDXPayload.spdxDocument,
+                otherLicensingInformationDetecteds: otherLicensings,
+            },
+        })
+    }
+
     const updateFieldLicenseIdentifier = (e: React.ChangeEvent<HTMLInputElement>) => {
         setErrorLicenseIdentifier(false)
         const otherLicensings: OtherLicensingInformationDetected[] = otherLicensingInformationDetecteds.map(
@@ -363,7 +402,7 @@ const EditOtherLicensingInformationDetected = ({
                                             rows={5}
                                             placeholder='Enter license cross reference'
                                             name='licenseCrossRefs'
-                                            onChange={updateField}
+                                            onChange={updateFieldLicenseCrossRefs}
                                             value={
                                                 otherLicensingInformationDetecteds[indexOtherLicense]
                                                     .licenseCrossRefs ?? ''

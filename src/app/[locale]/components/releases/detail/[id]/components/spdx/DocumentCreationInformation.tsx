@@ -151,27 +151,33 @@ const DocumentCreationInformationDetail = ({
                         <tr className='spdx-full'>
                             <td>6.10 Creator comment</td>
                             <td>
-                                {documentCreationInformation?.creatorComment.split('\n').map((item) => {
-                                    return (
-                                        <>
-                                            {item}
-                                            <br></br>
-                                        </>
-                                    )
-                                })}
+                                {documentCreationInformation?.creatorComment
+                                    .trim()
+                                    .split('\n')
+                                    .map((item) => {
+                                        return (
+                                            <>
+                                                {item}
+                                                <br></br>
+                                            </>
+                                        )
+                                    })}
                             </td>
                         </tr>
                         <tr className='spdx-full'>
                             <td>6.11 Document comment</td>
                             <td>
-                                {documentCreationInformation?.documentComment.split('\n').map((item) => {
-                                    return (
-                                        <>
-                                            {item}
-                                            <br></br>
-                                        </>
-                                    )
-                                })}
+                                {documentCreationInformation?.documentComment
+                                    .trim()
+                                    .split('\n')
+                                    .map((item) => {
+                                        return (
+                                            <>
+                                                {item}
+                                                <br></br>
+                                            </>
+                                        )
+                                    })}
                             </td>
                         </tr>
                     </>

@@ -82,14 +82,17 @@ const OtherLicensingInformationDetectedDetail = ({
                                     id={`extractedText-${otherLicensingInformationDetected.index}`}
                                     style={{ whiteSpace: 'pre-wrap' }}
                                 >
-                                    {otherLicensingInformationDetected?.extractedText.split('\n').map((item) => {
-                                        return (
-                                            <>
-                                                {item}
-                                                <br></br>
-                                            </>
-                                        )
-                                    })}
+                                    {otherLicensingInformationDetected?.extractedText
+                                        .trim()
+                                        .split('\n')
+                                        .map((item) => {
+                                            return (
+                                                <>
+                                                    {item}
+                                                    <br></br>
+                                                </>
+                                            )
+                                        })}
                                 </p>
                             </td>
                         </tr>
@@ -107,11 +110,16 @@ const OtherLicensingInformationDetectedDetail = ({
                                         className='spdx-col-2 '
                                         id={`licenseCrossRefs-${otherLicensingInformationDetected.index}`}
                                     >
-                                        {otherLicensingInformationDetected.licenseCrossRefs.map(
-                                            (licenseCrossRefsData) => {
-                                                return <>{licenseCrossRefsData}</>
-                                            }
-                                        )}
+                                        {otherLicensingInformationDetected.licenseCrossRefs
+                                            .sort()
+                                            .map((licenseCrossRefsData) => {
+                                                return (
+                                                    <>
+                                                        {licenseCrossRefsData}
+                                                        <br></br>
+                                                    </>
+                                                )
+                                            })}
                                     </p>
                                 </td>
                             </tr>
@@ -123,14 +131,17 @@ const OtherLicensingInformationDetectedDetail = ({
                                     className='spdx-col-2 '
                                     id={`otherLicenseComment-${otherLicensingInformationDetected.index}`}
                                 >
-                                    {otherLicensingInformationDetected?.licenseComment.split('\n').map((item) => {
-                                        return (
-                                            <>
-                                                {item}
-                                                <br></br>
-                                            </>
-                                        )
-                                    })}
+                                    {otherLicensingInformationDetected?.licenseComment
+                                        .trim()
+                                        .split('\n')
+                                        .map((item) => {
+                                            return (
+                                                <>
+                                                    {item}
+                                                    <br></br>
+                                                </>
+                                            )
+                                        })}
                                 </p>
                             </td>
                         </tr>

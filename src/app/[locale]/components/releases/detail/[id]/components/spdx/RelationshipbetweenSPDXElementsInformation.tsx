@@ -144,14 +144,17 @@ const RelationshipbetweenSPDXElementsInformation = ({
                                     className='spdx-col-2 '
                                     id={`relationshipComment-${relationshipsBetweenSPDXElements.index}`}
                                 >
-                                    {relationshipsBetweenSPDXElements?.relationshipComment.split('\n').map((item) => {
-                                        return (
-                                            <>
-                                                {item}
-                                                <br></br>
-                                            </>
-                                        )
-                                    })}
+                                    {relationshipsBetweenSPDXElements?.relationshipComment
+                                        .trim()
+                                        .split('\n')
+                                        .map((item) => {
+                                            return (
+                                                <>
+                                                    {item}
+                                                    <br></br>
+                                                </>
+                                            )
+                                        })}
                                 </p>
                             </td>
                         </tr>
