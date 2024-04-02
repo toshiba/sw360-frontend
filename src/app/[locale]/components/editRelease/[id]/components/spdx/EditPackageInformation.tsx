@@ -9,7 +9,14 @@
 // License-Filename: LICENSE
 
 'use client'
-import { CheckSum, ExternalReference, InputKeyValue, PackageInformation, SPDX } from '@/object-types'
+import {
+    CheckSum,
+    ExternalReference,
+    InputKeyValue,
+    PackageInformation,
+    PackageVerificationCode,
+    SPDX,
+} from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
 import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
@@ -707,12 +714,17 @@ const EditPackageInformation = ({
             },
         })
         if (e.target.value === 'false') {
+            const packageVerificationCode: PackageVerificationCode = {
+                excludedFiles: [],
+                value: '',
+            }
             setSPDXPayload({
                 ...SPDXPayload,
                 packageInformation: {
                     ...SPDXPayload.packageInformation,
+                    filesAnalyzed: false,
                     licenseInfoFromFiles: [],
-                    packageVerificationCode: null,
+                    packageVerificationCode: packageVerificationCode,
                 },
             })
         } else {
@@ -720,6 +732,7 @@ const EditPackageInformation = ({
                 ...SPDXPayload,
                 packageInformation: {
                     ...SPDXPayload.packageInformation,
+                    filesAnalyzed: true,
                     licenseInfoFromFiles: allLicensesInformation,
                     packageVerificationCode: packageInformation.packageVerificationCode,
                 },
