@@ -15,22 +15,24 @@ import styles from '../../detail.module.css'
 
 interface Props {
     spdxDocument?: SPDXDocument
-    otherLicensingInformationDetected?: OtherLicensingInformationDetected
-    setOtherLicensingInformationDetected?: React.Dispatch<React.SetStateAction<OtherLicensingInformationDetected>>
+    indexOtherLicense?: number
+    setIndexOtherLicense?: React.Dispatch<React.SetStateAction<number>>
+    otherLicensingInformationDetecteds?: OtherLicensingInformationDetected[]
     isModeFull?: boolean
 }
 
 const OtherLicensingInformationDetectedDetail = ({
     spdxDocument,
-    otherLicensingInformationDetected,
-    setOtherLicensingInformationDetected,
+    indexOtherLicense,
+    setIndexOtherLicense,
+    otherLicensingInformationDetecteds,
     isModeFull,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setOtherLicensingInformationDetected(spdxDocument.otherLicensingInformationDetecteds[parseInt(index)])
+        setIndexOtherLicense(parseInt(index))
     }
 
     return (
@@ -66,23 +68,25 @@ const OtherLicensingInformationDetectedDetail = ({
                         </select>
                     </td>
                 </tr>
-                {otherLicensingInformationDetected && (
+                {otherLicensingInformationDetecteds[indexOtherLicense] && (
                     <>
-                        <tr data-index={otherLicensingInformationDetected.index}>
+                        <tr data-index={otherLicensingInformationDetecteds[indexOtherLicense].index}>
                             <td>10.1 License identifier</td>
                             <td>
-                                <div className='spdx-col-2'>{otherLicensingInformationDetected.licenseId}</div>
+                                <div className='spdx-col-2'>
+                                    {otherLicensingInformationDetecteds[indexOtherLicense].licenseId}
+                                </div>
                             </td>
                         </tr>
-                        <tr data-index={otherLicensingInformationDetected.index}>
+                        <tr data-index={otherLicensingInformationDetecteds[indexOtherLicense].index}>
                             <td>10.2 Extracted text</td>
                             <td>
                                 <p
                                     className='spdx-col-2 '
-                                    id={`extractedText-${otherLicensingInformationDetected.index}`}
+                                    id={`extractedText-${otherLicensingInformationDetecteds[indexOtherLicense].index}`}
                                     style={{ whiteSpace: 'pre-wrap' }}
                                 >
-                                    {otherLicensingInformationDetected?.extractedText
+                                    {otherLicensingInformationDetecteds[indexOtherLicense]?.extractedText
                                         .trim()
                                         .split('\n')
                                         .map((item) => {
@@ -96,21 +100,26 @@ const OtherLicensingInformationDetectedDetail = ({
                                 </p>
                             </td>
                         </tr>
-                        <tr data-index={otherLicensingInformationDetected.index}>
+                        <tr data-index={otherLicensingInformationDetecteds[indexOtherLicense].index}>
                             <td>10.3 License name</td>
                             <td>
-                                <div className='spdx-col-2'>{otherLicensingInformationDetected.licenseName}</div>
+                                <div className='spdx-col-2'>
+                                    {otherLicensingInformationDetecteds[indexOtherLicense].licenseName}
+                                </div>
                             </td>
                         </tr>
                         {isModeFull && (
-                            <tr className='spdx-full' data-index={otherLicensingInformationDetected.index}>
+                            <tr
+                                className='spdx-full'
+                                data-index={otherLicensingInformationDetecteds[indexOtherLicense].index}
+                            >
                                 <td>10.4 License cross reference</td>
                                 <td>
                                     <p
                                         className='spdx-col-2 '
-                                        id={`licenseCrossRefs-${otherLicensingInformationDetected.index}`}
+                                        id={`licenseCrossRefs-${otherLicensingInformationDetecteds[indexOtherLicense].index}`}
                                     >
-                                        {otherLicensingInformationDetected.licenseCrossRefs
+                                        {otherLicensingInformationDetecteds[indexOtherLicense].licenseCrossRefs
                                             .sort()
                                             .map((licenseCrossRefsData) => {
                                                 return (
@@ -124,14 +133,14 @@ const OtherLicensingInformationDetectedDetail = ({
                                 </td>
                             </tr>
                         )}
-                        <tr data-index={otherLicensingInformationDetected.index}>
+                        <tr data-index={otherLicensingInformationDetecteds[indexOtherLicense].index}>
                             <td>10.5 License comment</td>
                             <td>
                                 <p
                                     className='spdx-col-2 '
-                                    id={`otherLicenseComment-${otherLicensingInformationDetected.index}`}
+                                    id={`otherLicenseComment-${otherLicensingInformationDetecteds[indexOtherLicense].index}`}
                                 >
-                                    {otherLicensingInformationDetected?.licenseComment
+                                    {otherLicensingInformationDetecteds[indexOtherLicense]?.licenseComment
                                         .trim()
                                         .split('\n')
                                         .map((item) => {

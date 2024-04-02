@@ -22,6 +22,7 @@ import {
     ReleaseDetail,
     SPDXDocument,
     SnippetInformation,
+    SnippetRange,
 } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
 import { ApiUtils } from '@/utils/index'
@@ -47,10 +48,14 @@ const SPDXDocument = ({ releaseId }: Props) => {
     const [documentCreationInformation, setDocumentCreationInformation] = useState<DocumentCreationInformation>()
     const [packageInformation, setPackageInformation] = useState<PackageInformation>()
     const [externalDocumentRef, setExternalDocumentRef] = useState<ExternalDocumentReferences>()
+    const [snippetRanges, setSnippetRanges] = useState<SnippetRange[]>([])
     const [externalRefsData, setExternalRefsData] = useState<ExternalReference>()
-    const [snippetInformation, setSnippetInformation] = useState<SnippetInformation>()
-    const [otherLicensingInformationDetected, setOtherLicensingInformationDetected] =
-        useState<OtherLicensingInformationDetected>()
+    const [snippetInformations, setSnippetInformations] = useState<SnippetInformation[]>([])
+    const [indexSnippetInformation, setIndexSnippetInformation] = useState(0)
+    const [indexOtherLicense, setIndexOtherLicense] = useState(0)
+    const [otherLicensingInformationDetecteds, setOtherLicensingInformationDetecteds] = useState<
+        OtherLicensingInformationDetected[]
+    >([])
 
     const [relationshipsBetweenSPDXElements, setRelationshipsBetweenSPDXElements] =
         useState<RelationshipsBetweenSPDXElements>()
@@ -89,7 +94,17 @@ const SPDXDocument = ({ releaseId }: Props) => {
                     setSPDXDocument(release._embedded['sw360:spdxDocument'])
                     //SnippetInformation
                     if (!CommonUtils.isNullEmptyOrUndefinedArray(release._embedded['sw360:spdxDocument'].snippets)) {
-                        setSnippetInformation(release._embedded['sw360:spdxDocument'].snippets[0])
+                        setSnippetInformations(
+                            release._embedded['sw360:spdxDocument'].snippets.toSorted((e1, e2) => e1.index - e2.index)
+                        )
+                        setIndexSnippetInformation(0)
+                        if (
+                            !CommonUtils.isNullEmptyOrUndefinedArray(
+                                release._embedded['sw360:spdxDocument'].snippets[0].snippetRanges
+                            )
+                        ) {
+                            setSnippetRanges(release._embedded['sw360:spdxDocument'].snippets[0].snippetRanges)
+                        }
                     }
                     //OtherLicensingInformationDetected
                     if (
@@ -97,9 +112,12 @@ const SPDXDocument = ({ releaseId }: Props) => {
                             release._embedded['sw360:spdxDocument'].otherLicensingInformationDetecteds
                         )
                     ) {
-                        setOtherLicensingInformationDetected(
-                            release._embedded['sw360:spdxDocument'].otherLicensingInformationDetecteds[0]
+                        setOtherLicensingInformationDetecteds(
+                            release._embedded['sw360:spdxDocument'].otherLicensingInformationDetecteds.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )
                         )
+                        setIndexOtherLicense(0)
                     }
                     //RelationshipsBetweenSPDXElements
                     if (
@@ -196,14 +214,18 @@ const SPDXDocument = ({ releaseId }: Props) => {
                     />
                     <SnippetInformationDetail
                         spdxDocument={spdxDocument}
-                        snippetInformation={snippetInformation}
-                        setSnippetInformation={setSnippetInformation}
+                        snippetInformations={snippetInformations}
+                        indexSnippetInformation={indexSnippetInformation}
+                        setIndexSnippetInformation={setIndexSnippetInformation}
+                        setSnippetRanges={setSnippetRanges}
+                        snippetRanges={snippetRanges}
                     />
                     <OtherLicensingInformationDetectedDetail
                         isModeFull={isModeFull}
                         spdxDocument={spdxDocument}
-                        otherLicensingInformationDetected={otherLicensingInformationDetected}
-                        setOtherLicensingInformationDetected={setOtherLicensingInformationDetected}
+                        indexOtherLicense={indexOtherLicense}
+                        setIndexOtherLicense={setIndexOtherLicense}
+                        otherLicensingInformationDetecteds={otherLicensingInformationDetecteds}
                     />
                     <RelationshipbetweenSPDXElementsInformation
                         spdxDocument={spdxDocument}
@@ -239,8 +261,9 @@ const SPDXDocument = ({ releaseId }: Props) => {
                     <OtherLicensingInformationDetectedDetail
                         isModeFull={isModeFull}
                         spdxDocument={spdxDocument}
-                        otherLicensingInformationDetected={otherLicensingInformationDetected}
-                        setOtherLicensingInformationDetected={setOtherLicensingInformationDetected}
+                        indexOtherLicense={indexOtherLicense}
+                        setIndexOtherLicense={setIndexOtherLicense}
+                        otherLicensingInformationDetecteds={otherLicensingInformationDetecteds}
                     />
                 </div>
             )}

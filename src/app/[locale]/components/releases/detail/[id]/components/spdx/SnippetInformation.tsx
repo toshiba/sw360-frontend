@@ -9,22 +9,34 @@
 // License-Filename: LICENSE
 
 'use client'
-import { SPDXDocument, SnippetInformation } from '@/object-types'
+import { SPDXDocument, SnippetInformation, SnippetRange } from '@/object-types'
 import { useState } from 'react'
 import styles from '../../detail.module.css'
 
 interface Props {
     spdxDocument?: SPDXDocument
-    snippetInformation?: SnippetInformation
-    setSnippetInformation?: React.Dispatch<React.SetStateAction<SnippetInformation>>
+    indexSnippetInformation?: number
+    setIndexSnippetInformation?: React.Dispatch<React.SetStateAction<number>>
+    snippetInformations?: SnippetInformation[]
+    setSnippetRanges?: React.Dispatch<React.SetStateAction<SnippetRange[]>>
+    snippetRanges?: SnippetRange[]
 }
 
-const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippetInformation }: Props) => {
+const SnippetInformationDetail = ({
+    spdxDocument,
+    indexSnippetInformation,
+    setIndexSnippetInformation,
+    snippetInformations,
+    setSnippetRanges,
+    snippetRanges,
+}: Props) => {
     const [toggle, setToggle] = useState(false)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setSnippetInformation(spdxDocument.snippets[parseInt(index)])
+        setIndexSnippetInformation(parseInt(index))
+        setSnippetRanges(snippetInformations[indexSnippetInformation].snippetRanges)
+        // setSnippetInformation(spdxDocument.snippets[parseInt(index)])
     }
 
     return (
@@ -60,30 +72,26 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                         </select>
                     </td>
                 </tr>
-                {snippetInformation && (
+                {snippetInformations[indexSnippetInformation] && (
                     <>
-                        <tr data-index={snippetInformation.index}>
+                        <tr data-index={snippetInformations[indexSnippetInformation].index}>
                             <td>9.1 Snippet SPDX identifier</td>
-                            <td>{snippetInformation.SPDXID}</td>
+                            <td>{snippetInformations[indexSnippetInformation].SPDXID}</td>
                         </tr>
-                        <tr data-index={snippetInformation.index}>
+                        <tr data-index={snippetInformations[indexSnippetInformation].index}>
                             <td>9.2 Snippet from file SPDX identifier</td>
-                            <td>{snippetInformation.snippetFromFile}</td>
+                            <td>{snippetInformations[indexSnippetInformation].snippetFromFile}</td>
                         </tr>
-                        <tr data-index={snippetInformation.index}>
+                        <tr data-index={snippetInformations[indexSnippetInformation].index}>
                             <td>9.3 & 9.4 Snippet ranges</td>
                             <td>
                                 <div
                                     className='spdx-col-2 spdx-flex-col'
-                                    id={`snippetLicenseComments-${snippetInformation.index}`}
+                                    id={`snippetLicenseComments-${snippetInformations[indexSnippetInformation].index}`}
                                 >
-                                    {snippetInformation?.snippetRanges.map((snippetRangeData) => {
+                                    {snippetRanges.map((snippetRangeData, index) => {
                                         return (
-                                            <div
-                                                key={snippetInformation.index}
-                                                className='spdx-flex-row'
-                                                data-index={snippetRangeData.index}
-                                            >
+                                            <div key={index} className='spdx-flex-row' data-index={index}>
                                                 <div className='spdx-col-1 spdx-key'>{snippetRangeData.rangeType}</div>
                                                 <div className='spdx-col-1' style={{ display: 'flex' }}>
                                                     <div className='spdx-col-1'>{snippetRangeData.startPointer}</div>
@@ -97,30 +105,35 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                                 </div>
                             </td>
                         </tr>
-                        <tr data-index={snippetInformation.index}>
+                        <tr data-index={snippetInformations[indexSnippetInformation].index}>
                             <td>9.5 Snippet concluded license</td>
-                            <td>{snippetInformation.licenseConcluded}</td>
+                            <td>{snippetInformations[indexSnippetInformation].licenseConcluded}</td>
                         </tr>
-                        <tr data-index={snippetInformation.index}>
+                        <tr data-index={snippetInformations[indexSnippetInformation].index}>
                             <td>9.6 License information in snippet</td>
                             <td>
                                 <p className='spdx-col-2 '>
-                                    {snippetInformation?.licenseInfoInSnippets.map((licenseInfoInSnippetData) => {
-                                        return (
-                                            <>
-                                                {licenseInfoInSnippetData}
-                                                <br></br>
-                                            </>
-                                        )
-                                    })}
+                                    {snippetInformations[indexSnippetInformation]?.licenseInfoInSnippets.map(
+                                        (licenseInfoInSnippetData) => {
+                                            return (
+                                                <>
+                                                    {licenseInfoInSnippetData}
+                                                    <br></br>
+                                                </>
+                                            )
+                                        }
+                                    )}
                                 </p>
                             </td>
                         </tr>
-                        <tr data-index={snippetInformation.index}>
+                        <tr data-index={snippetInformations[indexSnippetInformation].index}>
                             <td>9.7 Snippet comments on license</td>
                             <td>
-                                <p className='spdx-col-2 ' id={`snippetLicenseComments-${snippetInformation.index}`}>
-                                    {snippetInformation?.licenseComments
+                                <p
+                                    className='spdx-col-2 '
+                                    id={`snippetLicenseComments-${snippetInformations[indexSnippetInformation].index}`}
+                                >
+                                    {snippetInformations[indexSnippetInformation]?.licenseComments
                                         .trim()
                                         .split('\n')
                                         .map((item) => {
@@ -134,11 +147,14 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                                 </p>
                             </td>
                         </tr>
-                        <tr data-index={snippetInformation.index}>
+                        <tr data-index={snippetInformations[indexSnippetInformation].index}>
                             <td>9.8 Snippet copyright text</td>
                             <td>
-                                <p className='spdx-col-2 ' id={`snippetLicenseComments-${snippetInformation.index}`}>
-                                    {snippetInformation?.copyrightText
+                                <p
+                                    className='spdx-col-2 '
+                                    id={`snippetLicenseComments-${snippetInformations[indexSnippetInformation].index}`}
+                                >
+                                    {snippetInformations[indexSnippetInformation]?.copyrightText
                                         .trim()
                                         .split('\n')
                                         .map((item) => {
@@ -152,11 +168,14 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                                 </p>
                             </td>
                         </tr>
-                        <tr data-index={snippetInformation.index}>
+                        <tr data-index={snippetInformations[indexSnippetInformation].index}>
                             <td>9.9 Snippet comment</td>
                             <td>
-                                <p className='spdx-col-2 ' id={`snippetLicenseComments-${snippetInformation.index}`}>
-                                    {snippetInformation?.comment
+                                <p
+                                    className='spdx-col-2 '
+                                    id={`snippetLicenseComments-${snippetInformations[indexSnippetInformation].index}`}
+                                >
+                                    {snippetInformations[indexSnippetInformation]?.comment
                                         .trim()
                                         .split('\n')
                                         .map((item) => {
@@ -170,17 +189,20 @@ const SnippetInformationDetail = ({ spdxDocument, snippetInformation, setSnippet
                                 </p>
                             </td>
                         </tr>
-                        <tr data-index={snippetInformation.index}>
+                        <tr data-index={snippetInformations[indexSnippetInformation].index}>
                             <td>9.10 Snippet name</td>
                             <td>
-                                <p className='spdx-col-2 '>{snippetInformation?.name}</p>
+                                <p className='spdx-col-2 '>{snippetInformations[indexSnippetInformation]?.name}</p>
                             </td>
                         </tr>
-                        <tr data-index={snippetInformation.index}>
+                        <tr data-index={snippetInformations[indexSnippetInformation].index}>
                             <td>9.11 Snippet attribution text</td>
                             <td>
-                                <p className='spdx-col-2 ' id={`snippetLicenseComments-${snippetInformation.index}`}>
-                                    {snippetInformation?.snippetAttributionText
+                                <p
+                                    className='spdx-col-2 '
+                                    id={`snippetLicenseComments-${snippetInformations[indexSnippetInformation].index}`}
+                                >
+                                    {snippetInformations[indexSnippetInformation]?.snippetAttributionText
                                         .trim()
                                         .split('\n')
                                         .map((item) => {
