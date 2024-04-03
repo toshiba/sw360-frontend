@@ -57,9 +57,13 @@ const SPDXDocument = ({ releaseId }: Props) => {
         OtherLicensingInformationDetected[]
     >([])
 
-    const [relationshipsBetweenSPDXElements, setRelationshipsBetweenSPDXElements] =
-        useState<RelationshipsBetweenSPDXElements>()
-    const [indexRelationShip, setIndexRelationShip] = useState<Array<RelationshipsBetweenSPDXElements>>()
+    const [indexRelation, setIndexRelation] = useState(0)
+    const [relationshipsBetweenSPDXElementSPDXs, setRelationshipsBetweenSPDXElementSPDXs] = useState<
+        RelationshipsBetweenSPDXElements[]
+    >([])
+    const [relationshipsBetweenSPDXElementPackages, setRelationshipsBetweenSPDXElementPackages] = useState<
+        RelationshipsBetweenSPDXElements[]
+    >([])
 
     const [annotations, setAnnotations] = useState<Annotations>()
     const [indexAnnotations, setIndexAnnotations] = useState<Array<Annotations>>()
@@ -123,8 +127,12 @@ const SPDXDocument = ({ releaseId }: Props) => {
                     if (
                         !CommonUtils.isNullEmptyOrUndefinedArray(release._embedded['sw360:spdxDocument'].relationships)
                     ) {
-                        setRelationshipsBetweenSPDXElements(release._embedded['sw360:spdxDocument'].relationships[0])
-                        setIndexRelationShip(release._embedded['sw360:spdxDocument'].relationships)
+                        setRelationshipsBetweenSPDXElementSPDXs(
+                            release._embedded['sw360:spdxDocument'].relationships.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )
+                        )
+                        setIndexRelation(0)
                     }
                     //Annotations
                     if (!CommonUtils.isNullEmptyOrUndefinedArray(release._embedded['sw360:spdxDocument'].annotations)) {
@@ -157,6 +165,18 @@ const SPDXDocument = ({ releaseId }: Props) => {
                     !CommonUtils.isNullOrUndefined(release._embedded['sw360:packageInformation'])
                 ) {
                     setPackageInformation(release._embedded['sw360:packageInformation'])
+                    if (
+                        !CommonUtils.isNullEmptyOrUndefinedArray(
+                            release._embedded['sw360:packageInformation'].relationships
+                        )
+                    ) {
+                        setIndexRelation(0)
+                        setRelationshipsBetweenSPDXElementPackages(
+                            release._embedded['sw360:packageInformation'].relationships.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )
+                        )
+                    }
                     if (
                         !CommonUtils.isNullEmptyOrUndefinedArray(
                             release._embedded['sw360:packageInformation'].externalRefs
@@ -228,12 +248,12 @@ const SPDXDocument = ({ releaseId }: Props) => {
                         otherLicensingInformationDetecteds={otherLicensingInformationDetecteds}
                     />
                     <RelationshipbetweenSPDXElementsInformation
-                        spdxDocument={spdxDocument}
-                        packageInformation={packageInformation}
-                        relationshipsBetweenSPDXElements={relationshipsBetweenSPDXElements}
-                        setRelationshipsBetweenSPDXElements={setRelationshipsBetweenSPDXElements}
-                        indexRelationShip={indexRelationShip}
-                        setIndexRelationShip={setIndexRelationShip}
+                        indexRelation={indexRelation}
+                        setIndexRelation={setIndexRelation}
+                        relationshipsBetweenSPDXElementSPDXs={relationshipsBetweenSPDXElementSPDXs}
+                        setRelationshipsBetweenSPDXElementSPDXs={setRelationshipsBetweenSPDXElementSPDXs}
+                        relationshipsBetweenSPDXElementPackages={relationshipsBetweenSPDXElementPackages}
+                        setRelationshipsBetweenSPDXElementPackages={setRelationshipsBetweenSPDXElementPackages}
                     />
                     <AnnotationInformation
                         spdxDocument={spdxDocument}

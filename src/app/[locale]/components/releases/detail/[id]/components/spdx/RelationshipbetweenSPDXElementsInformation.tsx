@@ -9,62 +9,56 @@
 // License-Filename: LICENSE
 
 'use client'
-import { PackageInformation, RelationshipsBetweenSPDXElements, SPDXDocument } from '@/object-types'
+import { RelationshipsBetweenSPDXElements } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
 import { useState } from 'react'
 import styles from '../../detail.module.css'
 
 interface Props {
-    spdxDocument?: SPDXDocument
-    packageInformation?: PackageInformation
-    relationshipsBetweenSPDXElements?: RelationshipsBetweenSPDXElements
-    setRelationshipsBetweenSPDXElements?: React.Dispatch<React.SetStateAction<RelationshipsBetweenSPDXElements>>
-    indexRelationShip?: Array<RelationshipsBetweenSPDXElements>
-    setIndexRelationShip?: React.Dispatch<React.SetStateAction<Array<RelationshipsBetweenSPDXElements>>>
+    indexRelation?: number
+    setIndexRelation?: React.Dispatch<React.SetStateAction<number>>
+    relationshipsBetweenSPDXElementSPDXs: RelationshipsBetweenSPDXElements[]
+    setRelationshipsBetweenSPDXElementSPDXs: React.Dispatch<React.SetStateAction<RelationshipsBetweenSPDXElements[]>>
+    relationshipsBetweenSPDXElementPackages: RelationshipsBetweenSPDXElements[]
+    setRelationshipsBetweenSPDXElementPackages: React.Dispatch<React.SetStateAction<RelationshipsBetweenSPDXElements[]>>
 }
 
 const RelationshipbetweenSPDXElementsInformation = ({
-    spdxDocument,
-    packageInformation,
-    relationshipsBetweenSPDXElements,
-    setRelationshipsBetweenSPDXElements,
-    indexRelationShip,
-    setIndexRelationShip,
+    indexRelation,
+    setIndexRelation,
+    relationshipsBetweenSPDXElementSPDXs,
+    setRelationshipsBetweenSPDXElementSPDXs,
+    relationshipsBetweenSPDXElementPackages,
+    setRelationshipsBetweenSPDXElementPackages,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [isSourceSPDXDocument, setIsSourceSPDXDocument] = useState<boolean>(true)
-    const [index, setIndex] = useState(0)
+    // const [index, setIndex] = useState(0)
 
     const changeRelationshipSource = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDoucument') {
             setIsSourceSPDXDocument(true)
-
-            if (!CommonUtils.isNullEmptyOrUndefinedArray(spdxDocument.relationships)) {
-                setIndexRelationShip(spdxDocument.relationships)
-                setRelationshipsBetweenSPDXElements(spdxDocument.relationships[index])
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementSPDXs)) {
+                setIndexRelation(0)
+                setRelationshipsBetweenSPDXElementSPDXs(relationshipsBetweenSPDXElementSPDXs)
             } else {
-                setIndexRelationShip([])
-                setRelationshipsBetweenSPDXElements(null)
+                setRelationshipsBetweenSPDXElementSPDXs([])
             }
         } else if (relationshipType === 'package') {
             setIsSourceSPDXDocument(false)
-            if (!CommonUtils.isNullEmptyOrUndefinedArray(packageInformation.relationships)) {
-                setIndexRelationShip(packageInformation.relationships)
-                setRelationshipsBetweenSPDXElements(packageInformation.relationships[index])
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementPackages)) {
+                setRelationshipsBetweenSPDXElementPackages(relationshipsBetweenSPDXElementPackages)
+                setIndexRelation(0)
             } else {
-                setIndexRelationShip([])
-                setRelationshipsBetweenSPDXElements(null)
+                setRelationshipsBetweenSPDXElementPackages([])
             }
         }
     }
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setIndex(parseInt(index))
-        isSourceSPDXDocument
-            ? setRelationshipsBetweenSPDXElements(spdxDocument.relationships[parseInt(index)])
-            : setRelationshipsBetweenSPDXElements(packageInformation.relationships[parseInt(index)])
+        setIndexRelation(parseInt(index))
     }
 
     return (
@@ -101,60 +95,87 @@ const RelationshipbetweenSPDXElementsInformation = ({
                             className='spdx-col-2'
                             onChange={displayIndex}
                             style={{ width: '988px' }}
-                            disabled={CommonUtils.isNullEmptyOrUndefinedArray(indexRelationShip)}
+                            disabled={
+                                isSourceSPDXDocument
+                                    ? CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementSPDXs)
+                                    : CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementPackages)
+                            }
                         >
-                            {indexRelationShip &&
-                                indexRelationShip
-                                    .toSorted((e1, e2) => e1.index - e2.index)
-                                    .map((item) => (
-                                        <option key={item.index} value={item.index}>
-                                            {item.index + 1}
-                                        </option>
-                                    ))}
+                            {isSourceSPDXDocument
+                                ? relationshipsBetweenSPDXElementSPDXs.map((item) => (
+                                      <option key={item.index} value={item.index}>
+                                          {item.index + 1}
+                                      </option>
+                                  ))
+                                : relationshipsBetweenSPDXElementPackages.map((item) => (
+                                      <option key={item.index} value={item.index}>
+                                          {item.index + 1}
+                                      </option>
+                                  ))}
                         </select>
                     </td>
                 </tr>
-                {relationshipsBetweenSPDXElements && (
+
+                {(isSourceSPDXDocument
+                    ? relationshipsBetweenSPDXElementSPDXs[indexRelation]
+                    : relationshipsBetweenSPDXElementPackages[indexRelation]) && (
                     <>
-                        <tr className='relationship-document' data-index={relationshipsBetweenSPDXElements.index}>
+                        <tr className='relationship-document'>
                             <td>11.1 Relationship</td>
                             <td>
                                 <div className='spdx-col-2 spdx-flex-col'>
                                     <div className='spdx-flex-row'>
                                         <div className='spdx-col-1 '>
-                                            {relationshipsBetweenSPDXElements.spdxElementId}
+                                            {isSourceSPDXDocument
+                                                ? relationshipsBetweenSPDXElementSPDXs[indexRelation]?.spdxElementId
+                                                : relationshipsBetweenSPDXElementPackages[indexRelation]
+                                                      ?.spdxElementId ?? ''}
                                         </div>
                                         <div className='spdx-col-1 spdx-flex-row'>
-                                            {relationshipsBetweenSPDXElements.relationshipType.replace(
-                                                'relationshipType_',
-                                                ''
-                                            )}
+                                            {isSourceSPDXDocument
+                                                ? relationshipsBetweenSPDXElementSPDXs[indexRelation]?.relationshipType
+                                                : relationshipsBetweenSPDXElementPackages[
+                                                      indexRelation
+                                                  ]?.relationshipType.replace('relationshipType_', '') ?? ''}
                                         </div>
                                         <div className='spdx-col-3'>
-                                            {relationshipsBetweenSPDXElements.relatedSpdxElement}
+                                            {isSourceSPDXDocument
+                                                ? relationshipsBetweenSPDXElementSPDXs[indexRelation]
+                                                      ?.relatedSpdxElement
+                                                : relationshipsBetweenSPDXElementPackages[indexRelation]
+                                                      ?.relatedSpdxElement ?? ''}
                                         </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        <tr className='relationship-document' data-index={relationshipsBetweenSPDXElements.index}>
+                        <tr className='relationship-document'>
                             <td>11.2 Relationship comment</td>
                             <td>
-                                <p
-                                    className='spdx-col-2 '
-                                    id={`relationshipComment-${relationshipsBetweenSPDXElements.index}`}
-                                >
-                                    {relationshipsBetweenSPDXElements?.relationshipComment
-                                        .trim()
-                                        .split('\n')
-                                        .map((item) => {
-                                            return (
-                                                <>
-                                                    {item}
-                                                    <br></br>
-                                                </>
-                                            )
-                                        })}
+                                <p className='spdx-col-2'>
+                                    {isSourceSPDXDocument
+                                        ? relationshipsBetweenSPDXElementSPDXs[indexRelation]?.relationshipComment
+                                              .trim()
+                                              .split('\n')
+                                              .map((item) => {
+                                                  return (
+                                                      <>
+                                                          {item}
+                                                          <br></br>
+                                                      </>
+                                                  )
+                                              })
+                                        : relationshipsBetweenSPDXElementPackages[indexRelation]?.relationshipComment
+                                              .trim()
+                                              .split('\n')
+                                              .map((item) => {
+                                                  return (
+                                                      <>
+                                                          {item}
+                                                          <br></br>
+                                                      </>
+                                                  )
+                                              }) ?? ''}
                                 </p>
                             </td>
                         </tr>
