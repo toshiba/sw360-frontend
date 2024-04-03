@@ -447,7 +447,8 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                                             onChange={updateField}
                                             value={
                                                 isSourceSPDXDocument
-                                                    ? relationshipsBetweenSPDXElementSPDXs[indexRelation]?.spdxElementId
+                                                    ? relationshipsBetweenSPDXElementSPDXs[indexRelation]
+                                                          ?.spdxElementId ?? ''
                                                     : relationshipsBetweenSPDXElementPackages[indexRelation]
                                                           ?.spdxElementId ?? ''
                                             }
@@ -461,7 +462,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                                             value={
                                                 isSourceSPDXDocument
                                                     ? relationshipsBetweenSPDXElementSPDXs[indexRelation]
-                                                          ?.relationshipType
+                                                          ?.relationshipType ?? ''
                                                     : relationshipsBetweenSPDXElementPackages[indexRelation]
                                                           ?.relationshipType ?? ''
                                             }
@@ -483,7 +484,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                                             value={
                                                 isSourceSPDXDocument
                                                     ? relationshipsBetweenSPDXElementSPDXs[indexRelation]
-                                                          ?.relatedSpdxElement
+                                                          ?.relatedSpdxElement ?? ''
                                                     : relationshipsBetweenSPDXElementPackages[indexRelation]
                                                           ?.relatedSpdxElement ?? ''
                                             }
@@ -508,7 +509,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                                         value={
                                             isSourceSPDXDocument
                                                 ? relationshipsBetweenSPDXElementSPDXs[indexRelation]
-                                                      ?.relationshipComment
+                                                      ?.relationshipComment ?? ''
                                                 : relationshipsBetweenSPDXElementPackages[indexRelation]
                                                       ?.relationshipComment ?? ''
                                         }

@@ -589,7 +589,7 @@ const EditAnnotationInformation = ({
                                                 onChange={updateField}
                                                 value={
                                                     isSourceSPDXDocument
-                                                        ? annotationsSPDXs[indexAnnotations]?.annotationType
+                                                        ? annotationsSPDXs[indexAnnotations]?.annotationType ?? ''
                                                         : annotationsPackages[indexAnnotations]?.annotationType ?? ''
                                                 }
                                             />
@@ -607,7 +607,7 @@ const EditAnnotationInformation = ({
                                                 onChange={updateField}
                                                 value={
                                                     isSourceSPDXDocument
-                                                        ? annotationsSPDXs[indexAnnotations]?.spdxIdRef
+                                                        ? annotationsSPDXs[indexAnnotations]?.spdxIdRef ?? ''
                                                         : annotationsPackages[indexAnnotations]?.spdxIdRef ?? ''
                                                 }
                                             />
@@ -630,7 +630,7 @@ const EditAnnotationInformation = ({
                                             onChange={updateField}
                                             value={
                                                 isSourceSPDXDocument
-                                                    ? annotationsSPDXs[indexAnnotations]?.annotationComment
+                                                    ? annotationsSPDXs[indexAnnotations]?.annotationComment ?? ''
                                                     : annotationsPackages[indexAnnotations]?.annotationComment ?? ''
                                             }
                                         ></textarea>

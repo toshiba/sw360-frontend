@@ -65,8 +65,9 @@ const SPDXDocument = ({ releaseId }: Props) => {
         RelationshipsBetweenSPDXElements[]
     >([])
 
-    const [annotations, setAnnotations] = useState<Annotations>()
-    const [indexAnnotations, setIndexAnnotations] = useState<Array<Annotations>>()
+    const [indexAnnotations, setIndexAnnotations] = useState(0)
+    const [annotationsSPDXs, setAnnotationsSPDXs] = useState<Annotations[]>([])
+    const [annotationsPackages, setAnnotationsPackages] = useState<Annotations[]>([])
 
     const [isModeFull, setIsModeFull] = useState(true)
 
@@ -136,8 +137,12 @@ const SPDXDocument = ({ releaseId }: Props) => {
                     }
                     //Annotations
                     if (!CommonUtils.isNullEmptyOrUndefinedArray(release._embedded['sw360:spdxDocument'].annotations)) {
-                        setAnnotations(release._embedded['sw360:spdxDocument'].annotations[0])
-                        setIndexAnnotations(release._embedded['sw360:spdxDocument'].annotations)
+                        setIndexAnnotations(0)
+                        setAnnotationsSPDXs(
+                            release._embedded['sw360:spdxDocument'].annotations.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )
+                        )
                     }
                 }
 
@@ -173,6 +178,18 @@ const SPDXDocument = ({ releaseId }: Props) => {
                         setIndexRelation(0)
                         setRelationshipsBetweenSPDXElementPackages(
                             release._embedded['sw360:packageInformation'].relationships.toSorted(
+                                (e1, e2) => e1.index - e2.index
+                            )
+                        )
+                    }
+                    if (
+                        !CommonUtils.isNullEmptyOrUndefinedArray(
+                            release._embedded['sw360:packageInformation'].annotations
+                        )
+                    ) {
+                        setIndexAnnotations(0)
+                        setAnnotationsPackages(
+                            release._embedded['sw360:packageInformation'].annotations.toSorted(
                                 (e1, e2) => e1.index - e2.index
                             )
                         )
@@ -256,12 +273,12 @@ const SPDXDocument = ({ releaseId }: Props) => {
                         setRelationshipsBetweenSPDXElementPackages={setRelationshipsBetweenSPDXElementPackages}
                     />
                     <AnnotationInformation
-                        spdxDocument={spdxDocument}
-                        packageInformation={packageInformation}
-                        annotations={annotations}
-                        setAnnotations={setAnnotations}
                         indexAnnotations={indexAnnotations}
                         setIndexAnnotations={setIndexAnnotations}
+                        annotationsSPDXs={annotationsSPDXs}
+                        setAnnotationsSPDXs={setAnnotationsSPDXs}
+                        annotationsPackages={annotationsPackages}
+                        setAnnotationsPackages={setAnnotationsPackages}
                     />
                 </div>
             ) : (

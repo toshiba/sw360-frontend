@@ -9,61 +9,55 @@
 // License-Filename: LICENSE
 
 'use client'
-import { Annotations, PackageInformation, SPDXDocument } from '@/object-types'
+import { Annotations } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
 import { useState } from 'react'
 import styles from '../../detail.module.css'
 
 interface Props {
-    spdxDocument?: SPDXDocument
-    packageInformation?: PackageInformation
-    annotations?: Annotations
-    setAnnotations?: React.Dispatch<React.SetStateAction<Annotations>>
-    indexAnnotations?: Array<Annotations>
-    setIndexAnnotations?: React.Dispatch<React.SetStateAction<Array<Annotations>>>
+    indexAnnotations?: number
+    setIndexAnnotations?: React.Dispatch<React.SetStateAction<number>>
+    annotationsSPDXs?: Annotations[]
+    setAnnotationsSPDXs?: React.Dispatch<React.SetStateAction<Annotations[]>>
+    annotationsPackages?: Annotations[]
+    setAnnotationsPackages?: React.Dispatch<React.SetStateAction<Annotations[]>>
 }
 
 const AnnotationInformation = ({
-    spdxDocument,
-    packageInformation,
-    annotations,
-    setAnnotations,
     indexAnnotations,
     setIndexAnnotations,
+    annotationsSPDXs,
+    setAnnotationsSPDXs,
+    annotationsPackages,
+    setAnnotationsPackages,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [isSourceSPDXDocument, setIsSourceSPDXDocument] = useState<boolean>(true)
-    const [index, setIndex] = useState(0)
 
     const changeAnnotationSource = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDoucument') {
             setIsSourceSPDXDocument(true)
-            if (!CommonUtils.isNullEmptyOrUndefinedArray(spdxDocument.annotations)) {
-                setIndexAnnotations(spdxDocument.annotations)
-                setAnnotations(spdxDocument.annotations[index])
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsSPDXs)) {
+                setIndexAnnotations(0)
+                setAnnotationsSPDXs(annotationsSPDXs)
             } else {
-                setIndexAnnotations([])
-                setAnnotations(null)
+                setAnnotationsSPDXs([])
             }
         } else if (relationshipType === 'package') {
             setIsSourceSPDXDocument(false)
-            if (!CommonUtils.isNullEmptyOrUndefinedArray(packageInformation.annotations)) {
-                setIndexAnnotations(packageInformation.annotations)
-                setAnnotations(packageInformation.annotations[index])
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
+                setAnnotationsPackages(annotationsPackages)
+                setIndexAnnotations(0)
             } else {
-                setIndexAnnotations([])
-                setAnnotations(null)
+                setAnnotationsPackages([])
             }
         }
     }
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
-        setIndex(parseInt(index))
-        isSourceSPDXDocument
-            ? setAnnotations(spdxDocument.annotations[parseInt(index)])
-            : setAnnotations(packageInformation.annotations[parseInt(index)])
+        setIndexAnnotations(parseInt(index))
     }
 
     return (
@@ -101,64 +95,100 @@ const AnnotationInformation = ({
                             className='spdx-col-2'
                             onChange={displayIndex}
                             style={{ width: '988px' }}
-                            disabled={CommonUtils.isNullEmptyOrUndefinedArray(indexAnnotations)}
+                            disabled={
+                                isSourceSPDXDocument
+                                    ? CommonUtils.isNullEmptyOrUndefinedArray(annotationsSPDXs)
+                                    : CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)
+                            }
                         >
-                            {indexAnnotations &&
-                                indexAnnotations
-                                    .toSorted((e1, e2) => e1.index - e2.index)
-                                    .map((item) => (
-                                        <option key={item.index} value={item.index}>
-                                            {item.index + 1}
-                                        </option>
-                                    ))}
+                            {isSourceSPDXDocument
+                                ? annotationsSPDXs.map((item) => (
+                                      <option key={item.index} value={item.index}>
+                                          {item.index + 1}
+                                      </option>
+                                  ))
+                                : annotationsPackages.map((item) => (
+                                      <option key={item.index} value={item.index}>
+                                          {item.index + 1}
+                                      </option>
+                                  ))}
                         </select>
                     </td>
                 </tr>
-                {annotations && (
+
+                {(isSourceSPDXDocument
+                    ? annotationsSPDXs[indexAnnotations]
+                    : annotationsPackages[indexAnnotations]) && (
                     <>
-                        <tr className='annotation-document' data-index={annotations.index}>
+                        <tr className='annotation-document'>
                             <td>12.1 Annotator</td>
                             <td>
-                                <p className='spdx-col-2 '>{annotations.annotator}</p>
-                            </td>
-                        </tr>
-                        <tr className='annotation-document' data-index={annotations.index}>
-                            <td>12.2 Annotation date</td>
-                            <td>
-                                <p className='spdx-col-2 ' id='annotation-document-date-${loop.count}'>
-                                    {annotations.annotationDate}
+                                <p className='spdx-col-2 '>
+                                    {isSourceSPDXDocument
+                                        ? annotationsSPDXs[indexAnnotations]?.annotator
+                                        : annotationsPackages[indexAnnotations]?.annotator ?? ''}
                                 </p>
                             </td>
                         </tr>
-                        <tr className='annotation-document' data-index={annotations.index}>
+                        <tr className='annotation-document'>
+                            <td>12.2 Annotation date</td>
+                            <td>
+                                <p className='spdx-col-2 ' id='annotation-document-date-${loop.count}'>
+                                    {isSourceSPDXDocument
+                                        ? annotationsSPDXs[indexAnnotations]?.annotationDate
+                                        : annotationsPackages[indexAnnotations]?.annotationDate ?? ''}
+                                </p>
+                            </td>
+                        </tr>
+                        <tr className='annotation-document'>
                             <td>12.3 Annotation type</td>
                             <td>
                                 <div className='spdx-col-2'>
                                     <div className='spdx-flex-row'>
-                                        <div className='spdx-col-3'>{annotations.annotationType}</div>
+                                        <div className='spdx-col-3'>
+                                            {isSourceSPDXDocument
+                                                ? annotationsSPDXs[indexAnnotations]?.annotationType
+                                                : annotationsPackages[indexAnnotations]?.annotationType ?? ''}
+                                        </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        <tr className='annotation-document' data-index={annotations.index}>
+                        <tr className='annotation-document'>
                             <td>12.4 SPDX identifier reference</td>
-                            <td>{annotations.spdxIdRef}</td>
+                            <td>
+                                {isSourceSPDXDocument
+                                    ? annotationsSPDXs[indexAnnotations]?.spdxIdRef
+                                    : annotationsPackages[indexAnnotations]?.spdxIdRef ?? ''}
+                            </td>
                         </tr>
-                        <tr className='annotation-document' data-index={annotations.index}>
+                        <tr className='annotation-document'>
                             <td>12.5 Annotation comment</td>
                             <td>
                                 <p className='spdx-col-2 ' id='documentAnnotationComment-${annotations.index}'>
-                                    {annotations?.annotationComment
-                                        .trim()
-                                        .split('\n')
-                                        .map((item) => {
-                                            return (
-                                                <>
-                                                    {item}
-                                                    <br></br>
-                                                </>
-                                            )
-                                        })}
+                                    {isSourceSPDXDocument
+                                        ? annotationsSPDXs[indexAnnotations]?.annotationComment
+                                              .trim()
+                                              .split('\n')
+                                              .map((item) => {
+                                                  return (
+                                                      <>
+                                                          {item}
+                                                          <br></br>
+                                                      </>
+                                                  )
+                                              })
+                                        : annotationsPackages[indexAnnotations]?.annotationComment
+                                              .trim()
+                                              .split('\n')
+                                              .map((item) => {
+                                                  return (
+                                                      <>
+                                                          {item}
+                                                          <br></br>
+                                                      </>
+                                                  )
+                                              }) ?? ''}
                                 </p>
                             </td>
                         </tr>

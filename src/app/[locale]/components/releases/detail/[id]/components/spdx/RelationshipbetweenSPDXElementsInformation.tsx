@@ -33,7 +33,6 @@ const RelationshipbetweenSPDXElementsInformation = ({
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [isSourceSPDXDocument, setIsSourceSPDXDocument] = useState<boolean>(true)
-    // const [index, setIndex] = useState(0)
 
     const changeRelationshipSource = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const relationshipType: string = e.target.value
