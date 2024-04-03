@@ -61,14 +61,14 @@ function PackageConcludedLicense({
                             className='spdx-radio'
                             id='licenseConcludedExist'
                             type='radio'
-                            name='_sw360_portlet_components_LICENSE_CONCLUDED'
+                            name='licenseConcludedExist'
                             value='EXIST'
                             onClick={selectConcludedLicenseExist}
                             checked={concludedLicenseExist}
                         />
                         <input
                             style={{ flex: 6, marginRight: '1rem' }}
-                            id='spdxConcludedLicenseValue'
+                            id='licenseConcluded'
                             className='form-control'
                             type='text'
                             name='licenseConcluded'
@@ -83,7 +83,7 @@ function PackageConcludedLicense({
                             className='spdx-radio'
                             id='licenseConcludedNone'
                             type='radio'
-                            name='_sw360_portlet_components_LICENSE_CONCLUDED'
+                            name='licenseConcludedNone'
                             value='NONE'
                             onChange={selectConcludedLicenseNone}
                             checked={concludedLicenseNone}
@@ -91,7 +91,7 @@ function PackageConcludedLicense({
                         <label
                             style={{ marginRight: '2rem' }}
                             className='form-check-label radio-label lableSPDX'
-                            htmlFor='spdxConcludedLicenseNone'
+                            htmlFor='licenseConcludedNone'
                         >
                             NONE
                         </label>
@@ -99,7 +99,7 @@ function PackageConcludedLicense({
                             className='spdx-radio'
                             id='licenseConcludedNoAssertion'
                             type='radio'
-                            name='_sw360_portlet_components_LICENSE_CONCLUDED'
+                            name='licenseConcludedNoAssertion'
                             value='NOASSERTION'
                             onChange={selectConcludedLicenseNoasserttion}
                             checked={concludedLicenseNoasserttion}

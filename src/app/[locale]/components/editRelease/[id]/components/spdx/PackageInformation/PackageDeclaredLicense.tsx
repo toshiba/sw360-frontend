@@ -62,14 +62,14 @@ function PackageDeclaredLicense({
                             className='spdx-radio'
                             id='licenseDeclaredExist'
                             type='radio'
-                            name='_sw360_portlet_components_DECLARED_LICENSE'
+                            name='licenseDeclaredExist'
                             value='EXIST'
                             onClick={selectDeclaredLicenseExist}
                             checked={declaredLicenseExist}
                         />
                         <input
                             style={{ flex: 6, marginRight: '1rem' }}
-                            id='spdxConcludedLicenseValue'
+                            id='licenseDeclared'
                             className='form-control'
                             type='text'
                             name='licenseDeclared'
@@ -92,7 +92,7 @@ function PackageDeclaredLicense({
                         <label
                             style={{ marginRight: '2rem' }}
                             className='form-check-label radio-label lableSPDX'
-                            htmlFor='spdxConcludedLicenseNone'
+                            htmlFor='licenseDeclaredNone'
                         >
                             NONE
                         </label>
@@ -100,7 +100,7 @@ function PackageDeclaredLicense({
                             className='spdx-radio'
                             id='licenseDeclaredNoAssertion'
                             type='radio'
-                            name='_sw360_portlet_components_DECLARED_LICENSE'
+                            name='licenseDeclaredNoAssertion'
                             value='NOASSERTION'
                             onChange={selectDeclaredLicenseNoasserttion}
                             checked={declaredLicenseNoasserttion}

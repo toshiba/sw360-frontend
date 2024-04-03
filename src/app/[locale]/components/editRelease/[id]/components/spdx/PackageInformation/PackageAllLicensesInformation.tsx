@@ -43,17 +43,17 @@ function PackageAllLicensesInformation({
         setAllLicensesInformationExist(false)
         setAllLicensesInformationNone(true)
         setAllLicensesInformationNoasserttion(false)
-        setAllLicensesInformationToPackage(e.target.value)
+        setAllLicensesInformationToPackage(e.target.value.split('\n'))
     }
     const selectAllLicensesInformationNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAllLicensesInformationExist(false)
         setAllLicensesInformationNone(false)
         setAllLicensesInformationNoasserttion(true)
-        setAllLicensesInformationToPackage(e.target.value)
+        setAllLicensesInformationToPackage(e.target.value.split('\n'))
     }
 
     const updateField = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setAllLicensesInformationToPackage(e.target.value)
+        setAllLicensesInformationToPackage(e.target.value.split('\n'))
     }
     return (
         <td colSpan={3}>
@@ -65,7 +65,7 @@ function PackageAllLicensesInformation({
                             className='spdx-radio'
                             id='licenseInfoFromFilesExist'
                             type='radio'
-                            name='licenseInfoFromFiles'
+                            name='licenseInfoFromFilesExist'
                             value='EXIST'
                             onClick={selectAllLicensesInformationExist}
                             checked={allLicensesInformationExist}
@@ -90,9 +90,9 @@ function PackageAllLicensesInformation({
                     <div style={{ flex: 2 }}>
                         <input
                             className='spdx-radio'
-                            id='licenseInfoFromFilesNone'
+                            id='licenseInfoInFileNone'
                             type='radio'
-                            name='licenseInfoFromFiles'
+                            name='licenseInfoInFileNone'
                             value='NONE'
                             onChange={selectAllLicensesInformationNone}
                             checked={allLicensesInformationNone}
@@ -109,7 +109,7 @@ function PackageAllLicensesInformation({
                             className='spdx-radio'
                             id='licenseInfoFromFilesNoAssertion'
                             type='radio'
-                            name='licenseInfoFromFiles'
+                            name='licenseInfoFromFilesNoAssertion'
                             value='NOASSERTION'
                             onChange={selectAllLicensesInformationNoasserttion}
                             checked={allLicensesInformationNoasserttion}

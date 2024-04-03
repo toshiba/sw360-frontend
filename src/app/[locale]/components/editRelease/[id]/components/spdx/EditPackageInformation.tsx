@@ -362,17 +362,21 @@ const EditPackageInformation = ({
     const [allLicensesInformationNone, setAllLicensesInformationNone] = useState(false)
     const [allLicensesInformationNoasserttion, setAllLicensesInformationNoasserttion] = useState(false)
 
-    const setAllLicensesInformationToPackage = (data: string) => {
-        setAllLicensesInformation(CommonUtils.isNullEmptyOrUndefinedString(data) ? [] : data?.split('\n'))
+    const setAllLicensesInformationToPackage = (data: string[]) => {
+        // setAllLicensesInformation(CommonUtils.isNullEmptyOrUndefinedString(data) ? [] : data?.split('\n'))
+        console.log(concludedLicenseExist)
+        console.log(concludedLicenseNone)
+        console.log(concludedLicenseNoasserttion)
+        console.log(data)
         setPackageInformation({
             ...packageInformation,
-            licenseInfoFromFiles: CommonUtils.isNullEmptyOrUndefinedString(data) ? [] : data?.split('\n'),
+            licenseInfoFromFiles: data,
         })
         setSPDXPayload({
             ...SPDXPayload,
             packageInformation: {
                 ...SPDXPayload.packageInformation,
-                licenseInfoFromFiles: CommonUtils.isNullEmptyOrUndefinedString(data) ? [] : data?.split('\n'),
+                licenseInfoFromFiles: data,
             },
         })
     }
