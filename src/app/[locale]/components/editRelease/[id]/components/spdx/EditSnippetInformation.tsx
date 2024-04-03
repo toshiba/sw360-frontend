@@ -344,12 +344,12 @@ const EditSnippetInformation = ({
     const [licenseInfoInSnippetsNone, setLicenseInfoInSnippetsNone] = useState(false)
     const [licenseInfoInSnippetsNoasserttion, setLicenseInfoInSnippetsNoasserttion] = useState(false)
 
-    const setAllLicensesInformationToSnippet = (data: string[]) => {
+    const setAllLicensesInformationToSnippet = (data: string) => {
         const snippets: SnippetInformation[] = snippetInformations.map((snippet, index) => {
             if (index === indexSnippetInformation) {
                 return {
                     ...snippet,
-                    licenseInfoInSnippets: data,
+                    licenseInfoInSnippets: CommonUtils.isNullEmptyOrUndefinedString(data) ? [] : data?.split('\n'),
                 }
             }
             return snippet

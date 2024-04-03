@@ -53,39 +53,93 @@ const EditOtherLicensingInformationDetected = ({
     const [isAdd, setIsAdd] = useState(false)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const index: string = e.target.value
-        if (parseInt(index) === increIndex) {
-            setIsAdd(true)
-        } else {
-            setIncreIndex(parseInt(index))
+        if (
+            CommonUtils.isNullEmptyOrUndefinedString(
+                otherLicensingInformationDetecteds[indexOtherLicense]?.licenseId
+            ) ||
+            otherLicensingInformationDetecteds[indexOtherLicense].licenseId === 'LicenseRef-'
+        ) {
+            setErrorLicenseIdentifier(true)
         }
-        setIndexOtherLicense(parseInt(index))
-        setNumberIndex(parseInt(index))
+        if (
+            CommonUtils.isNullEmptyOrUndefinedString(
+                otherLicensingInformationDetecteds[indexOtherLicense]?.extractedText
+            )
+        ) {
+            setErrorExtractedText(true)
+        }
+        if (
+            CommonUtils.isNullEmptyOrUndefinedString(
+                otherLicensingInformationDetecteds[indexOtherLicense]?.licenseId
+            ) ||
+            otherLicensingInformationDetecteds[indexOtherLicense].licenseId === 'LicenseRef-' ||
+            CommonUtils.isNullEmptyOrUndefinedString(
+                otherLicensingInformationDetecteds[indexOtherLicense]?.extractedText
+            )
+        ) {
+            return
+        } else {
+            const index: string = e.target.value
+            if (parseInt(index) === increIndex) {
+                setIsAdd(true)
+            } else {
+                setIncreIndex(parseInt(index))
+            }
+            setIndexOtherLicense(parseInt(index))
+            setNumberIndex(parseInt(index))
+        }
     }
 
     const addOtherLicensingInformationDetecteds = () => {
-        const arrayExternals: OtherLicensingInformationDetected[] = [...otherLicensingInformationDetecteds]
-        setIncreIndex(otherLicensingInformationDetecteds.length)
-        setNumberIndex(otherLicensingInformationDetecteds.length)
-        setIsAdd(true)
-        const otherLicensingInformationDetected: OtherLicensingInformationDetected = {
-            licenseId: '', // 10.1
-            extractedText: '', // 10.2
-            licenseName: '', // 10.3
-            licenseCrossRefs: [], // 10.4
-            licenseComment: '', // 10.5
-            index: otherLicensingInformationDetecteds.length,
+        if (
+            (CommonUtils.isNullEmptyOrUndefinedString(
+                otherLicensingInformationDetecteds[indexOtherLicense]?.licenseId
+            ) ||
+                otherLicensingInformationDetecteds[indexOtherLicense].licenseId === 'LicenseRef-' ||
+                CommonUtils.isNullEmptyOrUndefinedString(
+                    otherLicensingInformationDetecteds[indexOtherLicense]?.extractedText
+                )) &&
+            !CommonUtils.isNullEmptyOrUndefinedArray(otherLicensingInformationDetecteds)
+        ) {
+            if (
+                CommonUtils.isNullEmptyOrUndefinedString(
+                    otherLicensingInformationDetecteds[indexOtherLicense]?.licenseId
+                ) ||
+                otherLicensingInformationDetecteds[indexOtherLicense].licenseId === 'LicenseRef-'
+            ) {
+                setErrorLicenseIdentifier(true)
+            }
+            if (
+                CommonUtils.isNullEmptyOrUndefinedString(
+                    otherLicensingInformationDetecteds[indexOtherLicense]?.extractedText
+                )
+            ) {
+                setErrorExtractedText(true)
+            }
+        } else {
+            const arrayExternals: OtherLicensingInformationDetected[] = [...otherLicensingInformationDetecteds]
+            setIncreIndex(otherLicensingInformationDetecteds.length)
+            setNumberIndex(otherLicensingInformationDetecteds.length)
+            setIsAdd(true)
+            const otherLicensingInformationDetected: OtherLicensingInformationDetected = {
+                licenseId: '', // 10.1
+                extractedText: '', // 10.2
+                licenseName: '', // 10.3
+                licenseCrossRefs: [], // 10.4
+                licenseComment: '', // 10.5
+                index: otherLicensingInformationDetecteds.length,
+            }
+            setIndexOtherLicense(otherLicensingInformationDetecteds.length)
+            arrayExternals.push(otherLicensingInformationDetected)
+            setOtherLicensingInformationDetecteds(arrayExternals)
+            setSPDXPayload({
+                ...SPDXPayload,
+                spdxDocument: {
+                    ...SPDXPayload.spdxDocument,
+                    otherLicensingInformationDetecteds: arrayExternals,
+                },
+            })
         }
-        setIndexOtherLicense(otherLicensingInformationDetecteds.length)
-        arrayExternals.push(otherLicensingInformationDetected)
-        setOtherLicensingInformationDetecteds(arrayExternals)
-        setSPDXPayload({
-            ...SPDXPayload,
-            spdxDocument: {
-                ...SPDXPayload.spdxDocument,
-                otherLicensingInformationDetecteds: arrayExternals,
-            },
-        })
     }
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
@@ -118,33 +172,18 @@ const EditOtherLicensingInformationDetected = ({
     const updateFieldLicenseCrossRefs = (
         e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
     ) => {
-        if (e.target.name === 'extractedText') {
-            setErrorExtractedText(false)
-        }
-
         const otherLicensings: OtherLicensingInformationDetected[] = otherLicensingInformationDetecteds.map(
             (otherLicensing, index) => {
                 if (index === indexOtherLicense) {
                     return {
                         ...otherLicensing,
-                        [e.target.name]:
-                            e.target.name === 'licenseCrossRefs' ? e.target.value.split('\n') : e.target.value,
+                        [e.target.name]: e.target.value.split('\n'),
                     }
                 }
                 return otherLicensing
             }
         )
-        setOtherLicensingInformationDetecteds(
-            otherLicensingInformationDetecteds.map((otherLicensing, index) => {
-                if (index === indexOtherLicense) {
-                    return {
-                        ...otherLicensing,
-                        [e.target.name]: e.target.value,
-                    }
-                }
-                return otherLicensing
-            })
-        )
+        setOtherLicensingInformationDetecteds(otherLicensings)
         setSPDXPayload({
             ...SPDXPayload,
             spdxDocument: {
@@ -406,8 +445,9 @@ const EditOtherLicensingInformationDetected = ({
                                             name='licenseCrossRefs'
                                             onChange={updateFieldLicenseCrossRefs}
                                             value={
-                                                otherLicensingInformationDetecteds[indexOtherLicense]
-                                                    .licenseCrossRefs ?? ''
+                                                otherLicensingInformationDetecteds[indexOtherLicense].licenseCrossRefs
+                                                    ?.toString()
+                                                    .replaceAll(',', '\n') ?? ''
                                             }
                                         ></textarea>
                                     </div>

@@ -363,16 +363,16 @@ const EditPackageInformation = ({
     const [allLicensesInformationNoasserttion, setAllLicensesInformationNoasserttion] = useState(false)
 
     const setAllLicensesInformationToPackage = (data: string) => {
-        setAllLicensesInformation(data.split('\n'))
+        setAllLicensesInformation(CommonUtils.isNullEmptyOrUndefinedString(data) ? [] : data?.split('\n'))
         setPackageInformation({
             ...packageInformation,
-            licenseInfoFromFiles: data.split('\n'),
+            licenseInfoFromFiles: CommonUtils.isNullEmptyOrUndefinedString(data) ? [] : data?.split('\n'),
         })
         setSPDXPayload({
             ...SPDXPayload,
             packageInformation: {
                 ...SPDXPayload.packageInformation,
-                licenseInfoFromFiles: data.split('\n'),
+                licenseInfoFromFiles: CommonUtils.isNullEmptyOrUndefinedString(data) ? [] : data?.split('\n'),
             },
         })
     }
@@ -1379,7 +1379,11 @@ const EditPackageInformation = ({
                                                     name='attributionText'
                                                     onChange={updateFieldAttributionText}
                                                     placeholder='Enter package attribution text'
-                                                    value={packageInformation.attributionText ?? ''}
+                                                    value={
+                                                        packageInformation.attributionText
+                                                            ?.toString()
+                                                            .replaceAll(',', '\n') ?? ''
+                                                    }
                                                 ></textarea>
                                             </div>
                                         </div>
