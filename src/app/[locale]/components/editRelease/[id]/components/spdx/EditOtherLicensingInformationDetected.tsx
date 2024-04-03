@@ -228,6 +228,9 @@ const EditOtherLicensingInformationDetected = ({
                 (otherLicensingInformationDetected) => numberIndex != otherLicensingInformationDetected.index
             )
             setNumberIndex(indexOtherLicense)
+            for (let index = 0; index < otherLicensingInformationDetectedDatas.length; index++) {
+                otherLicensingInformationDetectedDatas[index].index = index
+            }
             setOtherLicensingInformationDetecteds(otherLicensingInformationDetectedDatas)
             setIndexOtherLicense(0)
             setIsDeleteSucces(true)
