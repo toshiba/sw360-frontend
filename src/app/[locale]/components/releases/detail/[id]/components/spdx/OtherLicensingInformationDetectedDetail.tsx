@@ -10,7 +10,6 @@
 
 'use client'
 import { OtherLicensingInformationDetected, SPDXDocument } from '@/object-types'
-import { useState } from 'react'
 import styles from '../../detail.module.css'
 
 interface Props {
@@ -19,6 +18,8 @@ interface Props {
     setIndexOtherLicense?: React.Dispatch<React.SetStateAction<number>>
     otherLicensingInformationDetecteds?: OtherLicensingInformationDetected[]
     isModeFull?: boolean
+    toggleOther?: boolean
+    setToggleOther?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const OtherLicensingInformationDetectedDetail = ({
@@ -27,9 +28,9 @@ const OtherLicensingInformationDetectedDetail = ({
     setIndexOtherLicense,
     otherLicensingInformationDetecteds,
     isModeFull,
+    toggleOther,
+    setToggleOther,
 }: Props) => {
-    const [toggle, setToggle] = useState(false)
-
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
         setIndexOtherLicense(parseInt(index))
@@ -40,14 +41,14 @@ const OtherLicensingInformationDetectedDetail = ({
             <thead
                 title='Click to expand or collapse'
                 onClick={() => {
-                    setToggle(!toggle)
+                    setToggleOther(!toggleOther)
                 }}
             >
                 <tr>
                     <th colSpan={2}>10. Other Licensing Information Detected</th>
                 </tr>
             </thead>
-            <tbody hidden={toggle}>
+            <tbody hidden={toggleOther}>
                 <tr>
                     <td className='spdx-label-index'>Index</td>
                     <td style={{ height: '50px' }}>

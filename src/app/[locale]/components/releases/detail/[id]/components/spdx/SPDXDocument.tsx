@@ -70,6 +70,7 @@ const SPDXDocument = ({ releaseId }: Props) => {
     const [annotationsPackages, setAnnotationsPackages] = useState<Annotations[]>([])
 
     const [isModeFull, setIsModeFull] = useState(true)
+    const [toggleOther, setToggleOther] = useState(false)
 
     const { data: session } = useSession()
 
@@ -258,6 +259,8 @@ const SPDXDocument = ({ releaseId }: Props) => {
                         snippetRanges={snippetRanges}
                     />
                     <OtherLicensingInformationDetectedDetail
+                        toggleOther={toggleOther}
+                        setToggleOther={setToggleOther}
                         isModeFull={isModeFull}
                         spdxDocument={spdxDocument}
                         indexOtherLicense={indexOtherLicense}
@@ -296,6 +299,8 @@ const SPDXDocument = ({ releaseId }: Props) => {
                         setExternalRefsData={setExternalRefsData}
                     />
                     <OtherLicensingInformationDetectedDetail
+                        toggleOther={toggleOther}
+                        setToggleOther={setToggleOther}
                         isModeFull={isModeFull}
                         spdxDocument={spdxDocument}
                         indexOtherLicense={indexOtherLicense}
