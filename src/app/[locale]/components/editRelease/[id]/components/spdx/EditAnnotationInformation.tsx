@@ -119,12 +119,11 @@ const EditAnnotationInformation = ({
                     value: '',
                 }
                 setDataAnnotationDate(input)
-                // setDataDate('')
-                // setDataTime('')
             } else {
                 setDataAnnotationDate(handleAnnotationDate(annotationsSPDXs[indexAnnotations]?.annotationDate))
-                // setDataDate(CommonUtils.fillDate(annotationsSPDXs[indexAnnotations]?.annotationDate))
-                // setDataTime(CommonUtils.fillTime(annotationsSPDXs[indexAnnotations]?.annotationDate))
+            }
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(SPDXPayload.spdxDocument?.annotations)) {
+                setAnnotationsSPDXDatas(SPDXPayload.spdxDocument?.annotations)
             }
         } else {
             if (CommonUtils.isNullEmptyOrUndefinedString(annotationsPackages[indexAnnotations]?.annotator)) {
@@ -145,18 +144,17 @@ const EditAnnotationInformation = ({
                 setDataAnnotationDate(input)
             } else {
                 setDataAnnotationDate(handleAnnotationDate(annotationsPackages[indexAnnotations]?.annotationDate))
-                // setDataDate(CommonUtils.fillDate(annotationsPackages[indexAnnotations]?.annotationDate))
-                // setDataTime(CommonUtils.fillTime(annotationsPackages[indexAnnotations]?.annotationDate))
+            }
+            if (!CommonUtils.isNullEmptyOrUndefinedArray(SPDXPayload.packageInformation?.annotations)) {
+                setAnnotationsPackageDatas(SPDXPayload.packageInformation?.annotations)
             }
         }
     }, [isSourceSPDXDocument, indexAnnotations, annotationsSPDXs, annotationsPackages])
 
     const changeAnnotationSource = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        if (annotationsPackages.length < indexAnnotations || annotationsSPDXs.length < indexAnnotations) {
-            setIndexAnnotations(0)
-        }
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDocument') {
+            setIndexAnnotations(0)
             setIsSourceSPDXDocument(true)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsSPDXs)) {
                 setAnnotationsSPDXs(annotationsSPDXs)
@@ -178,6 +176,7 @@ const EditAnnotationInformation = ({
                 })
             }
         } else if (relationshipType === 'package') {
+            setIndexAnnotations(0)
             setIsSourceSPDXDocument(false)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
                 setAnnotationsPackages(annotationsPackages)
@@ -205,12 +204,9 @@ const EditAnnotationInformation = ({
     const [isAdd, setIsAdd] = useState(false)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        console.log(dataDate)
-        console.log(dataTime)
-        console.log(indexAnnotations)
-        console.log(dataAnnotationDate)
         const index: string = e.target.value
         if (isSourceSPDXDocument) {
+            setAnnotationsSPDXs(annotationsSPDXDatas)
             setIndexAnnotations(parseInt(index))
             setNumberIndexSPDX(parseInt(index))
             if (parseInt(index) === increIndex) {
@@ -218,11 +214,8 @@ const EditAnnotationInformation = ({
             } else {
                 setIncreIndex(parseInt(index))
             }
-            if (CommonUtils.isNullEmptyOrUndefinedString(annotationsSPDXs[parseInt(index)].annotationDate)) {
-                setDataDate('')
-                setDataTime('')
-            }
         } else {
+            setAnnotationsPackages(annotationsPackageDatas)
             if (parseInt(index) === increIndex) {
                 setIsAdd(true)
             } else {
@@ -230,10 +223,6 @@ const EditAnnotationInformation = ({
             }
             setIndexAnnotations(parseInt(index))
             setNumberIndexPackage(parseInt(index))
-            if (CommonUtils.isNullEmptyOrUndefinedString(annotationsPackages[parseInt(index)].annotationDate)) {
-                setDataDate('')
-                setDataTime('')
-            }
         }
     }
 
@@ -244,8 +233,6 @@ const EditAnnotationInformation = ({
         setIsAdd(true)
         if (CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
             setIndexAnnotations(0)
-            setDataDate('')
-            setDataTime('')
         }
         const relationshipsBetweenSPDXElements: Annotations = {
             annotator: '', // 12.1
@@ -255,8 +242,6 @@ const EditAnnotationInformation = ({
             annotationComment: '', // 12.5
             index: annotationsSPDXs.length,
         }
-        setDataDate('')
-        setDataTime('')
         setDataAnnotationDate({
             key: '',
             value: '',
@@ -280,8 +265,6 @@ const EditAnnotationInformation = ({
         setNumberIndexPackage(annotationsPackages.length)
         if (CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
             setIndexAnnotations(0)
-            setDataDate('')
-            setDataTime('')
         }
         const relationshipsBetweenSPDXElements: Annotations = {
             annotator: '', // 12.1
@@ -291,8 +274,6 @@ const EditAnnotationInformation = ({
             annotationComment: '', // 12.5
             index: annotationsPackages.length,
         }
-        setDataDate('')
-        setDataTime('')
         setDataAnnotationDate({
             key: '',
             value: '',
@@ -353,8 +334,6 @@ const EditAnnotationInformation = ({
         }
     }
 
-    const [dataDate, setDataDate] = useState('')
-    const [dataTime, setDataTime] = useState('')
     const [dataAnnotationDate, setDataAnnotationDate] = useState<InputKeyValue>()
     const handleAnnotationDate = (data: string) => {
         const input: InputKeyValue = {
@@ -365,22 +344,21 @@ const EditAnnotationInformation = ({
     }
 
     const convertInputToAnnotationDate = (data: InputKeyValue) => {
-        // if (data.key == '' || data.value == '') {
-        //     return ''
-        // }
-        // console.log(data.key)
-        // console.log(data.value)
-        // if (isNaN(+localDate)) return new Date(data.key).toISOString().slice(0, -5) + 'Z'
+        if (data.key == '' || data.value == '') {
+            return ''
+        }
         const localDate = new Date(data.key + ' ' + data.value)
-
+        if (isNaN(+localDate)) return
         return localDate.toISOString().slice(0, -5) + 'Z'
     }
 
+    const [annotationsSPDXDatas, setAnnotationsSPDXDatas] = useState<Annotations[]>([])
+    const [annotationsPackageDatas, setAnnotationsPackageDatas] = useState<Annotations[]>([])
+
     const setAnnotationDate = (input: InputKeyValue) => {
-        console.log(input)
-        console.log(convertInputToAnnotationDate(input))
+        let annotationUpdates: Annotations[] = []
         if (isSourceSPDXDocument) {
-            const annotationUpdates: Annotations[] = annotationsSPDXs.map((annotation, index) => {
+            annotationUpdates = annotationsSPDXs.map((annotation, index) => {
                 if (index === indexAnnotations) {
                     return {
                         ...annotation,
@@ -389,7 +367,7 @@ const EditAnnotationInformation = ({
                 }
                 return annotation
             })
-            setAnnotationsSPDXs(annotationUpdates)
+            setAnnotationsSPDXDatas(annotationUpdates)
             setSPDXPayload({
                 ...SPDXPayload,
                 spdxDocument: {
@@ -398,7 +376,7 @@ const EditAnnotationInformation = ({
                 },
             })
         } else {
-            const annotationUpdates: Annotations[] = annotationsPackages.map((annotation, index) => {
+            annotationUpdates = annotationsPackages.map((annotation, index) => {
                 if (index === indexAnnotations) {
                     return {
                         ...annotation,
@@ -407,7 +385,7 @@ const EditAnnotationInformation = ({
                 }
                 return annotation
             })
-            setAnnotationsPackages(annotationUpdates)
+            setAnnotationsPackageDatas(annotationUpdates)
             setSPDXPayload({
                 ...SPDXPayload,
                 packageInformation: {
@@ -562,10 +540,6 @@ const EditAnnotationInformation = ({
                                             setAnnotatorToAnnotation={setAnnotatorToAnnotation}
                                         />
                                         <AnnotationDate
-                                            dataDate={dataDate}
-                                            setDataDate={setDataDate}
-                                            dataTime={dataTime}
-                                            setDataTime={setDataTime}
                                             dataAnnotationDate={dataAnnotationDate}
                                             setDataAnnotationDate={setDataAnnotationDate}
                                             setAnnotationDate={setAnnotationDate}

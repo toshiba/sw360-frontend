@@ -664,10 +664,10 @@ const EditPackageInformation = ({
     }
 
     const setBuiltDate = (inputs: InputKeyValue) => {
-        setPackageInformation({
-            ...packageInformation,
-            builtDate: convertInputToDate(inputs),
-        })
+        // setPackageInformation({
+        //     ...packageInformation,
+        //     builtDate: convertInputToDate(inputs),
+        // })
         setSPDXPayload({
             ...SPDXPayload,
             packageInformation: {
@@ -678,10 +678,10 @@ const EditPackageInformation = ({
     }
 
     const setValidUntilDate = (inputs: InputKeyValue) => {
-        setPackageInformation({
-            ...packageInformation,
-            validUntilDate: convertInputToDate(inputs),
-        })
+        // setPackageInformation({
+        //     ...packageInformation,
+        //     validUntilDate: convertInputToDate(inputs),
+        // })
         setSPDXPayload({
             ...SPDXPayload,
             packageInformation: {
@@ -692,10 +692,6 @@ const EditPackageInformation = ({
     }
 
     const setReleaseDate = (inputs: InputKeyValue) => {
-        setPackageInformation({
-            ...packageInformation,
-            releaseDate: convertInputToDate(inputs),
-        })
         setSPDXPayload({
             ...SPDXPayload,
             packageInformation: {
@@ -703,6 +699,10 @@ const EditPackageInformation = ({
                 releaseDate: convertInputToDate(inputs),
             },
         })
+        // setPackageInformation({
+        //     ...packageInformation,
+        //     releaseDate: convertInputToDate(inputs),
+        // })
     }
 
     const changeFilesAnalyzed = (e: React.ChangeEvent<HTMLInputElement>) => {

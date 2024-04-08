@@ -9,82 +9,82 @@
 // License-Filename: LICENSE
 
 import { InputKeyValue } from '@/object-types'
-import CommonUtils from '@/utils/common.utils'
+// import CommonUtils from '@/utils/common.utils'
 
 interface Props {
     setAnnotationDate?: (input: InputKeyValue) => void
     dataAnnotationDate?: InputKeyValue
     setDataAnnotationDate?: React.Dispatch<React.SetStateAction<InputKeyValue>>
-    dataDate?: string
-    setDataDate?: React.Dispatch<React.SetStateAction<string>>
-    dataTime?: string
-    setDataTime?: React.Dispatch<React.SetStateAction<string>>
+    // dataDate?: string
+    // setDataDate?: React.Dispatch<React.SetStateAction<string>>
+    // dataTime?: string
+    // setDataTime?: React.Dispatch<React.SetStateAction<string>>
 }
 
 function AnnotationDate({
     dataAnnotationDate,
     setDataAnnotationDate,
     setAnnotationDate,
-    dataDate,
-    dataTime,
-    setDataDate,
-    setDataTime,
-}: Props) {
+}: // dataDate,
+// dataTime,
+// setDataDate,
+// setDataTime,
+Props) {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
-        e.target.name === 'key' ? setDataDate(e.target.value) : setDataTime(e.target.value)
+        // e.target.name === 'key' ? setDataDate(e.target.value) : setDataTime(e.target.value)
         const list: InputKeyValue = dataAnnotationDate
         list[name as keyof InputKeyValue] = value
         setDataAnnotationDate(list)
+        setAnnotationDate(list)
+        // if (
+        //     !CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
+        //     CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
+        //     e.target.name === 'value'
+        // ) {
+        //     setAnnotationDate(list)
+        // }
 
-        if (
-            !CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
-            CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
-            e.target.name === 'value'
-        ) {
-            setAnnotationDate(list)
-        }
+        // if (
+        //     CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
+        //     !CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
+        //     e.target.name === 'value'
+        // ) {
+        //     setAnnotationDate(list)
+        // }
 
-        if (
-            CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
-            !CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
-            e.target.name === 'value'
-        ) {
-            setAnnotationDate(list)
-        }
+        // // Check Key
+        // if (
+        //     CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
+        //     !CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
+        //     e.target.name === 'key'
+        // ) {
+        //     setAnnotationDate(list)
+        // }
 
-        // Check Key
-        if (
-            CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
-            !CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
-            e.target.name === 'key'
-        ) {
-            setAnnotationDate(list)
-        }
+        // if (
+        //     !CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
+        //     CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
+        //     e.target.name === 'key'
+        // ) {
+        //     setAnnotationDate(list)
+        // }
 
-        if (
-            !CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
-            CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
-            e.target.name === 'key'
-        ) {
-            setAnnotationDate(list)
-        }
+        // if (
+        //     !CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
+        //     !CommonUtils.isNullEmptyOrUndefinedString(dataTime)
+        // ) {
+        //     setAnnotationDate(list)
+        // }
 
-        if (
-            !CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
-            !CommonUtils.isNullEmptyOrUndefinedString(dataTime)
-        ) {
-            setAnnotationDate(list)
-        }
-
-        if (
-            CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
-            CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
-            !CommonUtils.isNullEmptyOrUndefinedString(list.key) &&
-            !CommonUtils.isNullEmptyOrUndefinedString(list.value)
-        ) {
-            setAnnotationDate(list)
-        }
+        // if (
+        //     CommonUtils.isNullEmptyOrUndefinedString(dataDate) &&
+        //     CommonUtils.isNullEmptyOrUndefinedString(dataTime) &&
+        //     !CommonUtils.isNullEmptyOrUndefinedString(list.key) &&
+        //     !CommonUtils.isNullEmptyOrUndefinedString(list.value)
+        // ) {
+        //     setAnnotationDate(list)
+        // }
     }
 
     return (
