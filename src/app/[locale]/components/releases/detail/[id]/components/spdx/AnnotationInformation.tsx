@@ -32,14 +32,23 @@ const AnnotationInformation = ({
     setAnnotationsPackages,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
+    // const [changeSource, setChangeSource] = useState(false)
     const [isSourceSPDXDocument, setIsSourceSPDXDocument] = useState<boolean>(true)
 
     const changeAnnotationSource = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        // setChangeSource(!changeSource)
+        if (isSourceSPDXDocument) {
+            if (annotationsPackages.length <= indexAnnotations) {
+                setIndexAnnotations(0)
+            }
+        } else if (annotationsSPDXs.length <= indexAnnotations) {
+            setIndexAnnotations(0)
+        }
+        // setIndexAnnotations(0)
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDoucument') {
             setIsSourceSPDXDocument(true)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsSPDXs)) {
-                setIndexAnnotations(0)
                 setAnnotationsSPDXs(annotationsSPDXs)
             } else {
                 setAnnotationsSPDXs([])
@@ -48,7 +57,6 @@ const AnnotationInformation = ({
             setIsSourceSPDXDocument(false)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)) {
                 setAnnotationsPackages(annotationsPackages)
-                setIndexAnnotations(0)
             } else {
                 setAnnotationsPackages([])
             }
@@ -58,6 +66,7 @@ const AnnotationInformation = ({
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
         setIndexAnnotations(parseInt(index))
+        // setChangeSource(false)
     }
 
     return (

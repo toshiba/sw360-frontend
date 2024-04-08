@@ -39,6 +39,7 @@ const EditAnnotationInformation = ({
     setSPDXPayload,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
+    const [changeSource, setChangeSource] = useState(false)
     const [isSourceSPDXDocument, setIsSourceSPDXDocument] = useState<boolean>(true)
 
     const [dataAnnotator, setDataAnnotator] = useState<InputKeyValue>()
@@ -149,9 +150,29 @@ const EditAnnotationInformation = ({
                 setAnnotationsPackageDatas(SPDXPayload.packageInformation?.annotations)
             }
         }
-    }, [isSourceSPDXDocument, indexAnnotations, annotationsSPDXs, annotationsPackages])
+    }, [isSourceSPDXDocument, annotationsSPDXs, annotationsPackages])
 
     const changeAnnotationSource = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setChangeSource(!changeSource)
+        console.log(isAdd)
+        console.log(isDeleteSucces)
+        console.log(indexAnnotations)
+        console.log(increIndex)
+        console.log(isSourceSPDXDocument)
+        console.log(numberIndexSPDX)
+        console.log(numberIndexPackage)
+
+        console.log(annotationsSPDXs[indexAnnotations])
+        console.log(annotationsPackages[indexAnnotations])
+
+        // if (isSourceSPDXDocument) {
+        //     if (annotationsPackages.length <= indexAnnotations) {
+        //         setIndexAnnotations(0)
+        //     }
+        // } else if (annotationsSPDXs.length <= indexAnnotations) {
+        //     setIndexAnnotations(0)
+        // }
+
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDocument') {
             setIndexAnnotations(0)
@@ -204,6 +225,7 @@ const EditAnnotationInformation = ({
     const [isAdd, setIsAdd] = useState(false)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setChangeSource(false)
         const index: string = e.target.value
         if (isSourceSPDXDocument) {
             setAnnotationsSPDXs(annotationsSPDXDatas)
@@ -498,7 +520,9 @@ const EditAnnotationInformation = ({
                                                 : CommonUtils.isNullEmptyOrUndefinedArray(annotationsPackages)
                                         }
                                         value={
-                                            isAdd
+                                            changeSource
+                                                ? 0
+                                                : isAdd
                                                 ? isDeleteSucces
                                                     ? indexAnnotations
                                                     : increIndex

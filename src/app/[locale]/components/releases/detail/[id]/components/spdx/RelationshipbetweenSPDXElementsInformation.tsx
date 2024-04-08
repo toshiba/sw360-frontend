@@ -35,6 +35,13 @@ const RelationshipbetweenSPDXElementsInformation = ({
     const [isSourceSPDXDocument, setIsSourceSPDXDocument] = useState<boolean>(true)
 
     const changeRelationshipSource = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        if (isSourceSPDXDocument) {
+            if (relationshipsBetweenSPDXElementSPDXs.length <= indexRelation) {
+                setIndexRelation(0)
+            }
+        } else if (relationshipsBetweenSPDXElementPackages.length <= indexRelation) {
+            setIndexRelation(0)
+        }
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDoucument') {
             setIsSourceSPDXDocument(true)
