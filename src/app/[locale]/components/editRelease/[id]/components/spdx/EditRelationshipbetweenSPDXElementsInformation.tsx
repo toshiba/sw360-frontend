@@ -38,6 +38,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
     setSPDXPayload,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
+    const [changeSource, setChangeSource] = useState(false)
     const [isSourceSPDXDocument, setIsSourceSPDXDocument] = useState<boolean>(true)
 
     const relationTypes: Array<string> = [
@@ -88,6 +89,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
     ]
 
     const changeRelationshipSource = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setChangeSource(!changeSource)
         setIndexRelation(0)
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDoucument') {
@@ -138,6 +140,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
     const [isAdd, setIsAdd] = useState(false)
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setChangeSource(false)
         const index: string = e.target.value
         if (isSourceSPDXDocument) {
             setIndexRelation(parseInt(index))
@@ -398,7 +401,9 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
                                               )
                                     }
                                     value={
-                                        isAdd
+                                        changeSource
+                                            ? 0
+                                            : isAdd
                                             ? isDeleteSucces
                                                 ? indexRelation
                                                 : increIndex
