@@ -48,7 +48,7 @@ function Creators({ inputList, setInputList, isAnonymous, setDataCreators, setIs
                         <select
                             style={{ flex: 2, marginRight: '1rem' }}
                             value={elem.key}
-                            className='form-control creator-type'
+                            className='form-control creator-type form-select'
                             disabled={isAnonymous && (elem.key === 'Organization' || elem.key === 'Person')}
                             name='key'
                             onChange={(e) => handleInputChange(e, j)}

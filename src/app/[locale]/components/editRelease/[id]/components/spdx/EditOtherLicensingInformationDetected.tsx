@@ -220,6 +220,8 @@ const EditOtherLicensingInformationDetected = ({
     const [isDeleteSucces, setIsDeleteSucces] = useState(false)
 
     const deleteOtherLicenses = () => {
+        setErrorExtractedText(false)
+        setErrorLicenseIdentifier(false)
         if (otherLicensingInformationDetecteds.length == 1) {
             setOtherLicensingInformationDetecteds([])
         } else {
@@ -255,6 +257,7 @@ const EditOtherLicensingInformationDetected = ({
             ) {
                 const data: string = licenseName
                 setLicenseName(data)
+                setIsLicenseName(false)
             } else {
                 setLicenseName(otherLicensingInformationDetecteds[indexOtherLicense].licenseName)
             }

@@ -253,10 +253,10 @@ const EditDocumentCreationInformation = ({
     }
 
     const setCreated = (inputs: InputKeyValue) => {
-        setDocumentCreationInformation({
-            ...documentCreationInformation,
-            created: convertInputToCreated(inputs),
-        })
+        // setDocumentCreationInformation({
+        //     ...documentCreationInformation,
+        //     created: convertInputToCreated(inputs),
+        // })
 
         setSPDXPayload({
             ...SPDXPayload,

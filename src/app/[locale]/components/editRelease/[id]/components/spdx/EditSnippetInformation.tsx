@@ -15,9 +15,7 @@ import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import styles from '../detail.module.css'
 import SnippetConcludedLicense from './SnippetInformation/SnippetConcludedLicense'
-import SnippetCopyrightText from './SnippetInformation/SnippetCopyrightText'
 import SnippetFileSPDXIdentifier from './SnippetInformation/SnippetFileSPDXIdentifier'
-import SnippetLicenseInformation from './SnippetInformation/SnippetLicenseInformation'
 import SnippetRanges from './SnippetInformation/SnippetRanges'
 
 interface Props {
@@ -207,7 +205,7 @@ const EditSnippetInformation = ({
             }
             return snippet
         })
-        setSnippetInformations(snippets)
+        // setSnippetInformations(snippets)
         setSPDXPayload({
             ...SPDXPayload,
             spdxDocument: {
@@ -354,7 +352,7 @@ const EditSnippetInformation = ({
             }
             return snippet
         })
-        setSnippetInformations(snippets)
+        // setSnippetInformations(snippets)
         setSPDXPayload({
             ...SPDXPayload,
             spdxDocument: {
@@ -433,6 +431,44 @@ const EditSnippetInformation = ({
                 setNumberIndex(snippetInformationDatas[0].index)
             }
         }
+    }
+
+    const selectLicenseInfoSnippetExist = () => {
+        setLicenseInfoInSnippetsExist(true)
+        setLicenseInfoInSnippetsNone(false)
+        setLicenseInfoInSnippetsNoasserttion(false)
+        setAllLicensesInformationToSnippet(licenseInfoInSnippets.toString())
+    }
+    const selectLicenseInfoSnippetNone = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLicenseInfoInSnippetsExist(false)
+        setLicenseInfoInSnippetsNone(true)
+        setLicenseInfoInSnippetsNoasserttion(false)
+        setAllLicensesInformationToSnippet(e.target.value)
+    }
+    const selectLicenseInfoSnippetNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setLicenseInfoInSnippetsExist(false)
+        setLicenseInfoInSnippetsNone(false)
+        setLicenseInfoInSnippetsNoasserttion(true)
+        setAllLicensesInformationToSnippet(e.target.value)
+    }
+
+    const selectSnippetCopyrightTextExist = () => {
+        setSnippetCopyrightTextExist(true)
+        setSnippetCopyrightTextNone(false)
+        setSnippetCopyrightTextNoasserttion(false)
+        setSnippetCopyrightTextToSnippet(snippetCopyrightText)
+    }
+    const selectSnippetCopyrightTextNone = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSnippetCopyrightTextExist(false)
+        setSnippetCopyrightTextNone(true)
+        setSnippetCopyrightTextNoasserttion(false)
+        setSnippetCopyrightTextToSnippet(e.target.value)
+    }
+    const selectSnippetCopyrightTextNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSnippetCopyrightTextExist(false)
+        setSnippetCopyrightTextNone(false)
+        setSnippetCopyrightTextNoasserttion(true)
+        setSnippetCopyrightTextToSnippet(e.target.value)
     }
 
     return (
@@ -549,7 +585,7 @@ const EditSnippetInformation = ({
                             />
                         </tr>
                         <tr>
-                            <SnippetLicenseInformation
+                            {/* <SnippetLicenseInformation
                                 licenseInfoInSnippets={licenseInfoInSnippets}
                                 setAllLicensesInformationToSnippet={setAllLicensesInformationToSnippet}
                                 licenseInfoInSnippetsExist={licenseInfoInSnippetsExist}
@@ -558,7 +594,75 @@ const EditSnippetInformation = ({
                                 setLicenseInfoInSnippetsNone={setLicenseInfoInSnippetsNone}
                                 licenseInfoInSnippetsNoasserttion={licenseInfoInSnippetsNoasserttion}
                                 setLicenseInfoInSnippetsNoasserttion={setLicenseInfoInSnippetsNoasserttion}
-                            />
+                            /> */}
+                            <td colSpan={3}>
+                                <div className='form-group'>
+                                    <label className='lableSPDX'>9.6 License information in snippet</label>
+                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='licenseInfoInFile'
+                                                type='radio'
+                                                name='licenseInfoInSnippets'
+                                                value='EXIST'
+                                                onClick={selectLicenseInfoSnippetExist}
+                                                checked={licenseInfoInSnippetsExist}
+                                            />
+                                            <textarea
+                                                style={{ flex: 6, marginRight: '1rem' }}
+                                                id='licenseInfoInFileValue'
+                                                rows={5}
+                                                className='form-control'
+                                                name='licenseInfoInSnippets'
+                                                placeholder='Enter license information in snippet'
+                                                onChange={updateField}
+                                                value={
+                                                    snippetInformations[indexSnippetInformation].licenseInfoInSnippets
+                                                        ?.toString()
+                                                        .replaceAll(',', '\n') ?? ''
+                                                }
+                                                disabled={
+                                                    licenseInfoInSnippetsNone || licenseInfoInSnippetsNoasserttion
+                                                }
+                                            ></textarea>
+                                        </div>
+                                        <div style={{ flex: 2 }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='licenseInfoInFileNone'
+                                                type='radio'
+                                                name='licenseInfoInSnippets'
+                                                value='NONE'
+                                                onChange={selectLicenseInfoSnippetNone}
+                                                checked={licenseInfoInSnippetsNone}
+                                            />
+                                            <label
+                                                style={{ marginRight: '2rem' }}
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='licenseInfoInFileNone'
+                                            >
+                                                NONE
+                                            </label>
+                                            <input
+                                                className='spdx-radio'
+                                                id='licenseInfoInFileNoAssertion'
+                                                type='radio'
+                                                name='licenseInfoInSnippets'
+                                                value='NOASSERTION'
+                                                onChange={selectLicenseInfoSnippetNoasserttion}
+                                                checked={licenseInfoInSnippetsNoasserttion}
+                                            />
+                                            <label
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='licenseInfoInFileNoAssertion'
+                                            >
+                                                NOASSERTION
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td colSpan={3}>
@@ -579,7 +683,7 @@ const EditSnippetInformation = ({
                             </td>
                         </tr>
                         <tr>
-                            <SnippetCopyrightText
+                            {/* <SnippetCopyrightText
                                 snippetCopyrightText={snippetCopyrightText}
                                 setSnippetConcludedLicenseToSnippet={setSnippetCopyrightTextToSnippet}
                                 snippetCopyrightTextExist={snippetCopyrightTextExist}
@@ -589,7 +693,69 @@ const EditSnippetInformation = ({
                                 snippetCopyrightTextNoasserttion={snippetCopyrightTextNoasserttion}
                                 setSnippetCopyrightTextNoasserttion={setSnippetCopyrightTextNoasserttion}
                                 updateField={updateField}
-                            />
+                            /> */}
+                            <td colSpan={3}>
+                                <div className='form-group'>
+                                    <label className='lableSPDX'>9.8 Snippet copyright text</label>
+                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='snippetCopyrightText'
+                                                type='radio'
+                                                name='_sw360_portlet_components_SNIPPET_COPYRIGHT_TEXT'
+                                                value='EXIST'
+                                                onClick={selectSnippetCopyrightTextExist}
+                                                checked={snippetCopyrightTextExist}
+                                            />
+                                            <textarea
+                                                style={{ flex: 6, marginRight: '1rem' }}
+                                                id='copyrightTextValueSnippet'
+                                                rows={5}
+                                                className='form-control'
+                                                name='copyrightText'
+                                                placeholder='Enter snippet copyright text'
+                                                onChange={updateField}
+                                                value={snippetInformations[indexSnippetInformation].copyrightText ?? ''}
+                                                disabled={snippetCopyrightTextNone || snippetCopyrightTextNoasserttion}
+                                            ></textarea>
+                                        </div>
+                                        <div style={{ flex: 2 }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='snippetCopyrightTextNone'
+                                                type='radio'
+                                                name='copyrightText'
+                                                value='NONE'
+                                                onChange={selectSnippetCopyrightTextNone}
+                                                checked={snippetCopyrightTextNone}
+                                            />
+                                            <label
+                                                style={{ marginRight: '2rem' }}
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='snippetCopyrightTextNone'
+                                            >
+                                                NONE
+                                            </label>
+                                            <input
+                                                className='spdx-radio'
+                                                id='snippetCopyrightTextNoAssertion'
+                                                type='radio'
+                                                name='copyrightText'
+                                                value='NOASSERTION'
+                                                onChange={selectSnippetCopyrightTextNoasserttion}
+                                                checked={snippetCopyrightTextNoasserttion}
+                                            />
+                                            <label
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='snippetCopyrightTextNoAssertion'
+                                            >
+                                                NOASSERTION
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td colSpan={3}>

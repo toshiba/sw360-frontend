@@ -23,9 +23,7 @@ import { FaTrashAlt } from 'react-icons/fa'
 import styles from '../detail.module.css'
 import BuiltDate from './PackageInformation/BuiltDate'
 import CheckSums from './PackageInformation/CheckSums'
-import PackageAllLicensesInformation from './PackageInformation/PackageAllLicensesInformation'
 import PackageConcludedLicense from './PackageInformation/PackageConcludedLicense'
-import PackageCopyrightText from './PackageInformation/PackageCopyrightText'
 import PackageDeclaredLicense from './PackageInformation/PackageDeclaredLicense'
 import PackageDownloadLocation from './PackageInformation/PackageDownloadLocation'
 import PackageHomePage from './PackageInformation/PackageHomePage'
@@ -364,14 +362,14 @@ const EditPackageInformation = ({
 
     const setAllLicensesInformationToPackage = (data: string[]) => {
         // setAllLicensesInformation(CommonUtils.isNullEmptyOrUndefinedString(data) ? [] : data?.split('\n'))
-        console.log(concludedLicenseExist)
-        console.log(concludedLicenseNone)
-        console.log(concludedLicenseNoasserttion)
-        console.log(data)
-        setPackageInformation({
-            ...packageInformation,
-            licenseInfoFromFiles: data,
-        })
+        // console.log(concludedLicenseExist)
+        // console.log(concludedLicenseNone)
+        // console.log(concludedLicenseNoasserttion)
+        // console.log(data)
+        // setPackageInformation({
+        //     ...packageInformation,
+        //     licenseInfoFromFiles: data,
+        // })
         setSPDXPayload({
             ...SPDXPayload,
             packageInformation: {
@@ -407,11 +405,6 @@ const EditPackageInformation = ({
     const [copyrightTextNoasserttion, setCopyrightTextNoasserttion] = useState(false)
 
     const setCopyrightTextToPackage = (data: string) => {
-        console.log(data)
-        setPackageInformation({
-            ...packageInformation,
-            copyrightText: data,
-        })
         setSPDXPayload({
             ...SPDXPayload,
             packageInformation: {
@@ -580,6 +573,19 @@ const EditPackageInformation = ({
             },
         })
     }
+    const updateFieldCopyright = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
+        setPackageInformation({
+            ...packageInformation,
+            [e.target.name]: e.target.value,
+        })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                [e.target.name]: e.target.value,
+            },
+        })
+    }
 
     const updateFieldAttributionText = (
         e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
@@ -616,7 +622,7 @@ const EditPackageInformation = ({
             ...packageInformation,
             packageVerificationCode: {
                 ...packageInformation.packageVerificationCode,
-                [e.target.name]: e.target.name === 'excludedFiles' ? e.target.value.split('\n') : e.target.value,
+                [e.target.name]: e.target.value,
             },
         })
         setSPDXPayload({
@@ -625,7 +631,29 @@ const EditPackageInformation = ({
                 ...SPDXPayload.packageInformation,
                 packageVerificationCode: {
                     ...packageInformation.packageVerificationCode,
-                    [e.target.name]: e.target.name === 'excludedFiles' ? e.target.value.split('\n') : e.target.value,
+                    [e.target.name]: e.target.value,
+                },
+            },
+        })
+    }
+
+    const updateFieldExcludedFiles = (
+        e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        setPackageInformation({
+            ...packageInformation,
+            packageVerificationCode: {
+                ...packageInformation.packageVerificationCode,
+                [e.target.name]: e.target.value.split('\n'),
+            },
+        })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                packageVerificationCode: {
+                    ...packageInformation.packageVerificationCode,
+                    [e.target.name]: e.target.value.split('\n'),
                 },
             },
         })
@@ -772,6 +800,45 @@ const EditPackageInformation = ({
             }
         }
     }
+
+    const selectCopyrightTextExist = () => {
+        setCopyrightTextExist(true)
+        setCopyrightTextNone(false)
+        setCopyrightTextNoasserttion(false)
+        setCopyrightTextToPackage(copyrightText)
+    }
+    const selectCopyrightTextNone = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCopyrightTextExist(false)
+        setCopyrightTextNone(true)
+        setCopyrightTextNoasserttion(false)
+        setCopyrightTextToPackage(e.target.value)
+    }
+    const selectCopyrightTextNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCopyrightTextExist(false)
+        setCopyrightTextNone(false)
+        setCopyrightTextNoasserttion(true)
+        setCopyrightTextToPackage(e.target.value)
+    }
+
+    const selectAllLicensesInformationExist = () => {
+        setAllLicensesInformationExist(true)
+        setAllLicensesInformationNone(false)
+        setAllLicensesInformationNoasserttion(false)
+        setAllLicensesInformationToPackage(allLicensesInformation)
+    }
+    const selectAllLicensesInformationNone = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAllLicensesInformationExist(false)
+        setAllLicensesInformationNone(true)
+        setAllLicensesInformationNoasserttion(false)
+        setAllLicensesInformationToPackage(e.target.value.split('\n'))
+    }
+    const selectAllLicensesInformationNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setAllLicensesInformationExist(false)
+        setAllLicensesInformationNone(false)
+        setAllLicensesInformationNoasserttion(true)
+        setAllLicensesInformationToPackage(e.target.value.split('\n'))
+    }
+
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
             <thead
@@ -975,9 +1042,11 @@ const EditPackageInformation = ({
                                                     name='excludedFiles'
                                                     placeholder='Enter excluded files'
                                                     disabled={!packageInformation?.filesAnalyzed}
-                                                    onChange={updateFieldPackageVerificationCode}
+                                                    onChange={updateFieldExcludedFiles}
                                                     value={
-                                                        packageInformation.packageVerificationCode?.excludedFiles ?? ''
+                                                        packageInformation.packageVerificationCode?.excludedFiles
+                                                            ?.toString()
+                                                            .replaceAll(',', '\n') ?? ''
                                                     }
                                                 ></textarea>
                                             </div>
@@ -1049,7 +1118,78 @@ const EditPackageInformation = ({
                         </tr>
                         {isModeFull && (
                             <tr>
-                                <PackageAllLicensesInformation
+                                <td colSpan={3}>
+                                    <div className='form-group'>
+                                        <label className='lableSPDX'>7.14 All licenses information from files</label>
+                                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                            <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
+                                                <input
+                                                    className='spdx-radio'
+                                                    id='licenseInfoFromFilesExist'
+                                                    type='radio'
+                                                    name='licenseInfoFromFilesExist'
+                                                    value='EXIST'
+                                                    onClick={selectAllLicensesInformationExist}
+                                                    checked={allLicensesInformationExist}
+                                                    disabled={!packageInformation?.filesAnalyzed}
+                                                />
+                                                <textarea
+                                                    style={{ flex: 6, marginRight: '1rem' }}
+                                                    id='licenseInfoInFileValue'
+                                                    rows={5}
+                                                    className='form-control'
+                                                    name='licenseInfoFromFiles'
+                                                    placeholder='Enter all licenses information from files'
+                                                    onChange={updateField}
+                                                    value={packageInformation.licenseInfoFromFiles
+                                                        ?.toString()
+                                                        .replaceAll(',', '\n')}
+                                                    disabled={
+                                                        allLicensesInformationNone ||
+                                                        allLicensesInformationNoasserttion ||
+                                                        !packageInformation?.filesAnalyzed
+                                                    }
+                                                ></textarea>
+                                            </div>
+                                            <div style={{ flex: 2 }}>
+                                                <input
+                                                    className='spdx-radio'
+                                                    id='licenseInfoInFileNone'
+                                                    type='radio'
+                                                    name='licenseInfoInFileNone'
+                                                    value='NONE'
+                                                    onChange={selectAllLicensesInformationNone}
+                                                    checked={allLicensesInformationNone}
+                                                    disabled={!packageInformation?.filesAnalyzed}
+                                                />
+                                                <label
+                                                    style={{ marginRight: '2rem' }}
+                                                    className='form-check-label radio-label lableSPDX'
+                                                    htmlFor='licenseInfoInFileNone'
+                                                >
+                                                    NONE
+                                                </label>
+                                                <input
+                                                    className='spdx-radio'
+                                                    id='licenseInfoFromFilesNoAssertion'
+                                                    type='radio'
+                                                    name='licenseInfoFromFilesNoAssertion'
+                                                    value='NOASSERTION'
+                                                    onChange={selectAllLicensesInformationNoasserttion}
+                                                    checked={allLicensesInformationNoasserttion}
+                                                    disabled={!packageInformation?.filesAnalyzed}
+                                                />
+                                                <label
+                                                    className='form-check-label radio-label lableSPDX'
+                                                    htmlFor='licenseInfoFromFilesNoAssertion'
+                                                >
+                                                    NOASSERTION
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                {/* <PackageAllLicensesInformation
                                     packageInformation={packageInformation}
                                     allLicensesInformation={allLicensesInformation}
                                     setAllLicensesInformationToPackage={setAllLicensesInformationToPackage}
@@ -1059,7 +1199,7 @@ const EditPackageInformation = ({
                                     setAllLicensesInformationNone={setAllLicensesInformationNone}
                                     allLicensesInformationNoasserttion={allLicensesInformationNoasserttion}
                                     setAllLicensesInformationNoasserttion={setAllLicensesInformationNoasserttion}
-                                />
+                                /> */}
                             </tr>
                         )}
                         <tr>
@@ -1095,7 +1235,7 @@ const EditPackageInformation = ({
                             </td>
                         </tr>
                         <tr>
-                            <PackageCopyrightText
+                            {/* <PackageCopyrightText
                                 copyrightText={copyrightText}
                                 setCopyrightTextToPackage={setCopyrightTextToPackage}
                                 copyrightTextExist={copyrightTextExist}
@@ -1104,7 +1244,69 @@ const EditPackageInformation = ({
                                 setCopyrightTextNone={setCopyrightTextNone}
                                 copyrightTextNoasserttion={copyrightTextNoasserttion}
                                 setCopyrightTextNoasserttion={setCopyrightTextNoasserttion}
-                            />
+                            /> */}
+                            <td colSpan={3}>
+                                <div className='form-group'>
+                                    <label className='lableSPDX'>7.17 Copyright text</label>
+                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='copyrightTextExist'
+                                                type='radio'
+                                                name='_sw360_portlet_components_COPYRIGHT_TEXT'
+                                                value='EXIST'
+                                                onClick={selectCopyrightTextExist}
+                                                checked={copyrightTextExist}
+                                            />
+                                            <textarea
+                                                style={{ flex: 6, marginRight: '1rem' }}
+                                                id='copyrightText'
+                                                rows={5}
+                                                className='form-control'
+                                                name='copyrightText'
+                                                placeholder='Enter copyright text'
+                                                onChange={updateFieldCopyright}
+                                                value={packageInformation.copyrightText ?? ''}
+                                                disabled={copyrightTextNone || copyrightTextNoasserttion}
+                                            ></textarea>
+                                        </div>
+                                        <div style={{ flex: 2 }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='copyrightTextNone'
+                                                type='radio'
+                                                name='_sw360_portlet_components_COPYRIGHT_TEXT'
+                                                value='NONE'
+                                                onChange={selectCopyrightTextNone}
+                                                checked={copyrightTextNone}
+                                            />
+                                            <label
+                                                style={{ marginRight: '2rem' }}
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='copyrightTextNone'
+                                            >
+                                                NONE
+                                            </label>
+                                            <input
+                                                className='spdx-radio'
+                                                id='copyrightTextNoAssertion'
+                                                type='radio'
+                                                name='_sw360_portlet_components_COPYRIGHT_TEXT'
+                                                value='NOASSERTION'
+                                                onChange={selectCopyrightTextNoasserttion}
+                                                checked={copyrightTextNoasserttion}
+                                            />
+                                            <label
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='copyrightTextNoAssertion'
+                                            >
+                                                NOASSERTION
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         {isModeFull && (
                             <>
@@ -1245,7 +1447,7 @@ const EditPackageInformation = ({
                                                             <select
                                                                 style={{ width: 'auto', flex: 'auto' }}
                                                                 id='referenceCategory'
-                                                                className='form-control'
+                                                                className='form-control form-select'
                                                                 name='referenceCategory'
                                                                 onChange={handleChangeReferenceCategory}
                                                                 value={
@@ -1294,7 +1496,7 @@ const EditPackageInformation = ({
                                                                 <select
                                                                     style={{ width: 'auto', flex: 'auto' }}
                                                                     id='referenceType-1'
-                                                                    className='form-control'
+                                                                    className='form-control form-select'
                                                                     name='referenceType'
                                                                     onChange={handleChangeExternalRefData}
                                                                     // defaultValue={referType}
