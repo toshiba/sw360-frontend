@@ -33,20 +33,15 @@ const RelationshipbetweenSPDXElementsInformation = ({
 }: Props) => {
     const [toggle, setToggle] = useState(false)
     const [isSourceSPDXDocument, setIsSourceSPDXDocument] = useState<boolean>(true)
+    const [changeSource, setChangeSource] = useState(false)
 
     const changeRelationshipSource = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        if (isSourceSPDXDocument) {
-            if (relationshipsBetweenSPDXElementSPDXs.length <= indexRelation) {
-                setIndexRelation(0)
-            }
-        } else if (relationshipsBetweenSPDXElementPackages.length <= indexRelation) {
-            setIndexRelation(0)
-        }
+        setChangeSource(true)
+        setIndexRelation(0)
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDoucument') {
             setIsSourceSPDXDocument(true)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementSPDXs)) {
-                setIndexRelation(0)
                 setRelationshipsBetweenSPDXElementSPDXs(relationshipsBetweenSPDXElementSPDXs)
             } else {
                 setRelationshipsBetweenSPDXElementSPDXs([])
@@ -55,7 +50,6 @@ const RelationshipbetweenSPDXElementsInformation = ({
             setIsSourceSPDXDocument(false)
             if (!CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementPackages)) {
                 setRelationshipsBetweenSPDXElementPackages(relationshipsBetweenSPDXElementPackages)
-                setIndexRelation(0)
             } else {
                 setRelationshipsBetweenSPDXElementPackages([])
             }
@@ -63,6 +57,7 @@ const RelationshipbetweenSPDXElementsInformation = ({
     }
 
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setChangeSource(false)
         const index: string = e.target.value
         setIndexRelation(parseInt(index))
     }
@@ -101,6 +96,7 @@ const RelationshipbetweenSPDXElementsInformation = ({
                             className='spdx-col-2'
                             onChange={displayIndex}
                             style={{ width: '988px' }}
+                            value={changeSource ? 0 : indexRelation}
                             disabled={
                                 isSourceSPDXDocument
                                     ? CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementSPDXs)

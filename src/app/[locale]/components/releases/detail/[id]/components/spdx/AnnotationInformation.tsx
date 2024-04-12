@@ -32,19 +32,12 @@ const AnnotationInformation = ({
     setAnnotationsPackages,
 }: Props) => {
     const [toggle, setToggle] = useState(false)
-    // const [changeSource, setChangeSource] = useState(false)
+    const [changeSource, setChangeSource] = useState(false)
     const [isSourceSPDXDocument, setIsSourceSPDXDocument] = useState<boolean>(true)
 
     const changeAnnotationSource = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        // setChangeSource(!changeSource)
-        if (isSourceSPDXDocument) {
-            if (annotationsPackages.length <= indexAnnotations) {
-                setIndexAnnotations(0)
-            }
-        } else if (annotationsSPDXs.length <= indexAnnotations) {
-            setIndexAnnotations(0)
-        }
-        // setIndexAnnotations(0)
+        setChangeSource(true)
+        setIndexAnnotations(0)
         const relationshipType: string = e.target.value
         if (relationshipType === 'spdxDoucument') {
             setIsSourceSPDXDocument(true)
@@ -66,7 +59,7 @@ const AnnotationInformation = ({
     const displayIndex = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const index: string = e.target.value
         setIndexAnnotations(parseInt(index))
-        // setChangeSource(false)
+        setChangeSource(false)
     }
 
     return (
@@ -104,6 +97,7 @@ const AnnotationInformation = ({
                             className='spdx-col-2'
                             onChange={displayIndex}
                             style={{ width: '988px' }}
+                            value={changeSource ? 0 : indexAnnotations}
                             disabled={
                                 isSourceSPDXDocument
                                     ? CommonUtils.isNullEmptyOrUndefinedArray(annotationsSPDXs)
