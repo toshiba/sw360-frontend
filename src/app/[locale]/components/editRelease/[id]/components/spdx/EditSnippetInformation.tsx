@@ -408,6 +408,13 @@ const EditSnippetInformation = ({
     const deleteSnippetInformations = () => {
         if (snippetInformations.length == 1) {
             setSnippetInformations([])
+            setSPDXPayload({
+                ...SPDXPayload,
+                spdxDocument: {
+                    ...SPDXPayload.spdxDocument,
+                    snippets: [],
+                },
+            })
         } else {
             let snippetInformationDatas: SnippetInformation[] = []
             snippetInformationDatas = snippetInformations.filter(

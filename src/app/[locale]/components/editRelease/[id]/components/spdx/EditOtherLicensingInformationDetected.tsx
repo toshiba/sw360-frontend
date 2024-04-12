@@ -224,6 +224,13 @@ const EditOtherLicensingInformationDetected = ({
         setErrorLicenseIdentifier(false)
         if (otherLicensingInformationDetecteds.length == 1) {
             setOtherLicensingInformationDetecteds([])
+            setSPDXPayload({
+                ...SPDXPayload,
+                spdxDocument: {
+                    ...SPDXPayload.spdxDocument,
+                    otherLicensingInformationDetecteds: [],
+                },
+            })
         } else {
             let otherLicensingInformationDetectedDatas: OtherLicensingInformationDetected[] = []
             otherLicensingInformationDetectedDatas = otherLicensingInformationDetecteds.filter(

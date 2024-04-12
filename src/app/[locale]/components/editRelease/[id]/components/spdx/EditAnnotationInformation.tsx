@@ -400,6 +400,13 @@ const EditAnnotationInformation = ({
         if (isSourceSPDXDocument) {
             if (annotationsSPDXs.length == 1) {
                 setAnnotationsSPDXs([])
+                setSPDXPayload({
+                    ...SPDXPayload,
+                    spdxDocument: {
+                        ...SPDXPayload.spdxDocument,
+                        annotations: [],
+                    },
+                })
             } else {
                 let annotations: Annotations[] = []
                 annotations = annotationsSPDXs.filter((annotations) => numberIndexSPDX != annotations.index)
@@ -407,6 +414,13 @@ const EditAnnotationInformation = ({
                     annotations[index].index = index
                 }
                 setAnnotationsSPDXs(annotations)
+                setSPDXPayload({
+                    ...SPDXPayload,
+                    spdxDocument: {
+                        ...SPDXPayload.spdxDocument,
+                        annotations: annotations,
+                    },
+                })
                 setNumberIndexSPDX(indexAnnotations)
                 setIsDeleteSucces(true)
                 setIndexAnnotations(0)
@@ -417,6 +431,13 @@ const EditAnnotationInformation = ({
         } else {
             if (annotationsPackages.length == 1) {
                 setAnnotationsPackages([])
+                setSPDXPayload({
+                    ...SPDXPayload,
+                    packageInformation: {
+                        ...SPDXPayload.packageInformation,
+                        annotations: [],
+                    },
+                })
             } else {
                 let annotations: Annotations[] = []
                 annotations = annotationsPackages.filter((annotations) => numberIndexPackage != annotations.index)
@@ -424,6 +445,13 @@ const EditAnnotationInformation = ({
                     annotations[index].index = index
                 }
                 setAnnotationsPackages(annotations)
+                setSPDXPayload({
+                    ...SPDXPayload,
+                    packageInformation: {
+                        ...SPDXPayload.packageInformation,
+                        annotations: annotations,
+                    },
+                })
                 setNumberIndexPackage(indexAnnotations)
                 setIsDeleteSucces(true)
                 setIndexAnnotations(0)
