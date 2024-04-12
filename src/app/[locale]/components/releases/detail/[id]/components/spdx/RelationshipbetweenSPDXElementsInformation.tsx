@@ -95,7 +95,7 @@ const RelationshipbetweenSPDXElementsInformation = ({
                             id='relationshipSelect'
                             className='spdx-col-2'
                             onChange={displayIndex}
-                            style={{ width: '988px' }}
+                            style={{ width: '100%' }}
                             value={changeSource ? 0 : indexRelation}
                             disabled={
                                 isSourceSPDXDocument

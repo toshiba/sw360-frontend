@@ -56,7 +56,7 @@ const OtherLicensingInformationDetectedDetail = ({
                             id='otherLicensingSelect'
                             className='spdx-col-2'
                             onChange={displayIndex}
-                            style={{ width: '988px' }}
+                            style={{ width: '100%' }}
                             disabled={spdxDocument?.otherLicensingInformationDetecteds.length == 0}
                         >
                             {spdxDocument?.otherLicensingInformationDetecteds

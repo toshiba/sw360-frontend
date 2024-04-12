@@ -58,7 +58,7 @@ const SnippetInformationDetail = ({
                             id='snippetInfoSelect'
                             className='spdx-col-2'
                             onChange={displayIndex}
-                            style={{ width: '988px' }}
+                            style={{ width: '100%' }}
                             disabled={spdxDocument?.snippets.length == 0}
                         >
                             {spdxDocument?.snippets

@@ -82,7 +82,7 @@ const AnnotationInformation = ({
                             id='annotationSourceSelect'
                             className='spdx-col-2'
                             onChange={changeAnnotationSource}
-                            style={{ width: '988px' }}
+                            style={{ width: '100%' }}
                         >
                             <option value='spdxDoucument'>SPDX Document</option>
                             <option value='package'>Package</option>
@@ -96,7 +96,7 @@ const AnnotationInformation = ({
                             id='annotationSelect'
                             className='spdx-col-2'
                             onChange={displayIndex}
-                            style={{ width: '988px' }}
+                            style={{ width: '100%' }}
                             value={changeSource ? 0 : indexAnnotations}
                             disabled={
                                 isSourceSPDXDocument
