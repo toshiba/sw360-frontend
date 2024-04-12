@@ -347,6 +347,7 @@ const EditRelease = ({ releaseId }: Props) => {
     }
 
     const submit = async () => {
+        console.log(SPDXPayload)
         if (SPDX_ENABLE === 'true') {
             setInputValid(true)
             if (validateLicenseIdentifier(SPDXPayload) && validateExtractedText(SPDXPayload)) {

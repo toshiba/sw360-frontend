@@ -573,6 +573,23 @@ const EditPackageInformation = ({
             },
         })
     }
+
+    const updateFieldLicenseAllFile = (
+        e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        setPackageInformation({
+            ...packageInformation,
+            [e.target.name]: e.target.value,
+        })
+        setSPDXPayload({
+            ...SPDXPayload,
+            packageInformation: {
+                ...SPDXPayload.packageInformation,
+                [e.target.name]: e.target.value.split('\n'),
+            },
+        })
+    }
+
     const updateFieldCopyright = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         setPackageInformation({
             ...packageInformation,
@@ -1140,7 +1157,7 @@ const EditPackageInformation = ({
                                                     className='form-control'
                                                     name='licenseInfoFromFiles'
                                                     placeholder='Enter all licenses information from files'
-                                                    onChange={updateField}
+                                                    onChange={updateFieldLicenseAllFile}
                                                     value={packageInformation.licenseInfoFromFiles
                                                         ?.toString()
                                                         .replaceAll(',', '\n')}
