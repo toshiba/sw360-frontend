@@ -33,6 +33,7 @@ function PackageConcludedLicense({
         setConcludedLicenseExist(true)
         setConcludedLicenseNone(false)
         setConcludedLicenseNoasserttion(false)
+        setConcludedLicenseToPackage(concludedLicense)
     }
     const selectConcludedLicenseNone = (e: React.ChangeEvent<HTMLInputElement>) => {
         setConcludedLicenseExist(false)

@@ -205,7 +205,7 @@ const EditSnippetInformation = ({
             }
             return snippet
         })
-        // setSnippetInformations(snippets)
+        setSnippetInformations(snippets)
         setSPDXPayload({
             ...SPDXPayload,
             spdxDocument: {
@@ -281,6 +281,13 @@ const EditSnippetInformation = ({
         }
     }, [indexSnippetInformation, snippetInformations])
 
+    // const isNoneOrNoasserttion = (obj: string[]) => {
+    //     if (obj.toString() === 'NONE' || obj.toString() === 'NOASSERTION') {
+    //         return false
+    //     }
+    //     return true
+    // }
+
     const convertSnippetRanges = (snippetRanges: SnippetRange[]) => {
         const inputs: SnippetRange[] = []
         snippetRanges.forEach((snippetRange: SnippetRange) => {
@@ -352,7 +359,7 @@ const EditSnippetInformation = ({
             }
             return snippet
         })
-        // setSnippetInformations(snippets)
+        setSnippetInformations(snippets)
         setSPDXPayload({
             ...SPDXPayload,
             spdxDocument: {
@@ -444,7 +451,7 @@ const EditSnippetInformation = ({
         setLicenseInfoInSnippetsExist(true)
         setLicenseInfoInSnippetsNone(false)
         setLicenseInfoInSnippetsNoasserttion(false)
-        setAllLicensesInformationToSnippet(licenseInfoInSnippets.toString())
+        setAllLicensesInformationToSnippet(licenseInfoInSnippets?.toString())
     }
     const selectLicenseInfoSnippetNone = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLicenseInfoInSnippetsExist(false)
@@ -625,6 +632,16 @@ const EditSnippetInformation = ({
                                                 placeholder='Enter license information in snippet'
                                                 onChange={updateField}
                                                 value={
+                                                    // isNoneOrNoasserttion(
+                                                    //     snippetInformations[indexSnippetInformation]
+                                                    //         .licenseInfoInSnippets
+                                                    // )
+                                                    //     ? snippetInformations[
+                                                    //           indexSnippetInformation
+                                                    //       ].licenseInfoInSnippets
+                                                    //           ?.toString()
+                                                    //           .replaceAll(',', '\n') ?? ''
+                                                    //     : ''
                                                     snippetInformations[indexSnippetInformation].licenseInfoInSnippets
                                                         ?.toString()
                                                         .replaceAll(',', '\n') ?? ''
@@ -723,7 +740,17 @@ const EditSnippetInformation = ({
                                                 name='copyrightText'
                                                 placeholder='Enter snippet copyright text'
                                                 onChange={updateField}
-                                                value={snippetInformations[indexSnippetInformation].copyrightText ?? ''}
+                                                value={
+                                                    // isNoneOrNoasserttion(
+                                                    //     snippetInformations[
+                                                    //         indexSnippetInformation
+                                                    //     ].copyrightText.split('\n')
+                                                    // )
+                                                    //     ? snippetInformations[indexSnippetInformation].copyrightText ??
+                                                    //       ''
+                                                    //     : ''
+                                                    snippetInformations[indexSnippetInformation].copyrightText ?? ''
+                                                }
                                                 disabled={snippetCopyrightTextNone || snippetCopyrightTextNoasserttion}
                                             ></textarea>
                                         </div>

@@ -533,19 +533,20 @@ const EditPackageInformation = ({
 
         if (typeof packageInformation?.licenseInfoFromFiles !== 'undefined') {
             if (packageInformation?.licenseInfoFromFiles.toString() === 'NONE') {
-                const data: string[] = allLicensesInformation
-                setAllLicensesInformation(data)
+                // const data: string[] = []
+                setAllLicensesInformation([])
                 setAllLicensesInformationExist(false)
                 setAllLicensesInformationNone(true)
                 setAllLicensesInformationNoasserttion(false)
             } else if (packageInformation.licenseInfoFromFiles.toString() === 'NOASSERTION') {
-                const data: string[] = allLicensesInformation
-                setAllLicensesInformation(data)
+                console.log(allLicensesInformation)
+                // const data: string[] = []
+                setAllLicensesInformation([])
                 setAllLicensesInformationExist(false)
                 setAllLicensesInformationNone(false)
                 setAllLicensesInformationNoasserttion(true)
             } else {
-                setAllLicensesInformation(packageInformation.licenseInfoFromFiles)
+                setAllLicensesInformation(packageInformation?.licenseInfoFromFiles)
             }
         }
 
@@ -856,6 +857,12 @@ const EditPackageInformation = ({
         setAllLicensesInformationToPackage(e.target.value.split('\n'))
     }
 
+    const isNoneOrNoasserttion = (obj: string[]) => {
+        if (obj.toString() === 'NONE' || obj.toString() === 'NOASSERTION') {
+            return false
+        }
+        return true
+    }
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
             <thead
@@ -1158,9 +1165,13 @@ const EditPackageInformation = ({
                                                     name='licenseInfoFromFiles'
                                                     placeholder='Enter all licenses information from files'
                                                     onChange={updateFieldLicenseAllFile}
-                                                    value={packageInformation.licenseInfoFromFiles
-                                                        ?.toString()
-                                                        .replaceAll(',', '\n')}
+                                                    value={
+                                                        isNoneOrNoasserttion(packageInformation.licenseInfoFromFiles)
+                                                            ? packageInformation.licenseInfoFromFiles
+                                                                  ?.toString()
+                                                                  .replaceAll(',', '\n')
+                                                            : ''
+                                                    }
                                                     disabled={
                                                         allLicensesInformationNone ||
                                                         allLicensesInformationNoasserttion ||
