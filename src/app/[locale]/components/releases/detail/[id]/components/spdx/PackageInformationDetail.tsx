@@ -94,14 +94,16 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                                     <div className='spdx-flex-row'>
                                         <div className='spdx-col-1 spdx-key'>Excluded files</div>
                                         <p className='spdx-col-3 ' id='excludedFiles'>
-                                            {packageInformation?.packageVerificationCode?.excludedFiles?.map((item) => {
-                                                return (
-                                                    <>
-                                                        {item}
-                                                        <br></br>
-                                                    </>
-                                                )
-                                            })}
+                                            {packageInformation?.packageVerificationCode?.excludedFiles
+                                                ?.sort()
+                                                .map((item) => {
+                                                    return (
+                                                        <>
+                                                            {item}
+                                                            <br></br>
+                                                        </>
+                                                    )
+                                                })}
                                         </p>
                                     </div>
                                 </div>
@@ -322,7 +324,17 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                                                     className='spdx-col-3'
                                                     id='externalRefComment-${externalRefsData.index}'
                                                 >
-                                                    {externalRefsData.comment}
+                                                    {externalRefsData?.comment
+                                                        .trim()
+                                                        .split('\n')
+                                                        .map((item) => {
+                                                            return (
+                                                                <>
+                                                                    {item}
+                                                                    <br></br>
+                                                                </>
+                                                            )
+                                                        })}
                                                 </p>
                                             </div>
                                         </>
