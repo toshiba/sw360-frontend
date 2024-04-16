@@ -559,7 +559,7 @@ const EditPackageInformation = ({
         if (typeof packageInformation?.validUntilDate !== 'undefined') {
             setDataValidUntilDate(handleDate(packageInformation.validUntilDate))
         }
-    }, [packageInformation])
+    }, [packageInformation?.builtDate, packageInformation?.validUntilDate, packageInformation?.releaseDate])
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
         setPackageInformation({
