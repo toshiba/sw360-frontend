@@ -162,6 +162,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
     }
 
     const addRelationshipsBetweenSPDXElementsSPDX = () => {
+        setChangeSource(false)
         const arrayExternals: RelationshipsBetweenSPDXElements[] = [...relationshipsBetweenSPDXElementSPDXs]
         if (CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementSPDXs)) {
             setIndexRelation(0)
@@ -189,6 +190,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
     }
 
     const addRelationshipsBetweenSPDXElementsPackage = () => {
+        setChangeSource(false)
         const arrayExternals: RelationshipsBetweenSPDXElements[] = [...relationshipsBetweenSPDXElementPackages]
         if (CommonUtils.isNullEmptyOrUndefinedArray(relationshipsBetweenSPDXElementPackages)) {
             setIndexRelation(0)

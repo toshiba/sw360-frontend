@@ -227,6 +227,7 @@ const EditAnnotationInformation = ({
     }
 
     const addAnnotationsSPDXsSPDX = () => {
+        setChangeSource(false)
         const arrayExternals: Annotations[] = [...annotationsSPDXs]
         setIncreIndex(annotationsSPDXs.length)
         setNumberIndexSPDX(annotationsSPDXs.length)
@@ -259,6 +260,7 @@ const EditAnnotationInformation = ({
     }
 
     const addAnnotationsSPDXsPackage = () => {
+        setChangeSource(false)
         const arrayExternals: Annotations[] = [...annotationsPackages]
         setIncreIndex(annotationsPackages.length)
         setIsAdd(true)
