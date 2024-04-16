@@ -116,7 +116,7 @@ const EditDocumentCreationInformation = ({
         } else {
             setDataCreated(handleCreated(new Date().toISOString()))
         }
-    }, [documentCreationInformation, setExternalDocumentRefs, setIndexExternalDocumentRef])
+    }, [])
 
     const convertCreator = (creators: Creator[]) => {
         const inputs: InputKeyValue[] = []
