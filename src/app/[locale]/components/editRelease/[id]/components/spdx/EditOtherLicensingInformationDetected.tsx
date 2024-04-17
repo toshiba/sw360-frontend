@@ -14,7 +14,6 @@ import CommonUtils from '@/utils/common.utils'
 import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import styles from '../detail.module.css'
-import OtherLicenseName from './OtherLicenseName'
 
 interface Props {
     isModeFull?: boolean
@@ -262,8 +261,8 @@ const EditOtherLicensingInformationDetected = ({
                 otherLicensingInformationDetecteds[indexOtherLicense]?.licenseName === 'NONE' ||
                 otherLicensingInformationDetecteds[indexOtherLicense]?.licenseName === 'NOASSERTION'
             ) {
-                const data: string = licenseName
-                setLicenseName(data)
+                // const data: string = licenseName
+                setLicenseName('')
                 setIsLicenseName(false)
             } else {
                 setLicenseName(otherLicensingInformationDetecteds[indexOtherLicense].licenseName)
@@ -286,7 +285,7 @@ const EditOtherLicensingInformationDetected = ({
                 return otherLicensing
             }
         )
-        setOtherLicensingInformationDetecteds(otherLicensings)
+        // setOtherLicensingInformationDetecteds(otherLicensings)
         setSPDXPayload({
             ...SPDXPayload,
             spdxDocument: {
@@ -294,6 +293,23 @@ const EditOtherLicensingInformationDetected = ({
                 otherLicensingInformationDetecteds: otherLicensings,
             },
         })
+    }
+
+    const selectLicenseNameNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setIsLicenseName(false)
+        setLicenseNameToOtherLicense(e.target.value)
+    }
+
+    const selectLicenseNameNoasserttionExsit = () => {
+        setIsLicenseName(true)
+        setLicenseNameToOtherLicense(licenseName)
+    }
+
+    const isNoneOrNoasserttionString = (data: string) => {
+        if (data === 'NONE' || data === 'NOASSERTION') {
+            return false
+        }
+        return true
     }
 
     return (
@@ -435,13 +451,67 @@ const EditOtherLicensingInformationDetected = ({
                             </td>
                         </tr>
                         <tr>
-                            <OtherLicenseName
+                            {/* <OtherLicenseName
                                 licenseName={licenseName}
                                 updateField={updateField}
                                 setLicenseNameToOtherLicense={setLicenseNameToOtherLicense}
                                 isLicenseName={isLicenseName}
                                 setIsLicenseName={setIsLicenseName}
-                            />
+                            /> */}
+                            <td colSpan={3}>
+                                <div className='form-group'>
+                                    <label className='lableSPDX'>10.3 License name</label>
+                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='licenseNameExist'
+                                                type='radio'
+                                                name='licenseName'
+                                                value='EXIST'
+                                                onChange={selectLicenseNameNoasserttionExsit}
+                                                checked={isLicenseName}
+                                            />
+                                            <input
+                                                style={{ flex: 6, marginRight: '1rem' }}
+                                                id='licenseName'
+                                                className='form-control needs-validation'
+                                                type='text'
+                                                placeholder='Enter license name'
+                                                name='licenseName'
+                                                onChange={updateField}
+                                                value={
+                                                    isNoneOrNoasserttionString(
+                                                        otherLicensingInformationDetecteds[indexOtherLicense]
+                                                            .licenseName
+                                                    )
+                                                        ? otherLicensingInformationDetecteds[indexOtherLicense]
+                                                              .licenseName ?? ''
+                                                        : ''
+                                                }
+                                                disabled={!isLicenseName}
+                                            />
+                                        </div>
+                                        <div style={{ flex: 2 }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='licenseNameNoAssertion'
+                                                type='radio'
+                                                name='licenseName'
+                                                value='NOASSERTION'
+                                                onChange={selectLicenseNameNoasserttion}
+                                                checked={!isLicenseName}
+                                            />
+                                            <label
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='licenseNameNoAssertion'
+                                            >
+                                                NOASSERTION
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         {isModeFull && (
                             <tr className='spdx-full'>
