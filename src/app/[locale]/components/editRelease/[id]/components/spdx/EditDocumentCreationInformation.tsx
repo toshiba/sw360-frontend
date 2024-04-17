@@ -246,6 +246,7 @@ const EditDocumentCreationInformation = ({
 
     const convertInputToCreated = (data: InputKeyValue) => {
         if (data.key == '' || data.value == '') {
+            console.log('11111111')
             return ''
         }
         const localDate = new Date(data.key + ' ' + data.value)
@@ -258,14 +259,24 @@ const EditDocumentCreationInformation = ({
         //     ...documentCreationInformation,
         //     created: convertInputToCreated(inputs),
         // })
-
-        setSPDXPayload({
-            ...SPDXPayload,
-            documentCreationInformation: {
-                ...SPDXPayload.documentCreationInformation,
-                created: convertInputToCreated(inputs),
-            },
-        })
+        console.log(convertInputToCreated(inputs))
+        if (CommonUtils.isNullEmptyOrUndefinedString(convertInputToCreated(inputs))) {
+            setSPDXPayload({
+                ...SPDXPayload,
+                documentCreationInformation: {
+                    ...SPDXPayload.documentCreationInformation,
+                    created: new Date().toISOString(),
+                },
+            })
+        } else {
+            setSPDXPayload({
+                ...SPDXPayload,
+                documentCreationInformation: {
+                    ...SPDXPayload.documentCreationInformation,
+                    created: convertInputToCreated(inputs),
+                },
+            })
+        }
     }
 
     const [isDeleteSucces, setIsDeleteSucces] = useState(false)
