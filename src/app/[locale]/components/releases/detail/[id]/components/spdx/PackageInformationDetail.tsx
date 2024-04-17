@@ -96,6 +96,7 @@ const PackageInformationDetail = ({ packageInformation, externalRefsData, setExt
                                         <p className='spdx-col-3 ' id='excludedFiles'>
                                             {packageInformation?.packageVerificationCode?.excludedFiles
                                                 ?.sort()
+                                                .filter((data) => !CommonUtils.isNullEmptyOrUndefinedString(data))
                                                 .map((item) => {
                                                     return (
                                                         <>

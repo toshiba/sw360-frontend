@@ -18,15 +18,11 @@ import {
     SPDX,
 } from '@/object-types'
 import CommonUtils from '@/utils/common.utils'
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import styles from '../detail.module.css'
 import BuiltDate from './PackageInformation/BuiltDate'
 import CheckSums from './PackageInformation/CheckSums'
-import PackageConcludedLicense from './PackageInformation/PackageConcludedLicense'
-import PackageDeclaredLicense from './PackageInformation/PackageDeclaredLicense'
-import PackageDownloadLocation from './PackageInformation/PackageDownloadLocation'
-import PackageHomePage from './PackageInformation/PackageHomePage'
 import PackageOriginator from './PackageInformation/PackageOriginator'
 import PackageSupplier from './PackageInformation/PackageSupplier'
 import ReleaseDate from './PackageInformation/ReleaseDate'
@@ -303,10 +299,10 @@ const EditPackageInformation = ({
     const [packageDownloadLocationNoasserttion, setPackageDownloadLocationNoasserttion] = useState(false)
 
     const setPackageDownloadLocationToPackage = (data: string) => {
-        setPackageInformation({
-            ...packageInformation,
-            downloadLocation: data,
-        })
+        // setPackageInformation({
+        //     ...packageInformation,
+        //     downloadLocation: data,
+        // })
         setSPDXPayload({
             ...SPDXPayload,
             packageInformation: {
@@ -322,10 +318,10 @@ const EditPackageInformation = ({
     const [packageHomePageNoasserttion, setPackageHomePageNoasserttion] = useState(false)
 
     const setPackageHomePageToPackage = (data: string) => {
-        setPackageInformation({
-            ...packageInformation,
-            homepage: data,
-        })
+        // setPackageInformation({
+        //     ...packageInformation,
+        //     homepage: data,
+        // })
         setSPDXPayload({
             ...SPDXPayload,
             packageInformation: {
@@ -341,11 +337,11 @@ const EditPackageInformation = ({
     const [concludedLicenseNoasserttion, setConcludedLicenseNoasserttion] = useState(false)
 
     const setConcludedLicenseToPackage = (data: string) => {
-        console.log(data)
-        setPackageInformation({
-            ...packageInformation,
-            licenseConcluded: data,
-        })
+        // console.log(data)
+        // setPackageInformation({
+        //     ...packageInformation,
+        //     licenseConcluded: data,
+        // })
         setSPDXPayload({
             ...SPDXPayload,
             packageInformation: {
@@ -385,11 +381,11 @@ const EditPackageInformation = ({
     const [declaredLicenseNoasserttion, setDeclaredLicenseNoasserttion] = useState(false)
 
     const setDeclaredLicenseToPackage = (data: string) => {
-        console.log(data)
-        setPackageInformation({
-            ...packageInformation,
-            licenseDeclared: data,
-        })
+        // console.log(data)
+        // setPackageInformation({
+        //     ...packageInformation,
+        //     licenseDeclared: data,
+        // })
         setSPDXPayload({
             ...SPDXPayload,
             packageInformation: {
@@ -443,14 +439,14 @@ const EditPackageInformation = ({
 
         if (typeof packageInformation?.downloadLocation !== 'undefined') {
             if (packageInformation.downloadLocation === 'NONE') {
-                const data: string = packageDownloadLocation
-                setPackageDownloadLocation(data)
+                // const data: string = packageDownloadLocation
+                setPackageDownloadLocation('')
                 setPackageDownloadLocationExist(false)
                 setPackageDownloadLocationNone(true)
                 setPackageDownloadLocationNoasserttion(false)
             } else if (packageInformation.downloadLocation === 'NOASSERTION') {
-                const data: string = packageDownloadLocation
-                setPackageDownloadLocation(data)
+                // const data: string = packageDownloadLocation
+                setPackageDownloadLocation('')
                 setPackageDownloadLocationExist(false)
                 setPackageDownloadLocationNone(false)
                 setPackageDownloadLocationNoasserttion(true)
@@ -461,14 +457,14 @@ const EditPackageInformation = ({
 
         if (typeof packageInformation?.homepage !== 'undefined') {
             if (packageInformation.homepage === 'NONE') {
-                const data: string = packageHomePage
-                setPackageHomePage(data)
+                // const data: string = packageHomePage
+                setPackageHomePage('')
                 setPackageHomePageExist(false)
                 setPackageHomePageNone(true)
                 setPackageHomePageNoasserttion(false)
             } else if (packageInformation.homepage === 'NOASSERTION') {
-                const data: string = packageHomePage
-                setPackageHomePage(data)
+                // const data: string = packageHomePage
+                setPackageHomePage('')
                 setPackageHomePageExist(false)
                 setPackageHomePageNone(false)
                 setPackageHomePageNoasserttion(true)
@@ -479,14 +475,14 @@ const EditPackageInformation = ({
 
         if (typeof packageInformation?.licenseConcluded !== 'undefined') {
             if (packageInformation?.licenseConcluded === 'NONE') {
-                const data: string = concludedLicense
-                setConcludedLicense(data)
+                // const data: string = concludedLicense
+                setConcludedLicense('')
                 setConcludedLicenseExist(false)
                 setConcludedLicenseNone(true)
                 setConcludedLicenseNoasserttion(false)
             } else if (packageInformation.licenseConcluded === 'NOASSERTION') {
-                const data: string = concludedLicense
-                setConcludedLicense(data)
+                // const data: string = concludedLicense
+                setConcludedLicense('')
                 setConcludedLicenseExist(false)
                 setConcludedLicenseNone(false)
                 setConcludedLicenseNoasserttion(true)
@@ -497,14 +493,14 @@ const EditPackageInformation = ({
 
         if (typeof packageInformation?.licenseDeclared !== 'undefined') {
             if (packageInformation?.licenseDeclared === 'NONE') {
-                const data: string = declaredLicense
-                setDeclaredLicense(data)
+                // const data: string = declaredLicense
+                setDeclaredLicense('')
                 setDeclaredLicenseExist(false)
                 setDeclaredLicenseNone(true)
                 setDeclaredLicenseNoasserttion(false)
             } else if (packageInformation.licenseDeclared === 'NOASSERTION') {
-                const data: string = declaredLicense
-                setDeclaredLicense(data)
+                // const data: string = declaredLicense
+                setDeclaredLicense('')
                 setDeclaredLicenseExist(false)
                 setDeclaredLicenseNone(false)
                 setDeclaredLicenseNoasserttion(true)
@@ -515,14 +511,14 @@ const EditPackageInformation = ({
 
         if (typeof packageInformation?.copyrightText !== 'undefined') {
             if (packageInformation?.copyrightText === 'NONE') {
-                const data: string = copyrightText
-                setCopyrightText(data)
+                // const data: string = copyrightText
+                setCopyrightText('')
                 setCopyrightTextExist(false)
                 setCopyrightTextNone(true)
                 setCopyrightTextNoasserttion(false)
             } else if (packageInformation.copyrightText === 'NOASSERTION') {
-                const data: string = copyrightText
-                setCopyrightText(data)
+                // const data: string = copyrightText
+                setCopyrightText('')
                 setCopyrightTextExist(false)
                 setCopyrightTextNone(false)
                 setCopyrightTextNoasserttion(true)
@@ -873,6 +869,90 @@ const EditPackageInformation = ({
         }
         return true
     }
+
+    const isNoneOrNoasserttionString = (data: string) => {
+        if (data === 'NONE' || data === 'NOASSERTION') {
+            return false
+        }
+        return true
+    }
+
+    const selectPackageDownloadLocationExist = () => {
+        setPackageDownloadLocationExist(true)
+        setPackageDownloadLocationNone(false)
+        setPackageDownloadLocationNoasserttion(false)
+        setPackageDownloadLocationToPackage(packageDownloadLocation)
+    }
+    const selectPackageDownloadLocationNone = (e: ChangeEvent<HTMLInputElement>) => {
+        setPackageDownloadLocationNone(true)
+        setPackageDownloadLocationExist(false)
+        setPackageDownloadLocationNoasserttion(false)
+        setPackageDownloadLocationToPackage(e.target.value)
+    }
+    const selectPackageDownloadLocationNoasserttion = (e: ChangeEvent<HTMLInputElement>) => {
+        setPackageDownloadLocationNoasserttion(true)
+        setPackageDownloadLocationExist(false)
+        setPackageDownloadLocationNone(false)
+        setPackageDownloadLocationToPackage(e.target.value)
+    }
+
+    const selectPackageHomePageExist = () => {
+        setPackageHomePageExist(true)
+        setPackageHomePageNone(false)
+        setPackageHomePageNoasserttion(false)
+        setPackageHomePageToPackage(packageHomePage)
+    }
+    const selectPackageHomePageNone = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPackageHomePageExist(false)
+        setPackageHomePageNone(true)
+        setPackageHomePageNoasserttion(false)
+        setPackageHomePageToPackage(e.target.value)
+    }
+    const selectPackageHomePageNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPackageHomePageExist(false)
+        setPackageHomePageNone(false)
+        setPackageHomePageNoasserttion(true)
+        setPackageHomePageToPackage(e.target.value)
+    }
+
+    const selectConcludedLicenseExist = () => {
+        setConcludedLicenseExist(true)
+        setConcludedLicenseNone(false)
+        setConcludedLicenseNoasserttion(false)
+        setConcludedLicenseToPackage(concludedLicense)
+    }
+    const selectConcludedLicenseNone = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setConcludedLicenseExist(false)
+        setConcludedLicenseNone(true)
+        setConcludedLicenseNoasserttion(false)
+        setConcludedLicenseToPackage(e.target.value)
+    }
+    const selectConcludedLicenseNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setConcludedLicenseExist(false)
+        setConcludedLicenseNone(false)
+        setConcludedLicenseNoasserttion(true)
+        setConcludedLicenseToPackage(e.target.value)
+    }
+
+    const selectDeclaredLicenseExist = () => {
+        setDeclaredLicenseExist(true)
+        setDeclaredLicenseNone(false)
+        setDeclaredLicenseNoasserttion(false)
+        setDeclaredLicenseToPackage(declaredLicense)
+    }
+    const selectDeclaredLicenseNone = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDeclaredLicenseExist(false)
+        setDeclaredLicenseNone(true)
+        setDeclaredLicenseNoasserttion(false)
+        setDeclaredLicenseToPackage(e.target.value)
+    }
+    const selectDeclaredLicenseNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDeclaredLicenseExist(false)
+        setDeclaredLicenseNone(false)
+        setDeclaredLicenseNoasserttion(true)
+        setDeclaredLicenseToPackage(e.target.value)
+    }
+
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
             <thead
@@ -997,7 +1077,7 @@ const EditPackageInformation = ({
                             </>
                         )}
                         <tr>
-                            <PackageDownloadLocation
+                            {/* <PackageDownloadLocation
                                 setPackageDownloadLocationToPackage={setPackageDownloadLocationToPackage}
                                 packageDownloadLocationExist={packageDownloadLocationExist}
                                 setPackageDownloadLocationExist={setPackageDownloadLocationExist}
@@ -1006,7 +1086,75 @@ const EditPackageInformation = ({
                                 packageDownloadLocationNoasserttion={packageDownloadLocationNoasserttion}
                                 setPackageDownloadLocationNoasserttion={setPackageDownloadLocationNoasserttion}
                                 packageDownloadLocation={packageDownloadLocation}
-                            />
+                            /> */}
+                            <td colSpan={3}>
+                                <div className='form-group'>
+                                    <label className='lableSPDX'>7.7 Package download location</label>
+                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
+                                            <input
+                                                className='spdx-radio'
+                                                type='radio'
+                                                id='downloadLocationExist'
+                                                name='_sw360_portlet_components_DOWNLOAD_LOCATION'
+                                                value='EXIST'
+                                                onChange={selectPackageDownloadLocationExist}
+                                                checked={packageDownloadLocationExist}
+                                            />
+                                            <input
+                                                style={{ flex: 6, marginRight: '1rem' }}
+                                                id='downloadLocation'
+                                                className='form-control'
+                                                type='text'
+                                                name='downloadLocation'
+                                                placeholder='Enter package download location'
+                                                onChange={updateField}
+                                                value={
+                                                    isNoneOrNoasserttionString(packageInformation.downloadLocation)
+                                                        ? packageInformation.downloadLocation
+                                                        : ''
+                                                }
+                                                disabled={
+                                                    packageDownloadLocationNone || packageDownloadLocationNoasserttion
+                                                }
+                                            />
+                                        </div>
+                                        <div style={{ flex: 2 }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='downloadLocationNone'
+                                                type='radio'
+                                                name='downloadLocation'
+                                                value='NONE'
+                                                onChange={selectPackageDownloadLocationNone}
+                                                checked={packageDownloadLocationNone}
+                                            />
+                                            <label
+                                                style={{ marginRight: '2rem' }}
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='packageDownloadLocationNone'
+                                            >
+                                                NONE
+                                            </label>
+                                            <input
+                                                className='spdx-radio'
+                                                id='downloadLocationNoAssertion'
+                                                type='radio'
+                                                name='downloadLocation'
+                                                value='NOASSERTION'
+                                                onChange={selectPackageDownloadLocationNoasserttion}
+                                                checked={packageDownloadLocationNoasserttion}
+                                            />
+                                            <label
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='downloadLocationNoAssertion'
+                                            >
+                                                NOASSERTION
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td colSpan={3}>
@@ -1105,7 +1253,7 @@ const EditPackageInformation = ({
                             </>
                         )}
                         <tr>
-                            <PackageHomePage
+                            {/* <PackageHomePage
                                 setPackageHomePageToPackage={setPackageHomePageToPackage}
                                 packageHomePageExist={packageHomePageExist}
                                 setPackageHomePageExist={setPackageHomePageExist}
@@ -1114,7 +1262,73 @@ const EditPackageInformation = ({
                                 packageHomePageNoasserttion={packageHomePageNoasserttion}
                                 setPackageHomePageNoasserttion={setPackageHomePageNoasserttion}
                                 packageHomePage={packageHomePage}
-                            />
+                            /> */}
+                            <td colSpan={3}>
+                                <div className='form-group'>
+                                    <label className='lableSPDX'>7.11 Package home page</label>
+                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='packageHomepageExist'
+                                                type='radio'
+                                                name='_sw360_portlet_components_PACKAGE_HOMEPAGE'
+                                                value='EXIST'
+                                                onClick={selectPackageHomePageExist}
+                                                checked={packageHomePageExist}
+                                            />
+                                            <input
+                                                style={{ flex: 6, marginRight: '1rem' }}
+                                                id='packageHomePage'
+                                                className='form-control'
+                                                type='text'
+                                                name='homepage'
+                                                placeholder='Enter package homepage'
+                                                onChange={updateField}
+                                                value={
+                                                    isNoneOrNoasserttionString(packageInformation?.homepage)
+                                                        ? packageInformation?.homepage
+                                                        : ''
+                                                }
+                                                disabled={packageHomePageNone || packageHomePageNoasserttion}
+                                            />
+                                        </div>
+                                        <div style={{ flex: 2 }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='packageHomepageNone'
+                                                type='radio'
+                                                name='homepage'
+                                                value='NONE'
+                                                onChange={selectPackageHomePageNone}
+                                                checked={packageHomePageNone}
+                                            />
+                                            <label
+                                                style={{ marginRight: '2rem' }}
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='packageHomePageNone'
+                                            >
+                                                NONE
+                                            </label>
+                                            <input
+                                                className='spdx-radio'
+                                                id='packageHomepageNoAssertion'
+                                                type='radio'
+                                                name='homepage'
+                                                value='NOASSERTION'
+                                                onChange={selectPackageHomePageNoasserttion}
+                                                checked={packageHomePageNoasserttion}
+                                            />
+                                            <label
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='packageHomePageNoAssertion'
+                                            >
+                                                NOASSERTION
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         {isModeFull && (
                             <tr className='spdx-full'>
@@ -1139,7 +1353,7 @@ const EditPackageInformation = ({
                             </tr>
                         )}
                         <tr>
-                            <PackageConcludedLicense
+                            {/* <PackageConcludedLicense
                                 setConcludedLicenseToPackage={setConcludedLicenseToPackage}
                                 concludedLicenseExist={concludedLicenseExist}
                                 setConcludedLicenseExist={setConcludedLicenseExist}
@@ -1148,7 +1362,73 @@ const EditPackageInformation = ({
                                 concludedLicenseNoasserttion={concludedLicenseNoasserttion}
                                 setConcludedLicenseNoasserttion={setConcludedLicenseNoasserttion}
                                 concludedLicense={concludedLicense}
-                            />
+                            /> */}
+                            <td colSpan={3}>
+                                <div className='form-group'>
+                                    <label className='lableSPDX'>7.13 Concluded license</label>
+                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='licenseConcludedExist'
+                                                type='radio'
+                                                name='licenseConcludedExist'
+                                                value='EXIST'
+                                                onClick={selectConcludedLicenseExist}
+                                                checked={concludedLicenseExist}
+                                            />
+                                            <input
+                                                style={{ flex: 6, marginRight: '1rem' }}
+                                                id='licenseConcluded'
+                                                className='form-control'
+                                                type='text'
+                                                name='licenseConcluded'
+                                                placeholder='Enter concluded license'
+                                                onChange={updateField}
+                                                value={
+                                                    isNoneOrNoasserttionString(packageInformation?.licenseConcluded)
+                                                        ? packageInformation?.licenseConcluded
+                                                        : ''
+                                                }
+                                                disabled={concludedLicenseNone || concludedLicenseNoasserttion}
+                                            />
+                                        </div>
+                                        <div style={{ flex: 2 }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='licenseConcludedNone'
+                                                type='radio'
+                                                name='licenseConcludedNone'
+                                                value='NONE'
+                                                onChange={selectConcludedLicenseNone}
+                                                checked={concludedLicenseNone}
+                                            />
+                                            <label
+                                                style={{ marginRight: '2rem' }}
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='licenseConcludedNone'
+                                            >
+                                                NONE
+                                            </label>
+                                            <input
+                                                className='spdx-radio'
+                                                id='licenseConcludedNoAssertion'
+                                                type='radio'
+                                                name='licenseConcludedNoAssertion'
+                                                value='NOASSERTION'
+                                                onChange={selectConcludedLicenseNoasserttion}
+                                                checked={concludedLicenseNoasserttion}
+                                            />
+                                            <label
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='licenseConcludedNoAssertion'
+                                            >
+                                                NOASSERTION
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         {isModeFull && (
                             <tr>
@@ -1241,7 +1521,7 @@ const EditPackageInformation = ({
                             </tr>
                         )}
                         <tr>
-                            <PackageDeclaredLicense
+                            {/* <PackageDeclaredLicense
                                 setDeclaredLicenseToPackage={setDeclaredLicenseToPackage}
                                 declaredLicenseExist={declaredLicenseExist}
                                 setDeclaredLicenseExist={setDeclaredLicenseExist}
@@ -1250,7 +1530,73 @@ const EditPackageInformation = ({
                                 declaredLicenseNoasserttion={declaredLicenseNoasserttion}
                                 setDeclaredLicenseNoasserttion={setDeclaredLicenseNoasserttion}
                                 declaredLicense={declaredLicense}
-                            />
+                            /> */}
+                            <td colSpan={3}>
+                                <div className='form-group'>
+                                    <label className='lableSPDX'>7.15 Declared license</label>
+                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='licenseDeclaredExist'
+                                                type='radio'
+                                                name='licenseDeclaredExist'
+                                                value='EXIST'
+                                                onClick={selectDeclaredLicenseExist}
+                                                checked={declaredLicenseExist}
+                                            />
+                                            <input
+                                                style={{ flex: 6, marginRight: '1rem' }}
+                                                id='licenseDeclared'
+                                                className='form-control'
+                                                type='text'
+                                                name='licenseDeclared'
+                                                placeholder='Enter declared license'
+                                                onChange={updateField}
+                                                value={
+                                                    isNoneOrNoasserttionString(packageInformation?.licenseDeclared)
+                                                        ? packageInformation?.licenseDeclared
+                                                        : ''
+                                                }
+                                                disabled={declaredLicenseNone || declaredLicenseNoasserttion}
+                                            />
+                                        </div>
+                                        <div style={{ flex: 2 }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='licenseDeclaredNone'
+                                                type='radio'
+                                                name='_sw360_portlet_components_DECLARED_LICENSE'
+                                                value='NONE'
+                                                onChange={selectDeclaredLicenseNone}
+                                                checked={declaredLicenseNone}
+                                            />
+                                            <label
+                                                style={{ marginRight: '2rem' }}
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='licenseDeclaredNone'
+                                            >
+                                                NONE
+                                            </label>
+                                            <input
+                                                className='spdx-radio'
+                                                id='licenseDeclaredNoAssertion'
+                                                type='radio'
+                                                name='licenseDeclaredNoAssertion'
+                                                value='NOASSERTION'
+                                                onChange={selectDeclaredLicenseNoasserttion}
+                                                checked={declaredLicenseNoasserttion}
+                                            />
+                                            <label
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='licenseDeclaredNoAssertion'
+                                            >
+                                                NOASSERTION
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         <tr className='spdx-full'>
                             <td colSpan={3}>
@@ -1305,7 +1651,11 @@ const EditPackageInformation = ({
                                                 name='copyrightText'
                                                 placeholder='Enter copyright text'
                                                 onChange={updateFieldCopyright}
-                                                value={packageInformation.copyrightText ?? ''}
+                                                value={
+                                                    isNoneOrNoasserttionString(packageInformation?.copyrightText)
+                                                        ? packageInformation?.copyrightText
+                                                        : ''
+                                                }
                                                 disabled={copyrightTextNone || copyrightTextNoasserttion}
                                             ></textarea>
                                         </div>
