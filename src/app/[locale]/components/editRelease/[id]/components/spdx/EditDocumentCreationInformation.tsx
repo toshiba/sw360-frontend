@@ -18,6 +18,7 @@ import Created from './DocumentCreationInfo/Created'
 import Creators from './DocumentCreationInfo/Creators'
 
 interface Props {
+    fullnameModifiedBy?: string
     documentCreationInformation?: DocumentCreationInformation
     setDocumentCreationInformation?: React.Dispatch<React.SetStateAction<DocumentCreationInformation>>
     isModeFull?: boolean
@@ -32,6 +33,7 @@ interface Props {
 }
 
 const EditDocumentCreationInformation = ({
+    fullnameModifiedBy,
     documentCreationInformation,
     setDocumentCreationInformation,
     isModeFull,
@@ -105,7 +107,7 @@ const EditDocumentCreationInformation = ({
             const creators: InputKeyValue[] = []
             const creator: InputKeyValue = {
                 key: 'Person',
-                value: documentCreationInformation.createdBy,
+                value: fullnameModifiedBy + ' (' + documentCreationInformation.createdBy + ')',
             }
             creators.push(creator)
             setCreator(creators)
@@ -217,6 +219,7 @@ const EditDocumentCreationInformation = ({
     }
 
     const setDataCreators = (inputs: InputKeyValue[]) => {
+        console.log(inputs)
         setErrorCreator(false)
         if (isAnonymous) {
             inputs = inputs.filter((input) => input.key != 'Organization').filter((input) => input.key != 'Person')

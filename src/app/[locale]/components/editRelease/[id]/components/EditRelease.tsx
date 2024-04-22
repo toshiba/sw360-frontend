@@ -70,14 +70,14 @@ const EditRelease = ({ releaseId }: Props) => {
         packageInformation: null,
     })
 
-    const handleCreators = (data: string) => {
+    const handleCreators = (fullName: string, data: string) => {
         if (CommonUtils.isNullEmptyOrUndefinedString(data)) {
             return []
         }
         const creators: Array<Creator> = []
         const creator: Creator = {
             type: 'Person',
-            value: data,
+            value: fullName + ' (' + data + ')',
             index: 0,
         }
         creators.push(creator)
@@ -104,7 +104,18 @@ const EditRelease = ({ releaseId }: Props) => {
                 }
                 let creators: Creator[] = release._embedded['sw360:documentCreationInformation'].creator
                 if (CommonUtils.isNullEmptyOrUndefinedArray(creators)) {
-                    creators = handleCreators(release._embedded['sw360:documentCreationInformation'].createdBy)
+                    if (
+                        !CommonUtils.isNullOrUndefined(release._embedded) &&
+                        !CommonUtils.isNullOrUndefined(release._embedded['sw360:modifiedBy'])
+                    ) {
+                        creators = handleCreators(
+                            release._embedded['sw360:createdBy'].fullName,
+                            release._embedded['sw360:documentCreationInformation'].createdBy
+                        )
+                    } else {
+                        setAddNewRelease(true)
+                        creators = []
+                    }
                 }
                 const documentCreationInfomation: DocumentCreationInformation = {
                     id: release._embedded['sw360:documentCreationInformation'].id,
@@ -307,10 +318,15 @@ const EditRelease = ({ releaseId }: Props) => {
     const [errorLicenseIdentifier, setErrorLicenseIdentifier] = useState(false)
     const [errorExtractedText, setErrorExtractedText] = useState(false)
     const [errorCreator, setErrorCreator] = useState(false)
+    const [addNewRelease, setAddNewRelease] = useState(false)
     const [inputValid, setInputValid] = useState(false)
 
     const validateCreator = (SPDXPayload: SPDX): boolean => {
-        if (CommonUtils.isNullEmptyOrUndefinedArray(SPDXPayload.documentCreationInformation.creator)) {
+        console.log(addNewRelease)
+        if (
+            CommonUtils.isNullEmptyOrUndefinedArray(SPDXPayload.documentCreationInformation.creator) &&
+            !addNewRelease
+        ) {
             setErrorCreator(true)
             return true
         }

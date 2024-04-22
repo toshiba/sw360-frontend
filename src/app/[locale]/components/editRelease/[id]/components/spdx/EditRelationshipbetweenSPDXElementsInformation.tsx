@@ -49,6 +49,7 @@ const EditRelationshipbetweenSPDXElementsInformation = ({
         'DEPENDS_ON',
         'DEPENDENCY_OF',
         'BUILD_DEPENDENCY_OF',
+        'DEPENDENCY_MANIFEST_OF',
         'DEV_DEPENDENCY_OF',
         'OPTIONAL_DEPENDENCY_OF',
         'PROVIDED_DEPENDENCY_OF',
