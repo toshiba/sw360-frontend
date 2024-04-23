@@ -179,7 +179,7 @@ const EditSnippetInformation = ({
             }
             return snippet
         })
-        // setSnippetInformations(snippets)
+        setSnippetInformations(snippets)
         setSPDXPayload({
             ...SPDXPayload,
             spdxDocument: {
