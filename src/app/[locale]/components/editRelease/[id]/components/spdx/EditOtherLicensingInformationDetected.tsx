@@ -285,7 +285,7 @@ const EditOtherLicensingInformationDetected = ({
                 return otherLicensing
             }
         )
-        // setOtherLicensingInformationDetecteds(otherLicensings)
+        setOtherLicensingInformationDetecteds(otherLicensings)
         setSPDXPayload({
             ...SPDXPayload,
             spdxDocument: {
