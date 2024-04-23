@@ -14,7 +14,6 @@ import CommonUtils from '@/utils/common.utils'
 import { useEffect, useState } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 import styles from '../detail.module.css'
-import SnippetConcludedLicense from './SnippetInformation/SnippetConcludedLicense'
 import SnippetFileSPDXIdentifier from './SnippetInformation/SnippetFileSPDXIdentifier'
 import SnippetRanges from './SnippetInformation/SnippetRanges'
 
@@ -180,7 +179,7 @@ const EditSnippetInformation = ({
             }
             return snippet
         })
-        setSnippetInformations(snippets)
+        // setSnippetInformations(snippets)
         setSPDXPayload({
             ...SPDXPayload,
             spdxDocument: {
@@ -226,14 +225,14 @@ const EditSnippetInformation = ({
 
         if (typeof snippetInformations[indexSnippetInformation]?.licenseConcluded !== 'undefined') {
             if (snippetInformations[indexSnippetInformation]?.licenseConcluded === 'NONE') {
-                const data: string = snippetConcludedLicense
-                setSnippetConcludedLicense(data)
+                // const data: string = snippetConcludedLicense
+                setSnippetConcludedLicense('')
                 setSnippetConcludedLicenseExist(false)
                 setSnippetConcludedLicenseNone(true)
                 setSnippetConcludedLicenseNoasserttion(false)
             } else if (snippetInformations[indexSnippetInformation]?.licenseConcluded === 'NOASSERTION') {
-                const data: string = snippetConcludedLicense
-                setSnippetConcludedLicense(data)
+                // const data: string = snippetConcludedLicense
+                setSnippetConcludedLicense('')
                 setSnippetConcludedLicenseExist(false)
                 setSnippetConcludedLicenseNone(false)
                 setSnippetConcludedLicenseNoasserttion(true)
@@ -485,6 +484,32 @@ const EditSnippetInformation = ({
         setSnippetCopyrightTextToSnippet(e.target.value)
     }
 
+    const selectSnippetConcludedLicenseExist = () => {
+        setSnippetConcludedLicenseExist(true)
+        setSnippetConcludedLicenseNone(false)
+        setSnippetConcludedLicenseNoasserttion(false)
+        setSnippetConcludedLicenseToSnippet(snippetConcludedLicense)
+    }
+    const selectSnippetConcludedLicenseNone = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSnippetConcludedLicenseExist(false)
+        setSnippetConcludedLicenseNone(true)
+        setSnippetConcludedLicenseNoasserttion(false)
+        setSnippetConcludedLicenseToSnippet(e.target.value)
+    }
+    const selectSnippetConcludedLicenseNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSnippetConcludedLicenseExist(false)
+        setSnippetConcludedLicenseNone(false)
+        setSnippetConcludedLicenseNoasserttion(true)
+        setSnippetConcludedLicenseToSnippet(e.target.value)
+    }
+
+    const isNoneOrNoasserttionString = (data: string) => {
+        if (data === 'NONE' || data === 'NOASSERTION') {
+            return false
+        }
+        return true
+    }
+
     return (
         <table className={`table label-value-table ${styles['summary-table']}`}>
             <thead
@@ -586,7 +611,7 @@ const EditSnippetInformation = ({
                             </td>
                         </tr>
                         <tr>
-                            <SnippetConcludedLicense
+                            {/* <SnippetConcludedLicense
                                 snippetConcludedLicense={snippetConcludedLicense}
                                 setSnippetConcludedLicenseToSnippet={setSnippetConcludedLicenseToSnippet}
                                 snippetConcludedLicenseExist={snippetConcludedLicenseExist}
@@ -596,7 +621,77 @@ const EditSnippetInformation = ({
                                 snippetConcludedLicenseNoasserttion={snippetConcludedLicenseNoasserttion}
                                 setSnippetConcludedLicenseNoasserttion={setSnippetConcludedLicenseNoasserttion}
                                 updateField={updateField}
-                            />
+                            /> */}
+                            <td colSpan={3}>
+                                <div className='form-group'>
+                                    <label className='lableSPDX'>9.5 Snippet concluded license</label>
+                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                        <div style={{ display: 'inline-flex', flex: 3, marginRight: '1rem' }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='spdxConcludedLicenseExist'
+                                                type='radio'
+                                                name='licenseConcluded'
+                                                value='EXIST'
+                                                onClick={selectSnippetConcludedLicenseExist}
+                                                checked={snippetConcludedLicenseExist}
+                                            />
+                                            <input
+                                                style={{ flex: 6, marginRight: '1rem' }}
+                                                id='spdxConcludedLicenseValue'
+                                                className='form-control'
+                                                type='text'
+                                                name='licenseConcluded'
+                                                placeholder='Enter snippet concluded license'
+                                                onChange={updateField}
+                                                value={
+                                                    isNoneOrNoasserttionString(
+                                                        snippetInformations[indexSnippetInformation].licenseConcluded
+                                                    )
+                                                        ? snippetInformations[indexSnippetInformation].licenseConcluded
+                                                        : ''
+                                                }
+                                                disabled={
+                                                    snippetConcludedLicenseNone || snippetConcludedLicenseNoasserttion
+                                                }
+                                            />
+                                        </div>
+                                        <div style={{ flex: 2 }}>
+                                            <input
+                                                className='spdx-radio'
+                                                id='spdxConcludedLicenseNone'
+                                                type='radio'
+                                                name='licenseConcluded'
+                                                value='NONE'
+                                                onChange={selectSnippetConcludedLicenseNone}
+                                                checked={snippetConcludedLicenseNone}
+                                            />
+                                            <label
+                                                style={{ marginRight: '2rem' }}
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='spdxConcludedLicenseNone'
+                                            >
+                                                NONE
+                                            </label>
+                                            <input
+                                                className='spdx-radio'
+                                                id='spdxConcludedLicenseNoAssertion'
+                                                type='radio'
+                                                name='licenseConcluded'
+                                                value='NOASSERTION'
+                                                onChange={selectSnippetConcludedLicenseNoasserttion}
+                                                checked={snippetConcludedLicenseNoasserttion}
+                                            />
+                                            <label
+                                                className='form-check-label radio-label lableSPDX'
+                                                htmlFor='spdxConcludedLicenseNoAssertion'
+                                            >
+                                                NOASSERTION
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             {/* <SnippetLicenseInformation
