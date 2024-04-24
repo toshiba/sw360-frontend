@@ -1,4 +1,5 @@
-// Copyright (C) Siemens AG, 2023. Part of the SW360 Frontend Project.
+// Copyright (C) TOSHIBA CORPORATION, 2023. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2023. Part of the SW360 Frontend Project.
 
 // This program and the accompanying materials are made
 // available under the terms of the Eclipse Public License 2.0
@@ -9,12 +10,14 @@
 
 import { Metadata } from 'next'
 
-import ECCDetails from './components/ECC'
+import ECCIndex from './components/ECCIndex'
 
 export const metadata: Metadata = {
     title: 'ECC',
 }
 
-export default function ECC() {
-    return <ECCDetails />
+async function ECCIndexPage() {
+    return <ECCIndex />
 }
+
+export default ECCIndexPage
