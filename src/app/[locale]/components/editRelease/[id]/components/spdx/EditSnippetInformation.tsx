@@ -153,6 +153,19 @@ const EditSnippetInformation = ({
             value: '',
         })
         setIndexSnippetInformation(snippetInformations.length)
+        //ConcludedLicense
+        setSnippetConcludedLicenseExist(true)
+        setSnippetConcludedLicenseNone(false)
+        setSnippetConcludedLicenseNoasserttion(false)
+        // licenseInfoInSnippets
+        setLicenseInfoInSnippetsExist(true)
+        setLicenseInfoInSnippetsNone(false)
+        setLicenseInfoInSnippetsNoasserttion(false)
+        //CopyrightText
+        setSnippetCopyrightTextExist(true)
+        setSnippetCopyrightTextNone(false)
+        setSnippetCopyrightTextNoasserttion(false)
+
         arrayExternals.push(snippetInformation)
         setSnippetInformations(arrayExternals)
         setSPDXPayload({

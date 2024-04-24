@@ -128,6 +128,7 @@ const EditOtherLicensingInformationDetected = ({
                 licenseComment: '', // 10.5
                 index: otherLicensingInformationDetecteds.length,
             }
+            setIsLicenseName(true)
             setIndexOtherLicense(otherLicensingInformationDetecteds.length)
             arrayExternals.push(otherLicensingInformationDetected)
             setOtherLicensingInformationDetecteds(arrayExternals)
