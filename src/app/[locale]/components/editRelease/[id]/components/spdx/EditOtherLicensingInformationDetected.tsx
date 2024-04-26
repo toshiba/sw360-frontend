@@ -262,7 +262,6 @@ const EditOtherLicensingInformationDetected = ({
                 otherLicensingInformationDetecteds[indexOtherLicense]?.licenseName === 'NONE' ||
                 otherLicensingInformationDetecteds[indexOtherLicense]?.licenseName === 'NOASSERTION'
             ) {
-                // const data: string = licenseName
                 setLicenseName('')
                 setHasLicenseName(false)
             } else {
