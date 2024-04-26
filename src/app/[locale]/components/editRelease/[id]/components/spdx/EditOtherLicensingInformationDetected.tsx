@@ -128,7 +128,7 @@ const EditOtherLicensingInformationDetected = ({
                 licenseComment: '', // 10.5
                 index: otherLicensingInformationDetecteds.length,
             }
-            setIsLicenseName(true)
+            setHasLicenseName(true)
             setIndexOtherLicense(otherLicensingInformationDetecteds.length)
             arrayExternals.push(otherLicensingInformationDetected)
             setOtherLicensingInformationDetecteds(arrayExternals)
@@ -264,45 +264,46 @@ const EditOtherLicensingInformationDetected = ({
             ) {
                 // const data: string = licenseName
                 setLicenseName('')
-                setIsLicenseName(false)
+                setHasLicenseName(false)
             } else {
+                setHasLicenseName(true)
                 setLicenseName(otherLicensingInformationDetecteds[indexOtherLicense].licenseName)
             }
         }
     }, [indexOtherLicense, otherLicensingInformationDetecteds])
 
     const [licenseName, setLicenseName] = useState('')
-    const [isLicenseName, setIsLicenseName] = useState(true)
+    const [hasLicenseName, setHasLicenseName] = useState(true)
 
     const setLicenseNameToOtherLicense = (data: string) => {
-        const otherLicensings: OtherLicensingInformationDetected[] = otherLicensingInformationDetecteds.map(
-            (otherLicensing, index) => {
+        const otherLicenses: OtherLicensingInformationDetected[] = otherLicensingInformationDetecteds.map(
+            (otherLicense, index) => {
                 if (index === indexOtherLicense) {
                     return {
-                        ...otherLicensing,
+                        ...otherLicense,
                         licenseName: data,
                     }
                 }
-                return otherLicensing
+                return otherLicense
             }
         )
-        setOtherLicensingInformationDetecteds(otherLicensings)
+        setOtherLicensingInformationDetecteds(otherLicenses)
         setSPDXPayload({
             ...SPDXPayload,
             spdxDocument: {
                 ...SPDXPayload.spdxDocument,
-                otherLicensingInformationDetecteds: otherLicensings,
+                otherLicensingInformationDetecteds: otherLicenses,
             },
         })
     }
 
     const selectLicenseNameNoasserttion = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setIsLicenseName(false)
+        setHasLicenseName(false)
         setLicenseNameToOtherLicense(e.target.value)
     }
 
-    const selectLicenseNameNoasserttionExsit = () => {
-        setIsLicenseName(true)
+    const selectLicenseNameNoasserttionExist = () => {
+        setHasLicenseName(true)
         setLicenseNameToOtherLicense(licenseName)
     }
 
@@ -470,8 +471,8 @@ const EditOtherLicensingInformationDetected = ({
                                                 type='radio'
                                                 name='licenseName'
                                                 value='EXIST'
-                                                onChange={selectLicenseNameNoasserttionExsit}
-                                                checked={isLicenseName}
+                                                onChange={selectLicenseNameNoasserttionExist}
+                                                checked={hasLicenseName}
                                             />
                                             <input
                                                 style={{ flex: 6, marginRight: '1rem' }}
@@ -490,7 +491,7 @@ const EditOtherLicensingInformationDetected = ({
                                                               .licenseName ?? ''
                                                         : ''
                                                 }
-                                                disabled={!isLicenseName}
+                                                disabled={!hasLicenseName}
                                             />
                                         </div>
                                         <div style={{ flex: 2 }}>
@@ -501,7 +502,7 @@ const EditOtherLicensingInformationDetected = ({
                                                 name='licenseName'
                                                 value='NOASSERTION'
                                                 onChange={selectLicenseNameNoasserttion}
-                                                checked={!isLicenseName}
+                                                checked={!hasLicenseName}
                                             />
                                             <label
                                                 className='form-check-label radio-label lableSPDX'
