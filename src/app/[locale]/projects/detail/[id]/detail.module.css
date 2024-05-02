@@ -102,3 +102,12 @@
     width: 83%;
     line-height: 1.2rem !important;
 }
+
+.expanded-all-message {
+    padding: 0.5rem !important;
+    margin-bottom: 0px !important;
+}
+
+.expanded-all-message [type='button'] {
+    padding: 17px !important;
+}

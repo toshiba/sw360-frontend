@@ -22,6 +22,11 @@ import { GoSingleSelect } from "react-icons/go"
 import DropdownButton from 'react-bootstrap/DropdownButton'
 import Form from 'react-bootstrap/Form'
 import styles from '../detail.module.css'
+import {
+    releaseTypes, projectTypes,
+    releaseRelations, projectRelations,
+    releaseClearingStates, projectClearingState
+} from './LicenseClearingFilters'
 
 interface ListViewData {
     isAccessible: boolean
@@ -40,66 +45,10 @@ interface ListViewData {
     projectState?: string
 }
 
-const releaseClearingStates = [
-    'New',
-    'Report approved',
-    'Report available',
-    'Scan available',
-    'Sent to clearing tool',
-    'Under clearing'
-]
-
-const releaseRelations = [
-    'Unknown',
-    'Contained',
-    'Related',
-    'Dynamically linked',
-    'Statically linked',
-    'Side by side',
-    'Standalone',
-    'Internal use',
-    'Optional',
-    'To be replaced',
-    'Code Snippet',
-]
-
-const releaseTypes = [
-    'OSS',
-    'Contained',
-    'COTS',
-    'Internal',
-    'Inner Source',
-    'Service',
-    'Freeware',
-    'Code Snippet',
-]
-
-const projectTypes = [
-    'Product',
-    'Customer Project',
-    'Internal Project',
-    'Service',
-    'Inner Source',
-    'Cloud Backend',
-]
-
-const projectRelations = [
-    'Unknown',
-    'Duplicate',
-    'Is a subproject',
-    'Related',
-]
-
-const projectClearingState = [
-    'Open',
-    'In Progress',
-    'Closed'
-]
-
 const filterOptions: { [k: string]: Array<string> } = {
-    'types': [...releaseTypes, ...projectTypes],
-    'relations': [...releaseRelations, ...projectRelations],
-    'states': [...releaseClearingStates, ...projectClearingState],
+    'types': [...Object.values(releaseTypes), ...Object.values(projectTypes)],
+    'relations': [...Object.values(releaseRelations), ...Object.values(projectRelations)],
+    'states': [...Object.values(releaseClearingStates), ...Object.values(projectClearingState)],
 }
 
 const DependencyNetworkListView = ({
@@ -169,7 +118,7 @@ const DependencyNetworkListView = ({
                             <span className='px-3'>{t('Component Type')}</span>
                             <Dropdown.Divider />
                             {
-                                releaseTypes.map((releaseType: string) =>
+                                Object.values(releaseTypes).map((releaseType: string) =>
                                     <span key={releaseType}>
                                         <Form.Check
                                             className={`${styles.selection}`}
@@ -217,7 +166,7 @@ const DependencyNetworkListView = ({
                             <span className='px-3'>{t('Release Relation')}</span>
                             <Dropdown.Divider />
                             {
-                                releaseRelations.map((relation: string) =>
+                                Object.values(releaseRelations).map((relation: string) =>
                                     <span key={relation}>
                                         <Form.Check
                                             className={`${styles.selection}`}
@@ -274,7 +223,7 @@ const DependencyNetworkListView = ({
                             <span className='px-3'>{t('Release Clearing State')}</span>
                             <Dropdown.Divider />
                             {
-                                releaseClearingStates.map((state: string) =>
+                                Object.values(releaseClearingStates).map((state: string) =>
                                     <span key={state}>
                                         <Form.Check
                                             className={`${styles.selection}`}

@@ -19,6 +19,7 @@ import { ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP } from '@/utils/env'
 import dynamic from 'next/dynamic'
 
 const DependencyNetworkListView = dynamic(() => import('./DependencyNetworkListView'), { ssr: false })
+const DependencyNetworkTreeView = dynamic(() => import('./DependencyNetworkTreeView'), { ssr: false })
 
 export default function LicenseClearing({
     projectId,
@@ -105,7 +106,13 @@ export default function LicenseClearing({
                 </div>
                 <Tab.Content className='mt-3'>
                     <Tab.Pane eventKey='tree-view'>
-                        <TreeView projectId={projectId} />
+                        {
+                            ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP === 'true'
+                            ?
+                                <DependencyNetworkTreeView projectId={projectId} />
+                            :
+                                <TreeView projectId={projectId} />
+                        }
                     </Tab.Pane>
                     <Tab.Pane eventKey='list-view'>
                         {

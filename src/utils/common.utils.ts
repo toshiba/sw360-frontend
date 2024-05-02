@@ -239,6 +239,8 @@ const extractEmailsAndFullNamesFromUsers = (users: Array<User>) => {
     }, {} as { [k: string]: string })
 }
 
+const nullToEmptyString = (item: string | null | undefined) => item ? item : ''
+
 const CommonUtils = {
     isNullOrUndefined,
     isNullEmptyOrUndefinedString,
@@ -251,6 +253,7 @@ const CommonUtils = {
     convertRoles,
     truncateText,
     extractEmailsAndFullNamesFromUsers,
+    nullToEmptyString,
 }
 
 export default CommonUtils
