@@ -12,7 +12,7 @@
 
 import type { Embedded, ECC } from '@/object-types'
 import { SW360_API_URL } from '@/utils/env'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { PageButtonHeader, QuickFilter, Table, _ } from 'next-sw360'
 import { Spinner } from 'react-bootstrap'
@@ -27,10 +27,11 @@ const Capitalize = (text: string) =>
 export default function ECCIndex() {
     const t = useTranslations('default')
     //setNumberOfECC maybe used
-    const [numberOfECC] = useState(0)
+    const [numberOfECC, setNumberOfECC] = useState(0)
     const { data: session, status } = useSession()
+    const [search, setSearch] = useState({})
 
-    const headerbuttons = {
+    const headerButtons = {
         'Add ECC': { link: '/ECC/add', type: 'primary', name: 'Add ECC' },
     }
 
@@ -124,6 +125,7 @@ export default function ECCIndex() {
     const server = {
         url: `${SW360_API_URL}/resource/api/ecc`,
         then: (data: EmbeddedECC) => {
+            setNumberOfECC(data.page.totalElements)
             return data._embedded['sw360:releases'].map((elem: ECC) => [
                 Capitalize(elem.eccInformation.eccStatus ?? ''),
                 {
@@ -141,45 +143,33 @@ export default function ECCIndex() {
         total: (data: EmbeddedECC) => data.page.totalElements,
         headers: { Authorization: `Bearer ${status === 'authenticated' ? session.user.access_token : ''}` },
     }
-
-    return (
-        <>
-            <div className='container page-content'>
+    const doSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        setSearch({ keyword: event.currentTarget.value })
+    }
+    if (status === 'unauthenticated') {
+        signOut()
+    } else {
+        return (
+            <div className='container' style={{ maxWidth: '98vw', marginTop: '10px' }}>
                 <div className='row'>
-                    {/* <div className='col-2 sidebar'>
-                        <QuickFilter title='Quick filter' fields={advancedSearch}/>
-                    </div> */}
-                    <div className='col-lg-2'>
-                    {/* <div className='col-2 sidebar'> */}
-                        <div className='row mb-3'>
-                            <QuickFilter title='Quick filter' id='vunerabilities.quickSearch' />
-                        </div>
+                    <div className='col-2 sidebar'>
+                        <QuickFilter id='eccfilter' title={t('Quick Filter')} searchFunction={doSearch} />
                     </div>
-                    {/* <div className ='Col'> */}
-                    <div className='col-lg-3'>
-                        <PageButtonHeader title={`${t('ECC')} (${numberOfECC})`} buttons={headerbuttons}>
-                            <div style={{ marginLeft: '5px' }} className='btn-group' role='group'>
+                    <div className='col col-sm-9'>
+                        <div className='col'>
+                            <div className='row'>
+                                <PageButtonHeader
+                                    buttons={headerButtons}
+                                    title={`${t('ECC')} (${numberOfECC})`}
+                                />
+                                <Table server={server} columns={columns} search={search} selector={true} />
 
+                                <div className='row mt-2'></div>
                             </div>
-                        </PageButtonHeader>
-                    </div>
-                    <div className='col-lg-4`'>
-                        <div className='buttonheader-title ms-1'>
-                            {t('ECC Overview')}
-                        </div>
-                        <div className='row mt-3'>
-                            {status === 'authenticated' ? (
-                                <Table columns={columns} server={server} selector={true} sort={false} />
-                            ) : (
-                                <div className='col-12 d-flex justify-content-center align-items-center'>
-                                    <Spinner className='spinner' />
-                                </div>
-                            )}
                         </div>
                     </div>
-
                 </div>
             </div>
-        </>
-    )
+        )
+    }
 }
