@@ -102,7 +102,7 @@ export default function ECCIndex() {
                     <div className='col-2'>
                         <QuickFilter id='eccfilter' title={t('Quick Filter')} searchFunction={doSearch} />
                     </div>
-                    <div className='col col-sm-9'>
+                    <div className='col-9'>
                         <PageButtonHeader
                             title={`${t('ECC')} (${numberOfECC})`}
                         />
