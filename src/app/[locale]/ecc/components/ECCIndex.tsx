@@ -15,7 +15,6 @@ import { SW360_API_URL } from '@/utils/env'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { PageButtonHeader, QuickFilter, Table, _ } from 'next-sw360'
-import { Spinner } from 'react-bootstrap'
 
 import { useState } from 'react'
 
@@ -26,14 +25,9 @@ const Capitalize = (text: string) =>
 
 export default function ECCIndex() {
     const t = useTranslations('default')
-    //setNumberOfECC maybe used
     const [numberOfECC, setNumberOfECC] = useState(0)
     const { data: session, status } = useSession()
     const [search, setSearch] = useState({})
-
-    const headerButtons = {
-        'Add ECC': { link: '/ECC/add', type: 'primary', name: 'Add ECC' },
-    }
 
     const columns = [
         {
@@ -44,12 +38,6 @@ export default function ECCIndex() {
         {
             id: 'ecc.releaseName',
             name: t('Release name'),
-            formatter: ({ name, version }: { id: string; name: string; version: string }) =>
-            _(
-                <div>
-                        {`${name} (${version})`}
-                </div>
-            ),
             sort: true,
         },
         {
@@ -77,50 +65,12 @@ export default function ECCIndex() {
             name: t('ECC Assessment Date'),
             sort: true,
         },
+        {
+            id: 'ecc.eccN',
+            name: t('ECCN'),
+            sort: true,
+        },
     ]
-
-    // const advancedSearch = [
-    //     {
-    //         fieldName: 'Ecc Name',
-    //         value: '',
-    //         paramName: 'EccName',
-    //     },
-    //     {
-    //         fieldName: t('Status'),
-    //         value: '',
-    //         paramName: 'status',
-    //     },
-    //     {
-    //         fieldName: 'Release Name',
-    //         value: '',
-    //         paraName: 'releaseName',
-    //     },
-    //     {
-    //         fieldName: 'Release Version',
-    //         value: '',
-    //         paraName: 'releaseVersion',
-    //     },
-    //     {
-    //         fieldName: 'Creator Group',
-    //         value: '',
-    //         paraName: 'creatorGroup',
-    //     },
-    //     {
-    //         fieldName: 'ECC Assessor',
-    //         value: '',
-    //         paraName: 'eccAssessor',
-    //     },
-    //     {
-    //         fieldName: 'ECC Assessor Group',
-    //         value: '',
-    //         paraName: 'eccAssessorGroup',
-    //     },
-    //     {
-    //         fieldName: 'ECC Assessment Date',
-    //         value: '',
-    //         paraName: 'eccAssessmentDate',
-    //     },
-    // ]
 
     const server = {
         url: `${SW360_API_URL}/resource/api/ecc`,
@@ -128,10 +78,7 @@ export default function ECCIndex() {
             setNumberOfECC(data.page.totalElements)
             return data._embedded['sw360:releases'].map((elem: ECC) => [
                 Capitalize(elem.eccInformation.eccStatus ?? ''),
-                {
-                    version: elem.version ?? '',
-                    name: elem.name ?? '',
-                },
+                elem.name ?? '',
                 elem.version ?? '',
                 elem.eccInformation.creatorGroup ?? '',
                 elem.eccInformation.assessorContactPerson ?? '',
@@ -150,23 +97,16 @@ export default function ECCIndex() {
         signOut()
     } else {
         return (
-            <div className='container' style={{ maxWidth: '98vw', marginTop: '10px' }}>
+            <div className='container' style={{ maxWidth: '95vw' }}>
                 <div className='row'>
-                    <div className='col-2 sidebar'>
+                    <div className='col-2'>
                         <QuickFilter id='eccfilter' title={t('Quick Filter')} searchFunction={doSearch} />
                     </div>
                     <div className='col col-sm-9'>
-                        <div className='col'>
-                            <div className='row'>
-                                <PageButtonHeader
-                                    buttons={headerButtons}
-                                    title={`${t('ECC')} (${numberOfECC})`}
-                                />
-                                <Table server={server} columns={columns} search={search} selector={true} />
-
-                                <div className='row mt-2'></div>
-                            </div>
-                        </div>
+                        <PageButtonHeader
+                            title={`${t('ECC')} (${numberOfECC})`}
+                        />
+                        <Table server={server} columns={columns} search={search} selector={true} />
                     </div>
                 </div>
             </div>
