@@ -65,14 +65,24 @@ Cypress.Commands.add('verifyCreatedUser', (role, selector) => {
   })
 })
 
-Cypress.Commands.add('selectItemFromTable', (selector, IsSelectMulti, num) => {
-  if (IsSelectMulti == false) {
+Cypress.Commands.add('selectItemFromTable', (selector, isSelectMulti, num) => {
+  if (isSelectMulti == false) {
     cy.get(selector(num).isChecked)
       .click()
   } else {
     for (let i = 1; i <= num; i++) {
       cy.get(selector(i).isChecked)
         .click()
+    }
+  }
+})
+
+Cypress.Commands.add('selectItemsFromTable', (selector, isSelectMulti, num) => {
+  if (isSelectMulti == false) {
+    cy.get(selector).eq(num).check({ force: true })
+  } else {
+    for (let i = 0; i < num; i++) {
+      cy.get(selector).eq(i).check({ force: true })
     }
   }
 })
@@ -241,10 +251,42 @@ Cypress.Commands.add('createLicense', (licenseShortName) => {
   cy.exec('bash cypress/support/common.sh createLicense ' + licenseShortName)
 })
 
+Cypress.Commands.add('createLicenseType', (licenseType) => {
+  cy.exec('bash cypress/support/common.sh createLicenseType ' + licenseType)
+})
+
 Cypress.Commands.add('deleteLicense', (licenseShortName) => {
   cy.exec('bash cypress/support/common.sh deleteLicenseByShortName ' + licenseShortName)
 })
 
 Cypress.Commands.overwrite('type', (originalFn, element, text, options) => {
   return originalFn(element, text, { ...options, delay: 0 } )
+})
+
+Cypress.Commands.add(
+  'clearAndType',
+  {
+      prevSubject: true,
+  },
+  (subject, text) => cy.wrap(subject).type(`{selectall}{backspace}${text}`),
+)
+
+Cypress.Commands.add('createLicenseByAPI', (fullName, shortName) => {
+  cy.task('generateApiToken').then((token) => {
+    const myHeaders = createRequestHeader(token)
+    const raw = JSON.stringify({
+      "fullName": fullName,
+      "shortName": shortName
+    })
+
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+    }
+
+    fetch(`${Cypress.env('sw360_api_server')}/resource/api/licenses/`, requestOptions)
+      // .then(response => response.json())
+      // .then(data => data)
+  })
 })

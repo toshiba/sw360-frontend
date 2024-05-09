@@ -1,0 +1,148 @@
+import { addEditSelectors, viewSelectors } from "./selectors"
+
+export function goToRegisterLicensePage() {
+    cy.get(viewSelectors.navLicense).click()
+    cy.contains('Add License')
+    cy.get(viewSelectors.btnAddLicense).click()
+    cy.contains('Create License')
+}
+
+export function addObligations(testData) {
+    cy.contains('button', addEditSelectors.btnAddObligation).click()
+    cy.get(addEditSelectors.dlgLicenseObligations.sltDialog).should('be.visible')
+    cy.contains('Select License Obligations to be added')
+    cy.get(addEditSelectors.dlgLicenseObligations.sltDialog).within(() => {
+        if (testData.added_obligation_quantity == 1)
+            cy.selectItemsFromTable(addEditSelectors.dlgLicenseObligations.sltCheckbox, false, testData.obligation_no)
+        else
+            cy.selectItemsFromTable(addEditSelectors.dlgLicenseObligations.sltCheckbox, true, testData.added_obligation_quantity)
+        cy.get(addEditSelectors.dlgLicenseObligations.sltAddBtn).click()
+    })
+    cy.get(addEditSelectors.dlgLicenseObligations.sltDialog).should('not.exist')
+    cy.get(addEditSelectors.tblObligations).should('be.visible')
+}
+
+export function fillDataLicense(testData, isUpdate) {
+    const nStep = Object.keys(testData).length
+    for (let i = 0; i < nStep; i++) {
+        const keyFieldName = Object.keys(testData)[i]
+        const fieldValue = testData[keyFieldName]
+        switch (keyFieldName) {
+            case 'full_name':
+                if (isUpdate == true)
+                    cy.get(addEditSelectors.txtFullName).clearAndType(fieldValue)
+                else 
+                    cy.get(addEditSelectors.txtFullName).type(fieldValue)
+                break
+            case 'short_name':
+                if (isUpdate == true)
+                    cy.get(addEditSelectors.txtShortName).clearAndType(fieldValue)
+                else
+                cy.get(addEditSelectors.txtShortName).type(fieldValue)
+                break
+            case 'is_checked':
+                if (fieldValue == true)
+                    cy.get(addEditSelectors.cbIsChecked).check()
+                else cy.get(addEditSelectors.cbIsChecked).uncheck()
+                break
+            case 'license_type_index':
+                cy.get(addEditSelectors.selectLicenseType).select(fieldValue)
+                break
+            case 'OSI_Approved':
+                cy.get(addEditSelectors.selectOSIApproved).select(fieldValue.value)
+                break
+            case 'FSF_Free/Libre':
+                cy.get(addEditSelectors.selectFSFFreeLibre).select(fieldValue.value)
+                break
+            case 'note':
+                if (isUpdate == true)
+                    cy.get(addEditSelectors.txtNote).clearAndType(fieldValue)
+                else
+                    cy.get(addEditSelectors.txtNote).type(fieldValue)
+                break
+            case 'license_text':
+                if (isUpdate == true)
+                    cy.get(addEditSelectors.txtLicenseText).clearAndType(fieldValue)
+                else
+                    cy.get(addEditSelectors.txtLicenseText).type(fieldValue)
+                break
+            default:
+                break
+        }
+    }
+}
+
+function verifyDetailsTab(expectedOutput) {
+    const nStep = Object.keys(expectedOutput).length
+    for (let i = 0; i < nStep; i++) {
+        const keyFieldName = Object.keys(expectedOutput)[i]
+        const fieldValue = expectedOutput[keyFieldName]
+        switch (keyFieldName) {
+            case 'full_name':
+                cy.get(viewSelectors.fullName).should('contain', fieldValue)
+                break
+            case 'short_name':
+                cy.get(viewSelectors.shortName).should('contain', fieldValue)
+                break
+            case 'is_checked':
+                if (fieldValue == true)
+                    cy.get(viewSelectors.isChecked).should('contain', 'CHECKED')
+                else
+                    cy.get(viewSelectors.isChecked).should('contain', 'UNCHECKED')
+                break
+            case 'license_type_index':
+                cy.get(viewSelectors.licenseType).should('not.be.empty')
+                break
+            case 'OSI_Approved':
+                cy.get(viewSelectors.OSIApproved).invoke('text').should('contain', fieldValue.name)
+                break
+            case 'FSF_Free/Libre':
+                cy.get(viewSelectors.FSFFreeLibre).should('contain', fieldValue.name)
+                break
+            case 'note':
+                cy.get(viewSelectors.note).should('contain', fieldValue)
+                break
+            default:
+                break
+        }
+    }
+}
+
+function verifyTextTab(expectedOutput) {
+    if (expectedOutput) cy.get(viewSelectors.licenseText).should('contain', expectedOutput)
+    else cy.get(viewSelectors.licenseText).should('contain', '')
+}
+
+function verifyObligationsTab(expectedOutput) {
+    cy.get(viewSelectors.tblLinkedObligations).as('tableBody')
+    cy.get('@tableBody').find('tr').should('have.length', expectedOutput.added_obligation_quantity)
+}
+
+export function verifyDetailsLicense(expectedOutput) {
+    const outputDetails = expectedOutput.license_tab
+    const outputLicenseText = expectedOutput.license_tab.license_text
+    const outputLinkedObligation = expectedOutput.linked_obligations_tab
+    verifyDetailsTab(outputDetails)
+    if (outputLicenseText) {
+        cy.get(viewSelectors.tabText).click()
+        verifyTextTab(outputLicenseText)
+    }
+
+    if (outputLinkedObligation) {
+        cy.get(viewSelectors.tabObligations).click()
+        verifyObligationsTab(outputLinkedObligation)
+    }
+}
+
+export function registerLicense(testData) {
+    goToRegisterLicensePage()
+    if (testData.license_tab)
+        fillDataLicense(testData.license_tab, false)
+    if (testData.linked_obligations_tab) {
+        cy.get(addEditSelectors.tabLinkedObligations).click()
+        addObligations(testData.linked_obligations_tab)
+    }
+    cy.get(addEditSelectors.btnCreateLicense).click()
+    cy.contains('Add License')
+    //todo verify success alert
+}

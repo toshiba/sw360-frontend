@@ -152,6 +152,87 @@ delete_user_by_email() {
             }" | jq -r '.docs[] | "curl -X DELETE 'http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT'/'$USER_DB_NAME'/" + ._id + "?rev=" + ._rev' | sh
 }
 
+create_oauth_client() {
+    oauth_client_data=$(jq "." "cypress/fixtures/oauth-client.json")
+    curl -X POST "http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT/$OAUTH_DB_NAME" \
+        -H "Content-Type: application/json" \
+        -d "$oauth_client_data"
+}
+
+delete_oauth_client() {
+    oauth_client_id=$(jq ".client_id" "cypress/fixtures/oauth-client.json")
+    curl -X POST "http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT/$OAUTH_DB_NAME/_find" -H "Content-Type: application/json" -d "{
+        \"selector\": {
+            \"client_id\": $oauth_client_id
+        },
+        \"fields\": [\"_id\", \"_rev\"],
+        \"limit\": 1
+    }" | jq -r '.docs[] | "curl -X DELETE 'http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT'/'$OAUTH_DB_NAME'/" + ._id + "?rev=" + ._rev' | sh
+}
+
+create_license_type() {
+    licensetype="$1"
+    JSON_DATA="
+        {
+            \"type\": \"licenseType\",
+            \"licenseType\": \"$licensetype\",
+            \"issetBitfield\": \"1\"
+        }
+    "
+    curl -X POST "http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT/$DB_NAME" \
+    -H "Content-Type: application/json" \
+    -d "$JSON_DATA"
+}
+
+delete_all_license_types() {
+    curl -X POST "http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT/$DB_NAME/_find" -H "Content-Type: application/json" -d '{
+        "selector": {
+            "type": "licenseType"
+        },
+        "fields": ["_id", "_rev"],
+        "limit": 100
+        }' | jq -r '.docs[] | "curl -X DELETE 'http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT'/'$DB_NAME'/" + ._id + "?rev=" + ._rev' | sh
+}
+
+create_obligation() {
+    title="$1"
+    text="$2"
+    obligationLevel="$3"
+    case $3 in
+        1) obligationLevel="ORGANISATION_OBLIGATION";;
+        2) obligationLevel="COMPONENT_OBLIGATION";;
+        3) obligationLevel="PROJECT_OBLIGATION";;
+        4) obligationLevel="LICENSE_OBLIGATION";;
+        *) echo "Invalid obligation level"; exit 1;;
+    esac
+    JSON_DATA=$(cat <<EOF
+        {
+            "type": "obligation",
+            "text": "$text",
+            "whitelist": [],
+            "development": false,
+            "distribution": false,
+            "title": "$title",
+            "obligationLevel": "$obligationLevel",
+            "issetBitfield": "0"
+        }
+EOF
+    )
+    curl -X POST "http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT/$DB_NAME" \
+    -H "Content-Type: application/json" \
+    -d "$JSON_DATA"
+}
+
+delete_all_obligations() {
+    curl -X POST "http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT/$DB_NAME/_find" -H "Content-Type: application/json" -d '{
+        "selector": {
+            "type": "obligation"
+        },
+        "fields": ["_id", "_rev"],
+        "limit": 100
+        }' | jq -r '.docs[] | "curl -X DELETE 'http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT'/'$DB_NAME'/" + ._id + "?rev=" + ._rev' | sh
+}
+
 # Run function
 case $option in
     deleteAllComponents)
@@ -170,12 +251,20 @@ case $option in
         delete_all_licenses
         ;;
 
+    deleteAllLicenseTypes)
+        delete_all_license_types
+        ;;
+
     deleteLicenseByShortName)
         delete_license_by_short_name "$2"
         ;;
 
     createLicense)
         create_license "$2"
+        ;;
+
+    createLicenseType)
+        create_license_type "$2"
         ;;
 
     createVendor)
@@ -192,6 +281,22 @@ case $option in
 
     deleteUserByEmail)
         delete_user_by_email "$2"
+        ;;
+
+    createOauthClient)
+        create_oauth_client
+        ;;
+
+    deleteOauthClient)
+        delete_oauth_client "$2"
+        ;;
+
+    createObligation)
+        create_obligation "$2" "$3" "$4"
+        ;;
+        
+    deleteAllObligations)
+        delete_all_obligations
         ;;
 
     *) ;;
