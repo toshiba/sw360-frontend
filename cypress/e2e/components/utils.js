@@ -20,34 +20,20 @@ const dialogVendor = {
 const dialogOwner = {
   "openDialog": "#component_owner",
   "dialog": ".modal.show > .modal-dialog > .modal-content",
-  "searchBtn": ":nth-child(2) > .modal-body > :nth-child(1) > .col-lg-4 > :nth-child(1)",
-  "selectUsersBtn": ".justify-content-end > :nth-child(3)"
+  "searchBtn": ".modal.show > .modal-dialog > .modal-content > .modal-body > :nth-child(1) > .col-lg-4 > :nth-child(1)",
+  "selectUsersBtn": ".justify-content-end > .btn-primary"
 }
 
 const dialogModerator = {
   "openDialog": "#moderators",
   "dialog": ".modal.show > .modal-dialog > .modal-content",
-  "searchBtn": ":nth-child(2) > .modal-body > :nth-child(1) > .col-lg-4 > :nth-child(1)",
-  "selectUsersBtn": ".justify-content-end > :nth-child(3)"
+  "searchBtn": ".modal.show > .modal-dialog > .modal-content > .modal-body > :nth-child(1) > .col-lg-4 > :nth-child(1)",
+  "selectUsersBtn": ".justify-content-end > .btn-primary"
 }
 
-function vendorSelectors(i) {
-  return {
-    "isChecked": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"vendorId\"] > :nth-child(1) > div > .form-check-input"
-  }
-}
-
-function ownerSelectors(i) {
-  return {
-    "isChecked": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"userId\"] > :nth-child(1) > div > .form-check-input"
-  }
-}
-
-function moderatorSelectors(i) {
-  return {
-    "isChecked": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"\"] > :nth-child(1) > div > .form-check-input"
-  }
-}
+const vendorSelectors = "[data-column-id=\"vendorId\"] > :nth-child(1) > div > .form-check-input"
+const ownerSelectors = "[data-column-id=\"user-selection\"] > :nth-child(1) > div > .form-check-input"
+const moderatorSelectors = "[data-column-id=\"user-selection\"] > :nth-child(1) > div > .form-check-input"
 
 export function selectVendor(vendorInputData) {
   cy.openDialog(dialogVendor.openDialog, dialogVendor.dialog)
@@ -61,7 +47,7 @@ export function selectOwner(ownerInputData) {
     .contains('Search')
     .click()
 
-  cy.selectItemFromTable(ownerSelectors, false, ownerInputData.user_no)
+  cy.selectItemsFromTable(ownerSelectors, false, ownerInputData.user_no)
 
   cy.get(dialogOwner.selectUsersBtn)
     .click()
@@ -74,12 +60,11 @@ export function selectModerators(moderatorInputData) {
     .contains('Search')
     .click()
 
-  cy.selectItemFromTable(moderatorSelectors, true, moderatorInputData.num_user)
+  cy.selectItemsFromTable(moderatorSelectors, true, moderatorInputData.num_user)
 
   cy.get(dialogModerator.selectUsersBtn)
     .click()
 }
-
 
 export function fillDataComponent(dataTest, isUpdate) {
   cy.log('[INFO] Filling the data test')
@@ -208,7 +193,6 @@ export function gotoUpdateReleasePageFromViewComponentPage(releaseVersion) {
   cy.get(':nth-child(3) > .row > :nth-child(2) > .gridjs').should('be.visible')
   cy.contains(releaseVersion).closest('tr').find('td').last().find('svg').first().click()
 }
-
 
 export function gotoViewReleasePageFromViewComponentPage(releaseVersion) {
   cy.get('#tab-Releases').click()

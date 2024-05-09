@@ -26,7 +26,7 @@ function deleteAllReleaseOfComponent(numberOfReleases) {
     for (let i = 0; i < numberOfReleases; i++) {
         cy.get('#tab-Releases').click()
         cy.get('[data-column-id="action"] > div > span').should('have.length', numberOfReleases - i)
-        cy.get('[data-column-id="action"] > div > span').first().find('svg').last().click()
+        cy.get('[data-column-id="action"] > div > span').first().find('svg').last().click({force: true})
         cy.get('.login-btn').click()
         cy.get('.alert-success').should('be.visible')
         cy.get('.delete-btn').click()
