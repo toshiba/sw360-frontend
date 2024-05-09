@@ -56,8 +56,10 @@ const cleanDB = () => {
         runShellCommand('bash cypress/support/common.sh deleteAllComponents'),
         runShellCommand('bash cypress/support/common.sh deleteAllProjects'),
         runShellCommand('bash cypress/support/common.sh deleteAllLicenses'),
+        runShellCommand('bash cypress/support/common.sh deleteAllLicenseTypes'),
         runShellCommand('bash cypress/support/common.sh deleteAllVendors'),
-        ...clearUserByEmail()
+        ...clearUserByEmail(),
+        runShellCommand('bash cypress/support/common.sh deleteAllObligations')
     ]
     return Promise.all(bashs)
 }
@@ -66,7 +68,29 @@ const initData = () => {
     console.log("[Info] Init data")
     const vendorNames = ['ven001', 'ven002', 'ven003']
     const licenseNames = ['AAL-1.01', 'Abstyles-2024', 'AFL-4.5']
-
+    const licenseTypes = ['LicenseType01', 'LicenseType02', 'LicenseType03']
+    const obligations = [
+        {
+            'title': '"obligation 001"',
+            'text': '"This is obligation text 001"',
+            'obligationLevel': 4
+        },
+        {
+            'title': '"obligation 002"',
+            'text': '"This is obligation text 002"',
+            'obligationLevel': 4
+        },
+        {
+            'title': '"obligation 003"',
+            'text': '"This is obligation text 003"',
+            'obligationLevel': 4
+        },
+        {
+            'title': '"obligation 004"',
+            'text': '"This is obligation text 004"',
+            'obligationLevel': 4
+        }
+    ]
     const bashs = [
         runShellCommand('bash cypress/support/common.sh createOauthClient')
     ]
@@ -79,8 +103,16 @@ const initData = () => {
         bashs.push(runShellCommand(`bash cypress/support/common.sh createLicense ${licenseName}`))
     }
 
+    for (const licenseType of licenseTypes) {
+        bashs.push(runShellCommand(`bash cypress/support/common.sh createLicenseType ${licenseType}`))
+    }
+
     for (const user of users) {
         bashs.push(runShellCommand(`bash cypress/support/common.sh createUser ${user.email} ${user.givename} ${user.lastname} ${user.usergroup}`))
+    }
+
+    for (const obligation of obligations) {
+        bashs.push(runShellCommand(`bash cypress/support/common.sh createObligation ${obligation.title} ${obligation.text} ${obligation.obligationLevel}`))
     }
 
     return Promise.all(bashs)
@@ -88,25 +120,22 @@ const initData = () => {
 
 module.exports = (on: any, config: any) => {
     on('task', {
-        removeDownloadedFiles() {
-            const downloadPath = 'cypress/downloads'
+        removeDownloadsFolder() {
+            const folderName = 'cypress/downloads'
+            const { rmdir } = require('fs')
+            console.log('deleting folder %s', folderName);
             return new Promise((resolve, reject) => {
-                fs.readdir(downloadPath, (err, files) => {
+                rmdir(folderName, { maxRetries: 10, recursive: true }, (err: any) => {
                     if (err) {
-                        reject(err);
-                    } else {
-                        files.forEach((file) => {
-                            const filePath = `${downloadPath}/${file}`;
-                            fs.unlinkSync(filePath);
-                        });
-                        resolve(true);
+                        console.error(err);
+                        return reject(err);
                     }
+                    resolve(null);
                 });
-            })
+            });
         },
         async generateApiToken() {
             const clientData = JSON.parse(fs.readFileSync('cypress/fixtures/oauth-client.json', 'utf-8'))
-
             const myHeaders = new Headers()
             myHeaders.append("Authorization", `Basic ${Buffer.from(clientData.client_id + ':' + clientData.client_secret).toString('base64')}`)
 
