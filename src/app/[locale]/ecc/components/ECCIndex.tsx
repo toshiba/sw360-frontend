@@ -106,7 +106,7 @@ export default function ECCIndex() {
                         <PageButtonHeader
                             title={`${t('ECC')} (${numberOfECC})`}
                         />
-                        <Table server={server} columns={columns} search={search} selector={true} />
+                        <Table server={server} columns={columns} search={search} />
                     </div>
                 </div>
             </div>
