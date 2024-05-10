@@ -14,7 +14,7 @@ import type { Embedded, ECC } from '@/object-types'
 import { SW360_API_URL } from '@/utils/env'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
-import { PageButtonHeader, QuickFilter, Table, _ } from 'next-sw360'
+import { PageButtonHeader, QuickFilter, Table} from 'next-sw360'
 
 import { useState } from 'react'
 
@@ -106,7 +106,7 @@ export default function ECCIndex() {
                         <PageButtonHeader
                             title={`${t('ECC')} (${numberOfECC})`}
                         />
-                        <Table server={server} columns={columns} search={search} />
+                        <Table server={server} columns={columns} search={search} selector={true}/>
                     </div>
                 </div>
             </div>
