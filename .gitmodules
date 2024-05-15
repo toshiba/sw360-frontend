@@ -1,0 +1,3 @@
+[submodule "sw360"]
+	path = sw360
+	url = https://github.com/eclipse-sw360/sw360.git
