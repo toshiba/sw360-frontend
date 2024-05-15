@@ -140,3 +140,25 @@ jobs:
           mvn clean install --no-transfer-progress -DRunRestIntegrationTest=true
           cd ../
 
+      - name: Install Nodejs
+        run: |
+          sudo apt-get update
+          curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+          sudo apt install nodejs -y
+          nodejs -v
+          npm -v
+
+      - name: Install Google Chrome
+        run: |
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb
+          google-chrome --version
+
+      - name: Install dependencies of running sw360-frontend
+        run: |
+          sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb jq
+          npm i
+
+      - name: run cypress
+        run: |
+          npx cypress run --browser chrome
