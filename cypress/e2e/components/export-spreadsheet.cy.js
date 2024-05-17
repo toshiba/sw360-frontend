@@ -10,27 +10,26 @@
 
 const verifyFileExported = () => {
     const currentDate = new Date().toISOString().split("T")[0]
-    cy.readFile(`cypress/downloads/components-${currentDate}.xlsx`)
-    .should('exist')
+    const downloadedFileName =`components-${currentDate}.xlsx`
+    cy.verifyDownloadedFile(downloadedFileName)
 }
 
 describe('Export Spreadsheet', () => {
     beforeEach(() => {
         cy.login('admin')
         cy.visit(`${Cypress.env('sw360_base_url')}/components`)
+        cy.removeDownloadsFolder()
     })
 
     it('TC13: Export components without releases', () => {
         cy.get('#project-export').click()
         cy.get('.dropdown-menu > :nth-child(1)').click()
         verifyFileExported()
-        cy.removeDownloadedFiles()
     })
 
     it('TC14: Export components with releases', () => {
         cy.get('#project-export').click()
         cy.get('.dropdown-menu > :nth-child(2)').click()
         verifyFileExported()
-        cy.removeDownloadedFiles()
     })
 })

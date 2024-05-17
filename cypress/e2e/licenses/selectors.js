@@ -1,5 +1,14 @@
+// Copyright (C) TOSHIBA CORPORATION, 2024. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2024. Part of the SW360 Frontend Project.
+
+// This program and the accompanying materials are made
+// available under the terms of the Eclipse Public License 2.0
+// which is available at https://www.eclipse.org/legal/epl-2.0/
+
+// SPDX-License-Identifier: EPL-2.0
+// License-Filename: LICENSE
+
 // elements of add/ edit page
-// const btnAddObligation = ':nth-child(2) > .btn'
 const btnAddObligation = 'Add Obligation'
 const btnCreateLicense = '[href=""] > .btn-primary'
 const btnUpdateLicense = ':nth-child(1) > .btn'
@@ -73,7 +82,7 @@ const tabObligations = '#tab-obligations'
 const tblLinkedObligations = ':nth-child(4) > .row > :nth-child(1) > :nth-child(2) > .gridjs .gridjs-table .gridjs-tbody'
 const btnEditWhiteList = '[href=""] > .btn'
 const tblWhiteList = ':nth-child(4) > .row > :nth-child(1) > :nth-child(2) > .gridjs tbody'
-const tblUpdateWhiteList = ':nth-child(4) > .row > :nth-child(2) > .gridjs'
+const tblUpdateWhiteList = ':nth-child(4) > .row > :nth-child(2) > .gridjs .gridjs-tbody'
 const cbWhiteList = '[data-column-id="obligationId"] > :nth-child(1) > div > .form-check-input'
 const btnUpdateWhiteList = '.btn-group > :nth-child(1) > .btn'
 const alertMessage = '.alert-success'

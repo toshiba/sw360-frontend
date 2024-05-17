@@ -120,21 +120,19 @@ const initData = () => {
 
 module.exports = (on: any, config: any) => {
     on('task', {
-        removeDownloadedFiles() {
-            const downloadPath = 'cypress/downloads'
+        removeDownloadsFolder() {
+            const folderName = 'cypress/downloads'
+            const { rmdir } = require('fs')
+            console.log('deleting folder %s', folderName);
             return new Promise((resolve, reject) => {
-                fs.readdir(downloadPath, (err, files) => {
+                rmdir(folderName, { maxRetries: 10, recursive: true }, (err: any) => {
                     if (err) {
-                        reject(err);
-                    } else {
-                        files.forEach((file) => {
-                            const filePath = `${downloadPath}/${file}`;
-                            fs.unlinkSync(filePath);
-                        });
-                        resolve(true);
+                        console.error(err);
+                        return reject(err);
                     }
+                    resolve(null);
                 });
-            })
+            });
         },
         async generateApiToken() {
             const clientData = JSON.parse(fs.readFileSync('cypress/fixtures/oauth-client.json', 'utf-8'))

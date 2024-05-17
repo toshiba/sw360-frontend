@@ -1,6 +1,15 @@
-import { viewSelectors } from "./selectors"
-import { registerLicense, verifyDetailsLicense} from "./utils"
+// Copyright (C) TOSHIBA CORPORATION, 2024. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2024. Part of the SW360 Frontend Project.
 
+// This program and the accompanying materials are made
+// available under the terms of the Eclipse Public License 2.0
+// which is available at https://www.eclipse.org/legal/epl-2.0/
+
+// SPDX-License-Identifier: EPL-2.0
+// License-Filename: LICENSE
+
+import { viewSelectors } from './selectors'
+import { registerLicense, verifyDetailsLicense } from './utils'
 
 function gotoLicenseDetailPage(licenseShortName) {
     cy.contains('a', licenseShortName).click()
@@ -14,41 +23,51 @@ function updateExternalLink(testData) {
     cy.get(viewSelectors.externalLink).clear()
         .type(testData)
     cy.get(viewSelectors.btnSave).click()
-    // todo verify success message alert
+    cy.get(viewSelectors.alertMessage).contains(' Success: Update External Link Success!')
     cy.get(viewSelectors.externalLink).should('have.value', testData)
-
 }
 
-function updateWhiteList(testData) {
-    cy.get(viewSelectors.tabObligations).click()
-    cy.get(viewSelectors.btnEditWhiteList).click()
-    cy.get(viewSelectors.tblUpdateWhiteList).should('be.visible')
+function selectWhiteList(testData) {
     for (let i = 0; i < testData.length; i++) {
         if (testData[i] == false)
             cy.get(viewSelectors.cbWhiteList).eq(i).uncheck()
         else if (testData[i] == true)
             cy.get(viewSelectors.cbWhiteList).eq(i).check()
     }
-    cy.get(viewSelectors.btnUpdateWhiteList).click()
-    //todo - check success message "Success: License updated successfully!"
 }
 
-function verifyUpdatingWhiteList(defaultWhiteListNum, testData) {
-    //todo - wait fix bug in new front to check detail of the obligation is unchecked.
-    let updatedwhiteListNum = defaultWhiteListNum
-    for (let i = 0; i < testData.length; i++) {
-        if (testData[i] == false)
-            updatedwhiteListNum = updatedwhiteListNum - 1
-    }
+function updateWhiteList(testData) {
     cy.get(viewSelectors.tabObligations).click()
-    cy.get(viewSelectors.tblWhiteList).find('tr').should('have.length', updatedwhiteListNum)
+    cy.get(viewSelectors.btnEditWhiteList).click()
+    cy.get(viewSelectors.tblUpdateWhiteList).should('be.visible')
+    selectWhiteList(testData)
+    cy.get(viewSelectors.btnUpdateWhiteList).click()
+    // todo verify ' Success: License updated successfully!')
+    cy.contains('button', 'Edit License').should('exist')
+}
+
+function updateWhiteListAndVerify(testData) {
+    let obligationsOutput = 0
+    cy.get(viewSelectors.tabObligations).click()
+    cy.get(viewSelectors.btnEditWhiteList).click()
+    cy.get(viewSelectors.tblUpdateWhiteList).as('whiteListTable')
+    cy.get('@whiteListTable').should('be.visible')
+    selectWhiteList(testData)
+    cy.get('td input[type="checkbox"]').each(($checkbox) => {
+        if ($checkbox.is(':checked')) {
+            obligationsOutput++
+        }
+    }).then(() => {
+        cy.get(viewSelectors.btnUpdateWhiteList).click()
+        // todo verify ' Success: License updated successfully!')
+        cy.contains('button', 'Edit License').should('exist')
+        cy.get(viewSelectors.tabObligations).click()
+        cy.get(viewSelectors.tblLinkedObligations).as('tblLinkedObligation')
+        cy.get('@tblLinkedObligation').find('tr').should('have.length', obligationsOutput)
+    })
 }
 
 describe('Register a license', () => {
-
-    // Cypress.on('uncaught:exception', (err, runnable) => {
-    //     return false
-    //   })
 
     before(() => {
         cy.deleteAllLicenses()
@@ -89,8 +108,7 @@ describe('Register a license', () => {
             registerLicense(testData)
             verifyAddedLicenseInLicenseList(licenseShortName)
             gotoLicenseDetailPage(licenseShortName)
-            updateWhiteList(testData.update_white_list)
-            verifyUpdatingWhiteList(testData.linked_obligations_tab.added_obligation_quantity, testData.update_white_list)
+            updateWhiteListAndVerify(testData.update_white_list)
         })
     })
 })

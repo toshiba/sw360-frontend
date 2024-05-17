@@ -8,11 +8,11 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import { viewSelectors } from "./selectors"
+import { viewSelectors } from './selectors'
 
 const verifyFileExported = () => {
-    cy.readFile('cypress/downloads/Licenses.xlsx')
-    // .should('exist')
+    const downloadedFileName = 'Licenses.xlsx'
+    cy.verifyDownloadedFile(downloadedFileName)
 }
 
 describe('Export License', () => {
@@ -20,11 +20,11 @@ describe('Export License', () => {
         cy.login('admin')
         cy.visit(`${Cypress.env('sw360_base_url')}/licenses`)
         cy.get(viewSelectors.tblLicenseList).should('be.visible')
-        cy.removeDownloadedFiles()
+        cy.removeDownloadsFolder()
     })
 
     it('TC06: Check Export Licenses', () => {
-        cy.get(viewSelectors.btnExportSpreadsheet).click()
+        cy.downloadFile(viewSelectors.btnExportSpreadsheet)
         verifyFileExported()
     })
 })
