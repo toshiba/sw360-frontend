@@ -10,155 +10,14 @@
 #
 # -----------------------------------------------------------------------------
 
-# name: SW360-Frontend Build and Automation Test
+name: SW360-Frontend Build and Automation Test
 
-# on:
-#   push:
-#     branches: [ "test/ci-cypress" ]
-#   pull_request:
-#     branches: [ "test/ci-cypress" ]
-
-#   workflow_dispatch:
-
-# permissions: write-all
-
-# env:
-#   COUCHDB_USER: admin
-#   COUCHDB_PASSWORD: password
-
-# jobs:
-
-#   build:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - uses: actions/checkout@v4
-
-#       - name: Checkout repository
-#         uses: actions/checkout@v4
-#         with:
-#           submodules: 'true'
-#           ssh-key: ${{ secrets.SUBMODULE_ACCESS_TOKEN }}
-
-#       - name: Set environment variables
-#         run: |
-#           echo _JAVA_OPTIONS= '-Djdk.util.zip.disableZip64ExtraFieldValidation=true' >> $GITHUB_ENV
-#           cat ./sw360/.versions >> $GITHUB_ENV
-
-#       - name: Setup CouchDB
-#         run: |
-#           cd ./sw360
-#           scripts/startCouchdbForTests.sh
-#           cd ../
-
-#       - name: Update properties with DB credentials
-#         run: |
-#           cd ./sw360
-#           sudo mkdir -p /etc/sw360
-#           sudo cp ./build-configuration/test-resources/couchdb-test.properties /etc/sw360/
-#           sudo cp ./scripts/sw360BackendRestDockerConfig/etc_sw360/rest-test.properties /etc/sw360/
-#           sudo sed -i 's/^couchdb.user\s*=/& '${COUCHDB_USER}'/' /etc/sw360/couchdb-test.properties
-#           sudo sed -i 's/^couchdb.password\s*=/& '${COUCHDB_PASSWORD}'/' /etc/sw360/couchdb-test.properties
-#           cd ../
-
-#       - name: Prepare build environment
-#         run: |
-#           sudo apt-get update -qq
-#           sudo DEBIAN_FRONTEND=noninteractive apt-get install -yq python3-pip build-essential libboost-dev libboost-test-dev libboost-program-options-dev libevent-dev automake libtool flex bison pkg-config libssl-dev git cmake
-#           pip install mkdocs mkdocs-material
-
-#       - name: Set up JDK 11
-#         uses: actions/setup-java@v4
-#         with:
-#           java-version: '11'
-#           distribution: 'temurin'
-#           check-latest: true
-#           cache: 'maven'
-
-#       - name: Cache Thrift
-#         id: cache-thrift
-#         uses: actions/cache@v4
-#         with:
-#           path: |
-#             /usr/local/bin/thrift
-#             /usr/share/thrift/${{ env.THRIFT_VERSION }}
-#           key: ${{ runner.os }}-thrift-${{ env.THRIFT_VERSION }}
-#           restore-keys: |
-#             ${{ runner.os }}-thrift-${{ env.THRIFT_VERSION }}
-
-#       - name: Install Thrift
-#         if: steps.cache-thrift.outputs.cache-hit != 'true'
-#         run: |
-#           cd ./sw360
-#           chmod +x scripts/install-thrift.sh
-#           bash scripts/install-thrift.sh
-#           cd ../
-
-#       - name: Build SW360
-#         run: |
-#           cd ./sw360
-#           mvn clean install --no-transfer-progress -P deploy -Dhelp-docs=true -Dbase.deploy.dir=. -Dliferay.deploy.dir=${PWD}/deploy -Dbackend.deploy.dir=${PWD}/deploy/webapps -Drest.deploy.dir=${PWD}/deploy/webapps -DskipTests
-#           cd ../
-
-#       - name: Deploy Backend and Rest Server
-#         run: |
-#           cd ./sw360
-#           sudo docker build -t sw360backendrest -f sw360BackendRest.Dockerfile .
-#           sudo docker run -dt --network=host sw360backendrest
-#           bash scripts/sw360BackendRestDockerConfig/scripts/checkDeploymentIsSuccess.sh
-#           cd ../
-
-#       - name: Create users and oauth client
-#         run: |
-#           cd ./sw360
-#           bash scripts/sw360BackendRestDockerConfig/scripts/createUserAndOauthClient.sh
-#           cd ../
-
-#       - name: Start frontend
-#         run : |
-#           npm ci
-#           npm run lint
-#           npm run build
-#           npm i nohup -g
-#           nohup npm start &
-
-#       - name: Install Nodejs
-#         run: |
-#           sudo apt-get update
-#           curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-#           sudo apt install nodejs -y
-#           nodejs -v
-#           npm -v
-
-#       - name: Install Google Chrome
-#         run: |
-#           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-#           sudo dpkg -i google-chrome-stable_current_amd64.deb
-#           google-chrome --version
-
-#       - name: Install dependencies of running sw360-frontend
-#         run: |
-#           sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb jq
-#           npm i
-
-#       - name: run cypress
-#         run: |
-#           npx cypress run --browser chrome --spec cypress/e2e/click_sign_in_button.cy.js
-
-
-# This is a basic workflow to help you get started with Actions
-
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "test/ci-cypress" ]
   pull_request:
     branches: [ "test/ci-cypress" ]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 permissions: write-all
@@ -167,18 +26,13 @@ env:
   COUCHDB_USER: admin
   COUCHDB_PASSWORD: password
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
-      # - uses: webiny/action-conventional-commits@v1.3.0
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -290,3 +144,7 @@ jobs:
       - name: run cypress
         run: |
           npx cypress run --browser chrome --spec cypress/e2e/click_sign_in_button.cy.js
+
+      - name: check disk
+        run: |
+          df -h
