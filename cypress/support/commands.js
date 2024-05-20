@@ -65,18 +65,6 @@ Cypress.Commands.add('verifyCreatedUser', (role, selector) => {
   })
 })
 
-Cypress.Commands.add('selectItemFromTable', (selector, isSelectMulti, num) => {
-  if (isSelectMulti == false) {
-    cy.get(selector(num).isChecked)
-      .click()
-  } else {
-    for (let i = 1; i <= num; i++) {
-      cy.get(selector(i).isChecked)
-        .click()
-    }
-  }
-})
-
 Cypress.Commands.add('selectItemsFromTable', (selector, isSelectMulti, num) => {
   if (isSelectMulti == false) {
     cy.get(selector).eq(num).check({ force: true })
@@ -91,7 +79,8 @@ Cypress.Commands.add('selectOrAddVendor', (dialogButtonsSelector, vendorSelector
   cy.get(dialogButtonsSelector.searchBtn)
     .contains('Search')
     .click()
-  cy.selectItemFromTable(vendorSelector, false, vendorInputData.user_no)
+  cy.get('.gridjs .gridjs-tbody').should('be.visible')
+  cy.selectItemsFromTable(vendorSelector, false, vendorInputData.user_no)
   cy.get(dialogButtonsSelector.selectVendorBtn)
     .click()
 })

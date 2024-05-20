@@ -9,7 +9,7 @@
 // License-Filename: LICENSE
 
 import { addEditSelectors, viewSelectors } from './selectors'
-import { registerLicense, fillDataLicense, addObligations, verifyDetailsLicense } from './utils'
+import { registerLicense, fillDataLicense, addObligations, verifyDetailsLicense, deleteLicensesBeforeRegisterUpdate } from './utils'
 
 function gotoUpdateLicensePage(licenseShortName) {
     cy.get(viewSelectors.navLicense).click()
@@ -64,7 +64,7 @@ function verifyDeletedLicense(licenseShortName) {
 describe('Update a license', () => {
 
     before(() => {
-        cy.deleteAllLicenses()
+        deleteLicensesBeforeRegisterUpdate('licenses/update', true)
     })
 
     beforeEach(() => {

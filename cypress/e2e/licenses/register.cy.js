@@ -9,7 +9,7 @@
 // License-Filename: LICENSE
 
 import { viewSelectors } from './selectors'
-import { registerLicense, verifyDetailsLicense } from './utils'
+import { registerLicense, verifyDetailsLicense, deleteLicensesBeforeRegisterUpdate } from './utils'
 
 function gotoLicenseDetailPage(licenseShortName) {
     cy.contains('a', licenseShortName).click()
@@ -70,7 +70,7 @@ function updateWhiteListAndVerify(testData) {
 describe('Register a license', () => {
 
     before(() => {
-        cy.deleteAllLicenses()
+        deleteLicensesBeforeRegisterUpdate('licenses/register', false)
     })
 
     beforeEach(() => {

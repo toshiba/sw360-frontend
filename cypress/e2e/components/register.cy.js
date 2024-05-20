@@ -79,6 +79,7 @@ export function registerAndVerifyComponent(testId) {
 }
 
 describe('Register a component', () => {
+
   beforeEach(() => {
     cy.login('admin')
   })

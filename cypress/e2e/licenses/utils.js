@@ -156,3 +156,20 @@ export function registerLicense(testData) {
     cy.get(viewSelectors.alertMessage).contains('Success: License added successfully!')
     cy.contains('Add License')
 }
+
+export function deleteLicensesBeforeRegisterUpdate(filePath, isUpdate) {
+    cy.fixture(filePath).then((testIds) => {
+        const testIdsNum = Object.keys(testIds).length
+        let shortName
+        for (let i = 0; i < testIdsNum; i++) {
+            const keyTestId = Object.keys(testIds)[i]
+            const fieldValue = testIds[keyTestId]
+            if (isUpdate) {
+                shortName = fieldValue.initial_data.license_tab.short_name
+            } else {
+                shortName = fieldValue.license_tab.short_name
+            }
+            cy.deleteLicense(shortName)
+        }
+    })
+}
