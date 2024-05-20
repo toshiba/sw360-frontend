@@ -141,10 +141,29 @@ jobs:
           sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb jq
           npm i
 
-      - name: run cypress
+      - name: Run cypress
         run: |
           npx cypress run --browser chrome --spec cypress/e2e/click_sign_in_button.cy.js
 
-      - name: check disk
+      # sudo apt-get remove -y 'gcc-.*'
+      # sudo apt-get remove -y 'dotnet-.*'
+      # sudo apt-get remove -y 'llvm-.*'
+      # sudo apt-get remove -y azure-cli google-chrome-stable firefox powershell mono-devel
+      - name: Freeing up disk space on CI system
         run: |
+          echo "Listing 100 largest packages"
+          dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 100 | awk '{print $2}'
+          echo "before clean disk"
+          df -h
+          for i in `dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 100 | awk '{print $2}'`; do
+            if sudo apt-get remove -y $i; then
+              echo "removed $i"
+            else
+              echo "NOT removed $i"
+            fi
+          done
+
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+          echo "after clean disk"
           df -h
