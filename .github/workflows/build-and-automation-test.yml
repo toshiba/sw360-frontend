@@ -38,107 +38,87 @@ jobs:
           submodules: 'true'
           ssh-key: ${{ secrets.binhth2 }}
 
-      # - name: Verify license headers
-      #   run: |
-      #     cd ./sw360
-      #     chmod +x ./.github/testForLicenseHeaders.sh
-      #     bash ./.github/testForLicenseHeaders.sh
-      #     cd ../
+      - name: Verify license headers
+        run: |
+          cd ./sw360
+          chmod +x ./.github/testForLicenseHeaders.sh
+          bash ./.github/testForLicenseHeaders.sh
+          cd ../
 
-      # - name: Set environment variables
-      #   run: |
-      #     echo _JAVA_OPTIONS= '-Djdk.util.zip.disableZip64ExtraFieldValidation=true' >> $GITHUB_ENV
-      #     cat ./sw360/.versions >> $GITHUB_ENV
+      - name: Set environment variables
+        run: |
+          echo _JAVA_OPTIONS= '-Djdk.util.zip.disableZip64ExtraFieldValidation=true' >> $GITHUB_ENV
+          cat ./sw360/.versions >> $GITHUB_ENV
 
-      # - name: Setup CouchDB
-      #   run: |
-      #     cd ./sw360
-      #     scripts/startCouchdbForTests.sh
-      #     cd ../
+      - name: Setup CouchDB
+        run: |
+          cd ./sw360
+          scripts/startCouchdbForTests.sh
+          cd ../
 
-      # - name: Update properties with DB credentials
-      #   run: |
-      #     cd ./sw360
-      #     sudo mkdir -p /etc/sw360
-      #     sudo cp ./build-configuration/test-resources/couchdb-test.properties /etc/sw360/
-      #     sudo cp ./scripts/sw360BackendRestDockerConfig/etc_sw360/rest-test.properties /etc/sw360/
-      #     sudo sed -i 's/^couchdb.user\s*=/& '${COUCHDB_USER}'/' /etc/sw360/couchdb-test.properties
-      #     sudo sed -i 's/^couchdb.password\s*=/& '${COUCHDB_PASSWORD}'/' /etc/sw360/couchdb-test.properties
-      #     cd ../
+      - name: Update properties with DB credentials
+        run: |
+          cd ./sw360
+          sudo mkdir -p /etc/sw360
+          sudo cp ./build-configuration/test-resources/couchdb-test.properties /etc/sw360/
+          sudo cp ./scripts/sw360BackendRestDockerConfig/etc_sw360/rest-test.properties /etc/sw360/
+          sudo sed -i 's/^couchdb.user\s*=/& '${COUCHDB_USER}'/' /etc/sw360/couchdb-test.properties
+          sudo sed -i 's/^couchdb.password\s*=/& '${COUCHDB_PASSWORD}'/' /etc/sw360/couchdb-test.properties
+          cd ../
 
-      # - name: Prepare build environment
-      #   run: |
-      #     sudo apt-get update -qq
-      #     sudo DEBIAN_FRONTEND=noninteractive apt-get install -yq python3-pip build-essential libboost-dev libboost-test-dev libboost-program-options-dev libevent-dev automake libtool flex bison pkg-config libssl-dev git cmake
-      #     pip install mkdocs mkdocs-material
+      - name: Prepare build environment
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -yq python3-pip build-essential libboost-dev libboost-test-dev libboost-program-options-dev libevent-dev automake libtool flex bison pkg-config libssl-dev git cmake
+          pip install mkdocs mkdocs-material
 
-      # - name: Set up JDK 11
-      #   uses: actions/setup-java@v4
-      #   with:
-      #     java-version: '11'
-      #     distribution: 'temurin'
-      #     check-latest: true
-      #     cache: 'maven'
+      - name: Set up JDK 11
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          check-latest: true
+          cache: 'maven'
 
-      # - name: Cache Thrift
-      #   id: cache-thrift
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: |
-      #       /usr/local/bin/thrift
-      #       /usr/share/thrift/${{ env.THRIFT_VERSION }}
-      #     key: ${{ runner.os }}-thrift-${{ env.THRIFT_VERSION }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-thrift-${{ env.THRIFT_VERSION }}
+      - name: Cache Thrift
+        id: cache-thrift
+        uses: actions/cache@v4
+        with:
+          path: |
+            /usr/local/bin/thrift
+            /usr/share/thrift/${{ env.THRIFT_VERSION }}
+          key: ${{ runner.os }}-thrift-${{ env.THRIFT_VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-thrift-${{ env.THRIFT_VERSION }}
 
-      # - name: Install Thrift
-      #   if: steps.cache-thrift.outputs.cache-hit != 'true'
-      #   run: |
-      #     cd ./sw360
-      #     chmod +x scripts/install-thrift.sh
-      #     bash scripts/install-thrift.sh
-      #     cd ../
+      - name: Install Thrift
+        if: steps.cache-thrift.outputs.cache-hit != 'true'
+        run: |
+          cd ./sw360
+          chmod +x scripts/install-thrift.sh
+          bash scripts/install-thrift.sh
+          cd ../
 
-      # - name: Build SW360
-      #   run: |
-      #     cd ./sw360
-      #     mvn clean install --no-transfer-progress -P deploy -Dhelp-docs=true -Dbase.deploy.dir=. -Dliferay.deploy.dir=${PWD}/deploy -Dbackend.deploy.dir=${PWD}/deploy/webapps -Drest.deploy.dir=${PWD}/deploy/webapps -DskipTests
-      #     cd ../
+      - name: Build SW360
+        run: |
+          cd ./sw360
+          mvn clean install --no-transfer-progress -P deploy -Dhelp-docs=true -Dbase.deploy.dir=. -Dliferay.deploy.dir=${PWD}/deploy -Dbackend.deploy.dir=${PWD}/deploy/webapps -Drest.deploy.dir=${PWD}/deploy/webapps -DskipTests
+          cd ../
 
-      # - name: Run PrivateProjectAccessTest
-      #   run: |
-      #     cd ./sw360/build-configuration
-      #     mvn install
-      #     cd ..
-      #     cd libraries/datahandler
-      #     mvn test -Dtest=ProjectPermissionsVisibilityTest -DRunPrivateProjectAccessTest=true -DRunRestForceUpdateTest=true
-      #     cd ../../
+      - name: Deploy Backend and Rest Server
+        run: |
+          cd ./sw360
+          sudo docker build -t sw360backendrest -f sw360BackendRest.Dockerfile .
+          sudo docker run -dt --network=host sw360backendrest
+          bash scripts/sw360BackendRestDockerConfig/scripts/checkDeploymentIsSuccess.sh
+          cd ../
 
-      # - name: Run BulkReleaseDeletingTest
-      #   run: |
-      #     cd sw360/backend/src/src-components
-      #     mvn test -Dtest=BulkDeleteUtilTest -DRunPrivateProjectAccessTest=true -DRunBulkReleaseDeletingTest=true
-      #     cd ../
+      - name: Create users and oauth client
+        run: |
+          cd ./sw360
+          bash scripts/sw360BackendRestDockerConfig/scripts/createUserAndOauthClient.sh
+          cd ../
 
-      # - name: Deploy Backend and Rest Server
-      #   run: |
-      #     cd ./sw360
-      #     sudo docker build -t sw360backendrest -f sw360BackendRest.Dockerfile .
-      #     sudo docker run -dt --network=host sw360backendrest
-      #     bash scripts/sw360BackendRestDockerConfig/scripts/checkDeploymentIsSuccess.sh
-      #     cd ../
-
-      # - name: Create users and oauth client
-      #   run: |
-      #     cd ./sw360
-      #     bash scripts/sw360BackendRestDockerConfig/scripts/createUserAndOauthClient.sh
-      #     cd ../
-
-      # - name: Run Client Integration Test for Rest Api
-      #   run: |
-      #     cd ./sw360/clients
-      #     mvn clean install --no-transfer-progress -DRunRestIntegrationTest=true
-      #     cd ../
       - name: Start frontend
         run : |
           npm ci
@@ -147,13 +127,13 @@ jobs:
           npm i nohup -g
           nohup npm start &
 
-      # - name: Install Nodejs
-      #   run: |
-      #     sudo apt-get update
-      #     curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-      #     sudo apt install nodejs -y
-      #     nodejs -v
-      #     npm -v
+      - name: Install Nodejs
+        run: |
+          sudo apt-get update
+          curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+          sudo apt install nodejs -y
+          nodejs -v
+          npm -v
 
       - name: Install Google Chrome
         run: |
@@ -161,11 +141,11 @@ jobs:
           sudo dpkg -i google-chrome-stable_current_amd64.deb
           google-chrome --version
 
-      # - name: Install dependencies of running sw360-frontend
-      #   run: |
-      #     sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb jq
-      #     npm i
+      - name: Install dependencies of running sw360-frontend
+        run: |
+          sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb jq
+          npm i
 
-      # - name: run cypress
-      #   run: |
-      #     npx cypress run --browser chrome
+      - name: run cypress
+        run: |
+          npx cypress run --browser chrome --spec cypress/e2e/click_sign_in_button.cy.js
