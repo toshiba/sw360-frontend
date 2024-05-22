@@ -21,7 +21,7 @@ const dialogModerator = {
   "openDialog": "#moderators",
   "dialog": ".modal-content",
   "searchBtn": ":nth-child(1) > .col-lg-4 > :nth-child(1)",
-  "selectUsersBtn": ".justify-content-end > :nth-child(3)"
+  "selectUsersBtn": ".justify-content-end > .btn-primary"
 
 }
 
@@ -29,7 +29,7 @@ const dialogContributor = {
   "openDialog": "#contributors",
   "dialog": ".modal-content",
   "searchBtn": ":nth-child(1) > .col-lg-4 > :nth-child(1)",
-  "selectUsersBtn": ".justify-content-end > :nth-child(2)"
+  "selectUsersBtn": ".justify-content-end > .btn-primary"
 }
 
 const dialogOtherLicense = {
@@ -46,47 +46,37 @@ const dialogMainLicense = {
   "selectLicenseBtn": ".justify-content-end > :nth-child(2)"
 }
 
-function vendorSelectors(i) {
-  return {
-    "isChecked": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"vendorId\"] > :nth-child(1) > div > .form-check-input",
-    "givenName": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"fullName\"]",
-    "lastName": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"shortName\"]",
-  }
+const  vendorSelectors = {
+  "isChecked": "[data-column-id=\"vendorId\"] > :nth-child(1) > div > .form-check-input",
+  "givenName": "[data-column-id=\"fullName\"]",
+  "lastName": "[data-column-id=\"shortName\"]"
 }
 
-function moderatorSelectors(i) {
-  return {
-    "isChecked": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"\"]",
-    "givenName": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"GivenName\"]",
-    "lastName": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"LastName\"]",
-  }
+const  moderatorSelectors = {
+  "isChecked": "[data-column-id=\"user-selection\"] > :nth-child(1) > div > .form-check-input",
+  "givenName": "[data-column-id=\"givenName\"]",
+  "lastName": "[data-column-id=\"lastName\"]"
 }
 
-function contributorSelectors(i) {
-  return {
-    "isChecked": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"moderatorId\"] > :nth-child(1) > div > .form-check-input",
-    "givenName": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"givenName\"]",
-    "lastName": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"lastName\"]",
-  }
+const contributorSelectors = {
+  "isChecked": "[data-column-id=\"user-selection\"] > :nth-child(1) > div > .form-check-input",
+  "givenName": "[data-column-id=\"givenName\"]",
+  "lastName": "[data-column-id=\"lastName\"]"
 }
 
-function mainLicenseSelectors(i) {
-  return {
-    "isChecked": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"licenseId\"] > :nth-child(1) > div > .form-check-input",
-    "givenName": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"license\"]"
-  }
+const mainLicenseSelectors = {
+  "isChecked": "[data-column-id=\"licenseId\"] > :nth-child(1) > div > .form-check-input",
+  "givenName": "[data-column-id=\"license\"]"
 }
 
-function otherLicenseSelectors(i) {
-  return {
-    "isChecked": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"licenseId\"] > :nth-child(1) > div > .form-check-input",
-    "givenName": ".gridjs-tbody > :nth-child(" + i + ") > [data-column-id=\"fullName\"]"
-  }
+const otherLicenseSelectors = {
+  "isChecked": "[data-column-id=\"licenseId\"] > :nth-child(1) > div > .form-check-input",
+  "givenName": "[data-column-id=\"fullName\"]"
 }
 
 export function selectVendor(vendorInputData) {
   cy.openDialog(dialogVendor.openDialog, dialogVendor.dialog)
-  cy.selectOrAddVendor(dialogVendor, vendorSelectors, vendorInputData)
+  cy.selectOrAddVendor(dialogVendor, vendorSelectors.isChecked, vendorInputData)
 }
 
 export function selectMainLicenses(licenseInputData) {
@@ -94,7 +84,7 @@ export function selectMainLicenses(licenseInputData) {
   cy.get(dialogMainLicense.searchBtn)
     .contains('Search')
     .click()
-  cy.selectItemFromTable(mainLicenseSelectors, true, licenseInputData.num_license)
+  cy.selectItemsFromTable(mainLicenseSelectors.isChecked, true, licenseInputData.num_license)
   cy.get(dialogMainLicense.selectLicenseBtn)
     .click()
 }
@@ -104,7 +94,7 @@ export function selectOtherLicenses(licenseInputData) {
   cy.get(dialogOtherLicense.searchBtn)
     .contains('Search')
     .click()
-  cy.selectItemFromTable(otherLicenseSelectors, true, licenseInputData.num_license)
+  cy.selectItemsFromTable(otherLicenseSelectors.isChecked, true, licenseInputData.num_license)
   cy.get(dialogOtherLicense.selectLicenseBtn)
     .click()
 }
@@ -114,7 +104,7 @@ export function selectModerators(moderatorInputData) {
   cy.get(dialogModerator.searchBtn)
     .contains('Search')
     .click()
-  cy.selectItemFromTable(moderatorSelectors, true, moderatorInputData.num_user)
+  cy.selectItemsFromTable(moderatorSelectors.isChecked, true, moderatorInputData.num_user)
   cy.get(dialogModerator.selectUsersBtn)
     .click()
 }
@@ -124,14 +114,14 @@ export function selectContributors(contributorInputData) {
   cy.get(dialogContributor.searchBtn)
     .contains('Search')
     .click()
-  cy.selectItemFromTable(contributorSelectors, true, contributorInputData.num_user)
+  cy.selectItemsFromTable(contributorSelectors.isChecked, true, contributorInputData.num_user)
   cy.get(dialogContributor.selectUsersBtn)
     .click()
 }
 
 export function gotoRegisterReleasePage() {
   cy.get('#tab-releases').click()
-  cy.get(':nth-child(3) > :nth-child(2) > .fw-bold').click()
+  cy.contains('button', 'Add Release').click()
   cy.contains('Create Release')
 }
 
@@ -196,11 +186,11 @@ export function fillDataRelease(dataTest) {
         selectModerators(fieldValue)
         break
       case 'additional_roles':
-        cy.get(':nth-child(2) > .row > .col-lg-4 > .btn')
+        cy.contains('button', 'Click to add row to Additional Roles')
           .click()
         cy.get(':nth-child(2) > .row > :nth-child(1) > .form-select')
           .select(fieldValue.role.name)
-        cy.get(':nth-child(2) > .row > :nth-child(2) > .form-control')
+        cy.get(':nth-child(2) > :nth-child(2) > .row > :nth-child(2) > .form-control')
           .clear()
           .type(fieldValue.mail_address)
         break
@@ -239,8 +229,7 @@ export function fillDataRelease(dataTest) {
 
 function verifyReleaseAfterCreated(testId) {
   cy.log('[Info] Validate Release after created')
-  cy.get('.btn-group> :nth-child(1) > .btn')
-    .contains('Update Release')
+  cy.contains('button', 'Update Release')
   cy.fixture('releases/register').then((release) => {
     const dataTest = release[testId]
     const nStep = Object.keys(dataTest).length
@@ -295,7 +284,7 @@ function verifyReleaseAfterCreated(testId) {
         case 'additional_roles':
           cy.get(':nth-child(2) > .row > :nth-child(1) > .form-select')
             .should('have.value', fieldValue.role.name)
-          cy.get(':nth-child(2) > .row > :nth-child(2) > .form-control')
+          cy.get(':nth-child(2) > :nth-child(2) > .row > :nth-child(2) > .form-control')
             .should('have.value', fieldValue.mail_address)
           break
         case 'external_id':
@@ -348,15 +337,12 @@ export function registerAndVerifyRelease(testId) {
 }
 
 function addAttachment(fileNames, shouldUnAttachFile) {
-  let openDialog = ':nth-child(7) > :nth-child(2) > .fw-bold'
-  let dialog = '.modal-content'
-  cy.openDialog(openDialog, dialog)
-
+  cy.contains('button', 'Add Attachment').click()
+  cy.get('.modal-content').should('be.visible')
   cy.get('input[type=file]').selectFile(fileNames, { force: true })
   if (shouldUnAttachFile == true) {
     cy.get(':nth-child(1) > .SelectAttachment_button-delete__QEfUR > .btn').click()
   }
-
   cy.get('.button-orange').click()
   cy.get('.Attachment_attachment-table__T7Kx_').should('be.visible')
 }
