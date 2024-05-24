@@ -18,7 +18,7 @@ import { GoSingleSelect } from 'react-icons/go'
 import Form from 'react-bootstrap/Form'
 import styles from '../detail.module.css'
 import Link from 'next/link'
-import { FaPencilAlt } from 'react-icons/fa'
+import { FaPencilAlt, FaSort } from 'react-icons/fa'
 import { Attachment, Embedded, NodeData } from '@/object-types'
 import ClearingStateBadge from './ClearingStateBadge'
 import Alert from 'react-bootstrap/Alert'
@@ -57,6 +57,7 @@ interface ReleaseClearingState {
     releaseMainLineState?: string
     linkedReleases?: Array<ReleaseClearingState>
     ref?: ReleaseClearingState
+    isExpanded?: boolean
 }
 
 interface ProjectClearingState {
@@ -70,6 +71,7 @@ interface ProjectClearingState {
     subprojects?: Array<ProjectClearingState>
     linkedReleases?: Array<ReleaseClearingState>
     ref?: ProjectClearingState
+    isExpanded?: boolean
 }
 
 type ClearingState = ReleaseClearingState & ProjectClearingState
@@ -93,6 +95,7 @@ const filterOptions: { [k: string]: Array<string> } = {
 const DependencyNetworkTreeView = ({ projectId }: Props) => {
     const t = useTranslations('default')
     const [filters, setFilters] = useState<{ [k: string]: Array<string> }>(filterOptions)
+    const [sortOption, setSortOption] = useState(undefined)
     const language = { noRecordsFound: t('No linked releases or projects') }
     const [isExpandedAllMessageShow, setIsExpandedAllMessageShow] = useState(false)
     const [search, setSearch] = useState({ keyword: '' })
@@ -156,14 +159,82 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
         }
     }
 
+    const onExpand = async (item: NodeData) => {
+        if (item.isNodeFetched) {
+            item.isExpanded = true
+            item.additionalData.node.isExpanded = true
+            setTreeData([...treeData])
+            return
+        }
+
+        const session = await getSession()
+        if (item.additionalData.isRelease === false) {
+            const response = await ApiUtils.GET(`projects/network/${item.additionalData.node.id}/linkedResources`, session.user.access_token)
+            const responseData = await response.json() as ProjectClearingState
+            item.additionalData.node.linkedReleases = responseData.linkedReleases
+            item.additionalData.node.subprojects = responseData.subprojects
+            item.additionalData.node.isExpanded = true
+            setData({ ...data })
+        } else {
+            const response = await ApiUtils.GET(`projects/network/${item.additionalData.node.projectId}/releases?path=${item.additionalData.releaseIndexPath.join('->')}`, session.user.access_token)
+            const responseData = await response.json() as EmbeddedReleaseLinks
+            item.additionalData.node.linkedReleases = responseData._embedded['sw360:releaseLinks']
+            item.additionalData.node.isExpanded = true
+            setData({ ...data })
+        }
+        return item
+    }
+
     const collapseAll = () => {
         const allCollapsed = Object.values(treeData).map((node: NodeData): NodeData => {
             node.isExpanded = false
+            node.additionalData.node.isExpanded = false
             return node
         })
         setTreeData(allCollapsed)
     }
 
+    const sortColumn = (columnName: string) => {
+        if (sortOption === undefined || sortOption.col !== columnName) {
+            setSortOption({
+                col: columnName,
+                sortAscending: true
+            })
+            return
+        }
+
+        setSortOption({
+            ...sortOption,
+            sortAscending: !sortOption.sortAscending
+        })
+    }
+
+    const compareFn = (obj1: ClearingState, obj2: ClearingState) => {
+        const obj1Prop = convertToString(obj1[sortOption.col as keyof ClearingState])
+        const obj2Prop = convertToString(obj2[sortOption.col as keyof ClearingState])
+
+        if (sortOption.sortAscending) {
+            return obj1Prop.localeCompare(obj2Prop)
+        }
+        return obj2Prop.localeCompare(obj1Prop)
+    }
+
+    const convertToString = (item: unknown) => {
+        if (!item)
+            return ''
+        if (typeof item === 'string')
+            return item
+        return item.toString()
+    }
+
+    const sortData = (data: ProjectClearingState): ProjectClearingState => {
+        if (sortOption === undefined)
+            return data
+
+        const sortedLinkedReleases = [...data.linkedReleases].sort(compareFn)
+        const sortedSubProjects = [...data.subprojects].sort(compareFn)
+        return {...data, linkedReleases: sortedLinkedReleases, subprojects: sortedSubProjects}
+    }
 
     const columns = [
         {
@@ -172,6 +243,7 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                 <>
                     <div>
                         <span>{t('Name')}</span>
+                        <FaSort className='cursor-pointer' onClick={() => sortColumn('name')} />
                         {
                             (noOfLinkedResources.releases !== 0 || noOfLinkedResources.projects !== 0) && <>
                                 {' ('}
@@ -229,9 +301,9 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                             )
                         }
                     </DropdownButton>
+                    <FaSort className='cursor-pointer' onClick={() => sortColumn('componentType')} />
                 </>
             ),
-            sort: true,
             width: '7%',
         },
         {
@@ -265,21 +337,24 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                             )
                         }
                     </DropdownButton>
+                    <FaSort className='cursor-pointer' onClick={() => sortColumn('relations')} />
                 </>
             ),
             width: '8%',
-            sort: true,
         },
         {
             id: 'licenseClearing.mainLicenses',
-            name: t('Main licenses'),
-            sort: true,
+            name: _(
+                <>
+                    {t('Main licenses')}
+                    <FaSort className='cursor-pointer' onClick={() => sortColumn('licenseIds')} />
+                </>
+            ),
             width: 'auto',
         },
         {
             id: 'licenseClearing.otherLicenses',
             name: t('Other licenses'),
-            sort: false,
             width: 'auto',
         },
         {
@@ -319,26 +394,32 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
         },
         {
             id: 'licenseClearing.releaseMainlineState',
-            name: t('Release Mainline State'),
-            sort: true,
-            width: '8%',
+            name: _(
+                <>
+                    {t('Release Mainline State')}
+                    <FaSort className='cursor-pointer' onClick={() => sortColumn('releaseMainLineState')} />
+                </>
+            ),
+            width: '7%',
         },
         {
             id: 'licenseClearing.projectMainlineState',
-            name: t('Project Mainline State'),
-            sort: true,
-            width: '8%',
+            name: _(
+                <>
+                    {t('Project Mainline State')}
+                    <FaSort className='cursor-pointer' onClick={() => sortColumn('mainlineState')} />
+                </>
+            ),
+            width: '7%',
         },
         {
             id: 'licenseClearing.comment',
             name: t('Comment'),
-            sort: false,
             width: '10%',
         },
         {
             id: 'licenseClearing.actions',
             name: t('Actions'),
-            sort: false,
             width: '5%',
         },
     ]
@@ -382,9 +463,9 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                 ...((item.linkedReleases) ? Object.values(item.linkedReleases).map((subItem) => convertClearingStatusDataToTableNode(subItem, true, [...((releaseIndexPath) ? releaseIndexPath : []), item.index])) : []),
                 ...((item.subprojects) ? Object.values(item.subprojects).map((subItem) => convertClearingStatusDataToTableNode(subItem, false)) : [])
             ],
-            isExpanded: (!CommonUtils.isNullEmptyOrUndefinedArray(item.linkedReleases) || !CommonUtils.isNullEmptyOrUndefinedArray(item.subprojects)) ? true : false,
+            isExpanded: (!CommonUtils.isNullEmptyOrUndefinedArray(item.linkedReleases) || !CommonUtils.isNullEmptyOrUndefinedArray(item.subprojects)) && item.isExpanded,
             isExpandable: (isRelease) ? item.hasSubreleases : true,
-            isNodeFetched: (!CommonUtils.isNullEmptyOrUndefinedArray(item.linkedReleases) || !CommonUtils.isNullEmptyOrUndefinedArray(item.subprojects)) ? true : false,
+            isNodeFetched: !CommonUtils.isNullEmptyOrUndefinedArray(item.linkedReleases) || !CommonUtils.isNullEmptyOrUndefinedArray(item.subprojects),
             additionalData: {
                 node: item.ref,
                 isRelease: isRelease,
@@ -392,29 +473,6 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                 projectOrigin: item.projectId
             }
         }
-    }
-
-    const onExpand = async (item: NodeData) => {
-        if (item.isNodeFetched) {
-            item.isExpanded = true
-            setTreeData([...treeData])
-            return
-        }
-
-        const session = await getSession()
-        if (item.additionalData.isRelease === false) {
-            const response = await ApiUtils.GET(`projects/network/${item.additionalData.node.id}/linkedResources`, session.user.access_token)
-            const responseData = await response.json() as ProjectClearingState
-            item.additionalData.node.linkedReleases = responseData.linkedReleases
-            item.additionalData.node.subprojects = responseData.subprojects
-            setData({ ...data })
-        } else {
-            const response = await ApiUtils.GET(`projects/network/${item.additionalData.node.projectId}/releases?path=${item.additionalData.releaseIndexPath.join('->')}`, session.user.access_token)
-            const responseData = await response.json() as EmbeddedReleaseLinks
-            item.additionalData.node.linkedReleases = responseData._embedded['sw360:releaseLinks']
-            setData({ ...data })
-        }
-        return item
     }
 
     function filterData(data: ProjectClearingState) {
@@ -450,19 +508,20 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
             projects: !CommonUtils.isNullEmptyOrUndefinedArray(data.subprojects) ? data.subprojects.length : 0
         })
 
-        const displayedData = filterData(data)
+        const sortedData = sortData(data)
+        const filteredData = filterData(sortedData)
 
         const treeData = [
-            ...(!CommonUtils.isNullEmptyOrUndefinedArray(displayedData.linkedReleases) ? Object.values(displayedData.linkedReleases).map(
+            ...(!CommonUtils.isNullEmptyOrUndefinedArray(filteredData.linkedReleases) ? Object.values(filteredData.linkedReleases).map(
                 (item) => convertClearingStatusDataToTableNode(item, true, [])
             ) : []),
-            ...(!CommonUtils.isNullEmptyOrUndefinedArray(displayedData.subprojects) ? Object.values(displayedData.subprojects).map(
+            ...(!CommonUtils.isNullEmptyOrUndefinedArray(filteredData.subprojects) ? Object.values(filteredData.subprojects).map(
                 (item) => convertClearingStatusDataToTableNode(item, false)
             ) : [])
         ]
 
         setTreeData(treeData)
-    }, [data, filters])
+    }, [data, filters, sortOption])
 
     const onLoadFetch = useCallback(
         async () => {

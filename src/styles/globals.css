@@ -971,3 +971,7 @@ a.text-primary:hover, a.text-primary:focus {
 a.text-primary {
     color: var(--sw360-primary-color) !important;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}
