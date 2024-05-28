@@ -267,8 +267,6 @@ Cypress.Commands.add('createLicenseByAPI', (fullName, shortName) => {
     }
 
     fetch(`${Cypress.env('sw360_api_server')}/resource/api/licenses/`, requestOptions)
-    // .then(response => response.json())
-    // .then(data => data)
   })
 })
 

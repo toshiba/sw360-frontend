@@ -68,27 +68,27 @@ const initData = () => {
     console.log("[Info] Init data")
     const vendorNames = ['ven001', 'ven002', 'ven003']
     const licenseNames = ['AAL-1.01', 'Abstyles-2024', 'AFL-4.5']
-    const licenseTypes = ["LicenseType01", "LicenseType02", "LicenseType03"]
+    const licenseTypes = ['LicenseType01', 'LicenseType02', 'LicenseType03']
     const obligations = [
         {
-            "title": "\"obligation 001\"",
-            "text": "\"This is obligation text 001\"",
-            "obligationLevel": 4
+            'title': '"obligation 001"',
+            'text': '"This is obligation text 001"',
+            'obligationLevel': 4
         },
         {
-            "title": "\"obligation 002\"",
-            "text": "\"This is obligation text 002\"",
-            "obligationLevel": 4
+            'title': '"obligation 002"',
+            'text': '"This is obligation text 002"',
+            'obligationLevel': 4
         },
         {
-            "title": "\"obligation 003\"",
-            "text": "\"This is obligation text 003\"",
-            "obligationLevel": 4
+            'title': '"obligation 003"',
+            'text': '"This is obligation text 003"',
+            'obligationLevel': 4
         },
         {
-            "title": "\"obligation 004\"",
-            "text": "\"This is obligation text 004\"",
-            "obligationLevel": 4
+            'title': '"obligation 004"',
+            'text': '"This is obligation text 004"',
+            'obligationLevel': 4
         }
     ]
     const bashs = [

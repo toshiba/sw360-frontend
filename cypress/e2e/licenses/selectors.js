@@ -24,21 +24,21 @@ const tabLicense = '#tab-details'
 const tabLinkedObligations = '#tab-obligations'
 const tblObligations = '.gridjs'
 const dlgLicenseObligations = {
-    "sltDialog": ".modal-content",
-    "sltTable": ".modal-body > :nth-child(1) > .row > :nth-child(2) > .gridjs",
-    "sltCheckbox": "[data-column-id=\"obligationId\"] > div > .checkbox-control",
-    "sltAddBtn": ".modal-footer [type='button']:nth-child(2)"
+    'sltDialog': '.modal-content',
+    'sltTable': '.modal-body > :nth-child(1) > .row > :nth-child(2) > .gridjs',
+    'sltCheckbox': '[data-column-id="obligationId"] > div > .checkbox-control',
+    'sltAddBtn': '.modal-footer [type="button"]:nth-child(2)'
 }
 const btnDeleteLicense = ':nth-child(2) > .btn'
 const dlgDeleteLicense = {
-    "dialog": ".modal-content",
-    "btnDeleteLicense": ".login-btn",
-    "txtNotification": ".modal-body > .fade"
+    'dialog': '.modal-content',
+    'btnDeleteLicense': '.login-btn',
+    'txtNotification': '.modal-body > .fade'
 }
 const rowsLinkedObligation = '.gridjs-tbody > .gridjs-tr'
 const dlgDeleteLinkedObligation = {
-    "dialog": ".modal-content",
-    "btnDeleteObligation": ".login-btn"
+    'dialog': '.modal-content',
+    'btnDeleteObligation': '.login-btn'
 }
 
 export const addEditSelectors = {

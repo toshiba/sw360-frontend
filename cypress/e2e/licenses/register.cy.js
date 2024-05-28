@@ -50,8 +50,7 @@ function updateWhiteListAndVerify(testData) {
     let obligationsOutput = 0
     cy.get(viewSelectors.tabObligations).click()
     cy.get(viewSelectors.btnEditWhiteList).click()
-    cy.get(viewSelectors.tblUpdateWhiteList).as('whiteListTable')
-    cy.get('@whiteListTable').should('be.visible')
+    cy.get(viewSelectors.tblUpdateWhiteList).should('be.visible')
     selectWhiteList(testData)
     cy.get('td input[type="checkbox"]').each(($checkbox) => {
         if ($checkbox.is(':checked')) {
@@ -62,8 +61,7 @@ function updateWhiteListAndVerify(testData) {
         // todo verify ' Success: License updated successfully!')
         cy.contains('button', 'Edit License').should('exist')
         cy.get(viewSelectors.tabObligations).click()
-        cy.get(viewSelectors.tblLinkedObligations).as('tblLinkedObligation')
-        cy.get('@tblLinkedObligation').find('tr').should('have.length', obligationsOutput)
+        cy.get(viewSelectors.tblLinkedObligations).find('tr').should('have.length', obligationsOutput)
     })
 }
 

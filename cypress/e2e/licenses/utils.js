@@ -160,8 +160,8 @@ export function registerLicense(testData) {
 export function deleteLicensesBeforeRegisterUpdate(filePath, isUpdate) {
     cy.fixture(filePath).then((testIds) => {
         const testIdsNum = Object.keys(testIds).length
-        let shortName
         for (let i = 0; i < testIdsNum; i++) {
+            let shortName
             const keyTestId = Object.keys(testIds)[i]
             const fieldValue = testIds[keyTestId]
             if (isUpdate) {

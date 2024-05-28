@@ -10,7 +10,7 @@
 
 const verifyFileExported = () => {
     const currentDate = new Date().toISOString().split("T")[0]
-    const downloadedFileName =`components-${currentDate}.xlsx`
+    const downloadedFileName = `components-${currentDate}.xlsx`
     cy.verifyDownloadedFile(downloadedFileName)
 }
 
