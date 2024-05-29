@@ -104,6 +104,7 @@ describe('Register a license', () => {
             const testData = license['TC03_LINKED_OBLIGATION']
             const licenseShortName = testData.license_tab.short_name
             registerLicense(testData)
+            // todo search a license by quick filter
             verifyAddedLicenseInLicenseList(licenseShortName)
             gotoLicenseDetailPage(licenseShortName)
             updateWhiteListAndVerify(testData.update_white_list)

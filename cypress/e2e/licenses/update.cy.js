@@ -25,6 +25,7 @@ function deleteObligationAndVerify() {
     cy.get('@deletedObligationRow').find('td').eq(1).invoke('text').as('deletedObligationText')
     cy.get('@deletedObligationRow').find('td').last().find('svg').click();
     cy.get(addEditSelectors.dlgDeleteLinkedObligation.dialog).should('be.visible')
+    // to do verify message: "Do you really want to delete the obligation @deletedObligationText?"
     cy.get(addEditSelectors.dlgDeleteLinkedObligation.btnDeleteObligation).click()
     cy.get(addEditSelectors.rowsLinkedObligation).contains('td', '@deletedObligationText').should('not.exist')
 }
@@ -65,6 +66,17 @@ describe('Update a license', () => {
 
     before(() => {
         deleteLicensesBeforeRegisterUpdate('licenses/update', true)
+        cy.login('admin')
+        cy.fixture('licenses/update').then((license) => {
+            const initialData = license['TC04_EDIT_SOME_FIELDS'].initial_data
+            registerLicense(initialData)
+        })
+        cy.fixture('licenses/delete').then((license) => {
+            const fullName = license['TC05_DELETE_LICENSE'].full_name
+            const shortName = license['TC05_DELETE_LICENSE'].short_name
+            cy.createLicenseByAPI(fullName, shortName)
+        })
+        cy.logout()
     })
 
     beforeEach(() => {
@@ -76,7 +88,7 @@ describe('Update a license', () => {
             const initialData = license['TC04_EDIT_SOME_FIELDS'].initial_data
             const initialLicenseShortName = initialData.license_tab.short_name
             const updatedData = license['TC04_EDIT_SOME_FIELDS'].updated_data
-            registerLicense(initialData)
+            // todo search a license by quick filter
             gotoUpdateLicensePage(initialLicenseShortName)
             updateLicense(updatedData)
             verifyDetailsLicense(updatedData)
@@ -85,9 +97,8 @@ describe('Update a license', () => {
 
     it('TC05: Delete an existing license', () => {
         cy.fixture('licenses/delete').then((license) => {
-            const fullName = license['TC05_DELETE_LICENSE'].full_name
             const shortName = license['TC05_DELETE_LICENSE'].short_name
-            cy.createLicenseByAPI(fullName, shortName)
+            // todo search a license by quick filter
             gotoUpdateLicensePage(shortName)
             deleteLicense()
             verifyDeletedLicense(shortName)
