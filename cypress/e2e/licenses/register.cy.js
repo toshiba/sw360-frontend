@@ -28,11 +28,12 @@ function updateExternalLink(testData) {
 }
 
 function selectWhiteList(testData) {
+    cy.get(viewSelectors.cbWhiteList).as('cbWhiteLists')
     for (let i = 0; i < testData.length; i++) {
         if (testData[i] == false)
-            cy.get(viewSelectors.cbWhiteList).eq(i).uncheck()
+            cy.get('@cbWhiteLists').eq(i).uncheck()
         else if (testData[i] == true)
-            cy.get(viewSelectors.cbWhiteList).eq(i).check()
+            cy.get('@cbWhiteLists').eq(i).check()
     }
 }
 
@@ -52,7 +53,7 @@ function updateWhiteListAndVerify(testData) {
     cy.get(viewSelectors.btnEditWhiteList).click()
     cy.get(viewSelectors.tblUpdateWhiteList).should('be.visible')
     selectWhiteList(testData)
-    cy.get('td input[type="checkbox"]').each(($checkbox) => {
+    cy.get('@cbWhiteLists').each(($checkbox) => {
         if ($checkbox.is(':checked')) {
             obligationsOutput++
         }

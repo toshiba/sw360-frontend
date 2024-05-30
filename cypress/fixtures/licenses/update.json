@@ -7,8 +7,7 @@
                 "license_text": "Copyright (C) YEAR by AUTHOR EMAIL Permission to use, copy and modify."
             },
             "linked_obligations_tab": {
-                "added_obligation_quantity": 1,
-                "obligation_no": 2
+                "added_obligations": [0, 1]
             }
         },
         "updated_data": {
@@ -26,7 +25,7 @@
             },
             "linked_obligations_tab": {
                 "delete_obligation": true,
-                "added_obligation_quantity": 2
+                "added_obligations": [2, 3]
             }
         }
     }

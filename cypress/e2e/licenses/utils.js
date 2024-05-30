@@ -22,10 +22,10 @@ export function addObligations(testData) {
     cy.get(addEditSelectors.dlgLicenseObligations.sltDialog).should('be.visible')
     cy.contains('Select License Obligations to be added')
     cy.get(addEditSelectors.dlgLicenseObligations.sltDialog).within(() => {
-        if (testData.added_obligation_quantity == 1)
-            cy.selectItemsFromTable(addEditSelectors.dlgLicenseObligations.sltCheckbox, false, testData.obligation_no)
-        else
-            cy.selectItemsFromTable(addEditSelectors.dlgLicenseObligations.sltCheckbox, true, testData.added_obligation_quantity)
+        let addedObligations = testData.added_obligations
+        for (let i = 0; i < addedObligations.length; i++) {
+            cy.selectItemsFromTable(addEditSelectors.dlgLicenseObligations.sltCheckbox, false, addedObligations[i])
+        }
         cy.get(addEditSelectors.dlgLicenseObligations.sltAddBtn).click()
     })
     cy.get(addEditSelectors.dlgLicenseObligations.sltDialog).should('not.exist')
