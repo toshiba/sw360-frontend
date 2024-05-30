@@ -173,3 +173,11 @@ export function deleteLicensesBeforeRegisterUpdate(filePath, isUpdate) {
         }
     })
 }
+
+export function gotoUpdateLicensePage(licenseShortName) {
+    cy.get(viewSelectors.navLicense).click()
+    cy.contains('Add License')
+    cy.contains('a', licenseShortName).click()
+    cy.get('a > .btn').click()
+    cy.contains('Update License')
+}

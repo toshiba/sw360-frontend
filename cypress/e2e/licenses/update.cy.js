@@ -9,15 +9,7 @@
 // License-Filename: LICENSE
 
 import { addEditSelectors, viewSelectors } from './selectors'
-import { registerLicense, fillDataLicense, addObligations, verifyDetailsLicense, deleteLicensesBeforeRegisterUpdate } from './utils'
-
-function gotoUpdateLicensePage(licenseShortName) {
-    cy.get(viewSelectors.navLicense).click()
-    cy.contains('Add License')
-    cy.contains('a', licenseShortName).click()
-    cy.get('a > .btn').click()
-    cy.contains('Update License')
-}
+import { registerLicense, fillDataLicense, addObligations, verifyDetailsLicense, deleteLicensesBeforeRegisterUpdate, gotoUpdateLicensePage } from './utils'
 
 function deleteObligationAndVerify() {
     cy.get(addEditSelectors.rowsLinkedObligation).eq(0).as('deletedObligationRow')
@@ -46,22 +38,6 @@ function updateLicense(updatedData) {
     cy.contains('button', 'Edit License')
 }
 
-function deleteLicense() {
-    cy.get(addEditSelectors.btnDeleteLicense).click()
-    cy.get(addEditSelectors.dlgDeleteLicense.dialog).should('be.visible')
-        .then(() => {
-            cy.get(addEditSelectors.dlgDeleteLicense.btnDeleteLicense).click()
-        })
-    cy.get(addEditSelectors.dlgDeleteLicense.dialog).should('not.exist')
-    cy.get(viewSelectors.alertMessage).contains('Success: License removed successfully!')
-}
-
-function verifyDeletedLicense(licenseShortName) {
-    cy.get(viewSelectors.tblLicenseList).then(() => {
-        cy.contains('a', licenseShortName).should('not.exist')
-    })
-}
-
 describe('Update a license', () => {
 
     before(() => {
@@ -71,16 +47,6 @@ describe('Update a license', () => {
             const initialData = license['TC04_EDIT_SOME_FIELDS'].initial_data
             registerLicense(initialData)
         })
-        cy.fixture('licenses/delete').then((license) => {
-            const fullName = license['TC05_DELETE_LICENSE'].full_name
-            const shortName = license['TC05_DELETE_LICENSE'].short_name
-            cy.createLicenseByAPI(fullName, shortName)
-        })
-        cy.logout()
-    })
-
-    beforeEach(() => {
-        cy.login('admin')
     })
 
     it('TC04: Edit License and remove/ add Obligations', () => {
@@ -92,16 +58,6 @@ describe('Update a license', () => {
             gotoUpdateLicensePage(initialLicenseShortName)
             updateLicense(updatedData)
             verifyDetailsLicense(updatedData)
-        })
-    })
-
-    it('TC05: Delete an existing license', () => {
-        cy.fixture('licenses/delete').then((license) => {
-            const shortName = license['TC05_DELETE_LICENSE'].short_name
-            // todo search a license by quick filter
-            gotoUpdateLicensePage(shortName)
-            deleteLicense()
-            verifyDeletedLicense(shortName)
         })
     })
 })
