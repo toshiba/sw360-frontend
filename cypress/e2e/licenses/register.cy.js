@@ -28,13 +28,16 @@ function updateExternalLink(testData) {
 }
 
 function selectWhiteList(testData) {
-    cy.get(viewSelectors.cbWhiteList).as('cbWhiteLists')
-    for (let i = 0; i < testData.length; i++) {
-        if (testData[i] == false)
-            cy.get('@cbWhiteLists').eq(i).uncheck()
-        else if (testData[i] == true)
-            cy.get('@cbWhiteLists').eq(i).check()
-    }
+    cy.get(viewSelectors.cbWhiteList).as('cbWhiteLists').then(($checkboxes) => {
+        const checkUncheckPromises = $checkboxes.map(($checkbox, index) => {
+            if (testData[index] === false) {
+                return cy.wrap($checkbox).uncheck({ force: true }).then(() => $checkbox)
+            } else if (testData[index] === true) {
+                return cy.wrap($checkbox).check({ force: true }).then(() => $checkbox)
+            }
+        })
+        return Cypress.Promise.all(checkUncheckPromises);
+    })
 }
 
 function updateWhiteList(testData) {
@@ -48,21 +51,22 @@ function updateWhiteList(testData) {
 }
 
 function updateWhiteListAndVerify(testData) {
-    let obligationsOutput = 0
     cy.get(viewSelectors.tabObligations).click()
     cy.get(viewSelectors.btnEditWhiteList).click()
-    cy.get(viewSelectors.tblUpdateWhiteList).should('be.visible')
-    selectWhiteList(testData)
-    cy.get('@cbWhiteLists').each(($checkbox) => {
-        if ($checkbox.is(':checked')) {
-            obligationsOutput++
-        }
-    }).then(() => {
-        cy.get(viewSelectors.btnUpdateWhiteList).click()
-        // todo verify ' Success: License updated successfully!')
-        cy.contains('button', 'Edit License').should('exist')
-        cy.get(viewSelectors.tabObligations).click()
-        cy.get(viewSelectors.tblLinkedObligations).find('tr').should('have.length', obligationsOutput)
+    cy.get(viewSelectors.tblUpdateWhiteList).as('tblWhiteList').should('be.visible')
+    cy.wrap(selectWhiteList(testData)).then(() => {
+        let obligationsOutput = 0
+        cy.get('@cbWhiteLists').each(($checkbox) => {
+            if ($checkbox.is(':checked')) {
+                obligationsOutput++
+            }
+        }).then(() => {
+            cy.get(viewSelectors.btnUpdateWhiteList).click()
+            // todo verify ' Success: License updated successfully!')
+            cy.contains('button', 'Edit License').should('exist')
+            cy.get(viewSelectors.tabObligations).click()
+            cy.get(viewSelectors.tblLinkedObligations).find('tr').should('have.length', obligationsOutput)
+        })
     })
 }
 
