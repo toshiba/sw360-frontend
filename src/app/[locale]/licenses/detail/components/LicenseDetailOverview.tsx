@@ -59,12 +59,8 @@ const LicenseDetailOverview = ({ licenseId }: Props) => {
     const [whitelist, setWhitelist] = useState<Map<string, boolean>>()
     const { data: session, status } = useSession()
     const params = useSearchParams()
-    const updateLicense = params.get('update')
 
     useEffect(() => {
-        if (!CommonUtils.isNullEmptyOrUndefinedString(updateLicense)) {
-            MessageService.success(t('License updated successfully!'))
-        }
         const controller = new AbortController()
         const signal = controller.signal
         ;(async () => {

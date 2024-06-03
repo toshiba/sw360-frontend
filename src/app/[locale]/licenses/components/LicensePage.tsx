@@ -11,7 +11,6 @@
 
 import { Embedded, LicensePayload } from '@/object-types'
 import DownloadService from '@/services/download.service'
-import MessageService from '@/services/message.service'
 import { CommonUtils } from '@/utils'
 import { SW360_API_URL } from '@/utils/env'
 import { signOut, useSession } from 'next-auth/react'
@@ -19,7 +18,7 @@ import { useTranslations } from 'next-intl'
 import { PageButtonHeader, QuickFilter, Table, _ } from 'next-sw360'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { BsCheck2Circle, BsXCircle } from 'react-icons/bs'
 
 function LicensePage() {
@@ -29,13 +28,6 @@ function LicensePage() {
     const [search, setSearch] = useState({})
     const [numberLicense, setNumberLicense] = useState(0)
     const { data: session, status } = useSession()
-    const deleteLicense = params.get('delete')
-
-    useEffect(() => {
-        if (!CommonUtils.isNullEmptyOrUndefinedString(deleteLicense)) {
-            MessageService.success(t('License removed successfully!'))
-        }
-    }, [params])
 
     const handleExportLicense = () => {
         DownloadService.download(`reports?module=licenses`, session, `Licenses.xlsx`)

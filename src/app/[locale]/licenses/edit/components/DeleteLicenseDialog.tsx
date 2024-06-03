@@ -13,12 +13,12 @@
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
-import { useCallback, useState } from 'react'
-import { Alert, Button, Form, Modal } from 'react-bootstrap'
+import { Button, Form, Modal } from 'react-bootstrap'
 
 import { HttpStatus, LicensePayload } from '@/object-types'
 import { ApiUtils } from '@/utils'
 import { BsQuestionCircle } from 'react-icons/bs'
+import MessageService from '@/services/message.service'
 
 interface Props {
     licensePayload?: LicensePayload
@@ -30,53 +30,31 @@ const DeleteLicenseDialog = ({ licensePayload, show, setShow }: Props) => {
     const { data: session } = useSession()
     const t = useTranslations('default')
     const router = useRouter()
-    const [variant, setVariant] = useState('success')
-    const [message, setMessage] = useState('')
-    const [showMessage, setShowMessage] = useState(false)
-    const [reloadPage, setReloadPage] = useState(false)
-
-    const displayMessage = (variant: string, message: string) => {
-        setVariant(variant)
-        setMessage(message)
-        setShowMessage(true)
-    }
-
-    const handleError = useCallback(() => {
-        displayMessage('danger', t('Error when processing'))
-        setReloadPage(true)
-    }, [])
 
     const deleteLicense = async () => {
         const response = await ApiUtils.DELETE(`licenses/${licensePayload.shortName}`, session.user.access_token)
         try {
             if (response.status == HttpStatus.OK) {
-                displayMessage('success', t('Delete License success!'))
-                router.push('/licenses?delete=success')
-                setReloadPage(true)
+                MessageService.success(t('Delete License success!'))
+                router.push('/licenses')
             } else if (response.status == HttpStatus.ACCEPTED) {
-                displayMessage('success', t('Created moderation request'))
+                MessageService.success(t('Created moderation request'))
             } else if (response.status == HttpStatus.UNAUTHORIZED) {
                 await signOut()
             } else {
-                displayMessage('danger', t('Error when processing'))
+                MessageService.error(t('Error when processing'))
             }
         } catch (err) {
-            handleError()
+            MessageService.error(t('Error when processing'))
         }
     }
 
     const handleSubmit = () => {
-        deleteLicense().catch((err) => {
-            console.log(err)
-        })
+        deleteLicense()
     }
 
     const handleCloseDialog = () => {
         setShow(!show)
-        setShowMessage(false)
-        if (reloadPage === true) {
-            window.location.reload()
-        }
     }
 
     return (
@@ -107,9 +85,6 @@ const DeleteLicenseDialog = ({ licensePayload, show, setShow }: Props) => {
                     </button>
                 </Modal.Header>
                 <Modal.Body>
-                    <Alert variant={variant} onClose={() => setShowMessage(false)} dismissible show={showMessage}>
-                        {message}
-                    </Alert>
                     <Form>
                         {t.rich('Do you really want to delete the license?', {
                             name: `${licensePayload.fullName} (${licensePayload.shortName})`,
@@ -121,7 +96,7 @@ const DeleteLicenseDialog = ({ licensePayload, show, setShow }: Props) => {
                     <Button className='delete-btn' variant='light' onClick={handleCloseDialog}>
                         {t('Cancel')}
                     </Button>
-                    <Button className='login-btn' variant='danger' onClick={() => handleSubmit()} hidden={reloadPage}>
+                    <Button className='login-btn' variant='danger' onClick={() => handleSubmit()}>
                         {t('Delete License')}
                     </Button>
                 </Modal.Footer>

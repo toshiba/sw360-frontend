@@ -20,7 +20,7 @@ import LinkedObligationsDialog from '@/components/sw360/SearchObligations/Linked
 import { HttpStatus, LicensePayload, LicenseTabIds, Obligation } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils'
 import { PageButtonHeader, SideBar } from 'next-sw360'
-import DeleteLicenseDialog from '../../components/DeleteLicenseDialog'
+import DeleteLicenseDialog from './DeleteLicenseDialog'
 import EditLicenseSummary from './EditLicenseSummary'
 import MessageService from '@/services/message.service'
 
@@ -139,7 +139,7 @@ export default function EditLicense({ licenseId }: Props) {
             if (response.status == HttpStatus.OK) {
                 const data = (await response.json()) as LicensePayload
                 MessageService.success(t('License updated successfully!'))
-                router.push(`/licenses/detail?id=${data.shortName}&update=success`)
+                router.push(`/licenses/detail?id=${data.shortName}`)
             } else {
                 MessageService.error(t('License updated failed!'))
             }
