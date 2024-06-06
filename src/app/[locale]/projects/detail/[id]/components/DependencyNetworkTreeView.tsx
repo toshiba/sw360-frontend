@@ -525,13 +525,19 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
             const filteredReleases = (project.linkedReleases) ? project.linkedReleases.map(release => filterRelease(release)).filter(el => el !== undefined) : []
             const filteredProjects: Array<ProjectClearingState> = project.subprojects
                 ? project.subprojects
-                    .filter(
-                        (pr) =>
-                            filters.types.includes(pr.projectType) &&
-                            filters.relations.includes(pr.relation) &&
-                            filters.states.includes(pr.clearingState),
-                    )
-                    .map((prj) => filterProject(prj))
+                    .map((prj) => {
+                        const filteredProject = filterProject(prj)
+                        if (prj.isExpanded !== true &&
+                            filters.types.includes(prj.projectType) &&
+                            filters.relations.includes(prj.relation) &&
+                            filters.states.includes(prj.clearingState)
+                            ) {
+                            return filteredProject
+                        }
+                        if (CommonUtils.isNullEmptyOrUndefinedArray(filteredProject.linkedReleases))
+                            return undefined
+                        return filteredProject
+                    }).filter(prj => prj !== undefined)
                 : []
             return { ...project, subprojects: filteredProjects, linkedReleases: filteredReleases, ref: project }
         }
