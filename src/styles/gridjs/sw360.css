@@ -202,10 +202,12 @@ table.gridjs-table {
 
 td.gridjs-td {
     border: 1px solid #e5e7eb;
-    padding: 12px 24px;
+    padding: 12px 20px;
     background-color: #fff;
     box-sizing: content-box;
     font-size: 14px;
+    word-break: break-all;
+    text-align: justify;
 }
 td.gridjs-td:first-child {
     border-left: none;

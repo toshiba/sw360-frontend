@@ -911,6 +911,10 @@ input::-webkit-datetime-edit {
     background-color: rgba(40, 167, 69, 0.7);
 }
 
+.clearingStateUnknown {
+    background-color: #dee2e6;
+}
+
 .tab-content {
     padding-left: 0px !important;
 }

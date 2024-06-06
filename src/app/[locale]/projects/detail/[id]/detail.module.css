@@ -90,8 +90,7 @@
 }
 
 .table-search-box {
-    width: 25%;
-    right: 10px;
+    width: 15%;
 }
 
 .table-search-box label{
@@ -99,7 +98,6 @@
 }
 
 .table-search-box input{
-    width: 83%;
     line-height: 1.2rem !important;
 }
 
@@ -109,5 +107,5 @@
 }
 
 .expanded-all-message [type='button'] {
-    padding: 17px !important;
+    padding: 12px !important;
 }

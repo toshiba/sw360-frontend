@@ -10,30 +10,29 @@
 
 export const releaseClearingStates: {[k: string]: string} = {
     'NEW_CLEARING': 'New',
-    'APPROVED': 'Report approved',
-    'REPORT_AVAILABLE': 'Report available',
-    'SCAN_AVAILABLE': 'Scan available',
-    'SENT_TO_CLEARING_TOOL': 'Sent to clearing tool',
-    'UNDER_CLEARING': 'Under clearing'
+    'APPROVED': 'Report Approved',
+    'REPORT_AVAILABLE': 'Report Available',
+    'SCAN_AVAILABLE': 'Scan Available',
+    'SENT_TO_CLEARING_TOOL': 'Sent To Clearing Tool',
+    'UNDER_CLEARING': 'Under Clearing'
 }
 
 export const releaseRelations: {[k: string]: string}  = {
     'UNKNOWN': 'Unknown',
     'CONTAINED': 'Contained',
     'REFERRED': 'Related',
-    'DYNAMICALLY_LINKED': 'Dynamically linked',
-    'STATICALLY_LINKED': 'Statically linked',
-    'SIDE_BY_SIDE': 'Side by side',
+    'DYNAMICALLY_LINKED': 'Dynamically Linked',
+    'STATICALLY_LINKED': 'Statically Linked',
+    'SIDE_BY_SIDE': 'Side By Side',
     'STANDALONE': 'Standalone',
-    'INTERNAL_USE': 'Internal use',
+    'INTERNAL_USE': 'Internal Use',
     'OPTIONAL': 'Optional',
-    'TO_BE_REPLACED': 'To be replaced',
+    'TO_BE_REPLACED': 'To Be Replaced',
     'CODE_SNIPPET': 'Code Snippet',
 }
 
 export const releaseTypes: {[k: string]: string}  = {
     'OSS': 'OSS',
-    'CONTAINED': 'Contained',
     'COTS': 'COTS',
     'INTERNAL': 'Internal',
     'INNER_SOURCE': 'Inner Source',
@@ -62,4 +61,5 @@ export const projectClearingState: {[k: string]: string}  = {
     'OPEN': 'Open',
     'INPROGRESS': 'In Progress',
     'CLOSED': 'Closed',
+    'INTERNAL_USE_SCAN_AVAILABLE': 'Internal use scan avaiable'
 }

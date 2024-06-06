@@ -53,7 +53,7 @@ const TogglerLicenseList = ({ licenses, releaseId, t }: { licenses?: Array<strin
                         <>
                             <div style={{ marginRight: '0.25rem' }}><BsCaretDownFill className='cursor' size='13' onClick={() => setToggle(!toggle)} /></div>
                             <div>
-                                {Object.values(licenses).map((license): React.ReactNode =>
+                                {Object.values(licenses.sort()).map((license): React.ReactNode =>
                                     <span key={license}>
                                         <span className='license-name'>{license}</span> {' '}
                                         <ViewFileListIcon license={license} t={t} openModal={(license) => { setIsFileModalOpen(true); setSelectedLicense(license) }} />
@@ -67,8 +67,8 @@ const TogglerLicenseList = ({ licenses, releaseId, t }: { licenses?: Array<strin
                             <div style={{ marginRight: '0.25rem' }}><BsCaretRightFill className='cursor' size='13' onClick={() => setToggle(!toggle)} /></div>
                             <div>
                                 <div>
-                                    <span>{licenses[0]}</span>  {' '}
-                                    <ViewFileListIcon license={licenses[0]} t={t} openModal={(license) => { setIsFileModalOpen(true); setSelectedLicense(license) }} />
+                                    <span>{licenses.sort()[0]}</span>  {' '}
+                                    <ViewFileListIcon license={licenses.sort()[0]} t={t} openModal={(license) => { setIsFileModalOpen(true); setSelectedLicense(license) }} />
                                 </div>
                                 {'...'}
                             </div>
@@ -141,7 +141,7 @@ const FileListModal = ({ license, releaseId, isFileModalOpen, setIsFileModalOpen
                     licensesToSourceFilesMapping.status === 'failure'
                     ?
                         <div className='mapping-data'>
-                            {t('Failed to load source file with error')}: <b>{t(licensesToSourceFilesMapping.message)}</b>
+                            {t('Failed to load source file with error')}: <b>{t(licensesToSourceFilesMapping.message)}!</b>
                         </div>
                     :
                         <div className='mapping-data'>
@@ -157,7 +157,7 @@ const FileListModal = ({ license, releaseId, isFileModalOpen, setIsFileModalOpen
                             <ul>
                                 {licenseMappingData ?
                                     Object.values(licenseMappingData.sourcesFiles).map(file => <li key={file}><b>{file}</b></li>)
-                                    : <li><b>{t('Source file information not found in CLI')}</b></li>
+                                    : <li><b>{t('Source file information not found in CLI')}!</b></li>
                                 }
                             </ul>
                         </div>

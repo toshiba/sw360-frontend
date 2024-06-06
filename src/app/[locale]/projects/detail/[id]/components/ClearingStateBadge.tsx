@@ -39,8 +39,12 @@ const ClearingStateBadge = ({ isRelease, clearingState, projectState, t }: Props
                     >
                         {clearingState === 'NEW_CLEARING' ? (
                             <span className='state-box clearingStateOpen capsule-left capsule-right'>{'CS'}</span>
-                        ) : (clearingState === 'REPORT_AVAILABLE') ? (
+                        ) : (clearingState === 'REPORT_AVAILABLE' || clearingState === 'SENT_TO_CLEARING_TOOL') ? (
                             <span className='state-box clearingStateReportAvailable capsule-left capsule-right'>{'CS'}</span>
+                        ) : (clearingState === 'UNDER_CLEARING') ? (
+                            <span className='state-box clearingStateInProgress capsule-left capsule-right'>{'CS'}</span>
+                        ) : (clearingState === 'INTERNAL_USE_SCAN_AVAILABLE') ? (
+                            <span className='state-box clearingStateUnknown capsule-left capsule-right'>{'CS'}</span>
                         ) : (
                             <span className='state-box clearingStateApproved capsule-left capsule-right'>{'CS'}</span>
                         )}
