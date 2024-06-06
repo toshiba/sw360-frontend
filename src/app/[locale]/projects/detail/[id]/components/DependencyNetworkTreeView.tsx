@@ -380,7 +380,7 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                     <FaSort className='cursor-pointer' onClick={() => sortColumn('licenseIds')} />
                 </>
             ),
-            width: '8%',
+            width: '9%',
         },
         {
             id: 'licenseClearing.otherLicenses',
@@ -527,11 +527,12 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                 ? project.subprojects
                     .map((prj) => {
                         const filteredProject = filterProject(prj)
-                        if (prj.isExpanded !== true &&
+                        if (
+                            prj.isExpanded !== true &&
                             filters.types.includes(prj.projectType) &&
                             filters.relations.includes(prj.relation) &&
                             filters.states.includes(prj.clearingState)
-                            ) {
+                        ) {
                             return filteredProject
                         }
                         if (CommonUtils.isNullEmptyOrUndefinedArray(filteredProject.linkedReleases))
