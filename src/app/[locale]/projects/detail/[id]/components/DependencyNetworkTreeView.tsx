@@ -11,7 +11,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { _, TreeTable } from 'next-sw360'
+import { _, TreeTable, EnumValueWithToolTip } from 'next-sw360'
 import React, { useEffect, useState, useRef, useCallback, ChangeEvent } from 'react'
 import { Tooltip, OverlayTrigger, ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap'
 import { GoSingleSelect } from 'react-icons/go'
@@ -77,14 +77,6 @@ interface ProjectClearingState {
 type ClearingState = ReleaseClearingState & ProjectClearingState
 
 type EmbeddedReleaseLinks = Embedded<ReleaseClearingState, 'sw360:releaseLinks'>
-
-const capitalize = (text: string) => {
-    if (text === 'OSS' || text === 'COTS')
-        return text
-    return text
-        ? text.split('_').reduce((s, c) => s + ' ' + (c.charAt(0) + c.substring(1).toLocaleLowerCase()), '').trim()
-        : ''
-}
 
 const filterOptions: { [k: string]: Array<string> } = {
     types: [...Object.keys(releaseTypes), ...Object.keys(projectTypes)],
@@ -298,7 +290,7 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                     }
                 </>
             ),
-            width: '28%'
+            width: '26%'
         },
         {
             id: 'licenseClearing.type',
@@ -430,7 +422,7 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                     <FaSort className='cursor-pointer' onClick={() => sortColumn('releaseMainLineState')} />
                 </>
             ),
-            width: '7%',
+            width: '6%',
         },
         {
             id: 'licenseClearing.projectMainlineState',
@@ -440,7 +432,7 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                     <FaSort className='cursor-pointer' onClick={() => sortColumn('mainlineState')} />
                 </>
             ),
-            width: '7%',
+            width: '6%',
         },
         {
             id: 'licenseClearing.comment',
@@ -464,12 +456,12 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                     item.longName
                 : <Link key={item.id} href={`/projects/detail/${item.id}`} style={{ wordBreak: 'break-all' }}>{nameFormatter(`${item.name} ${item.version}`)}</Link>,
             (isRelease) ? releaseTypes[item.componentType] : projectTypes[item.projectType],
-            (isRelease) ? releaseRelations[item.releaseRelationship] : projectRelations[item.relation],
+            (isRelease) ? <EnumValueWithToolTip value={item.releaseRelationship} t={t} /> : projectRelations[item.relation],
             (item.licenseIds) && <TogglerLicenseList licenses={item.licenseIds} releaseId={item.id} t={t} />,
             (item.otherLicenseIds) && <TogglerLicenseList licenses={item.otherLicenseIds} releaseId={item.id} t={t} />,
             (item.accessible || !isRelease) && <ClearingStateBadge key={item.id} isRelease={isRelease} clearingState={item.clearingState} projectState={item.state} t={t} />,
-            capitalize(item.releaseMainLineState),
-            capitalize(item.mainlineState),
+            (isRelease) ? <EnumValueWithToolTip key={item.releaseMainLineState} value={item.releaseMainLineState} t={t} /> : '',
+            (isRelease) ? <EnumValueWithToolTip key={item.mainlineState} value={item.mainlineState} t={t} /> : '',
             CommonUtils.nullToEmptyString(item.comment),
             (item.accessible || !isRelease) && <div key={item.name} style={{ textAlign: 'center' }}>
                 <OverlayTrigger overlay={<Tooltip>{t('Edit')}</Tooltip>}>

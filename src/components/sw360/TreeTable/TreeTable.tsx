@@ -39,7 +39,7 @@ const PaddedCell: React.FC<Props> = ({
     collapseRow,
 }) => {
     return (
-        <>
+        <div className='d-flex'>
             <span className='indenter' style={{paddingLeft: `${padLength * 1}rem`}} role='button'>
                 {parent &&
                     (needExpand ? (
@@ -49,7 +49,7 @@ const PaddedCell: React.FC<Props> = ({
                     ))}{' '}
             </span>
             {children}
-        </>
+        </div>
     )
 }
 

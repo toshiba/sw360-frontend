@@ -59,7 +59,7 @@ export const projectRelations: {[k: string]: string}  = {
 
 export const projectClearingState: {[k: string]: string}  = {
     'OPEN': 'Open',
-    'INPROGRESS': 'In Progress',
+    'IN_PROGRESS': 'In Progress',
     'CLOSED': 'Closed',
     'INTERNAL_USE_SCAN_AVAILABLE': 'Internal use scan avaiable'
 }
