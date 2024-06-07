@@ -12,7 +12,8 @@ import { viewSelectors } from './selectors'
 import { registerLicense, verifyDetailsLicense, deleteLicensesBeforeRegisterUpdate } from './utils'
 
 function gotoLicenseDetailPage(licenseShortName) {
-    cy.contains('a', licenseShortName).click()
+    cy.contains('a', licenseShortName).as('liceseName')
+    cy.get('@liceseName').click()
 }
 
 function verifyAddedLicenseInLicenseList(licenseShortName) {
@@ -65,7 +66,9 @@ function updateWhiteListAndVerify(testData) {
             // todo verify ' Success: License updated successfully!')
             cy.contains('button', 'Edit License').should('exist')
             cy.get(viewSelectors.tabObligations).click()
-            cy.get(viewSelectors.tblLinkedObligations).find('tr').should('have.length', obligationsOutput)
+            cy.get(viewSelectors.tblLinkedObligations).as('tblLinkedObligations')
+            cy.get('@tblLinkedObligations').should('not.contain','No matching records found')
+            cy.get('@tblLinkedObligations').find('tr').should('have.length', obligationsOutput)
         })
     })
 }
