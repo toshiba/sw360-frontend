@@ -323,6 +323,7 @@ export function registerSimpleRelease(releaseVersion) {
 
 export function registerRelease(testId) {
   gotoRegisterReleasePage()
+  cy.get('#name').invoke('val').should('not.equal', '')
   cy.fixture('releases/register').then((release) => {
     const dataTest = release[testId]
     fillDataRelease(dataTest)
@@ -502,6 +503,7 @@ export function gotoUpdateReleasePageFromViewReleasePage() {
 }
 
 export function updateRelease(testId) {
+  cy.get('#name').invoke('val').should('not.equal', '')
   cy.fixture('releases/update').then((release) => {
     const dataTest = release[testId]
     fillUpdatedData(dataTest)
@@ -510,6 +512,7 @@ export function updateRelease(testId) {
 }
 
 export function updateAndVerifyReleaseAfterUpdate(testId) {
+  cy.get('#name').invoke('val').should('not.equal', '')
   cy.fixture('releases/update').then((release) => {
     const dataTest = release[testId]
     fillUpdatedData(dataTest)
