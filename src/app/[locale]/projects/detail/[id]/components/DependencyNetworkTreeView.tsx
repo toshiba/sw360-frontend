@@ -528,7 +528,9 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                         ) {
                             return filteredProject
                         }
-                        if (CommonUtils.isNullEmptyOrUndefinedArray(filteredProject.linkedReleases))
+                        if (CommonUtils.isNullEmptyOrUndefinedArray(filteredProject.linkedReleases)
+                            && CommonUtils.isNullEmptyOrUndefinedArray(filteredProject.subprojects)
+                        )
                             return undefined
                         return filteredProject
                     }).filter(prj => prj !== undefined)
