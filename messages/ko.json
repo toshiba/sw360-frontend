@@ -660,6 +660,7 @@
     "REFERRED": "이름 *",
     "REJECTED": "관련 상품",
     "RELEASE_MAIN_STATE": "Open: 지금까지 수정되지 않음 Mainline: Organisation or person thinks that use of this software is recommended, which include multiple version Specific: 소프트웨어는 일반적으로 권장되지 않지만 특수 사용 케이스 또는이 특정 버전은 Phaseout에서 허용됩니다. 소프트웨어에는 문제가 있습니다, 그것을 빨리 제거하는 것을 고려하십시오, 사용 Denied에서: 사용 할 수없는 소프트웨어. 예를 들어, 라이선스가 없는 소프트웨어",
+    "REPORT_APPROVED": "보고서 승인됨",
     "REPORT_AVAILABLE": "자주 묻는 질문",
     "REPOSITORY_TYPE": "저장소 유형",
     "REST API Token": "REST API 토큰",

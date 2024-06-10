@@ -37,7 +37,7 @@ const ClearingStateBadge = ({ isRelease, clearingState, projectState, t }: Props
                             <Tooltip>{`${t('Release Clearing State')}: ${t(clearingState)}`}</Tooltip>
                         }
                     >
-                        {clearingState === 'NEW_CLEARING' ? (
+                        {(clearingState === 'NEW_CLEARING' || clearingState === 'NEW') ? (
                             <span className='state-box clearingStateOpen capsule-left capsule-right'>{'CS'}</span>
                         ) : (clearingState === 'REPORT_AVAILABLE') ? (
                             <span className='state-box clearingStateReportAvailable capsule-left capsule-right'>{'CS'}</span>

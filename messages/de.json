@@ -660,6 +660,7 @@
     "REFERRED": "Verwandte Artikel",
     "REJECTED": "Ausgestoßen",
     "RELEASE_MAIN_STATE": "Open: Bisher nicht entschieden Mainline: Organisation oder Person denkt, dass die Nutzung dieser Software empfohlen wird, die mehrere Versionen enthalten Spezifische: Die Software wird im Allgemeinen nicht empfohlen, aber für spezielle Anwendungsfall oder für diese bestimmte Version ist es in Phaseout akzeptabel: Die Software hat Probleme, bitte beachten Sie, es bald zu entfernen, wenn in Gebrauch Denied: Software, die nicht genutzt werden darf. Zum Beispiel Software, die keine Lizenzierung hat",
+    "REPORT_APPROVED": "Bericht genehmigt",
     "REPORT_AVAILABLE": "Bericht verfügbar",
     "REPOSITORY_TYPE": "Repository-Typ",
     "REST API Token": "REST-API-Token",

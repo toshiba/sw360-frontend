@@ -109,3 +109,17 @@
 .expanded-all-message [type='button'] {
     padding: 17px !important;
 }
+
+.list-view-search-box {
+    width: 25%;
+    right: 0px;
+}
+
+.list-view-search-box label{
+    width: 60px;
+}
+
+.list-view-search-box input{
+    width: 83%;
+    line-height: 1.2rem !important;
+}

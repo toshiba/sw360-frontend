@@ -660,6 +660,7 @@
     "REFERRED": "Autres",
     "REJECTED": "Rejeté",
     "RELEASE_MAIN_STATE": "Open: Pas encore décidé Mainline: L'organisation ou la personne pense que l'utilisation de ce logiciel est recommandée, qui comprend plusieurs versions spécifiques: Le logiciel n'est pas recommandé en général, mais pour le cas d'utilisation spéciale ou pour cette version particulière, il est acceptable dans Phaseout: Le logiciel a des problèmes, veuillez envisager de le supprimer rapidement, si en usage Refusé: Logiciel qui n'est pas autorisé à être utilisé. Par exemple, les logiciels qui n'ont pas de licence",
+    "REPORT_APPROVED": "Rapport approuvé",
     "REPORT_AVAILABLE": "Rapport disponible",
     "REPOSITORY_TYPE": "Type de dépôt",
     "REST API Token": "Jeton API REST",

@@ -660,6 +660,7 @@
     "REFERRED": "Relacionado",
     "REJECTED": "Rejeitado",
     "RELEASE_MAIN_STATE": "Aberto: Não decidido até agora Mainline: Organização ou pessoa acha que o uso deste software é recomendado, que incluiu várias versões Específico: O software não é recomendado em geral, mas para casos de uso especiais ou para esta versão específica é aceitável In Phaseout: O software tem problemas, considere removê-lo em breve, se em uso Negado: Software que não é permitido para uso. Por exemplo, softwares que não possuem licenciamento",
+    "REPORT_APPROVED": "Relatório aprovado",
     "REPORT_AVAILABLE": "Relatório disponível",
     "REPOSITORY_TYPE": "Tipo de repositório",
     "REST API Token": "Token da API REST",

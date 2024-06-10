@@ -27,6 +27,7 @@ import {
     releaseRelations, projectRelations,
     releaseClearingStates, projectClearingState
 } from './LicenseClearingFilters'
+import ClearingStateBadge from './ClearingStateBadge'
 
 interface ListViewData {
     isAccessible: boolean
@@ -43,6 +44,30 @@ interface ListViewData {
     comment: string
     id: string
     projectState?: string
+}
+
+const upperCaseWithUnderscore = (text: string) => {
+    return text
+        ? text.trim().toUpperCase().replace(/ /g, '_')
+        : undefined
+}
+
+const nameFormatter = (name: string) => {
+    if (name.length <= 40)
+        return <>{name}</>
+
+    return (
+        <OverlayTrigger placement='bottom' overlay={<Tooltip>{name}</Tooltip>}>
+            <span className='d-inline-block'>
+                {name.slice(0, 40)}...
+            </span>
+        </OverlayTrigger>
+    )
+}
+
+const includesIgnoreCase = (array: Array<string>, element: string) => {
+    console.log(array.some(item => item.toLowerCase() === element.toLowerCase()))
+    return array.some(item => item.toLowerCase() === element.toLowerCase())
 }
 
 const filterOptions: { [k: string]: Array<string> } = {
@@ -98,7 +123,13 @@ const DependencyNetworkListView = ({
             id: 'licenseClearing.name',
             name: t('Name'),
             width: '12%',
-            formatter: (data: ListViewData) => _(<Link key={data.id} href={`/components/releases/detail/${data.id}`} style={{wordBreak: 'break-all'}}>{data.name}</Link>),
+            formatter: (data: ListViewData) => _(
+                (data.isRelease == false)
+                ?
+                <Link key={data.id} href={`/projects/detail/${data.id}`} style={{ wordBreak: 'break-all' }}>{nameFormatter(data.name)}</Link>
+                :
+                <Link key={data.id} href={`/components/releases/detail/${data.id}`} style={{wordBreak: 'break-all'}}>{nameFormatter(data.name)}</Link>
+            ),
             sort: {
                 compare: (data1: ListViewData, data2: ListViewData) => data1.name.localeCompare(data2.name)
             }
@@ -245,50 +276,7 @@ const DependencyNetworkListView = ({
             formatter: (data: ListViewData) => 
             _(
                 <div className='text-center'>
-                    {
-                    (data.isRelease === 'true')
-                        ?
-                            <OverlayTrigger
-                                overlay={
-                                    <Tooltip>{`${t('Release Clearing State')}: ${data.clearingState}`}</Tooltip>
-                                }
-                            >
-                                {(data.clearingState === 'New') ? (
-                                    <span className='state-box clearingStateOpen capsule-left capsule-right'>{'CS'}</span>
-                                ) : (data.clearingState === 'Report available') ? (
-                                    <span className='state-box clearingStateReportAvailable capsule-left capsule-right'>{'CS'}</span>
-                                ) : (
-                                    <span className='state-box clearingStateApproved capsule-left capsule-right'>{'CS'}</span>
-                                )}
-                            </OverlayTrigger>
-                        :
-                        <>
-                            <OverlayTrigger
-                                overlay={
-                                    <Tooltip>{`${t('Project State')}: ${data.projectState}`}</Tooltip>
-                                }
-                            >
-                                {data.projectState === 'Active' ? (
-                                    <span className='state-box projectStateActive capsule-left'>{'PS'}</span>
-                                ) : (
-                                    <span className='state-box projectStateInactive capsule-left'>{'PS'}</span>
-                                )}
-                            </OverlayTrigger>
-                            <OverlayTrigger
-                                overlay={
-                                    <Tooltip>{`${t('Project Clearing State')}: ${data.clearingState}`}</Tooltip>
-                                }
-                            >
-                                {data.clearingState === 'Open' ? (
-                                    <span className='state-box clearingStateOpen capsule-right'>{'CS'}</span>
-                                ) : data.clearingState === 'In Progress' ? (
-                                    <span className='state-box clearingStateInProgress capsule-right'>{'CS'}</span>
-                                ) : (
-                                    <span className='state-box clearingStateApproved capsule-right'>{'CS'}</span>
-                                )}
-                            </OverlayTrigger>
-                        </>
-                     }
+                    <ClearingStateBadge key={data.id} isRelease={data.isRelease == 'true'} clearingState={upperCaseWithUnderscore(data.clearingState)} projectState={upperCaseWithUnderscore(data.projectState)} t={t} />
                 </div>
             ),
             sort: {
@@ -369,10 +357,11 @@ const DependencyNetworkListView = ({
 
     const filterData = (data: Array<Array<any>>) => {
         const filteredData = data.filter((item: Array<any>) =>
-            filters.types.includes(item[1])
-                && filters.relations.includes(item[4])
-                && filters.states.includes(item[6].clearingState)
+            includesIgnoreCase(filters.types, item[1])
+            && includesIgnoreCase(filters.relations, item[4])
+            && includesIgnoreCase(filters.states, item[6].clearingState)
         )
+
         setDisplayedData(filteredData)
     }
 
@@ -389,7 +378,7 @@ const DependencyNetworkListView = ({
         <>
             {displayedData ? (
                 <div className='position-relative'>
-                    <div className={`position-absolute ${styles['table-search-box']}`}>
+                    <div className={`position-absolute ${styles['list-view-search-box']}`}>
                         <label className='d-inline-block'>Search:</label>
                         <Form.Control
                             className='d-inline-block list-view-search-input'
@@ -409,4 +398,8 @@ const DependencyNetworkListView = ({
     )
 }
 
-export default DependencyNetworkListView
+const compare = (preState: { projectId: string }, nextState: { projectId: string }) => {
+    return preState.projectId === nextState.projectId
+}
+
+export default React.memo(DependencyNetworkListView, compare)
