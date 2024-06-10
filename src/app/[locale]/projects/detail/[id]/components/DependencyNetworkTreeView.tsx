@@ -199,6 +199,7 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
             return node
         })
         setTreeData(allCollapsed)
+        setIsExpandedAllMessageShow(false)
     }
 
     const sortColumn = (columnName: string) => {
@@ -263,6 +264,12 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
             id: 'licenseClearing.name',
             name: _(
                 <>
+                    {(isExpandedAllMessageShow) &&
+                        <Alert variant='warning' onClose={() => setIsExpandedAllMessageShow(false)}
+                            className={styles['expanded-all-message']} dismissible>
+                            {t('All the levels are expanded')}!
+                        </Alert>
+                    }
                     <div>
                         <span>{t('Name')}</span>
                         <FaSort className='cursor-pointer' onClick={() => sortColumn('name')} />
@@ -276,12 +283,6 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                             </>
                         }
                     </div>
-                    {(isExpandedAllMessageShow) &&
-                        <Alert variant='warning' onClose={() => setIsExpandedAllMessageShow(false)}
-                            className={styles['expanded-all-message']} dismissible>
-                            {t('All the levels are expanded')}!
-                        </Alert>
-                    }
                     {
                         (noOfLinkedResources.releases !== 0 || noOfLinkedResources.projects !== 0) && <div>
                             <span className='linked-releases'>{t('Linked Releases')}: {noOfLinkedResources.releases}</span>, {' '}
