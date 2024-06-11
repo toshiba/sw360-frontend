@@ -8,7 +8,7 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-export const releaseClearingStates: {[k: string]: string} = {
+export const releaseClearingStates: { [k: string]: string } = {
     'NEW_CLEARING': 'New',
     'APPROVED': 'Report Approved',
     'REPORT_AVAILABLE': 'Report Available',
@@ -17,7 +17,7 @@ export const releaseClearingStates: {[k: string]: string} = {
     'UNDER_CLEARING': 'Under Clearing'
 }
 
-export const releaseRelations: {[k: string]: string}  = {
+export const releaseRelations: { [k: string]: string } = {
     'UNKNOWN': 'Unknown',
     'CONTAINED': 'Contained',
     'REFERRED': 'Related',
@@ -31,17 +31,17 @@ export const releaseRelations: {[k: string]: string}  = {
     'CODE_SNIPPET': 'Code Snippet',
 }
 
-export const releaseTypes: {[k: string]: string}  = {
+export const releaseTypes: { [k: string]: string } = {
     'OSS': 'OSS',
     'COTS': 'COTS',
     'INTERNAL': 'Internal',
     'INNER_SOURCE': 'Inner Source',
     'SERVICE': 'Service',
-    'FREEWARE': 'Freeware',
+    'FREESOFTWARE': 'Freeware',
     'CODE_SNIPPET': 'Code Snippet',
 }
 
-export const projectTypes: {[k: string]: string}  = {
+export const projectTypes: { [k: string]: string } = {
     'PRODUCT': 'Product',
     'CUSTOMER_PROJECT': 'Customer Project',
     'INTERNAL_PROJECT': 'Internal Project',
@@ -50,14 +50,14 @@ export const projectTypes: {[k: string]: string}  = {
     'CLOUND_BACKEND': 'Cloud Backend',
 }
 
-export const projectRelations: {[k: string]: string}  = {
+export const projectRelations: { [k: string]: string } = {
     'UNKNOWN': 'Unknown',
     'DUPLICATE': 'Duplicate',
     'CONTAINED': 'Is a subproject',
     'REFERRED': 'Related',
 }
 
-export const projectClearingState: {[k: string]: string}  = {
+export const projectClearingState: { [k: string]: string } = {
     'OPEN': 'Open',
     'IN_PROGRESS': 'In Progress',
     'CLOSED': 'Closed',

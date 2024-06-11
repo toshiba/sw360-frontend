@@ -38,6 +38,7 @@ export const authOptions: NextAuthOptions = {
                     if (response.status !== HttpStatus.OK) {
                         throw new Error('Error while fetching User Group')
                     }
+
                     const data = await response.json()
                     return { ...authToken, userGroup: data.userGroup } as any
                 } catch (e) {

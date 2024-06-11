@@ -21,20 +21,22 @@ import { getSession } from 'next-auth/react'
 import { IoMdInformationCircleOutline } from 'react-icons/io'
 
 interface LicenseData {
-    licenseType : string
-    licenseSpdxId : string
-    licenseName : string
-    sourcesFiles : Array<string>
+    licenseType: string
+    licenseSpdxId: string
+    licenseName: string
+    sourcesFiles: Array<string>
 }
 
 interface LicensesToSourcesMapping {
-    releaseId : string
-    releaseName : string
-    attachmentName? : string
-    licensesData? : Array<LicenseData>
-    status : string
+    releaseId: string
+    releaseName: string
+    attachmentName?: string
+    licensesData?: Array<LicenseData>
+    status: string
     message?: string
 }
+
+const sortIgnoreCase = (array: Array<string>) => array.sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }))
 
 const TogglerLicenseList = ({ licenses, releaseId, t }: { licenses?: Array<string>, releaseId: string, t: any }) => {
     const [toggle, setToggle] = useState(false)
@@ -53,7 +55,7 @@ const TogglerLicenseList = ({ licenses, releaseId, t }: { licenses?: Array<strin
                         <>
                             <div style={{ marginRight: '0.25rem' }}><BsCaretDownFill className='cursor' size='13' onClick={() => setToggle(!toggle)} /></div>
                             <div>
-                                {Object.values(licenses.sort()).map((license): React.ReactNode =>
+                                {Object.values(sortIgnoreCase(licenses)).map((license): React.ReactNode =>
                                     <span key={license}>
                                         <span className='license-name'>{license}</span> {' '}
                                         <ViewFileListIcon license={license} t={t} openModal={(license) => { setIsFileModalOpen(true); setSelectedLicense(license) }} />
@@ -67,8 +69,8 @@ const TogglerLicenseList = ({ licenses, releaseId, t }: { licenses?: Array<strin
                             <div style={{ marginRight: '0.25rem' }}><BsCaretRightFill className='cursor' size='13' onClick={() => setToggle(!toggle)} /></div>
                             <div>
                                 <div>
-                                    <span>{licenses.sort()[0]}</span>  {' '}
-                                    <ViewFileListIcon license={licenses.sort()[0]} t={t} openModal={(license) => { setIsFileModalOpen(true); setSelectedLicense(license) }} />
+                                    <span>{sortIgnoreCase(licenses)[0]}</span>  {' '}
+                                    <ViewFileListIcon license={sortIgnoreCase(licenses)[0]} t={t} openModal={(license) => { setIsFileModalOpen(true); setSelectedLicense(license) }} />
                                 </div>
                                 {'...'}
                             </div>
@@ -84,7 +86,15 @@ const TogglerLicenseList = ({ licenses, releaseId, t }: { licenses?: Array<strin
     )
 }
 
-const FileListModal = ({ license, releaseId, isFileModalOpen, setIsFileModalOpen, t }: { license?: string, releaseId: string, isFileModalOpen: boolean, setIsFileModalOpen: any, t: any }) => {
+interface FileListModalProps {
+    license?: string
+    releaseId: string
+    isFileModalOpen: boolean
+    setIsFileModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+    t: any
+}
+
+const FileListModal = ({ license, releaseId, isFileModalOpen, setIsFileModalOpen, t }: FileListModalProps) => {
     const [licensesToSourceFilesMapping, setLicensesToSourceFilesMapping] = useState<LicensesToSourcesMapping>(undefined)
     const [licenseMappingData, setLicenseMappingData] = useState<LicenseData>(undefined)
 
@@ -129,21 +139,21 @@ const FileListModal = ({ license, releaseId, isFileModalOpen, setIsFileModalOpen
                 <Modal.Title>
                     {
                         licensesToSourceFilesMapping.status === 'failure'
-                        ?
+                            ?
                             <><TiWarningOutline size={24} /> {t('Warning')}</>
-                        :
-                            <><IoMdInformationCircleOutline size={24}/> {licensesToSourceFilesMapping.releaseName}</>
+                            :
+                            <><IoMdInformationCircleOutline size={24} /> {licensesToSourceFilesMapping.releaseName}</>
                     }
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {
                     licensesToSourceFilesMapping.status === 'failure'
-                    ?
+                        ?
                         <div className='mapping-data'>
                             {t('Failed to load source file with error')}: <b>{t(licensesToSourceFilesMapping.message)}!</b>
                         </div>
-                    :
+                        :
                         <div className='mapping-data'>
                             <div className='file-name'>
                                 {t('File name')}: <b>{licensesToSourceFilesMapping.attachmentName}</b>
@@ -156,7 +166,9 @@ const FileListModal = ({ license, releaseId, isFileModalOpen, setIsFileModalOpen
                             </div>
                             <ul>
                                 {licenseMappingData ?
-                                    Object.values(licenseMappingData.sourcesFiles).map(file => <li key={file}><b>{file}</b></li>)
+                                    Object.values(licenseMappingData.sourcesFiles).map(fileName =>
+                                        <>{fileName.split(/\s+|\n+/).map((name: string) => <li key={name}><b>{name}</b></li>)}</>
+                                    )
                                     : <li><b>{t('Source file information not found in CLI')}!</b></li>
                                 }
                             </ul>

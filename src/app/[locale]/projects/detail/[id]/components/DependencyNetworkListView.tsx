@@ -138,33 +138,35 @@ const DependencyNetworkListView = ({
             id: 'licenseClearing.type',
             name: _(
                 <>
-                    <span>{t('Type')} {' '}</span>
-                        <DropdownButton
-                            as={ButtonGroup}
-                            drop='down'
-                            title={<GoSingleSelect />}
-                            id='types-filter-dropdown-btn'
-                            className={`${styles['dropdown-btn']}`}
-                        >
-                            <span className='px-3'>{t('Component Type')}</span>
-                            <Dropdown.Divider />
-                            {
-                                Object.values(releaseTypes).map((releaseType: string) =>
-                                    <span key={releaseType}>
-                                        <Form.Check
-                                            className={`${styles.selection}`}
-                                            type='checkbox'
-                                            id={`type-${releaseType}`}
-                                            value={releaseType}
-                                            name='types'
-                                            label={releaseType}
-                                            defaultChecked={(filters.types.length !== filterOptions.types.length) && filters.types.includes(releaseType)}
-                                            onChange={updateFilters}
-                                        />
-                                    </span>
-                                )
-                            }
-                        </DropdownButton>
+                    <OverlayTrigger overlay={<Tooltip>{t('Component Type Filter')}</Tooltip>}>
+                        <span>{t('Type')} {' '}</span>
+                    </OverlayTrigger>
+                    <DropdownButton
+                        as={ButtonGroup}
+                        drop='down'
+                        title={<GoSingleSelect />}
+                        id='types-filter-dropdown-btn'
+                        className={`${styles['dropdown-btn']}`}
+                    >
+                        <span className='px-3'>{t('Component Type')}</span>
+                        <Dropdown.Divider />
+                        {
+                            Object.values(releaseTypes).map((releaseType: string) =>
+                                <span key={releaseType}>
+                                    <Form.Check
+                                        className={`${styles.selection}`}
+                                        type='checkbox'
+                                        id={`type-${releaseType}`}
+                                        value={releaseType}
+                                        name='types'
+                                        label={releaseType}
+                                        defaultChecked={(filters.types.length !== filterOptions.types.length) && filters.types.includes(releaseType)}
+                                        onChange={updateFilters}
+                                    />
+                                </span>
+                            )
+                        }
+                    </DropdownButton>
                 </>
             ),
             width: '7%',
@@ -186,33 +188,35 @@ const DependencyNetworkListView = ({
             id: 'licenseClearing.relation',
             name: _(
                 <>
-                    <span>{t('Relation')} {' '}</span>
-                        <DropdownButton
-                            as={ButtonGroup}
-                            drop='down'
-                            title={<GoSingleSelect />}
-                            id='relations-filter-dropdown-btn'
-                            className={`${styles['dropdown-btn']}`}
-                        >
-                            <span className='px-3'>{t('Release Relation')}</span>
-                            <Dropdown.Divider />
-                            {
-                                Object.values(releaseRelations).map((relation: string) =>
-                                    <span key={relation}>
-                                        <Form.Check
-                                            className={`${styles.selection}`}
-                                            type='checkbox'
-                                            id={`relation-${relation}`}
-                                            value={relation}
-                                            name='relations'
-                                            label={relation}
-                                            defaultChecked={(filters.relations.length !== filterOptions.relations.length) && filters.relations.includes(relation)}
-                                            onChange={updateFilters}
-                                        />
-                                    </span>
-                                )
-                            }
-                        </DropdownButton>
+                    <OverlayTrigger overlay={<Tooltip>{t('Release Relation Filter')}</Tooltip>}>
+                        <span>{t('Relation')} {' '}</span>
+                    </OverlayTrigger>
+                    <DropdownButton
+                        as={ButtonGroup}
+                        drop='down'
+                        title={<GoSingleSelect />}
+                        id='relations-filter-dropdown-btn'
+                        className={`${styles['dropdown-btn']}`}
+                    >
+                        <span className='px-3'>{t('Release Relation')}</span>
+                        <Dropdown.Divider />
+                        {
+                            Object.values(releaseRelations).map((relation: string) =>
+                                <span key={relation}>
+                                    <Form.Check
+                                        className={`${styles.selection}`}
+                                        type='checkbox'
+                                        id={`relation-${relation}`}
+                                        value={relation}
+                                        name='relations'
+                                        label={relation}
+                                        defaultChecked={(filters.relations.length !== filterOptions.relations.length) && filters.relations.includes(relation)}
+                                        onChange={updateFilters}
+                                    />
+                                </span>
+                            )
+                        }
+                    </DropdownButton>
                 </>
             ),
             width: '8%',
@@ -243,33 +247,35 @@ const DependencyNetworkListView = ({
             id: 'licenseClearing.state',
             name: _(
                 <>
-                    <span>{t('State')} {' '}</span>
-                        <DropdownButton
-                            as={ButtonGroup}
-                            drop='down'
-                            title={<GoSingleSelect />}
-                            id='states-filter-dropdown-btn'
-                            className={`${styles['dropdown-btn']}`}
-                        >
-                            <span className='px-3'>{t('Release Clearing State')}</span>
-                            <Dropdown.Divider />
-                            {
-                                Object.values(releaseClearingStates).map((state: string) =>
-                                    <span key={state}>
-                                        <Form.Check
-                                            className={`${styles.selection}`}
-                                            type='checkbox'
-                                            id={`state-${state}`}
-                                            value={state}
-                                            name='states'
-                                            defaultChecked={(filters.states.length !== filterOptions.states.length) && filters.states.includes(state)}
-                                            label={state}
-                                            onChange={updateFilters}
-                                        />
-                                    </span>
-                                )
-                            }
-                        </DropdownButton>
+                    <OverlayTrigger overlay={<Tooltip>{t('Release Clearing State Filter')}</Tooltip>}>
+                        <span>{t('State')} {' '}</span>
+                    </OverlayTrigger>
+                    <DropdownButton
+                        as={ButtonGroup}
+                        drop='down'
+                        title={<GoSingleSelect />}
+                        id='states-filter-dropdown-btn'
+                        className={`${styles['dropdown-btn']}`}
+                    >
+                        <span className='px-3'>{t('Release Clearing State')}</span>
+                        <Dropdown.Divider />
+                        {
+                            Object.values(releaseClearingStates).map((state: string) =>
+                                <span key={state}>
+                                    <Form.Check
+                                        className={`${styles.selection}`}
+                                        type='checkbox'
+                                        id={`state-${state}`}
+                                        value={state}
+                                        name='states'
+                                        defaultChecked={(filters.states.length !== filterOptions.states.length) && filters.states.includes(state)}
+                                        label={state}
+                                        onChange={updateFilters}
+                                    />
+                                </span>
+                            )
+                        }
+                    </DropdownButton>
                 </>
             ),
             width: '7%',

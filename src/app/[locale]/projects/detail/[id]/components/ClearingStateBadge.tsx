@@ -25,6 +25,16 @@ const capitalize = (text: string) => {
         : ''
 }
 
+const ReleaseClearingStateMapping: {[k: string]: string} = {
+    'NEW_CLEARING': 'NEW_CLEARING',
+    'APPROVED': 'REPORT_APPROVED',
+    'REPORT_AVAILABLE': 'REPORT_AVAILABLE',
+    'SCAN_AVAILABLE': 'SCAN_AVAILABLE',
+    'SENT_TO_CLEARING_TOOL': 'SENT_TO_CLEARING_TOOL',
+    'UNDER_CLEARING': 'UNDER_CLEARING',
+    'INTERNAL_USE_SCAN_AVAILABLE': 'INTERNAL_USE_SCAN_AVAILABLE'
+}
+
 const ClearingStateBadge = ({ isRelease, clearingState, projectState, t }: Props) => {
 
     return (
@@ -34,7 +44,7 @@ const ClearingStateBadge = ({ isRelease, clearingState, projectState, t }: Props
                     ?
                     <OverlayTrigger
                         overlay={
-                            <Tooltip>{`${t('Release Clearing State')}: ${t(clearingState)}`}</Tooltip>
+                            <Tooltip>{`${t('Release Clearing State')}: ${t(ReleaseClearingStateMapping[clearingState])}`}</Tooltip>
                         }
                     >
                         {(clearingState === 'NEW_CLEARING' || clearingState === 'NEW') ? (

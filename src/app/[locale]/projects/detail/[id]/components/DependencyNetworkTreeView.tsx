@@ -89,7 +89,7 @@ const nameFormatter = (name: string) => {
         return <>{name}</>
 
     return (
-        <OverlayTrigger placement='bottom' overlay={<Tooltip>{name}</Tooltip>}>
+        <OverlayTrigger placement='right-end' overlay={<Tooltip>{name}</Tooltip>}>
             <span className='d-inline-block'>
                 {name.slice(0, 40)}...
             </span>
@@ -297,7 +297,9 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
             id: 'licenseClearing.type',
             name: _(
                 <>
-                    <span>{t('Type')} {' '}</span>
+                    <OverlayTrigger overlay={<Tooltip>{t('Component Type Filter')}</Tooltip>}>
+                        <span>{t('Type')} {' '}</span>
+                    </OverlayTrigger>
                     <DropdownButton
                         as={ButtonGroup}
                         drop='down'
@@ -333,7 +335,9 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
             id: 'licenseClearing.relation',
             name: _(
                 <>
-                    <span>{t('Relation')} {' '}</span>
+                    <OverlayTrigger overlay={<Tooltip>{t('Release Relation Filter')}</Tooltip>}>
+                        <span>{t('Relation')} {' '}</span>
+                    </OverlayTrigger>
                     <DropdownButton
                         as={ButtonGroup}
                         drop='down'
@@ -384,7 +388,9 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
             id: 'licenseClearing.state',
             name: _(
                 <>
-                    <span>{t('State')} {' '}</span>
+                    <OverlayTrigger overlay={<Tooltip>{t('Release Clearing State Filter')}</Tooltip>}>
+                        <span>{t('State')} {' '}</span>
+                    </OverlayTrigger>
                     <DropdownButton
                         as={ButtonGroup}
                         drop='down'
@@ -486,11 +492,11 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                 ...((item.linkedReleases) ? Object.values(item.linkedReleases).map((subItem) => convertClearingStatusDataToTableNode(subItem, true, [...((releaseIndexPath) ? releaseIndexPath : []), item.index])) : []),
                 ...((item.subprojects) ? Object.values(item.subprojects).map((subItem) => convertClearingStatusDataToTableNode(subItem, false)) : [])
             ],
-            isExpanded: (!CommonUtils.isNullEmptyOrUndefinedArray(item.linkedReleases) || !CommonUtils.isNullEmptyOrUndefinedArray(item.subprojects)) || item.isExpanded,
+            isExpanded: item.isExpanded,
             isExpandable: (isRelease) ? item.hasSubreleases : true,
             isNodeFetched: !CommonUtils.isNullEmptyOrUndefinedArray(item.linkedReleases) || !CommonUtils.isNullEmptyOrUndefinedArray(item.subprojects) || item.isExpanded,
             additionalData: {
-                node: item.ref,
+                node: item.ref ? item.ref : item,
                 isRelease: isRelease,
                 releaseIndexPath: (releaseIndexPath) ? [...releaseIndexPath, item.index] : [],
                 projectOrigin: item.projectId
@@ -520,13 +526,8 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                 ? project.subprojects
                     .map((prj) => {
                         const filteredProject = filterProject(prj)
-                        if (
-                            prj.isExpanded !== true &&
-                            filters.types.includes(prj.projectType) &&
-                            filters.relations.includes(prj.relation) &&
-                            filters.states.includes(prj.clearingState)
-                        ) {
-                            return filteredProject
+                        if (prj.isExpanded !== true) {
+                            return undefined
                         }
                         if (CommonUtils.isNullEmptyOrUndefinedArray(filteredProject.linkedReleases)
                             && CommonUtils.isNullEmptyOrUndefinedArray(filteredProject.subprojects)
@@ -550,7 +551,12 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
         })
 
         const sortedData = sortData(data)
-        const filteredData = filterData(sortedData)
+        const filteredData =
+            (
+                filters.types.length === filterOptions.types.length &&
+                filters.relations.length === filterOptions.relations.length &&
+                filters.states.length === filterOptions.states.length
+            ) ? sortedData : filterData(sortedData)
 
         const treeData = [
             ...(!CommonUtils.isNullEmptyOrUndefinedArray(filteredData.linkedReleases) ? Object.values(filteredData.linkedReleases).map(
