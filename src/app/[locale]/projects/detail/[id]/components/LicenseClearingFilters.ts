@@ -61,5 +61,5 @@ export const projectClearingState: { [k: string]: string } = {
     'OPEN': 'Open',
     'IN_PROGRESS': 'In Progress',
     'CLOSED': 'Closed',
-    'INTERNAL_USE_SCAN_AVAILABLE': 'Internal use scan avaiable'
+    'INTERNAL_USE_SCAN_AVAILABLE': 'Internal use scan available'
 }

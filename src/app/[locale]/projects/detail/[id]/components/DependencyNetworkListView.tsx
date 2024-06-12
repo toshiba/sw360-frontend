@@ -124,11 +124,11 @@ const DependencyNetworkListView = ({
             name: t('Name'),
             width: '12%',
             formatter: (data: ListViewData) => _(
-                (data.isRelease == false)
+                (data.isRelease === "true")
                 ?
-                <Link key={data.id} href={`/projects/detail/${data.id}`} style={{ wordBreak: 'break-all' }}>{nameFormatter(data.name)}</Link>
-                :
                 <Link key={data.id} href={`/components/releases/detail/${data.id}`} style={{wordBreak: 'break-all'}}>{nameFormatter(data.name)}</Link>
+                :
+                <Link key={data.id} href={`/projects/detail/${data.id}`} style={{ wordBreak: 'break-all' }}>{nameFormatter(data.name)}</Link>
             ),
             sort: {
                 compare: (data1: ListViewData, data2: ListViewData) => data1.name.localeCompare(data2.name)
@@ -226,14 +226,13 @@ const DependencyNetworkListView = ({
             id: 'licenseClearing.mainLicenses',
             name: t('Main licenses'),
             width: '10%',
-            sort: true,
             formatter: (mainLicenses: string) =>
             _(
                 <>
                     {
                         mainLicenses && mainLicenses.split(',').map((license): React.ReactNode  => (
                             <li key={license} style={{ display: 'inline' }}>
-                                <Link href={`/licenses/detail${license}`} className='text-link'>
+                                <Link href={`/licenses/detail?id=${license}`} className='text-link'>
                                     {license}
                                 </Link>
                             </li>
@@ -242,6 +241,9 @@ const DependencyNetworkListView = ({
                     }
                 </>
             ),
+            sort: {
+                compare: (mainLicenses1: string, mainLicenses2: string) => mainLicenses1.localeCompare(mainLicenses2)
+            }
         },
         {
             id: 'licenseClearing.state',
@@ -329,13 +331,13 @@ const DependencyNetworkListView = ({
                     data,
                     data.type,
                     data.projectOrigin,
-                    data.releaseOrigin,
+                    data.releaseOrigin ? data.releaseOrigin : '',
                     data.relation,
-                    data.mainLicenses,
+                    data.mainLicenses ? data.mainLicenses : '',
                     data,
-                    data.releaseMainlineState,
-                    data.projectMainlineState,
-                    data.comment,
+                    data.releaseMainlineState ? data.releaseMainlineState : '',
+                    data.projectMainlineState ? data.projectMainlineState : '',
+                    data.comment ? data.comment : '',
                     _(
                         <div style={{textAlign:'center'}}>
                             <OverlayTrigger overlay={<Tooltip>{t('Edit')}</Tooltip>}>

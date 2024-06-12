@@ -32,7 +32,9 @@ const ReleaseClearingStateMapping: {[k: string]: string} = {
     'SCAN_AVAILABLE': 'SCAN_AVAILABLE',
     'SENT_TO_CLEARING_TOOL': 'SENT_TO_CLEARING_TOOL',
     'UNDER_CLEARING': 'UNDER_CLEARING',
-    'INTERNAL_USE_SCAN_AVAILABLE': 'INTERNAL_USE_SCAN_AVAILABLE'
+    'INTERNAL_USE_SCAN_AVAILABLE': 'INTERNAL_USE_SCAN_AVAILABLE',
+    'NEW': 'NEW_CLEARING',
+    'REPORT_APPROVED': 'REPORT_APPROVED',
 }
 
 const ClearingStateBadge = ({ isRelease, clearingState, projectState, t }: Props) => {
