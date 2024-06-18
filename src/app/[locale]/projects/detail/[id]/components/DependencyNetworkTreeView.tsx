@@ -13,7 +13,7 @@
 import { useTranslations } from 'next-intl'
 import { _, TreeTable, EnumValueWithToolTip } from 'next-sw360'
 import React, { useEffect, useState, useRef, useCallback, ChangeEvent } from 'react'
-import { Tooltip, OverlayTrigger, ButtonGroup, Dropdown, DropdownButton } from 'react-bootstrap'
+import { Tooltip, OverlayTrigger, ButtonGroup, Dropdown, DropdownButton, Spinner } from 'react-bootstrap'
 import { GoSingleSelect } from 'react-icons/go'
 import Form from 'react-bootstrap/Form'
 import styles from '../detail.module.css'
@@ -599,7 +599,15 @@ const DependencyNetworkTreeView = ({ projectId }: Props) => {
                 />
             </div>
             <div className='my-1'>
-                <TreeTable columns={columns} data={treeData} setData={setTreeData} language={language} onExpand={onExpand} search={search} />
+                {
+                    data
+                        ?
+                            <TreeTable columns={columns} data={treeData} setData={setTreeData} language={language} onExpand={onExpand} search={search} />
+                        :
+                            <div className='col-12 text-center'>
+                                <Spinner className='spinner' />
+                            </div>
+                }
             </div>
         </>
     )
