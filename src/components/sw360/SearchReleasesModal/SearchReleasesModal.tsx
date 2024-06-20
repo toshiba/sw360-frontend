@@ -23,7 +23,7 @@ import { FaInfoCircle } from 'react-icons/fa'
 interface Props {
     show: boolean
     setShow: React.Dispatch<React.SetStateAction<boolean>>
-    setSelectedReleases: React.Dispatch<React.SetStateAction<Array<string>>>
+    setSelectedReleases: React.Dispatch<React.SetStateAction<Array<ReleaseDetail>>>
 }
 
 const SearchReleasesModal = ({ show, setShow, setSelectedReleases }: Props) => {
@@ -31,7 +31,7 @@ const SearchReleasesModal = ({ show, setShow, setSelectedReleases }: Props) => {
     const [tableData, setTableData] = useState([])
     const searchText = useRef<string>('')
     const isExactMatchSearch = useRef<boolean>(false)
-    const [selectingReleaseOnTable, setSelectingReleaseOnTable] = useState<Array<string>>([])
+    const [selectingReleaseOnTable, setSelectingReleaseOnTable] = useState<Array<ReleaseDetail>>([])
 
     const searchReleases = async () => {
         const session = await getSession()
@@ -57,10 +57,10 @@ const SearchReleasesModal = ({ show, setShow, setSelectedReleases }: Props) => {
             !CommonUtils.isNullOrUndefined(releases['_embedded']['sw360:releases'])
         ) {
             const data = releases['_embedded']['sw360:releases'].map((release: ReleaseDetail) => [
-                release.id,
+                release,
                 release._embedded['sw360:vendors'] ? release._embedded['sw360:vendors'][0].fullName : '',
-                release.name,
-                release.version,
+                release,
+                release,
                 release.clearingState,
                 release.mainlineState,
             ])
@@ -81,7 +81,7 @@ const SearchReleasesModal = ({ show, setShow, setSelectedReleases }: Props) => {
     }
 
     return (
-        <Modal show={show} onHide={resetStatesAndClose} backdrop='static' centered size='lg' scrollable={true}>
+        <Modal show={show} onHide={resetStatesAndClose} backdrop='static' centered size='xl' scrollable={true}>
             <Modal.Header closeButton>
                 <Modal.Title>Search Releases</Modal.Title>
             </Modal.Header>

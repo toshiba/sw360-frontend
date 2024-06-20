@@ -77,7 +77,7 @@ const ADD_RELEASE_MODES = {
 const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
     const addReleaseMode = useRef<number | undefined>(undefined)
     const nodeToAddChildren = useRef<ReleaseNode | undefined>(undefined)
-    const [selectedReleases, setSelectedReleases] = useState<Array<string>>([])
+    const [selectedReleases, setSelectedReleases] = useState<Array<ReleaseDetail>>([])
     const [network, setNetwork] = useState<Array<ReleaseNode>>(undefined)
     const [showReleaseModal, setShowReleaseModal] = useState<boolean>(false)
     const [showWarning, setShowWarning] = useState<boolean>(false)
@@ -186,26 +186,23 @@ const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
         setNetwork(data)
     }, [projectId])
 
-    const createReleaseNodeFromReleaseIds = async (releaseIds: Array<string>, releasesInSameLevel: Array<string>) => {
+    const createReleaseNodeFromReleaseIds = (releasesInSameLevel: Array<string>) => {
         duplicatedReleases.current = []
-        const session = await getSession()
         const releaseNodes: Array<ReleaseNode> = []
-        for (const relId of releaseIds) {
-            const response = await ApiUtils.GET(`releases/${relId}`, session.user.access_token)
-            const releaseById = await response.json() as ReleaseDetail
-            if (!releasesInSameLevel.includes(relId)) {
+        for (const rel of selectedReleases) {
+            if (!releasesInSameLevel.includes(rel.id)) {
                 const newNode: ReleaseNode = {
-                    releaseId: relId,
+                    releaseId: rel.id,
                     releaseRelationship: "CONTAINED",
                     mainlineState: "OPEN",
                     comment: "",
                     releaseLink: [],
-                    releaseName: releaseById.name,
-                    releaseVersion: releaseById.version
+                    releaseName: rel.name,
+                    releaseVersion: rel.version
                 }
                 releaseNodes.push(newNode)
             } else {
-                duplicatedReleases.current.push(`${releaseById.name} (${releaseById.version})`)
+                duplicatedReleases.current.push(`${rel.name} (${rel.version})`)
             }
         }
         if (duplicatedReleases.current.length > 0) {
@@ -225,21 +222,17 @@ const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
         if (selectedReleases.length === 0)
             return
         if (addReleaseMode.current === ADD_RELEASE_MODES.ROOT) {
-            createReleaseNodeFromReleaseIds(selectedReleases, network.map(rel => rel.releaseId))
-                .then((newReleaseNodes) => {
-                    setNetwork([...network, ...newReleaseNodes])
-                    addReleaseMode.current = undefined
-                })
+            const newReleaseNodes = createReleaseNodeFromReleaseIds(network.map(rel => rel.releaseId))
+            setNetwork([...network, ...newReleaseNodes])
+            addReleaseMode.current = undefined
         } else {
-            createReleaseNodeFromReleaseIds(selectedReleases, nodeToAddChildren.current.releaseLink.map(rel => rel.releaseId))
-                .then((newReleaseNodes) => {
-                    nodeToAddChildren.current.releaseLink = [...nodeToAddChildren.current.releaseLink, ...newReleaseNodes]
-                    setNetwork([...network])
-                    nodeToAddChildren.current = undefined
-                    addReleaseMode.current = undefined
-                    setSelectedReleases([])
-                })
+            const newReleaseNodes = createReleaseNodeFromReleaseIds(nodeToAddChildren.current.releaseLink.map(rel => rel.releaseId))
+            nodeToAddChildren.current.releaseLink = [...nodeToAddChildren.current.releaseLink, ...newReleaseNodes]
+            setNetwork([...network])
+            nodeToAddChildren.current = undefined
+            addReleaseMode.current = undefined
         }
+        setSelectedReleases([])
     }, [selectedReleases])
 
     useEffect(() => {
@@ -281,7 +274,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
                                     }
                                 </tbody>
                             </LinkedReleasesTable>
-                            <Button variant='secondary' onClick={() => addRootNode()}>Add Releases</Button>
+                            <Button variant='secondary' className='mt-2' onClick={() => addRootNode()}>Add Releases</Button>
                         </>
                         :
                         <div className='col-12 text-center'>

@@ -14,11 +14,12 @@ import React, { useEffect, useRef } from 'react'
 import { Form } from 'react-bootstrap'
 import { _ } from 'next-sw360'
 import Table from '../Table/Table'
+import { ReleaseDetail } from '@/object-types'
 
 interface Props {
     tableData: any[],
-    selectingReleaseOnTable: Array<string>
-    setSelectingReleaseOnTable: React.Dispatch<React.SetStateAction<Array<string>>>
+    selectingReleaseOnTable: Array<ReleaseDetail>
+    setSelectingReleaseOnTable: React.Dispatch<React.SetStateAction<Array<ReleaseDetail>>>
 }
 
 const compare = (preState: any, nextState: any) => {
@@ -28,14 +29,15 @@ const compare = (preState: any, nextState: any) => {
 const MemoTable = React.memo(Table, compare) 
 
 const ReleasesTable = ({ tableData, selectingReleaseOnTable, setSelectingReleaseOnTable }: Props) => {
-    const releaseIds = useRef<Array<string>>([])
-    const handleSelectRelease = (releaseId: string) => {
-        if (releaseIds.current.includes(releaseId)) {
-            setSelectingReleaseOnTable(releaseIds.current.filter(id => id !== releaseId))
+    const releases = useRef<Array<ReleaseDetail>>([])
+    const handleSelectRelease = (relDetail: ReleaseDetail) => {
+        const selectingReleaseIds = releases.current.map(rel => rel.id)
+        if (selectingReleaseIds.includes(relDetail.id)) {
+            setSelectingReleaseOnTable(releases.current.filter(release => release.id !== relDetail.id))
             return
         }
 
-        setSelectingReleaseOnTable([...releaseIds.current, releaseId])
+        setSelectingReleaseOnTable([...releases.current, relDetail])
         return
     }
 
@@ -43,14 +45,14 @@ const ReleasesTable = ({ tableData, selectingReleaseOnTable, setSelectingRelease
         {
             id: 'release-selection',
             name: '',
-            formatter: (releaseId: string) =>
+            formatter: (release: ReleaseDetail) =>
                 _(
                     <Form.Check
                         name='release-selection'
                         className='release-selection'
                         type= 'checkbox'
                         onClick={() => {
-                            handleSelectRelease(releaseId)
+                            handleSelectRelease(release)
                         }}
                     ></Form.Check>
                 ),
@@ -65,15 +67,15 @@ const ReleasesTable = ({ tableData, selectingReleaseOnTable, setSelectingRelease
         {
             id: 'componentName',
             name: 'Component Name',
-            formatter: (name: string) =>
-                _(<a href={`#`}>{name}</a>),
+            formatter: (release: ReleaseDetail) =>
+                _(<a href={`/components/detail/${release._links['sw360:component'].href.split('/').at(-1)}`}>{release.name}</a>),
             sort: true,
         },
         {
             id: 'releaseVersion',
             name: 'Release Version',
-            formatter: (version: string) =>
-                _(<a href={`#`}>{version}</a>),
+            formatter: (release: ReleaseDetail) =>
+                _(<a href={`/components/releases/detail/${release.id}`}>{release.version}</a>),
             sort: true,
         },
         {
@@ -89,7 +91,7 @@ const ReleasesTable = ({ tableData, selectingReleaseOnTable, setSelectingRelease
     ]
 
     useEffect(() => {
-        releaseIds.current = selectingReleaseOnTable
+        releases.current = selectingReleaseOnTable
     }, [selectingReleaseOnTable])
 
     return (
