@@ -1072,3 +1072,9 @@ input[type='date'] {
     font-size: 14px !important;
     text-align: left !important;
 }
+
+.modal-danger .modal-header {
+    background-color: #feefef;
+    border-color: #f48989;
+    color: #da1414;
+}

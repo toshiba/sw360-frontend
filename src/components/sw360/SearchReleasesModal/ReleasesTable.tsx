@@ -56,7 +56,7 @@ const ReleasesTable = ({ tableData, selectingReleaseOnTable, setSelectingRelease
                         }}
                     ></Form.Check>
                 ),
-            width: '7%',
+            width: '6%',
             sort: false,
         },
         {

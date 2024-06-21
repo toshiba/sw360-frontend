@@ -85,7 +85,7 @@ const SearchReleasesModal = ({ show, setShow, setSelectedReleases }: Props) => {
             <Modal.Header closeButton>
                 <Modal.Title>Search Releases</Modal.Title>
             </Modal.Header>
-            <Modal.Body style={{overflowY: 'scroll', maxHeight: 'calc(100% - 3.5rem)'}}>
+            <Modal.Body>
                 <div className='row'>
                     <div className='col-lg-6'>
                         <input

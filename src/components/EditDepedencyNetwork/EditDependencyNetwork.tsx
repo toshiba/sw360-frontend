@@ -1,5 +1,5 @@
-// Copyright (C) TOSHIBA CORPORATION, 2023. Part of the SW360 Frontend Project.
-// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2023. Part of the SW360 Frontend Project.
+// Copyright (C) TOSHIBA CORPORATION, 2024. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2024. Part of the SW360 Frontend Project.
 
 // This program and the accompanying materials are made
 // available under the terms of the Eclipse Public License 2.0
@@ -10,10 +10,10 @@
 
 'use client'
 
-import { Form, OverlayTrigger, Tooltip as BootstrapTooltip, Spinner, Button, Alert } from 'react-bootstrap'
+import { Form, OverlayTrigger, Tooltip as BootstrapTooltip, Spinner, Button, Alert, Modal } from 'react-bootstrap'
 import { ImSpinner11 } from 'react-icons/im'
 import LinkedReleasesTable from './LinkedReleasesTable'
-import { FaInfoCircle, FaRegTrashAlt } from 'react-icons/fa'
+import { FaInfoCircle, FaRegTrashAlt, FaRegQuestionCircle } from 'react-icons/fa'
 import { FaPlus } from 'react-icons/fa6'
 import { useState, ReactNode, useEffect, useCallback, useRef } from 'react'
 import { getSession } from 'next-auth/react'
@@ -22,6 +22,7 @@ import React from 'react'
 import SearchReleasesModal from '../sw360/SearchReleasesModal/SearchReleasesModal'
 import { ReleaseDetail } from '@/object-types'
 import styles from './component.module.css'
+import { useTranslations } from 'next-intl'
 
 interface ReleaseNode {
     releaseId: string
@@ -30,7 +31,8 @@ interface ReleaseNode {
     mainlineState: string
     releaseRelationship: string
     comment: string
-    releaseLink: Array<ReleaseNode>
+    releaseLink: Array<ReleaseNode>,
+    otherReleaseVersions?: Array<any>
 }
 
 const releaseRelationship = {
@@ -75,45 +77,65 @@ const ADD_RELEASE_MODES = {
 }
 
 const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
+    const t = useTranslations('default')
+
     const addReleaseMode = useRef<number | undefined>(undefined)
     const nodeToAddChildren = useRef<ReleaseNode | undefined>(undefined)
+    const duplicatedReleases = useRef([])
+    const nodeRefToRemove = useRef<{
+        removedNode: ReleaseNode,
+        parentNode: ReleaseNode
+    }>(undefined)
+
     const [selectedReleases, setSelectedReleases] = useState<Array<ReleaseDetail>>([])
     const [network, setNetwork] = useState<Array<ReleaseNode>>(undefined)
-    const [showReleaseModal, setShowReleaseModal] = useState<boolean>(false)
-    const [showWarning, setShowWarning] = useState<boolean>(false)
-    const duplicatedReleases = useRef([])
 
-    const renderLinkedReleases = (releases: Array<ReleaseNode>, parentNode: ReleaseNode = undefined, level: number = 0, releaseIndexPath: Array<number> = [], releaseIdPath: Array<string> = []) => {
-        return Object.keys(releases).map((index: string): ReactNode => {
-            const parseIndex = parseInt(index)
-            const pathIdToNode = [...releaseIdPath, releases[parseIndex].releaseId]
-            const pathIndexToNode = [...releaseIndexPath, parseIndex]
+    const [showWarning, setShowWarning] = useState<boolean>(false)
+    const [showReleaseModal, setShowReleaseModal] = useState<boolean>(false)
+    const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
+
+    const renderLinkedReleases = (releases: Array<ReleaseNode>, parentNode: ReleaseNode = undefined, level: number = 0, releaseIdPath: Array<string> = []) => {
+        return Object.values(releases).map((release: ReleaseNode): ReactNode => {
+            const pathIdToNode = [...releaseIdPath, release.releaseId]
 
             return <>
-                <tr key={releases[parseIndex].releaseId + level}
-                    data-id-path={Object.values(pathIndexToNode).join(',')}
-                    data-index-path={Object.values(pathIndexToNode).join(',')}
+                <tr key={release.releaseId + level}
+                    data-id-path={Object.values(pathIdToNode).join(',')}
                 >
                     <td className={`align-middle`} style={{ paddingLeft: `${0.5 + level * 1}rem` }}>
-                        {releases[parseIndex].releaseName}
+                        {release.releaseName}
                         <Tooltip text='Add child releases' className='float-end'>
-                            <FaPlus className='float-end cursor-pointer' size={20} onClick={() => addChildrenNode(releases[parseIndex])} />
+                            <FaPlus className='float-end cursor-pointer' size={20} onClick={() => addChildrenNode(release)} />
                         </Tooltip>
                     </td>
                     <td>
-                        <Form.Select>
-                            <option value={releases[parseIndex].releaseId} className='textlabel stackedLabel'>
-                                {releases[parseIndex].releaseVersion}
-                            </option>
+                        <Form.Select
+                            onFocus={() => fetchOtherVersionsOfRelease(release)}
+                            onChange={(event) => updateReleaseOfNode(release, event)}
+                            defaultValue={release.releaseId}
+                            >
+                            {
+                                release.otherReleaseVersions
+                                ?
+                                    release.otherReleaseVersions.map(rel =>
+                                        <option key={rel.id} value={rel.id} className='textlabel stackedLabel'>
+                                            {rel.version}
+                                        </option>
+                                    )
+                                :
+                                    <option value={release.releaseId} className='textlabel stackedLabel'>
+                                        {release.releaseVersion}
+                                    </option>
+                            }
                         </Form.Select>
                     </td>
                     <td style={{ width: '5%' }} className='align-middle text-center'>
                         <Tooltip text='Load default child releases'>
-                            <ImSpinner11 size={19} className='cursor-pointer' onClick={() => loadDefaultNetwork(releases[parseIndex])} />
+                            <ImSpinner11 size={19} className='cursor-pointer' onClick={() => loadDefaultNetwork(release)} />
                         </Tooltip>
                     </td>
                     <td>
-                        <Form.Select defaultValue={releases[parseIndex].releaseRelationship} onChange={() => console.log(1)} name='releaseRelationship'>
+                        <Form.Select defaultValue={release.releaseRelationship} onChange={(event) => changeReleaseRelationship(release, event)} name='releaseRelationship'>
                             {
                                 Object.entries(releaseRelationship).map(([key, value]: Array<string>) =>
                                     <option key={key} value={key} className='textlabel stackedLabel'>{value}</option>
@@ -122,7 +144,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
                         </Form.Select>
                     </td>
                     <td>
-                        <Form.Select defaultValue={releases[parseIndex].mainlineState} onChange={() => console.log(1)} name='mainlineState'>
+                        <Form.Select defaultValue={release.mainlineState} onChange={(event) => changeMainlineState(release, event)} name='mainlineState'>
                             {
                                 Object.entries(mainlineStates).map(([key, value]: Array<string>) =>
                                     <option key={key} value={key} className='textlabel stackedLabel'>{value}</option>
@@ -131,15 +153,20 @@ const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
                         </Form.Select>
                     </td>
                     <td>
-                        <Form.Control type='text' placeholder='Enter comment' defaultValue={releases[parseIndex].comment} />
+                        <input type='text'
+                            className='form-control'
+                            placeholder='Enter comment'
+                            defaultValue={release.comment}
+                            onChange={(event) => changeComment(release, event)}
+                        />
                     </td>
                     <td className='align-middle text-center'>
                         <Tooltip text='Delete'>
-                            <FaRegTrashAlt size={19} className='cursor-pointer' onClick={() => removeNode(parentNode, releases[parseIndex].releaseId)} />
+                            <FaRegTrashAlt size={19} className='cursor-pointer' onClick={() => removeNode(parentNode, release)} />
                         </Tooltip>
                     </td>
                 </tr>
-                {renderLinkedReleases(releases[parseIndex].releaseLink, releases[parseIndex], level + 1, pathIndexToNode, pathIdToNode)}
+                {renderLinkedReleases(release.releaseLink, release, level + 1, pathIdToNode)}
             </>
         })
     }
@@ -155,14 +182,12 @@ const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
         addReleaseMode.current = ADD_RELEASE_MODES.ROOT
     }
 
-    const removeNode = (parentNode: ReleaseNode, removedReleaseId: string) => {
-        if (parentNode === undefined) {
-            const newNetwork = [...network].filter(rel => rel.releaseId !== removedReleaseId)
-            setNetwork([...newNetwork])
-            return
+    const removeNode = (parentNode: ReleaseNode, removedRelease: ReleaseNode) => {
+        nodeRefToRemove.current = {
+            removedNode: removedRelease,
+            parentNode: parentNode,
         }
-        parentNode.releaseLink = parentNode.releaseLink.filter(rel => rel.releaseId !== removedReleaseId)
-        setNetwork([...network])
+        setShowConfirmDelete(true)
     }
 
     const loadDefaultNetwork = (releaseNode: ReleaseNode) => {
@@ -215,7 +240,74 @@ const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
         setShowWarning(true)
         setTimeout(() => {
             setShowWarning(false)
-        }, 5000);
+        }, 7000);
+    }
+
+    const closeConfirmDeleteModal = () => {
+        setShowConfirmDelete(false)
+        nodeRefToRemove.current = undefined
+    }
+
+    const confirmToDelete = () => {
+        if (nodeRefToRemove.current === undefined) {
+            closeConfirmDeleteModal()
+            return
+        }
+
+        const parentNode = nodeRefToRemove.current.parentNode
+        const removedNode = nodeRefToRemove.current.removedNode
+
+        if (parentNode === undefined) {
+            const newNetwork = [...network].filter(rel => rel.releaseId !== removedNode.releaseId)
+            setNetwork([...newNetwork])
+            closeConfirmDeleteModal()
+            return
+        }
+
+        parentNode.releaseLink = parentNode.releaseLink.filter((rel: ReleaseNode) => rel.releaseId !== removedNode.releaseId)
+        setNetwork([...network])
+        closeConfirmDeleteModal()
+    }
+
+    const changeMainlineState = (release: ReleaseNode, event: React.ChangeEvent<HTMLSelectElement>) => {
+        release.mainlineState = event.target.value
+        setNetwork([...network])
+    }
+
+    const changeReleaseRelationship = (release: ReleaseNode, event: React.ChangeEvent<HTMLSelectElement>) => {
+        release.releaseRelationship = event.target.value
+        setNetwork([...network])
+    }
+
+    const changeComment = (release: ReleaseNode, event: React.ChangeEvent<HTMLInputElement>) => {
+        release.comment = event.target.value
+        setNetwork([...network])
+    }
+
+    const updateReleaseOfNode = (release: ReleaseNode, event: React.ChangeEvent<HTMLSelectElement>) => {
+        release.releaseId = event.target.value
+        setNetwork([...network])
+    }
+
+    const fetchOtherVersionsOfRelease = (release: ReleaseNode) => {
+        if (!release.otherReleaseVersions === undefined) return
+
+        release.otherReleaseVersions = [
+            {
+                version: release.releaseVersion,
+                id: release.releaseId
+            },
+            {
+                version: 'v2',
+                id: '222222'
+            },
+            {
+                version: 'v3',
+                id: '33333'
+            },
+        ]
+
+        setNetwork([...network])
     }
 
     useEffect(() => {
@@ -282,6 +374,37 @@ const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
                         </div>
                 }
                 <SearchReleasesModal show={showReleaseModal} setShow={setShowReleaseModal} setSelectedReleases={setSelectedReleases} />
+                <Modal className='modal-danger' show={showConfirmDelete} setShow={setShowConfirmDelete} backdrop='static' centered size='lg'>
+                    <Modal.Header closeButton>
+                        <Modal.Title><FaRegQuestionCircle /> Delete link to release?</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {
+                            nodeRefToRemove.current &&
+                            <p>
+                                Do you really want to remove the link to release
+                                {' '}
+                                <b>
+                                    {`${nodeRefToRemove.current?.removedNode.releaseName} (${nodeRefToRemove.current?.removedNode.releaseVersion})`}
+                                </b> ?
+                            </p>
+                        }
+                    </Modal.Body>
+                    <Modal.Footer className='justify-content-end'>
+                        <Button
+                            type='button'
+                            data-bs-dismiss='modal'
+                            variant='secondary'
+                            className='me-2'
+                            onClick={closeConfirmDeleteModal}
+                        >
+                            {t('Close')}
+                        </Button>
+                        <Button type='button' variant='danger' onClick={confirmToDelete}>
+                            Delete Link
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         </div>
     )
