@@ -20,7 +20,7 @@ import { getSession } from 'next-auth/react'
 import { ApiUtils } from '@/utils/index'
 import React from 'react'
 import SearchReleasesModal from '../sw360/SearchReleasesModal/SearchReleasesModal'
-import { ReleaseDetail } from '@/object-types'
+import { Embedded, ReleaseDetail, ReleaseLink } from '@/object-types'
 import styles from './component.module.css'
 import { useTranslations } from 'next-intl'
 
@@ -28,6 +28,7 @@ interface ReleaseNode {
     releaseId: string
     releaseName?: string
     releaseVersion?: string
+    componentId?: string
     mainlineState: string
     releaseRelationship: string
     comment: string
@@ -76,7 +77,7 @@ const ADD_RELEASE_MODES = {
     CHILDREN: 1,
 }
 
-const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
+const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
     const t = useTranslations('default')
 
     const addReleaseMode = useRef<number | undefined>(undefined)
@@ -118,12 +119,15 @@ const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
                                 release.otherReleaseVersions
                                 ?
                                     release.otherReleaseVersions.map(rel =>
-                                        <option key={rel.id} value={rel.id} className='textlabel stackedLabel'>
+                                        <option key={rel.id} value={rel.id}
+                                            selected={(rel.id === release.releaseId)}
+                                            className='textlabel stackedLabel'
+                                        >
                                             {rel.version}
                                         </option>
                                     )
                                 :
-                                    <option value={release.releaseId} className='textlabel stackedLabel'>
+                                    <option value={release.releaseId} className='textlabel stackedLabel' selected>
                                         {release.releaseVersion}
                                     </option>
                             }
@@ -223,7 +227,8 @@ const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
                     comment: "",
                     releaseLink: [],
                     releaseName: rel.name,
-                    releaseVersion: rel.version
+                    releaseVersion: rel.version,
+                    componentId: rel._links['sw360:component'].href.split('/').at(-1),
                 }
                 releaseNodes.push(newNode)
             } else {
@@ -289,23 +294,21 @@ const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
         setNetwork([...network])
     }
 
-    const fetchOtherVersionsOfRelease = (release: ReleaseNode) => {
+    const fetchOtherVersionsOfRelease = async (release: ReleaseNode) => {
         if (!release.otherReleaseVersions === undefined) return
 
-        release.otherReleaseVersions = [
-            {
-                version: release.releaseVersion,
-                id: release.releaseId
-            },
-            {
-                version: 'v2',
-                id: '222222'
-            },
-            {
-                version: 'v3',
-                id: '33333'
-            },
-        ]
+        const session = await getSession()
+        const response = await ApiUtils.GET(`components/${release.componentId}/releases`, session.user.access_token)
+        const releases = await response.json() as Embedded<ReleaseLink, 'sw360:releaseLinks'> 
+
+        const otherVersions = Object.values(releases._embedded['sw360:releaseLinks']).map(rel => {
+            return {
+                version: rel.version,
+                id: rel.id,
+            }
+        })
+
+        release.otherReleaseVersions = otherVersions
 
         setNetwork([...network])
     }
@@ -410,7 +413,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId: string }) => {
     )
 }
 
-const compare = (prevState: { projectId: string }, nextState: { projectId: string }) => {
+const compare = (prevState: { projectId?: string }, nextState: { projectId?: string }) => {
     return prevState.projectId === nextState.projectId
 }
 
