@@ -345,6 +345,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
                     LINKED RELEASES
                     <hr className='my-2 mb-2'/>
                 </h6>
+                <Button variant='outline-success' className='float-start'>Compare with default network</Button>
             </div>
             <div className='px-0'>
                 {
