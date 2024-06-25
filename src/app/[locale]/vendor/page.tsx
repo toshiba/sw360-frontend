@@ -8,15 +8,28 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
+// import { Metadata } from 'next'
+// import VendorIndex from './components/VendorIndex'
+
+// export const metadata: Metadata = {
+//     title: 'Vendor',
+// }
+
+// async function CreateVendorIndex() {
+//     return <VendorIndex />
+// }
+
+// export default CreateVendorIndex
+
 import { Metadata } from 'next'
-import VendorsPage from './components/VendorsPage'
+import VendorPage from './components/VendorPage'
 
 export const metadata: Metadata = {
     title: 'Vendor',
 }
 
-async function CreateVendorsPage() {
-    return <VendorsPage />
+async function CreateVendorPage() {
+    return <VendorPage />
 }
 
-export default CreateVendorsPage
+export default CreateVendorPage
