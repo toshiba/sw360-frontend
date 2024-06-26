@@ -21,12 +21,13 @@ import ReleasesTable from './ReleasesTable'
 import ShowInfoOnHover from '../ShowInfoOnHover/ShowInfoOnHover'
 
 interface Props {
+    projectId?: string | undefined
     show: boolean
     setShow: React.Dispatch<React.SetStateAction<boolean>>
     setSelectedReleases: React.Dispatch<React.SetStateAction<Array<ReleaseDetail>>>
 }
 
-const SearchReleasesModal = ({ show, setShow, setSelectedReleases }: Props) => {
+const SearchReleasesModal = ({ projectId, show, setShow, setSelectedReleases }: Props) => {
     const t = useTranslations('default')
     const [tableData, setTableData] = useState([])
     const searchText = useRef<string>('')
@@ -34,7 +35,6 @@ const SearchReleasesModal = ({ show, setShow, setSelectedReleases }: Props) => {
     const [selectingReleaseOnTable, setSelectingReleaseOnTable] = useState<Array<ReleaseDetail>>([])
 
     const searchReleases = async () => {
-        setSelectingReleaseOnTable([])
         const session = await getSession()
         const params: {[k: string]: string} = {
             allDetails: 'true',
@@ -53,25 +53,44 @@ const SearchReleasesModal = ({ show, setShow, setSelectedReleases }: Props) => {
         }
 
         const releases: Embedded<ReleaseDetail, 'sw360:releases'> = await response.json()
+        convertReleaseDetailToTableData(releases)
+    }
+
+    const getLinkedReleasesOfSubProjects = async () => {
+        const session = await getSession()
+
+        const response = await ApiUtils.GET(`projects/${projectId}/subProjects/releases`, session.user.access_token)
+        if (response.status === HttpStatus.UNAUTHORIZED) {
+            return signOut()
+        }
+        if (response.status === HttpStatus.NO_CONTENT) {
+            setTableData([])
+            return
+        }
+        const releases: Embedded<ReleaseDetail, 'sw360:releases'> = await response.json()
+        convertReleaseDetailToTableData(releases)
+    }
+
+    const convertReleaseDetailToTableData = (releases: Embedded<ReleaseDetail, 'sw360:releases'>) => {
+        setSelectingReleaseOnTable([])
         if (
             !CommonUtils.isNullOrUndefined(releases['_embedded']) &&
             !CommonUtils.isNullOrUndefined(releases['_embedded']['sw360:releases'])
         ) {
             const data = releases['_embedded']['sw360:releases'].map((release: ReleaseDetail) => [
                 release,
-                release._embedded['sw360:vendors'] ? release._embedded['sw360:vendors'][0].fullName : '',
+                (release._embedded && release._embedded['sw360:vendors']) ? release._embedded['sw360:vendors'][0].fullName : '',
                 release,
                 release,
                 release.clearingState,
                 release.mainlineState,
             ])
             setTableData(data)
+        } else {
+            setTableData([])
         }
     }
 
-    const getLinkedReleasesOfSubProjects = async () => {
-        setSelectingReleaseOnTable([])
-    }
 
     const handleClickSelectReleases = () => {
         setSelectedReleases(selectingReleaseOnTable)

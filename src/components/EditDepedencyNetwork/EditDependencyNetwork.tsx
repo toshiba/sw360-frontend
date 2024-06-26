@@ -399,7 +399,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
                             <Spinner className='spinner' />
                         </div>
                 }
-                <SearchReleasesModal show={showReleaseModal} setShow={setShowReleaseModal} setSelectedReleases={setSelectedReleases} />
+                <SearchReleasesModal projectId={projectId} show={showReleaseModal} setShow={setShowReleaseModal} setSelectedReleases={setSelectedReleases} />
                 <Modal className='modal-danger' show={showConfirmDelete} setShow={setShowConfirmDelete} backdrop='static' centered size='lg'>
                     <Modal.Header closeButton>
                         <Modal.Title><FaRegQuestionCircle /> Delete link to release?</Modal.Title>
