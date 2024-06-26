@@ -139,19 +139,27 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
                         </Tooltip>
                     </td>
                     <td>
-                        <Form.Select defaultValue={release.releaseRelationship} onChange={(event) => changeReleaseRelationship(release, event)} name='releaseRelationship'>
+                        <Form.Select onChange={(event) => changeReleaseRelationship(release, event)} name='releaseRelationship'>
                             {
                                 Object.entries(releaseRelationship).map(([key, value]: Array<string>) =>
-                                    <option key={key} value={key} className='textlabel stackedLabel'>{value}</option>
+                                    <option key={key} value={key}
+                                        selected={key === release.releaseRelationship}
+                                    >
+                                        {value}
+                                    </option>
                                 )
                             }
                         </Form.Select>
                     </td>
                     <td>
-                        <Form.Select defaultValue={release.mainlineState} onChange={(event) => changeMainlineState(release, event)} name='mainlineState'>
+                        <Form.Select onChange={(event) => changeMainlineState(release, event)} name='mainlineState'>
                             {
                                 Object.entries(mainlineStates).map(([key, value]: Array<string>) =>
-                                    <option key={key} value={key} className='textlabel stackedLabel'>{value}</option>
+                                    <option key={key} value={key}
+                                        selected={key === release.mainlineState}
+                                    >
+                                        {value}
+                                    </option>
                                 )
                             }
                         </Form.Select>
@@ -194,18 +202,30 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
         setShowConfirmDelete(true)
     }
 
-    const loadDefaultNetwork = (releaseNode: ReleaseNode) => {
-        const nodeTest: ReleaseNode = {
-            releaseId: "d65793d80fb84438b60b57ed8fa63226",
-            releaseRelationship: "CONTAINED",
-            mainlineState: "OPEN",
-            comment: "",
-            releaseLink: [],
-            releaseName: "Release2",
-            releaseVersion: "v1"
-        }
-        releaseNode.releaseLink = [nodeTest]
+    const loadDefaultNetwork = async (releaseNode: ReleaseNode) => {
+        const session = await getSession()
+        const response = await ApiUtils.GET(`releases/${releaseNode.releaseId}/releases?transitive=true`, session.user.access_token)
+        const data = await response.json() as Embedded<ReleaseLink, 'sw360:releaseLinks'>
+        const defaultNetwork = (data._embedded) ? convertReleaseLinksToReleaseNodes(data._embedded['sw360:releaseLinks']) : []
+        releaseNode.releaseLink = defaultNetwork
         setNetwork([...network])
+    }
+
+    const convertReleaseLinksToReleaseNodes = (releaseLinks: Array<ReleaseLink>) : Array<ReleaseNode> => {
+        if (releaseLinks === undefined)
+            return []
+        return releaseLinks.map((rel: ReleaseLink): ReleaseNode => {
+            return {
+                releaseId: rel.id,
+                releaseName: rel.name,
+                releaseVersion: rel.version,
+                releaseRelationship: 'CONTAINED',
+                mainlineState: 'OPEN',
+                releaseLink: (rel._embedded) ? convertReleaseLinksToReleaseNodes(rel._embedded['sw360:releaseLinks']) : [],
+                comment: '',
+                componentId: rel.componentId,
+            }
+        })
     }
 
     const fetchNetwork = useCallback(async () => {
@@ -291,6 +311,8 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
 
     const updateReleaseOfNode = (release: ReleaseNode, event: React.ChangeEvent<HTMLSelectElement>) => {
         release.releaseId = event.target.value
+        const selectedIndex = event.target.selectedIndex
+        release.releaseVersion = event.target.options[selectedIndex].text
         setNetwork([...network])
     }
 
