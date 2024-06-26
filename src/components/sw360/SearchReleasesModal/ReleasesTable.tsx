@@ -26,10 +26,11 @@ const compare = (preState: any, nextState: any) => {
     return Object.entries(preState.data).sort().toString() === Object.entries(nextState.data).sort().toString()
 }
 
-const MemoTable = React.memo(Table, compare) 
+const MemoTable = React.memo(Table, compare)
 
 const ReleasesTable = ({ tableData, selectingReleaseOnTable, setSelectingReleaseOnTable }: Props) => {
     const releases = useRef<Array<ReleaseDetail>>([])
+    const language = { noRecordsFound: 'No releases found.' }
     const handleSelectRelease = (relDetail: ReleaseDetail) => {
         const selectingReleaseIds = releases.current.map(rel => rel.id)
         if (selectingReleaseIds.includes(relDetail.id)) {
@@ -96,7 +97,7 @@ const ReleasesTable = ({ tableData, selectingReleaseOnTable, setSelectingRelease
 
     return (
         <div className='row'>
-            <MemoTable data={tableData} columns={columns} sort={false} pagination={false}/>
+            <MemoTable data={tableData} columns={columns} sort={false} pagination={false} language={language} />
         </div>
     )
 }

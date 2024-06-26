@@ -13,12 +13,12 @@
 import { getSession, signOut } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import React, { useState, useRef } from 'react'
-import { Button, Form, Modal } from 'react-bootstrap'
+import { Button, Form, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 import { HttpStatus, Embedded, ReleaseDetail } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils'
 import ReleasesTable from './ReleasesTable'
-import { FaInfoCircle } from 'react-icons/fa'
+import ShowInfoOnHover from '../ShowInfoOnHover/ShowInfoOnHover'
 
 interface Props {
     show: boolean
@@ -34,6 +34,7 @@ const SearchReleasesModal = ({ show, setShow, setSelectedReleases }: Props) => {
     const [selectingReleaseOnTable, setSelectingReleaseOnTable] = useState<Array<ReleaseDetail>>([])
 
     const searchReleases = async () => {
+        setSelectingReleaseOnTable([])
         const session = await getSession()
         const params: {[k: string]: string} = {
             allDetails: 'true',
@@ -68,6 +69,10 @@ const SearchReleasesModal = ({ show, setShow, setSelectedReleases }: Props) => {
         }
     }
 
+    const getLinkedReleasesOfSubProjects = async () => {
+        setSelectingReleaseOnTable([])
+    }
+
     const handleClickSelectReleases = () => {
         setSelectedReleases(selectingReleaseOnTable)
         resetStatesAndClose()
@@ -100,7 +105,7 @@ const SearchReleasesModal = ({ show, setShow, setSelectedReleases }: Props) => {
                         <button type='button' className='btn btn-secondary me-2' onClick={searchReleases}>
                             {t('Search')}
                         </button>
-                        <button type='button' className='btn btn-secondary me-2'>
+                        <button type='button' className='btn btn-secondary me-2' onClick={getLinkedReleasesOfSubProjects}>
                             Releases of linked projects
                         </button>
                     </div>
@@ -111,7 +116,8 @@ const SearchReleasesModal = ({ show, setShow, setSelectedReleases }: Props) => {
                         name='exact-match'
                         className='exact-match'
                         type='checkbox'
-                        label={<>Exact Match <FaInfoCircle size={12}/></>}
+                        label={<>Exact Match <ShowInfoOnHover text='The search result will display elements exactly matching the input. Equivalent to using (&quot;) around
+                        the search keyword.'/></>}
                         defaultChecked={false}
                         onChange={(e) => {
                             console.log(e.target.checked)
@@ -131,9 +137,13 @@ const SearchReleasesModal = ({ show, setShow, setSelectedReleases }: Props) => {
                 >
                     {t('Close')}
                 </Button>
-                <Button type='button' className='btn btn-primary' onClick={handleClickSelectReleases} disabled={selectingReleaseOnTable.length === 0}>
-                    Select Releases
-                </Button>
+                <OverlayTrigger overlay={<Tooltip>Link Releases</Tooltip>} placement='bottom'>
+                    <span className='d-inline-block'>
+                        <Button type='button' variant='primary' onClick={handleClickSelectReleases} disabled={selectingReleaseOnTable.length === 0}>
+                            Select Releases
+                        </Button>
+                    </span>
+                </OverlayTrigger>
             </Modal.Footer>
         </Modal>
     )

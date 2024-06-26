@@ -16,7 +16,7 @@ const ShowInfoOnHover = ({ text }: { text: string | ReactNode}) => {
         <>
             <OverlayTrigger overlay={<Tooltip>{text}</Tooltip>} placement='bottom'>
                 <span className='d-inline-block'>
-                    <FaInfoCircle />
+                    <FaInfoCircle size={13}/>
                 </span>
             </OverlayTrigger>
         </>
