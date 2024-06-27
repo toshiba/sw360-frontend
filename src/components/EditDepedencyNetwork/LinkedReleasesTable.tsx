@@ -50,7 +50,7 @@ const TableHeader = () => {
                             <br /><b>Internal Use</b>: Used for creating or building or ? the product or projects but not delivered
                             <br /><b>Optional</b>: Is not mandatory part of the installation
                             <br /><b>To be replaced</b>: Is there but should be moved out
-                            <br /><b>Code Snippet</b>: From references release, a fragment is used.;
+                            <br /><b>Code Snippet</b>: From references release, a fragment is used.
                             </>
                         }
                         />

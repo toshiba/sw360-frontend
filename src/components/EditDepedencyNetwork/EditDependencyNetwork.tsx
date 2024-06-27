@@ -17,7 +17,7 @@ import { FaInfoCircle, FaRegTrashAlt, FaRegQuestionCircle } from 'react-icons/fa
 import { FaPlus } from 'react-icons/fa6'
 import { useState, ReactNode, useEffect, useCallback, useRef } from 'react'
 import { getSession } from 'next-auth/react'
-import { ApiUtils } from '@/utils/index'
+import { ApiUtils, CommonUtils } from '@/utils/index'
 import React from 'react'
 import SearchReleasesModal from '../sw360/SearchReleasesModal/SearchReleasesModal'
 import { Embedded, ReleaseDetail, ReleaseLink } from '@/object-types'
@@ -80,9 +80,9 @@ const ADD_RELEASE_MODES = {
 const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
     const t = useTranslations('default')
 
+    const showMessageTimeOut = useRef(undefined)
     const addReleaseMode = useRef<number | undefined>(undefined)
     const nodeToAddChildren = useRef<ReleaseNode | undefined>(undefined)
-    const duplicatedReleases = useRef([])
     const nodeRefToRemove = useRef<{
         removedNode: ReleaseNode,
         parentNode: ReleaseNode
@@ -90,6 +90,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
 
     const [selectedReleases, setSelectedReleases] = useState<Array<ReleaseDetail>>([])
     const [network, setNetwork] = useState<Array<ReleaseNode>>(undefined)
+    const [duplicatedReleases, setDuplicatedReleases] = useState<Array<string>>([])
 
     const [showWarning, setShowWarning] = useState<boolean>(false)
     const [showReleaseModal, setShowReleaseModal] = useState<boolean>(false)
@@ -112,8 +113,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
                     <td>
                         <Form.Select
                             onFocus={() => fetchOtherVersionsOfRelease(release)}
-                            onChange={(event) => updateReleaseOfNode(release, event)}
-                            defaultValue={release.releaseId}
+                            onChange={(event) => updateReleaseOfNode(release, parentNode, event)}
                             >
                             {
                                 release.otherReleaseVersions
@@ -236,7 +236,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
     }, [projectId])
 
     const createReleaseNodeFromReleaseIds = (releasesInSameLevel: Array<string>) => {
-        duplicatedReleases.current = []
+        const releasesDuplicateInSameLevel = []
         const releaseNodes: Array<ReleaseNode> = []
         for (const rel of selectedReleases) {
             if (!releasesInSameLevel.includes(rel.id)) {
@@ -252,20 +252,27 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
                 }
                 releaseNodes.push(newNode)
             } else {
-                duplicatedReleases.current.push(`${rel.name} (${rel.version})`)
+                releasesDuplicateInSameLevel.push(`${rel.name} (${rel.version})`)
             }
         }
-        if (duplicatedReleases.current.length > 0) {
+        if (releasesDuplicateInSameLevel.length > 0) {
+            setDuplicatedReleases(releasesDuplicateInSameLevel)
             showWarningMessage()
         }
         return releaseNodes
     }
 
     const showWarningMessage = () => {
+        clearTimeout(showMessageTimeOut.current)
         setShowWarning(true)
-        setTimeout(() => {
-            setShowWarning(false)
+        showMessageTimeOut.current = window.setTimeout(() => {
+            closeWarningMessage()
         }, 7000);
+    }
+
+    const closeWarningMessage = () => {
+        setDuplicatedReleases([])
+        setShowWarning(false)
     }
 
     const closeConfirmDeleteModal = () => {
@@ -309,11 +316,31 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
         setNetwork([...network])
     }
 
-    const updateReleaseOfNode = (release: ReleaseNode, event: React.ChangeEvent<HTMLSelectElement>) => {
-        release.releaseId = event.target.value
+    const updateReleaseOfNode = (release: ReleaseNode, parentNode: ReleaseNode, event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedReleaseId = event.target.value
         const selectedIndex = event.target.selectedIndex
-        release.releaseVersion = event.target.options[selectedIndex].text
-        setNetwork([...network])
+        const selectedReleaseVersion = event.target.options[selectedIndex].text
+        if (parentNode === undefined) {
+            if (Object.values(network).map(rel => rel.releaseId).includes(selectedReleaseId)) {
+                setDuplicatedReleases([`${release.releaseName} (${selectedReleaseVersion})`])
+                event.target.value = release.releaseId
+                showWarningMessage()
+                return
+            }
+            release.releaseId = selectedReleaseId
+            release.releaseVersion = selectedReleaseVersion
+            setNetwork([...network])
+        } else {
+            if (Object.values(parentNode.releaseLink).map(rel => rel.releaseId).includes(selectedReleaseId)) {
+                setDuplicatedReleases([`${release.releaseName} (${selectedReleaseVersion})`])
+                event.target.value = release.releaseId
+                showWarningMessage()
+                return
+            }
+            release.releaseId = selectedReleaseId
+            release.releaseVersion = selectedReleaseVersion
+            setNetwork([...network])
+        }
     }
 
     const fetchOtherVersionsOfRelease = async (release: ReleaseNode) => {
@@ -375,14 +402,17 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
                         ?
                         <>
                             <Alert show={showWarning}
-                                onClose={() => setShowWarning(false)}
+                                onClose={() => closeWarningMessage()}
                                 variant='danger'
                                 dismissible
                                 className={`${styles['warning-message']}`}
                             >
                                 <b><FaInfoCircle size={13} /> Warning:</b>
                                 <p>
-                                    Duplicated releases: <b>{duplicatedReleases.current.join(', ')}</b>
+                                    {
+                                        !CommonUtils.isNullEmptyOrUndefinedArray(duplicatedReleases)
+                                        && <>Duplicated releases: <b>{duplicatedReleases.join(', ')}</b></>
+                                    }
                                 </p>
                             </Alert>
                             <LinkedReleasesTable>
