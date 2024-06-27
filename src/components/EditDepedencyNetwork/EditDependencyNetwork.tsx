@@ -120,7 +120,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
                             {
                                 release.otherReleaseVersions
                                 ?
-                                    release.otherReleaseVersions.map(rel =>
+                                    release.otherReleaseVersions.sort((a, b) => a.version - b.version).map(rel =>
                                         <option key={rel.id} value={rel.id}
                                             selected={(rel.id === release.releaseId)}
                                             className='textlabel stackedLabel'
