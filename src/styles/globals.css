@@ -1082,3 +1082,11 @@ input[type='date'] {
 hr {
     opacity: 1 !important;
 }
+
+.node-have-diff > td{
+    background-color: rgb(255, 212, 170) !important;
+}
+
+.node-have-diff > td:first-child{
+    color: red !important;
+}

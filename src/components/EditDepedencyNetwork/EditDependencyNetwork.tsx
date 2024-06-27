@@ -32,8 +32,9 @@ interface ReleaseNode {
     mainlineState: string
     releaseRelationship: string
     comment: string
-    releaseLink: Array<ReleaseNode>,
+    releaseLink: Array<ReleaseNode>
     otherReleaseVersions?: Array<any>
+    isDiff?: boolean | undefined
 }
 
 const releaseRelationship = {
@@ -102,6 +103,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
 
             return <>
                 <tr key={release.releaseId + level}
+                    className={(release.isDiff === true) ? 'node-have-diff' : ''}
                     data-id-path={Object.values(pathIdToNode).join(',')}
                 >
                     <td className={`align-middle`} style={{ paddingLeft: `${0.5 + level * 1}rem` }}>
@@ -362,6 +364,13 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
         setNetwork([...network])
     }
 
+    const compareWithDefault = async () => {
+        const session = await getSession()
+        const response = await ApiUtils.POST('projects/compareDefaultNetwork', network, session.user.access_token)
+        const comparedNetwork = await response.json() as Array<ReleaseNode>
+        setNetwork(comparedNetwork)
+    }
+
     useEffect(() => {
         if (selectedReleases.length === 0)
             return
@@ -394,7 +403,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
                     LINKED RELEASES
                     <hr className='my-2 mb-2'/>
                 </h6>
-                <Button variant='outline-success' className='float-start'>Compare with default network</Button>
+                <Button variant='outline-success' className='float-start' onClick={compareWithDefault}>Compare with default network</Button>
             </div>
             <div className='px-0'>
                 {
