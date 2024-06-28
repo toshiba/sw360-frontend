@@ -8,7 +8,7 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-import EditVendor from './components/EditVendor'
+import EditVendor from './components/CeditVendor'
 
 interface Context {
     params: { id: string }

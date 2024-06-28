@@ -15,32 +15,42 @@ import { useTranslations } from 'next-intl'
 import { notFound, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
-import { HttpStatus, Vendor } from '@/object-types'
+import {
+    ActionType,
+    CommonTabIds,
+    HttpStatus,
+    VendorPayload
+} from '@/object-types'
 import MessageService from '@/services/message.service'
 import { ApiUtils, CommonUtils } from '@/utils'
-import { PageButtonHeader } from 'next-sw360'
-import EditVendorSummary from './EditVendorSummary'
+import { PageButtonHeader, SideBar } from 'next-sw360'
+import DeleteVendorDialog from '../../../components/DeleteVendorDialog'
+import VendorEditSummary from './CeditSummary'
 
 interface Props {
     vendorId?: string
 }
 
-export default function EditVendor({ vendorId }: Props) {
+const tabList = [
+    {
+        id: CommonTabIds.SUMMARY,
+        name: 'Summary',
+    },
+]
+
+const EditVendor = ({ vendorId }: Props) => {
     const t = useTranslations('default')
-    const { data: session, status } = useSession()
-    // const [data, setData] = useState([])
-
+    const { data: session } = useSession()
     const params = useSearchParams()
-
-    // const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-    // const [setDeleteDialogOpen] = useState(false)
     const router = useRouter()
-    const [inputValid, setInputValid] = useState(false)
-    const [errorFullName, setErrorFullName] = useState(false)
-    const [Vendor, setVendor] = useState<Vendor>({
-        shortName: '',
-        fullName: '',
-        url:'',
+    const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
+    const [vendorPayload, setVendorPayload] = useState<VendorPayload>()
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+    const [vendorData, setVendorData] = useState<VendorPayload>({
+        fullname: '',
+        shortname: '',
+        url: '',
+
     })
 
     useEffect(() => {
@@ -49,80 +59,84 @@ export default function EditVendor({ vendorId }: Props) {
 
         ;(async () => {
             try {
-                const queryUrl = CommonUtils.createUrlWithParams(`/vendors/${vendorId}`, Object.fromEntries(params))
+                const queryUrl = CommonUtils.createUrlWithParams(
+                    `vendors/${vendorId}`,
+                    Object.fromEntries(params)
+                )
                 const response = await ApiUtils.GET(queryUrl, session.user.access_token, signal)
                 if (response.status === HttpStatus.UNAUTHORIZED) {
                     return signOut()
                 } else if (response.status !== HttpStatus.OK) {
                     return notFound()
                 }
+                setVendorPayload(await response.json())
             } catch (e) {
                 console.error(e)
             }
         })()
+
         return () => controller.abort()
     }, [params, session, vendorId])
 
-
     const submit = async () => {
-        setInputValid(true)
-        if (CommonUtils.isNullEmptyOrUndefinedString(Vendor.fullName)) {
-            setErrorFullName(true)
-            MessageService.error(t('Fullname not null or empty'))
+        const response = await ApiUtils.PATCH(`vendors/${vendorId}`, vendorData, session.user.access_token)
+        if (response.status == HttpStatus.OK) {
+            MessageService.success(`Vendor ${vendorData.fullname}  updated successfully!`)
+            router.push('/vendor/detail/' + vendorId)
         } else {
-            const response = await ApiUtils.PATCH(`/vendors/${vendorId}`, Vendor, session.user.access_token)
-            if (response.status == HttpStatus.OK) {
-                const data = (await response.json()) as Vendor
-                MessageService.success(t('Vendor updated successfully'))
-                router.push(`/vendors/detail?id=${data.shortName}&update=success`)
-            } else {
-                MessageService.error(t('Vendor updated failed'))
-            }
+            MessageService.error(t('Edit Vendor Fail'))
         }
     }
 
-    // const deleteVendor= () => {
-    //     setDeleteDialogOpen(true)
-    // }
-
-    const headerButtons = {
-        'Update Vendor': { link: '', type: 'primary', onClick: submit, name: t('Update Vendor') },
-        'Delete Vendor': { link: '', type: 'danger', name: t('Delete Vendor') },
-        // 'Delete Vendor': { link: '', type: 'danger', onClick: deleteVendor, name: t('Delete Vendor') },
-        Cancel: { link: `/vendor`, type: 'light', name: t('Cancel') },
+    const handleDeleteVendor = () => {
+        setDeleteDialogOpen(true)
     }
 
-    if (status === 'unauthenticated') {
-        signOut()
-    } else {
-        return (
-            Vendor && (
-                <div className='container' style={{ maxWidth: '98vw', marginTop: '10px' }}>
-                    <div className='row'>
-                        <div className='col'>
-                            <div className='row' style={{ marginBottom: '20px' }}>
-                                <PageButtonHeader
-                                    title={`${Vendor.fullName} (${Vendor.shortName})`}
-                                    buttons={headerButtons}
-                                ></PageButtonHeader>
+    const headerButtons = {
+        'Update Vendor': {
+            link: '/vendor/edit/' + vendorId,
+            type: 'primary',
+            name: t('Update Vendor'),
+            onClick: submit,
+        },
+        'Delete Vendor': {
+            link: '/vendor/edit/' + vendorId,
+            type: 'danger',
+            name: t('Delete Vendor'),
+            onClick: handleDeleteVendor,
+        },
+        Cancel: { link: '/vendor/detail/' + vendorId, type: 'secondary', name: t('Cancel') },
+    }
 
-                            </div>
-                            <div
-                                className='row'
-                                style={{ fontSize: '14px' }}
-                            >
-                                <EditVendorSummary
-                                    errorFullName={errorFullName}
-                                    inputValid={inputValid}
-                                    setErrorFullName={setErrorFullName}
-                                    Vendor={Vendor}
-                                    setVendor={setVendor}
-                                />
-                            </div>
+    return (
+        vendorPayload && (
+            <div className='container page-content'>
+                <div className='row'>
+                    <DeleteVendorDialog
+                        vendorId={vendorId}
+                        show={deleteDialogOpen}
+                        setShow={setDeleteDialogOpen}
+                        actionType={ActionType.EDIT}
+                    />
+                    <div className='col-2 sidebar'>
+                        <SideBar selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabList={tabList} />
+                    </div>
+                    <div className='col'>
+                        <div className='row' style={{ marginBottom: '20px' }}>
+                            <PageButtonHeader title={vendorPayload.fullname} buttons={headerButtons}></PageButtonHeader>
+                        </div>
+                        <div className='row' hidden={selectedTab !== CommonTabIds.SUMMARY ? true : false}>
+                            <VendorEditSummary
+                                vendorId={vendorId}
+                                vendorPayload={vendorData}
+                                setVendorPayload={setVendorData}
+                            />
                         </div>
                     </div>
                 </div>
-            )
+            </div>
         )
-    }
+    )
 }
+
+export default EditVendor
