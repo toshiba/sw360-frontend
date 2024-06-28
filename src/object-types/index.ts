@@ -20,17 +20,19 @@ import Changelogs from './Changelogs'
 import ClearingInformation from './ClearingInformation'
 import Component from './Component'
 import ComponentPayload from './ComponentPayLoad'
+import ECC from './ECC'
 import ECCInformation from './ECCInformation'
 import Embedded from './Embedded'
 import FossologyProcessInfo from './FossologyProcessInfo'
 import FossologyProcessStatus from './FossologyProcessStatus'
 import InputKeyValue from './InputKeyValue'
+import LicenseDetail from './LicenseDetail'
+import LicensePayload from './LicensePayload'
 import LinkedAttachments from './LinkedAttachments'
 import LinkedRelease from './LinkedRelease'
 import LinkedVulnerability from './LinkedVulnerability'
 import Links from './Links'
-import LicensePayload from './LicensePayload'
-import LicenseDetail from './LicenseDetail'
+import { Message, MessageOptions } from './Message'
 import ModerationRequest from './ModerationRequest'
 import ModerationRequestDetails from './ModerationRequestDetails'
 import ModerationRequestPayload from './ModerationRequestPayload'
@@ -42,7 +44,6 @@ import Package from './Package'
 import Preferences from './Preferences'
 import Project from './Project'
 import ProjectPayload from './ProjectPayload'
-import ECC from './ECC'
 import { ProjectData, ProjectVulnerability, ProjectsPayloadElement, VulnerabilityRatingAndActionPayload } from './ProjectVulnerabilityTypes'
 import Release from './Release'
 import ReleaseDetail from './ReleaseDetail'
@@ -56,15 +57,14 @@ import SearchResult from './SearchResult'
 import Session from './Session'
 import SummaryDataType from './SummaryDataType'
 import ToastData from './ToastData'
-import { User, CreateUserPayload } from './User'
+import { CreateUserPayload, User } from './User'
 import UserCredentialInfo from './UserCredentialInfo'
 import Vendor from './Vendor'
 import VendorAdvisory from './VendorAdvisory'
 import VendorType from './VendorType'
 import VerificationStateInfo from './VerificationStateInfo'
 import Vulnerability from './Vulnerability'
-import { VulnerabilityTrackingStatus, ProjectVulnerabilityTrackingStatus } from './VulnerabilityTrackingStatus'
-import { MessageOptions, Message } from './Message'
+import { ProjectVulnerabilityTrackingStatus, VulnerabilityTrackingStatus } from './VulnerabilityTrackingStatus'
 
 export type {
     AccessToken,
@@ -77,19 +77,15 @@ export type {
     Changelogs,
     ClearingInformation,
     Component,
-    ComponentPayload,
-    ECCInformation,
+    ComponentPayload, CreateUserPayload, ECC, ECCInformation,
     Embedded,
     FossologyProcessInfo,
     FossologyProcessStatus,
-    InputKeyValue,
-    LinkedAttachments,
+    InputKeyValue, LicenseDetail, LicensePayload, LinkedAttachments,
     LinkedRelease,
     LinkedVulnerability,
-    Links,
-    LicensePayload,
-    LicenseDetail,
-    ModerationRequest,
+    Links, Message,
+    MessageOptions, ModerationRequest,
     ModerationRequestDetails,
     ModerationRequestPayload,
     NodeData,
@@ -98,10 +94,7 @@ export type {
     Package,
     Project,
     ProjectData,
-    ProjectPayload,
-    ECC,
-    ProjectVulnerability,
-    ProjectsPayloadElement,
+    ProjectPayload, ProjectVulnerability, ProjectVulnerabilityTrackingStatus, ProjectsPayloadElement,
     Release,
     ReleaseDetail,
     ReleaseLink,
@@ -114,19 +107,13 @@ export type {
     Session,
     SummaryDataType,
     ToastData,
-    User,
-    CreateUserPayload,
-    UserCredentialInfo,
+    User, UserCredentialInfo,
     Vendor,
     VendorAdvisory,
     VendorType,
     VerificationStateInfo,
     Vulnerability,
-    VulnerabilityRatingAndActionPayload,
-    Message,
-    MessageOptions,
-    VulnerabilityTrackingStatus,
-    ProjectVulnerabilityTrackingStatus
+    VulnerabilityRatingAndActionPayload, VulnerabilityTrackingStatus
 }
 
 // Special functions for populate data
@@ -138,10 +125,10 @@ import AttachmentType from './enums/AttachmentTypes'
 import CommonTabIds from './enums/CommonTabsIds'
 import ComponentTabIds from './enums/ComponentTabIds'
 import DocumentTypes from './enums/DocumentTypes'
-import LicenseTabIds from './enums/LicenseTabIds'
 import HttpStatus from './enums/HttpStatus'
-import RequestDocumentTypes from './enums/RequestDocumentTypes'
+import LicenseTabIds from './enums/LicenseTabIds'
 import ReleaseTabIds from './enums/ReleaseTabIds'
+import RequestDocumentTypes from './enums/RequestDocumentTypes'
 import VulnerabilitiesVerificationState from './enums/VulnerabilitiesVerificationState'
 
 export {
@@ -149,10 +136,6 @@ export {
     AttachmentType,
     CommonTabIds,
     ComponentTabIds,
-    DocumentTypes,
-    LicenseTabIds,
-    HttpStatus,
-    RequestDocumentTypes,
-    ReleaseTabIds,
-    VulnerabilitiesVerificationState,
+    DocumentTypes, HttpStatus, LicenseTabIds, ReleaseTabIds, RequestDocumentTypes, VulnerabilitiesVerificationState
 }
+
