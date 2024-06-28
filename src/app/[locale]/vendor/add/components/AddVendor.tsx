@@ -15,7 +15,7 @@ import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import { CommonTabIds, HttpStatus, Vendor } from '@/object-types'
+import { CommonTabIds, HttpStatus, VendorPayload } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils'
 import { PageButtonHeader, SideBar } from 'next-sw360'
 import AddVendorSummary from './AddVendorSummary'
@@ -31,9 +31,9 @@ export default function AddVendor() {
     const [errorFullName, setErrorFullName] = useState(false)
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
     const [inputValid, setInputValid] = useState(false)
-    const [vendorPayload, setVendorPayload] = useState<Vendor>({
-        shortName: '',
-        fullName: '',
+    const [vendorPayload, setVendorPayload] = useState<VendorPayload>({
+        shortname: '',
+        fullname: '',
         url: ''
     })
 
@@ -44,7 +44,7 @@ export default function AddVendor() {
         },
     ]
     const validateVendorShortName = () => {
-        if (CommonUtils.isNullEmptyOrUndefinedString(vendorPayload.shortName)) {
+        if (CommonUtils.isNullEmptyOrUndefinedString(vendorPayload.shortname)) {
             setErrorShortName(true)
             return true
         }
@@ -52,7 +52,7 @@ export default function AddVendor() {
     }
 
     const validateVendorFullName = () => {
-        if (CommonUtils.isNullEmptyOrUndefinedString(vendorPayload.fullName)) {
+        if (CommonUtils.isNullEmptyOrUndefinedString(vendorPayload.fullname)) {
             setErrorFullName(true)
             return true
         }
@@ -67,7 +67,7 @@ export default function AddVendor() {
         }
         if (validateVendorShortName() || validateVendorFullName()) {
             MessageService.error(t('Full Name or Short Name is not Null or Empty or Undefined'))
-        } else if (!vendorPayload.shortName.match(/^[A-Za-z0-9\-.+]*$/)) {
+        } else if (!vendorPayload.shortname.match(/^[A-Za-z0-9\-.+]*$/)) {
             MessageService.error(t('Short Name is invalid'))
         } else {
             const response = await ApiUtils.POST('vendors', vendorPayload, session.user.access_token)

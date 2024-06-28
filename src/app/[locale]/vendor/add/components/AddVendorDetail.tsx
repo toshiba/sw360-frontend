@@ -9,17 +9,17 @@
 // License-Filename: LICENSE
 
 'use client'
-import { HttpStatus, Vendor } from '@/object-types'
+import { HttpStatus, VendorPayload } from '@/object-types'
 import { ApiUtils } from '@/utils/index'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { notFound, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import styles from './VendorDetails.module.css'
+import styles from './AddVendor.module.css'
 
 interface Props {
-    vendorPayload?: Vendor
-    setVendorPayload?: React.Dispatch<React.SetStateAction<Vendor>>
+    vendorPayload?: VendorPayload
+    setVendorPayload?: React.Dispatch<React.SetStateAction<VendorPayload>>
     errorShortName?: boolean
     errorFullName?: boolean
     errorURL?: boolean
@@ -41,7 +41,7 @@ const AddVendorDetail = ({
     const t = useTranslations('default')
     const params = useSearchParams()
     const { data: session } = useSession()
-    const [setVendorType] = useState([])
+    const [vendor, setVendor] = useState([])
 
 
     const updateField = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => {
@@ -64,13 +64,15 @@ const AddVendorDetail = ({
                     return notFound()
                 }
                 const vendors = await response.json()
-                setVendorType(vendors._embedded['sw360:vendors'])
+                setVendor(vendors._embedded['sw360:vendors'])
             } catch (e) {
                 console.error(e)
             }
         })()
         return () => controller.abort()
     }, [params, session])
+
+    console.log('Vendor: ', vendor)
 
     return (
         <div className='row mb-4' style={{ padding: '0px 12px', fontSize: '14px' }}>
@@ -82,7 +84,7 @@ const AddVendorDetail = ({
             <div style={{ backgroundColor: '#FFF', borderBottom: '1px solid #DCDCDC' }}>
                 <div className='row' style={{ paddingBottom: '0.7rem' }}>
                     <div className='col-lg-4'>
-                        <label htmlFor='fullName' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
+                        <label htmlFor='fullname' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
                             {t('Full Name')}
                             <span className='text-red' style={{ color: '#F7941E' }}>
                                 *
@@ -93,17 +95,17 @@ const AddVendorDetail = ({
                             className={`form-control ${errorFullName ? 'is-invalid' : ''} ${
                                 !errorFullName && inputValid ? 'is-valid' : ''
                             }`}
-                            placeholder='Enter Fullname'
-                            id='fullName'
+                            placeholder='Enter fullname'
+                            id='fullname'
                             required
-                            aria-describedby='fullName'
-                            name='fullName'
-                            value={vendorPayload.fullName ?? ''}
+                            aria-describedby='fullname'
+                            name='fullname'
+                            value={vendorPayload.fullname ?? ''}
                             onChange={updateField}
                         />
                     </div>
                     <div className='col-lg-4'>
-                        <label htmlFor='shortName' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
+                        <label htmlFor='shortname' className='form-label fw-bold' style={{ cursor: 'pointer' }}>
                             {t('Short Name')}
                             <span className='text-red' style={{ color: '#F7941E' }}>
                                 *
@@ -116,11 +118,11 @@ const AddVendorDetail = ({
                                 regexError ? 'is-invalid' : ''
                             } ${!errorShortName && inputValid ? 'is-valid' : ''}`}
                             placeholder='Enter Shortname'
-                            id='shortName'
+                            id='shortname'
                             required
-                            aria-describedby='shortName'
-                            name='shortName'
-                            value={vendorPayload.shortName ?? ''}
+                            aria-describedby='shortname'
+                            name='shortname'
+                            value={vendorPayload.shortname ?? ''}
                             onChange={updateField}
                             title='1*(ALPHA / DIGIT / "-" / "." / "+" )'
                         />
