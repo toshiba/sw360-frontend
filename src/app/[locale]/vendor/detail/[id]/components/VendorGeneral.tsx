@@ -1,5 +1,5 @@
-// Copyright (C) TOSHIBA CORPORATION, 2023. Part of the SW360 Frontend Project.
-// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2023. Part of the SW360 Frontend Project.
+// Copyright (C) TOSHIBA CORPORATION, 2024. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2024. Part of the SW360 Frontend Project.
 
 // This program and the accompanying materials are made
 // available under the terms of the Eclipse Public License 2.0
@@ -10,16 +10,16 @@
 
 'use client'
 
-import { Vendor } from '@/object-types'
+import { VendorPayload } from '@/object-types'
 import { useTranslations } from 'next-intl'
 import { useState } from 'react'
-import styles from './detail.module.css'
+import styles from './DetailVendor.module.css'
 
 interface Props {
-    vendor: Vendor
+    vendorPayload: VendorPayload
 }
 
-const VendorGeneral = ({ vendor }: Props) => {
+const VendorGeneral = ({ vendorPayload }: Props) => {
     const t = useTranslations('default')
     const [toggle, setToggle] = useState(false)
     return (
@@ -38,15 +38,15 @@ const VendorGeneral = ({ vendor }: Props) => {
 
                 <tr>
                     <td>{t('Full Name')}:</td>
-                    <td>{vendor.fullName}</td>
+                    <td>{vendorPayload.fullname}</td>
                 </tr>
                 <tr>
                     <td>{t('Short Name')}:</td>
-                    <td>{vendor.shortName}</td>
+                    <td>{vendorPayload.shortname}</td>
                 </tr>
                 <tr>
                     <td>{t('URL')}:</td>
-                    <td>{vendor.url}</td>
+                    <td>{vendorPayload.url}</td>
                 </tr>
             </tbody>
         </table>

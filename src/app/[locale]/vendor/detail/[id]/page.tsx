@@ -8,20 +8,6 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
-// import VendorDetailOverview from './components/VendorDetailOverview'
-
-// interface Context {
-//     params: { id: string }
-// }
-
-// const VendorDetail = async ({ params }: Context) => {
-//     const vendorId = params.id
-
-//     return <VendorDetailOverview vendorId={vendorId} />
-// }
-
-// export default VendorDetail
-
 import DetailOverview from './components/DetailOverview'
 
 interface Context {

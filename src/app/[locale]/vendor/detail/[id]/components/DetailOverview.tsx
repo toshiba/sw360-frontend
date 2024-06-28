@@ -1,5 +1,5 @@
-// Copyright (C) TOSHIBA CORPORATION, 2023. Part of the SW360 Frontend Project.
-// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2023. Part of the SW360 Frontend Project.
+// Copyright (C) TOSHIBA CORPORATION, 2024. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2024. Part of the SW360 Frontend Project.
 
 // This program and the accompanying materials are made
 // available under the terms of the Eclipse Public License 2.0
@@ -14,7 +14,7 @@ import { PageButtonHeader, SideBar } from '@/components/sw360'
 import {
     CommonTabIds,
     HttpStatus,
-    Vendor,
+    VendorPayload,
 } from '@/object-types'
 import { ApiUtils } from '@/utils'
 import { signOut, useSession } from 'next-auth/react'
@@ -38,13 +38,13 @@ const DetailOverview = ({ vendorId }: Props) => {
     const { data: session } = useSession()
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
 
-    const [vendor, setVendor] = useState<Vendor>(undefined)
+    const [vendorPayload, setVendor] = useState<VendorPayload>(undefined)
 
     const fetchData = useCallback(
         async (url: string) => {
             const response = await ApiUtils.GET(url, session.user.access_token)
             if (response.status == HttpStatus.OK) {
-                const data = (await response.json()) as Vendor
+                const data = (await response.json()) as VendorPayload
                 return data
             } else if (response.status == HttpStatus.UNAUTHORIZED) {
                 await signOut()
@@ -58,8 +58,8 @@ const DetailOverview = ({ vendorId }: Props) => {
 
     useEffect(() => {
         fetchData(`vendors/${vendorId}`)
-            .then((vendor: Vendor) => {
-                setVendor(vendor)
+            .then((vendorPayload: VendorPayload) => {
+                setVendor(vendorPayload)
             })
             .catch((err) => console.error(err))
     }, [vendorId, fetchData])
@@ -69,7 +69,7 @@ const DetailOverview = ({ vendorId }: Props) => {
     }
 
     return (
-        vendor && (
+        vendorPayload && (
             <div className='container page-content'>
                 <div className='row'>
                     <div className='col-2 sidebar'>
@@ -81,11 +81,11 @@ const DetailOverview = ({ vendorId }: Props) => {
                     </div>
                     <div className='col'>
                         <div className='row' style={{ marginBottom: '20px' }}>
-                            <PageButtonHeader title={vendor.fullName} buttons={headerButtons}>
+                            <PageButtonHeader title={vendorPayload.fullname} buttons={headerButtons}>
                             </PageButtonHeader>
                         </div>
                         <div className='row' hidden={selectedTab !== CommonTabIds.SUMMARY ? true : false}>
-                            <Summary vendor={vendor} />
+                            <Summary vendorPayload={vendorPayload} />
                         </div>
                     </div>
                 </div>
