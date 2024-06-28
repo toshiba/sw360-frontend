@@ -1,5 +1,5 @@
-// Copyright (C) TOSHIBA CORPORATION, 2023. Part of the SW360 Frontend Project.
-// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2023. Part of the SW360 Frontend Project.
+// Copyright (C) TOSHIBA CORPORATION, 2024. Part of the SW360 Frontend Project.
+// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2024. Part of the SW360 Frontend Project.
 
 // This program and the accompanying materials are made
 // available under the terms of the Eclipse Public License 2.0
@@ -16,10 +16,10 @@ import { useRouter } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 import { Alert, Button, Form, Modal } from 'react-bootstrap'
 
-import { ActionType, HttpStatus, Vendor } from '@/object-types'
+import { ActionType, HttpStatus, VendorPayload } from '@/object-types'
 import { ApiUtils } from '@/utils'
 
-const DEFAULT_VENDOR_INFO: Vendor = { id: '', shortName: '' }
+const DEFAULT_VENDOR_INFO: VendorPayload = { id: '', shortname: '' }
 
 interface Props {
     vendorId?: string
@@ -37,7 +37,7 @@ const DeleteVendorDialog = ({ vendorId, show, setShow, actionType }: Props) => {
     const { data: session } = useSession()
     const t = useTranslations('default')
     const router = useRouter()
-    const [vendor, setVendor] = useState<Vendor>(DEFAULT_VENDOR_INFO)
+    const [vendorPayload, setVendorPayload] = useState<VendorPayload>(DEFAULT_VENDOR_INFO)
     const [variant, setVariant] = useState('success')
     const [message, setMessage] = useState('')
     const [showMessage, setShowMessage] = useState(false)
@@ -88,13 +88,13 @@ const DeleteVendorDialog = ({ vendorId, show, setShow, actionType }: Props) => {
                     signal
                 )
                 if (vendorsResponse.status == HttpStatus.OK) {
-                    const vendor = (await vendorsResponse.json()) as Vendor
-                    console.log(vendor.shortName)
-                    setVendor(vendor)
+                    const vendor = (await vendorsResponse.json()) as VendorPayload
+                    console.log(vendorPayload.shortname)
+                    setVendorPayload(vendor)
                 } else if (vendorsResponse.status == HttpStatus.UNAUTHORIZED) {
                     await signOut()
                 } else {
-                    setVendor(DEFAULT_VENDOR_INFO)
+                    setVendorPayload(DEFAULT_VENDOR_INFO)
                     handleError()
                 }
             }
@@ -139,7 +139,7 @@ const DeleteVendorDialog = ({ vendorId, show, setShow, actionType }: Props) => {
                 </Alert>
                 <Form>
                     {t.rich('Do you really want to delete the vendor', {
-                        name: vendor.shortName,
+                        name: vendorPayload.shortname,
                         strong: (chunks) => <b>{chunks}</b>,
                     })}
                     <hr />

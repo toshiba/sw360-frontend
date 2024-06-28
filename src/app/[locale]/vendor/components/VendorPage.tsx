@@ -22,7 +22,7 @@ import { FaTrashAlt } from 'react-icons/fa'
 import { useSearchParams } from 'next/navigation'
 import React from 'react'
 
-import { Embedded, Session, Vendor } from '@/object-types'
+import { Embedded, Session, VendorPayload } from '@/object-types'
 import { CommonUtils } from '@/utils'
 import { SW360_API_URL } from '@/utils/env'
 import { QuickFilter, Table, _ } from 'next-sw360'
@@ -108,15 +108,15 @@ export default function VendorIndex() {
     const server = (session: Session) => {
         return {
             url: CommonUtils.createUrlWithParams(`${SW360_API_URL}/resource/api/vendors`, searchParams),
-            then: (data: Embedded<Vendor, 'sw360:vendors'>) => {
+            then: (data: Embedded<VendorPayload, 'sw360:vendors'>) => {
                 setNumOfVendor(data.page.totalElements)
-                return data._embedded['sw360:vendors'].map((elem: Vendor) => [
-                    [elem._links.self.href.split('/').at(-1), elem.fullName ?? ''],
-                    elem.shortName ?? '',
+                return data._embedded['sw360:vendors'].map((elem: VendorPayload) => [
+                    [elem._links.self.href.split('/').at(-1), elem.fullname ?? ''],
+                    elem.shortname ?? '',
                     elem.url ?? '',
                 ])
             },
-            total: (data: Embedded<Vendor, 'sw360:vendors'>) => data.page.totalElements,
+            total: (data: Embedded<VendorPayload, 'sw360:vendors'>) => data.page.totalElements,
             headers: { Authorization: `Bearer ${status === 'authenticated' ? session.user.access_token : ''}` },
         }
     }
