@@ -14,6 +14,7 @@ enum CommonTabIds {
     RELEASES = 'tab-releases',
     VULNERABILITIES = 'tab-Vulnerabilities',
     CHANGE_LOG = 'tab-ChangeLogs',
+    DETAILS = 'tab-details',
 }
 
 export default CommonTabIds
