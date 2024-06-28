@@ -61,6 +61,7 @@ import { CreateUserPayload, User } from './User'
 import UserCredentialInfo from './UserCredentialInfo'
 import Vendor from './Vendor'
 import VendorAdvisory from './VendorAdvisory'
+import VendorPayload from './VendorPayload'
 import VendorType from './VendorType'
 import VerificationStateInfo from './VerificationStateInfo'
 import Vulnerability from './Vulnerability'
@@ -110,6 +111,7 @@ export type {
     User, UserCredentialInfo,
     Vendor,
     VendorAdvisory,
+    VendorPayload,
     VendorType,
     VerificationStateInfo,
     Vulnerability,
