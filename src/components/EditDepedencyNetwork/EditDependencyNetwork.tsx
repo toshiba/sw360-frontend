@@ -89,6 +89,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
         parentNode: ReleaseNode
     }>(undefined)
 
+    const compareSpinner = useRef(undefined);
     const [selectedReleases, setSelectedReleases] = useState<Array<ReleaseDetail>>([])
     const [network, setNetwork] = useState<Array<ReleaseNode>>(undefined)
     const [duplicatedReleases, setDuplicatedReleases] = useState<Array<string>>([])
@@ -120,7 +121,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
                             {
                                 release.otherReleaseVersions
                                 ?
-                                    release.otherReleaseVersions.sort((a, b) => a.version - b.version).map(rel =>
+                                    release.otherReleaseVersions.sort((a, b) => a.version.localeCompare(b.version)).map(rel =>
                                         <option key={rel.id} value={rel.id}
                                             selected={(rel.id === release.releaseId)}
                                             className='textlabel stackedLabel'
@@ -365,10 +366,12 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
     }
 
     const compareWithDefault = async () => {
+        compareSpinner.current.style.display = 'inline-block'
         const session = await getSession()
         const response = await ApiUtils.POST('projects/compareDefaultNetwork', network, session.user.access_token)
         const comparedNetwork = await response.json() as Array<ReleaseNode>
         setNetwork(comparedNetwork)
+        compareSpinner.current.style.display = 'none'
     }
 
     useEffect(() => {
@@ -403,7 +406,10 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
                     LINKED RELEASES
                     <hr className='my-2 mb-2'/>
                 </h6>
-                <Button variant='outline-success' className='float-start' onClick={compareWithDefault}>Compare with default network</Button>
+                <Button variant='outline-success' className='float-start' onClick={compareWithDefault}>
+                    Compare with default network {' '}
+                    <Spinner ref={compareSpinner} className='spinner' size='sm' style={{ display: 'none' }} />
+                </Button>
             </div>
             <div className='px-0'>
                 {
