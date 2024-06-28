@@ -368,7 +368,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
     const compareWithDefault = async () => {
         compareSpinner.current.style.display = 'inline-block'
         const session = await getSession()
-        const response = await ApiUtils.POST('projects/compareDefaultNetwork', network, session.user.access_token)
+        const response = await ApiUtils.POST('projects/network/compareDefaultNetwork', network, session.user.access_token)
         const comparedNetwork = await response.json() as Array<ReleaseNode>
         setNetwork(comparedNetwork)
         compareSpinner.current.style.display = 'none'
