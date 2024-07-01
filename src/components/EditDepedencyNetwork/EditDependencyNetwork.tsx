@@ -20,22 +20,9 @@ import { getSession } from 'next-auth/react'
 import { ApiUtils, CommonUtils } from '@/utils/index'
 import React from 'react'
 import SearchReleasesModal from '../sw360/SearchReleasesModal/SearchReleasesModal'
-import { Embedded, HttpStatus, ReleaseDetail, ReleaseLink } from '@/object-types'
+import { Embedded, HttpStatus, ReleaseDetail, ReleaseLink, Project, ReleaseNode } from '@/object-types'
 import styles from './component.module.css'
 import { useTranslations } from 'next-intl'
-
-interface ReleaseNode {
-    releaseId: string
-    releaseName?: string
-    releaseVersion?: string
-    componentId?: string
-    mainlineState: string
-    releaseRelationship: string
-    comment: string
-    releaseLink: Array<ReleaseNode>
-    otherReleaseVersions?: Array<any>
-    isDiff?: boolean | undefined
-}
 
 interface CheckCyclicLinkPayload {
     linkedToReleases?: Array<string>
@@ -45,6 +32,12 @@ interface CheckCyclicLinkPayload {
 interface CheckCyclicResponse {
     message: string
     status: number
+}
+
+interface IProps {
+    projectId?: string
+    projectPayload: Project
+    setProjectPayload: React.Dispatch<React.SetStateAction<Project>>
 }
 
 const releaseRelationship = {
@@ -88,7 +81,7 @@ const ADD_RELEASE_MODES = {
     CHILDREN: 1,
 }
 
-const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
+const EditDependencyNetwork = ({ projectId, projectPayload, setProjectPayload }: IProps) => {
     const t = useTranslations('default')
 
     const showMessageTimeOut = useRef(undefined)
@@ -483,6 +476,13 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
         fetchNetwork()
     }, [projectId])
 
+    useEffect(() => {
+        setProjectPayload({
+            ...projectPayload,
+            dependencyNetwork: network
+        })
+    }, [network])
+
     return (
         <div className='row mb-4'>
             <div className={`${styles.title} mb-2`}>
@@ -574,7 +574,7 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
     )
 }
 
-const compare = (prevState: { projectId?: string }, nextState: { projectId?: string }) => {
+const compare = (prevState: IProps, nextState: IProps) => {
     return prevState.projectId === nextState.projectId
 }
 

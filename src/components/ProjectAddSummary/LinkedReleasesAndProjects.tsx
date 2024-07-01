@@ -29,7 +29,7 @@ export default function LinkedReleasesAndProjects({ projectId, projectPayload, s
                 {
                     ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP === 'true'
                     ?
-                    <EditDependencyNetwork projectId={projectId}/>
+                    <EditDependencyNetwork projectId={projectId} projectPayload={projectPayload} setProjectPayload={setProjectPayload}/>
                     :
                     <LinkedReleases />
                 }

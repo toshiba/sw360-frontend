@@ -15,6 +15,7 @@ import Summary from '@/components/ProjectAddSummary/Summary'
 import { HttpStatus, InputKeyValue, Project, Vendor, ProjectPayload } from '@/object-types'
 import MessageService from '@/services/message.service'
 import { ApiUtils, CommonUtils } from '@/utils'
+import { ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP } from '@/utils/env'
 import { signOut, getSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { notFound, useRouter } from 'next/navigation'
@@ -221,7 +222,8 @@ function EditProject({ projectId }: { projectId: string }) {
 
     const updateProject = async () => {
         const session = await getSession()
-        const response = await ApiUtils.PATCH(`projects/${projectId}`, projectPayload, session.user.access_token)
+        const updateUrl = ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP ? `projects/network/${projectId}` : `projects/${projectId}`
+        const response = await ApiUtils.PATCH(updateUrl, projectPayload, session.user.access_token)
         if (response.status == HttpStatus.OK) {
             await response.json()
             MessageService.success(t('Project') + 
@@ -348,11 +350,13 @@ function EditProject({ projectId }: { projectId: string }) {
                                             />
                                         </Tab.Pane>
                                         <Tab.Pane eventKey='linkedProjectsAndReleases'>
-                                            <LinkedReleasesAndProjects
-                                                projectId={projectId}
-                                                projectPayload={projectPayload}
-                                                setProjectPayload={setProjectPayload}
-                                            />
+                                            {projectPayload.name &&
+                                                <LinkedReleasesAndProjects
+                                                    projectId={projectId}
+                                                    projectPayload={projectPayload}
+                                                    setProjectPayload={setProjectPayload}
+                                                />
+                                            }
                                         </Tab.Pane>
                                         <Tab.Pane eventKey='attachments'></Tab.Pane>
                                         <Tab.Pane eventKey='obligations'></Tab.Pane>

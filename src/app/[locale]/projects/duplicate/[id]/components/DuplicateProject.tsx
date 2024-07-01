@@ -15,6 +15,7 @@ import Summary from '@/components/ProjectAddSummary/Summary'
 import { HttpStatus, InputKeyValue, Project, ProjectPayload, Vendor } from '@/object-types'
 import MessageService from '@/services/message.service'
 import { ApiUtils, CommonUtils } from '@/utils'
+import { ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP } from '@/utils/env'
 import { signOut, getSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { notFound, useRouter } from 'next/navigation'
@@ -48,6 +49,7 @@ function DuplicateProject({projectId}:Props) {
     const [projectOwner, setProjectOwner] = useState<{ [k: string]: string }>({})
     const [projectManager, setProjectManager] = useState<{ [k: string]: string }>({})
     const [leadArchitect, setLeadArchitect] = useState<{ [k: string]: string }>({})
+    const [isDuplicateProjectFetched, setIsDuplicateProjectFetched] = useState(false)
 
     const [projectPayload, setProjectPayload] = useState<ProjectPayload>({
         name: '',
@@ -221,17 +223,19 @@ function DuplicateProject({projectId}:Props) {
                 licenseInfoHeaderText: project.licenseInfoHeaderText
             }
             setProjectPayload(projectPayloadData)
+            setIsDuplicateProjectFetched(true)
         })
     }, [projectId, fetchData, setProjectPayload])
 
     const createProject = async () => {
         const session = await getSession()
-        const response = await ApiUtils.POST(`projects/duplicate/${projectId}`, projectPayload, session.user.access_token)
+        const createProjectUrl = ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP ? `projects/network` : `projects/duplicate/${projectId}`
+        const response = await ApiUtils.POST(createProjectUrl, projectPayload, session.user.access_token)
 
         if (response.status == HttpStatus.CREATED) {
-            await response.json()
+            const data = await response.json()
             MessageService.success(t('Your project is created'))
-            router.push(`/projects/detail/${projectId}`)
+            router.push(`/projects/detail/${data._links.self.href.split('/').at(-1)}`)
         } else {
             MessageService.error(t('There are some errors while creating project'))
         }
@@ -333,10 +337,14 @@ function DuplicateProject({projectId}:Props) {
                                             />
                                         </Tab.Pane>
                                         <Tab.Pane eventKey='linkedProjects'>
-                                            <LinkedReleasesAndProjects
-                                                projectPayload={projectPayload}
-                                                setProjectPayload={setProjectPayload}
-                                            />
+                                            {
+                                                isDuplicateProjectFetched &&
+                                                <LinkedReleasesAndProjects
+                                                    projectId={projectId}
+                                                    projectPayload={projectPayload}
+                                                    setProjectPayload={setProjectPayload}
+                                                />
+                                            }
                                         </Tab.Pane>
                                     </Tab.Content>
                                 </Row>
