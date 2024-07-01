@@ -20,7 +20,7 @@ import { getSession } from 'next-auth/react'
 import { ApiUtils, CommonUtils } from '@/utils/index'
 import React from 'react'
 import SearchReleasesModal from '../sw360/SearchReleasesModal/SearchReleasesModal'
-import { Embedded, ReleaseDetail, ReleaseLink } from '@/object-types'
+import { Embedded, HttpStatus, ReleaseDetail, ReleaseLink } from '@/object-types'
 import styles from './component.module.css'
 import { useTranslations } from 'next-intl'
 
@@ -35,6 +35,16 @@ interface ReleaseNode {
     releaseLink: Array<ReleaseNode>
     otherReleaseVersions?: Array<any>
     isDiff?: boolean | undefined
+}
+
+interface CheckCyclicLinkPayload {
+    linkedToReleases?: Array<string>
+    linkedReleases?: Array<string>
+}
+
+interface CheckCyclicResponse {
+    message: string
+    status: number
 }
 
 const releaseRelationship = {
@@ -88,11 +98,13 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
         removedNode: ReleaseNode,
         parentNode: ReleaseNode
     }>(undefined)
+    const linkedToReleases = useRef(undefined)
 
     const compareSpinner = useRef(undefined);
     const [selectedReleases, setSelectedReleases] = useState<Array<ReleaseDetail>>([])
     const [network, setNetwork] = useState<Array<ReleaseNode>>(undefined)
     const [duplicatedReleases, setDuplicatedReleases] = useState<Array<string>>([])
+    const [displayedCyclicLinks, setDisplayedCyclicLinks] = useState<Array<string>>([])
 
     const [showWarning, setShowWarning] = useState<boolean>(false)
     const [showReleaseModal, setShowReleaseModal] = useState<boolean>(false)
@@ -110,13 +122,13 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
                     <td className={`align-middle`} style={{ paddingLeft: `${0.5 + level * 1}rem` }}>
                         {release.releaseName}
                         <Tooltip text='Add child releases' className='float-end'>
-                            <FaPlus className='float-end cursor-pointer' size={20} onClick={() => addChildrenNode(release)} />
+                            <FaPlus className='float-end cursor-pointer' size={20} onClick={() => addChildrenNode(release, pathIdToNode)} />
                         </Tooltip>
                     </td>
                     <td>
                         <Form.Select
                             onFocus={() => fetchOtherVersionsOfRelease(release)}
-                            onChange={(event) => updateReleaseOfNode(release, parentNode, event)}
+                            onChange={(event) => updateReleaseOfNode(release, parentNode, releaseIdPath, event)}
                             >
                             {
                                 release.otherReleaseVersions
@@ -186,9 +198,10 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
         })
     }
 
-    const addChildrenNode = (release: ReleaseNode) => {
+    const addChildrenNode = (release: ReleaseNode, idPathFromRoot: Array<string>) => {
         setShowReleaseModal(true)
         nodeToAddChildren.current = release
+        linkedToReleases.current = idPathFromRoot
         addReleaseMode.current = ADD_RELEASE_MODES.CHILDREN
     }
 
@@ -238,10 +251,10 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
         setNetwork(data)
     }, [projectId])
 
-    const createReleaseNodeFromReleaseIds = (releasesInSameLevel: Array<string>) => {
+    const createReleaseNodeFromReleaseIds = (validSelectedReleases: Array<ReleaseDetail>, releasesInSameLevel: Array<string>) => {
         const releasesDuplicateInSameLevel = []
         const releaseNodes: Array<ReleaseNode> = []
-        for (const rel of selectedReleases) {
+        for (const rel of validSelectedReleases) {
             if (!releasesInSameLevel.includes(rel.id)) {
                 const newNode: ReleaseNode = {
                     releaseId: rel.id,
@@ -319,10 +332,23 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
         setNetwork([...network])
     }
 
-    const updateReleaseOfNode = (release: ReleaseNode, parentNode: ReleaseNode, event: React.ChangeEvent<HTMLSelectElement>) => {
+    const updateReleaseOfNode = async (release: ReleaseNode, parentNode: ReleaseNode, releaseIdPath: Array<string>, event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedReleaseId = event.target.value
         const selectedIndex = event.target.selectedIndex
         const selectedReleaseVersion = event.target.options[selectedIndex].text
+
+        const subNodeIdsOfCurrentNode = getSubNodeIdsOfCurrentNode(release.releaseLink)
+        const cyclicLinks = await getCyclicLinks(subNodeIdsOfCurrentNode, releaseIdPath, selectedReleaseId)
+
+        if (!CommonUtils.isNullEmptyOrUndefinedArray(cyclicLinks)) {
+            setDuplicatedReleases([])
+            event.target.value = release.releaseId
+            setDisplayedCyclicLinks(cyclicLinks)
+            showWarningMessage()
+            return
+        }
+
+        setDisplayedCyclicLinks([])
         if (parentNode === undefined) {
             if (Object.values(network).map(rel => rel.releaseId).includes(selectedReleaseId)) {
                 setDuplicatedReleases([`${release.releaseName} (${selectedReleaseVersion})`])
@@ -344,6 +370,17 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
             release.releaseVersion = selectedReleaseVersion
             setNetwork([...network])
         }
+    }
+
+    const getSubNodeIdsOfCurrentNode = (subNodes: Array<ReleaseNode>): Array<string> => {
+        if (CommonUtils.isNullEmptyOrUndefinedArray(subNodes))
+            return []
+        const subNodeIds: Array<string> = []
+        for (const subNode of subNodes) {
+            subNodeIds.push(subNode.releaseId)
+            subNodeIds.push(...getSubNodeIdsOfCurrentNode(subNode.releaseLink))
+        }
+        return subNodeIds
     }
 
     const fetchOtherVersionsOfRelease = async (release: ReleaseNode) => {
@@ -374,19 +411,66 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
         compareSpinner.current.style.display = 'none'
     }
 
+    const getCyclicLinks = async (linkedReleases: Array<string>, linkedToReleases: Array<string>, checkingReleaseId: string) => {
+        const session = await getSession()
+        const cyclicCheckPayload: CheckCyclicLinkPayload = {
+            linkedReleases: linkedReleases,
+            linkedToReleases: linkedToReleases,
+        }
+        const response = await ApiUtils.POST(`releases/${checkingReleaseId}/checkCyclicLink`, cyclicCheckPayload, session.user.access_token)
+        const cyclicLinks: Array<string> = []
+        if (response.status == HttpStatus.MULTIPLE_STATUS) {
+            const data = await response.json() as Array<CheckCyclicResponse>
+            for (const cyclicResponse of data) {
+                if (cyclicResponse.status == HttpStatus.CONFLICT) {
+                    if (!cyclicLinks.includes(cyclicResponse.message.trim())) {
+                        cyclicLinks.push(cyclicResponse.message.trim())
+                    }
+                }
+            }
+        }
+        return cyclicLinks
+    }
+
+    const getNotCyclicReleaseToLink = async () => {
+        const validSelectedReleases: Array<ReleaseDetail> = []
+        const cyclicLinks: Array<string> = []
+        for (const release of selectedReleases) {
+            const cyclicLinksOfRelease = await getCyclicLinks([], linkedToReleases.current, release.id)
+            if (cyclicLinksOfRelease.length === 0) {
+                validSelectedReleases.push(release)
+            }
+            cyclicLinks.push(...cyclicLinksOfRelease)
+        }
+        setDisplayedCyclicLinks(cyclicLinks)
+        if (cyclicLinks.length > 0) {
+            showWarningMessage()
+        }
+        return validSelectedReleases
+    }
+
     useEffect(() => {
         if (selectedReleases.length === 0)
             return
         if (addReleaseMode.current === ADD_RELEASE_MODES.ROOT) {
-            const newReleaseNodes = createReleaseNodeFromReleaseIds(network.map(rel => rel.releaseId))
+            setDisplayedCyclicLinks([])
+            const newReleaseNodes = createReleaseNodeFromReleaseIds(selectedReleases, network.map(rel => rel.releaseId))
             setNetwork([...network, ...newReleaseNodes])
             addReleaseMode.current = undefined
         } else {
-            const newReleaseNodes = createReleaseNodeFromReleaseIds(nodeToAddChildren.current.releaseLink.map(rel => rel.releaseId))
-            nodeToAddChildren.current.releaseLink = [...nodeToAddChildren.current.releaseLink, ...newReleaseNodes]
-            setNetwork([...network])
-            nodeToAddChildren.current = undefined
-            addReleaseMode.current = undefined
+            getNotCyclicReleaseToLink().then(validSelectedReleases => {
+                const newReleaseNodes = createReleaseNodeFromReleaseIds(validSelectedReleases, nodeToAddChildren.current.releaseLink.map(rel => rel.releaseId))
+                nodeToAddChildren.current.releaseLink = [...nodeToAddChildren.current.releaseLink, ...newReleaseNodes]
+                setNetwork([...network])
+                linkedToReleases.current = undefined
+                nodeToAddChildren.current = undefined
+                addReleaseMode.current = undefined
+            }).catch(err => {
+                console.error(err)
+                linkedToReleases.current = undefined
+                nodeToAddChildren.current = undefined
+                addReleaseMode.current = undefined
+            })
         }
         setSelectedReleases([])
     }, [selectedReleases])
@@ -424,10 +508,19 @@ const EditDependencyNetwork = ({ projectId }: { projectId?: string }) => {
                             >
                                 <b><FaInfoCircle size={13} /> Warning:</b>
                                 <p>
+                                    <>
                                     {
                                         !CommonUtils.isNullEmptyOrUndefinedArray(duplicatedReleases)
-                                        && <>Duplicated releases: <b>{duplicatedReleases.join(', ')}</b></>
+                                        && <div>Duplicated releases: <b>{duplicatedReleases.join(', ')}</b></div>
                                     }
+                                    </>
+                                    <>
+                                    {
+                                        !CommonUtils.isNullEmptyOrUndefinedArray(displayedCyclicLinks)
+                                        && Object.values(displayedCyclicLinks)
+                                            .map(cyclicLink => <div key={cyclicLink}>Cyclic Hierarchy: <b>{cyclicLink}</b></div>)
+                                    }
+                                    </>
                                 </p>
                             </Alert>
                             <LinkedReleasesTable>
