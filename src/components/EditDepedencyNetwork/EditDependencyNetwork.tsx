@@ -41,25 +41,25 @@ interface IProps {
 }
 
 const releaseRelationship = {
-    UNKNOWN: 'Unknown',
-    CONTAINED: 'Contained',
-    REFERRED: 'Related',
-    DYNAMICALLY_LINKED: 'Dynamically linked',
-    STATICALLY_LINKED: 'Statically linked',
-    SIDE_BY_SIDE: 'Side by side',
-    STANDALONE: 'Standalone',
-    INTERNAL_USE: 'Internal use',
-    OPTIONAL: 'Optional',
-    TO_BE_REPLACED: 'To be replaced',
-    CODE_SNIPPET: 'Code Snippet',
+    UNKNOWN: 'UNKNOWN',
+    CONTAINED: 'CONTAINED',
+    REFERRED: 'REFERRED',
+    DYNAMICALLY_LINKED: 'DYNAMICALLY_LINKED',
+    STATICALLY_LINKED: 'STATICALLY_LINKED',
+    SIDE_BY_SIDE: 'SIDE_BY_SIDE',
+    STANDALONE: 'STANDALONE',
+    INTERNAL_USE: 'INTERNAL_USE',
+    OPTIONAL: 'OPTIONAL',
+    TO_BE_REPLACED: 'TO_BE_REPLACED',
+    CODE_SNIPPET: 'CODE_SNIPPET',
 }
 
 const mainlineStates = {
-    OPEN: 'Open',
-    MAINLINE: 'Mainline',
-    SPECIFIC: 'Specific',
-    PHASEOUT: 'Phaseout',
-    DENIED: 'Denied',
+    OPEN: 'OPEN',
+    MAINLINE: 'MAINLINE',
+    SPECIFIC: 'SPECIFIC',
+    PHASEOUT: 'PHASEOUT',
+    DENIED: 'DENIED',
 }
 
 const Tooltip = ({ text, children, className }: { text: string, children: ReactNode, className?: string }) => {
@@ -142,7 +142,7 @@ const EditDependencyNetwork = ({ projectId, projectPayload, setProjectPayload }:
                         </Form.Select>
                     </td>
                     <td style={{ width: '5%' }} className='align-middle text-center'>
-                        <Tooltip text='Load default child releases'>
+                        <Tooltip text={t('Load default child releases')}>
                             <ImSpinner11 size={19} className='cursor-pointer' onClick={() => loadDefaultNetwork(release)} />
                         </Tooltip>
                     </td>
@@ -153,7 +153,7 @@ const EditDependencyNetwork = ({ projectId, projectPayload, setProjectPayload }:
                                     <option key={key} value={key}
                                         selected={key === release.releaseRelationship}
                                     >
-                                        {value}
+                                        {t(value as never)}
                                     </option>
                                 )
                             }
@@ -166,7 +166,7 @@ const EditDependencyNetwork = ({ projectId, projectPayload, setProjectPayload }:
                                     <option key={key} value={key}
                                         selected={key === release.mainlineState}
                                     >
-                                        {value}
+                                        {t(value as never)}
                                     </option>
                                 )
                             }
@@ -175,13 +175,13 @@ const EditDependencyNetwork = ({ projectId, projectPayload, setProjectPayload }:
                     <td>
                         <input type='text'
                             className='form-control'
-                            placeholder='Enter comment'
+                            placeholder={t('Enter comment')}
                             defaultValue={release.comment}
                             onChange={(event) => changeComment(release, event)}
                         />
                     </td>
                     <td className='align-middle text-center'>
-                        <Tooltip text='Delete'>
+                        <Tooltip text={t('Delete')}>
                             <FaRegTrashAlt size={19} className='cursor-pointer' onClick={() => removeNode(parentNode, release)} />
                         </Tooltip>
                     </td>
@@ -251,9 +251,9 @@ const EditDependencyNetwork = ({ projectId, projectPayload, setProjectPayload }:
             if (!releasesInSameLevel.includes(rel.id)) {
                 const newNode: ReleaseNode = {
                     releaseId: rel.id,
-                    releaseRelationship: "CONTAINED",
-                    mainlineState: "OPEN",
-                    comment: "",
+                    releaseRelationship: 'CONTAINED',
+                    mainlineState: 'OPEN',
+                    comment: '',
                     releaseLink: [],
                     releaseName: rel.name,
                     releaseVersion: rel.version,
@@ -396,6 +396,8 @@ const EditDependencyNetwork = ({ projectId, projectPayload, setProjectPayload }:
     }
 
     const compareWithDefault = async () => {
+        if (network === undefined) return
+
         compareSpinner.current.style.display = 'inline-block'
         const session = await getSession()
         const response = await ApiUtils.POST('projects/network/compareDefaultNetwork', network, session.user.access_token)
@@ -486,12 +488,12 @@ const EditDependencyNetwork = ({ projectId, projectPayload, setProjectPayload }:
     return (
         <div className='row mb-4'>
             <div className={`${styles.title} mb-2`}>
-                <h6 className='fw-bold'>
-                    LINKED RELEASES
+                <h6 className='fw-bold text-uppercase'>
+                    {t('Linked Releases')}
                     <hr className='my-2 mb-2'/>
                 </h6>
                 <Button variant='outline-success' className='float-start' onClick={compareWithDefault}>
-                    Compare with default network {' '}
+                    {t('Compare with default network')} {' '}
                     <Spinner ref={compareSpinner} className='spinner' size='sm' style={{ display: 'none' }} />
                 </Button>
             </div>
@@ -506,19 +508,19 @@ const EditDependencyNetwork = ({ projectId, projectPayload, setProjectPayload }:
                                 dismissible
                                 className={`${styles['warning-message']}`}
                             >
-                                <b><FaInfoCircle size={13} /> Warning:</b>
+                                <b><FaInfoCircle size={13} /> {t('Warning')}:</b>
                                 <p>
                                     <>
                                     {
                                         !CommonUtils.isNullEmptyOrUndefinedArray(duplicatedReleases)
-                                        && <div>Duplicated releases: <b>{duplicatedReleases.join(', ')}</b></div>
+                                        && <div>{t('Duplicated Releases')}: <b>{duplicatedReleases.join(', ')}</b></div>
                                     }
                                     </>
                                     <>
                                     {
                                         !CommonUtils.isNullEmptyOrUndefinedArray(displayedCyclicLinks)
                                         && Object.values(displayedCyclicLinks)
-                                            .map(cyclicLink => <div key={cyclicLink}>Cyclic Hierarchy: <b>{cyclicLink}</b></div>)
+                                            .map(cyclicLink => <div key={cyclicLink}>{t('Cyclic Hierarchy')}: <b>{cyclicLink}</b></div>)
                                     }
                                     </>
                                 </p>
@@ -530,7 +532,7 @@ const EditDependencyNetwork = ({ projectId, projectPayload, setProjectPayload }:
                                     }
                                 </tbody>
                             </LinkedReleasesTable>
-                            <Button variant='secondary' className='mt-2' onClick={() => addRootNode()}>Add Releases</Button>
+                            <Button variant='secondary' className='mt-2' onClick={() => addRootNode()}>{t('Add Releases')}</Button>
                         </>
                         :
                         <div className='col-12 text-center'>
@@ -540,13 +542,13 @@ const EditDependencyNetwork = ({ projectId, projectPayload, setProjectPayload }:
                 <SearchReleasesModal projectId={projectId} show={showReleaseModal} setShow={setShowReleaseModal} setSelectedReleases={setSelectedReleases} />
                 <Modal className='modal-danger' show={showConfirmDelete} setShow={setShowConfirmDelete} backdrop='static' centered size='lg'>
                     <Modal.Header closeButton>
-                        <Modal.Title><FaRegQuestionCircle /> Delete link to release?</Modal.Title>
+                        <Modal.Title><FaRegQuestionCircle /> {t('Delete link to release')}?</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         {
                             nodeRefToRemove.current &&
                             <p>
-                                Do you really want to remove the link to release
+                                {t('Do you really want to remove the link to release')}
                                 {' '}
                                 <b>
                                     {`${nodeRefToRemove.current?.removedNode.releaseName} (${nodeRefToRemove.current?.removedNode.releaseVersion})`}
@@ -565,7 +567,7 @@ const EditDependencyNetwork = ({ projectId, projectPayload, setProjectPayload }:
                             {t('Close')}
                         </Button>
                         <Button type='button' variant='danger' onClick={confirmToDelete}>
-                            Delete Link
+                            {t('Delete Link')}
                         </Button>
                     </Modal.Footer>
                 </Modal>

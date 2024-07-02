@@ -10,6 +10,7 @@
 
 import { Table } from 'react-bootstrap'
 import { ShowInfoOnHover } from 'next-sw360'
+import { useTranslations } from 'next-intl'
 
 const LinkedReleasesTable = ({children}: {children: React.ReactNode}) => {
     return (
@@ -21,36 +22,37 @@ const LinkedReleasesTable = ({children}: {children: React.ReactNode}) => {
 }
 
 const TableHeader = () => {
+    const t = useTranslations('default')
     return (
         <thead>
             <tr>
-                <th>
-                    Release Name
+                <th className='text-capitalize'>
+                    {t('Release name')}
                 </th>
-                <th>
-                    Release version
+                <th className='text-capitalize'>
+                    {t('Release version')}
                 </th>
                 <th style={{width: '5%'}}>
                     <div>
-                        <span>Reload Info </span> <ShowInfoOnHover text='Load default child releases'/>
+                        <span>{t('Reload Info')}</span> <ShowInfoOnHover text={t('Load default child releases')}/>
                     </div>
                 </th>
                 <th>
                     <div>
-                        <span>Release relation </span>
+                        <span className='text-capitalize'>{t('Release relation')}</span>
                         <ShowInfoOnHover text={
                             <>
-                            <b>Unkown</b>: If you just do not know
-                            <br /><b>Contained</b>: If you just do not know whether it is dynamically linked
-                            <br /><b>Refered</b>: Referencing a stand alone used other part
-                            <br /><b>Dynamically Linked</b>: Software dynamically linked - as the name says
-                            <br /><b>Statically linked</b>: Software statically linked - as the name says
-                            <br /><b>Side by side</b>: Not decided so far
-                            <br /><b>Standalone</b>: Software is given as standalone delivery, ie. not technically connected
-                            <br /><b>Internal Use</b>: Used for creating or building or ? the product or projects but not delivered
-                            <br /><b>Optional</b>: Is not mandatory part of the installation
-                            <br /><b>To be replaced</b>: Is there but should be moved out
-                            <br /><b>Code Snippet</b>: From references release, a fragment is used.
+                            <b>{t('UNKNOWN')}</b>: {t('release_relation_unknown_tooltip')}
+                            <br /><b>{t('CONTAINED')}</b>: {t('release_relation_contained_tooltip')}
+                            <br /><b>{t('REFERRED')}</b>: {t('release_relation_referred_tooltip')}
+                            <br /><b>{t('DYNAMICALLY_LINKED')}</b>: {t('release_relation_dynamic_linked_tooltip')}
+                            <br /><b>{t('STATICALLY_LINKED')}</b>: {t('release_relation_static_linked_tooltip')}
+                            <br /><b>{t('SIDE_BY_SIDE')}</b>: {t('release_relation_side_by_side_tooltip')}
+                            <br /><b>{t('STANDALONE')}</b>: {t('release_relation_standalone_tooltip')}
+                            <br /><b>{t('INTERNAL_USE')}</b>: {t('release_relation_interal_use_tooltip')}
+                            <br /><b>{t('OPTIONAL')}</b>: {t('release_relation_optional_tooltip')}
+                            <br /><b>{t('TO_BE_REPLACED')}</b>: {t('release_relation_to_be_replaced_tooltip')}
+                            <br /><b>{t('CODE_SNIPPET')}</b>: {t('release_relation_code_snippest_tooltip')}.
                             </>
                         }
                         />
@@ -58,24 +60,24 @@ const TableHeader = () => {
                 </th>
                 <th>
                     <div>
-                        <span>Project Mainline State </span>
+                        <span className='text-capitalize'>{t('Project Mainline State')} </span>
                         <ShowInfoOnHover text={
                             <>
-                            <b>Open</b>: Not decided so far
-                            <br /><b>Mainline</b>: Organisation or person thinks that use of this software is recommended, which included multiple versions
-                            <br /><b>Specific</b>: The software is not recommended in general, but for special use case or for this particular version it is acceptable
-                            <br /><b>In Phaseout</b>: The software has issues, please consider removing it soon, if in use
-                            <br /><b>Denied</b>: Software which is not allowed for use. For example, software that does not have licensing
+                            <b>{t('OPEN')}</b>: {t('mainline_state_open_tooltip')}
+                            <br /><b>{t('MAINLINE')}</b>: {t('mainline_state_mainline_tooltip')}
+                            <br /><b>{t('SPECIFIC')}</b>: {t('mainline_state_specific_tooltip')}
+                            <br /><b>{t('PHASEOUT')}</b>: {t('mainline_state_phaseout_tooltip')}
+                            <br /><b>{t('DENIED')}</b>: {t('mainline_state_denied_tooltip')}
                             </>
                         }
                         />
                     </div>
                 </th>
                 <th>
-                    Comments
+                    {t('Comments')}
                 </th>
                 <th style={{width: '5%'}}>
-                    Action
+                    {t('Action')}
                 </th>
             </tr>
         </thead>
