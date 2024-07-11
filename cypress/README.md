@@ -27,7 +27,9 @@ SW360 auto E2E testing is a system by using Cypress that is a next generation fr
 
 ### 2.2. Setup project
 
-- Since the new front-end is still in development, this test code will work in the new front-end code with commit id: **f8d818333be404be5d9e56189fafe1d968788d29**
+- Since the new front-end is still in development, this test code will work in: 
+   + New front-end code with commit id: **8ff017b0c483662df9c29930b4a5b1251fac9f47**
+   + Backend: depend on PR https://github.com/eclipse-sw360/sw360/pull/2400
 - Clone source code for testing
     ```sh
     $ git clone https://github.com/eclipse-sw360/sw360-frontend.git
