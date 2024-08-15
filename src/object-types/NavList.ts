@@ -42,6 +42,7 @@ function NavList() {
                 { href: '#', name: t('OAuth Client'), id: 'admin_oauth_client' },
                 { href: '#', name: t('License Types'), id: 'admin_license_types' },
                 { href: '#', name: t('Department'), id: 'admin_department' },
+                { href: '/admin/configurations', name: t('Configurations'), id: 'configurations' },
             ],
         },
     ]

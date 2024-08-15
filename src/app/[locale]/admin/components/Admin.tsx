@@ -18,6 +18,7 @@ import { HiOutlineDocumentDuplicate } from 'react-icons/hi'
 import { ImUsers } from 'react-icons/im'
 import { RiArrowUpDownFill, RiOrganizationChart } from 'react-icons/ri'
 import { RxCalendar } from 'react-icons/rx'
+import { GrConfigure } from 'react-icons/gr'
 
 const AdminMainPage = () => {
     const t = useTranslations('default')
@@ -93,6 +94,11 @@ const AdminMainPage = () => {
                     <Link href='#'>
                         <button type='button' className='btn btn-secondary mb-2 mx-2' style={{ width: '210px' }}>
                             <HiOutlineDocumentDuplicate /> {t('OAuth Client')}
+                        </button>
+                    </Link>
+                    <Link href='/admin/configurations'>
+                        <button type='button' className='btn btn-secondary mb-2 mx-2' style={{ width: '210px' }}>
+                            <GrConfigure /> {t('Configurations')}
                         </button>
                     </Link>
                 </div>

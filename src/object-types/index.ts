@@ -86,6 +86,7 @@ import SPDXDocument from './spdx/SPDXDocument'
 import SnippetInformation from './spdx/SnippetInformation'
 import SnippetRange from './spdx/SnippetRange'
 import SearchDuplicatesResponse from './SearchDuplicateResponse'
+import Configuration from './Configuration'
 
 export type {
     AccessToken,
@@ -170,7 +171,8 @@ export type {
     MessageOptions,
     VulnerabilityTrackingStatus,
     ProjectVulnerabilityTrackingStatus,
-    SearchDuplicatesResponse
+    SearchDuplicatesResponse,
+    Configuration,
 }
 
 // Special functions for populate data
@@ -188,6 +190,7 @@ import HttpStatus from './enums/HttpStatus'
 import RequestDocumentTypes from './enums/RequestDocumentTypes'
 import ReleaseTabIds from './enums/ReleaseTabIds'
 import VulnerabilitiesVerificationState from './enums/VulnerabilitiesVerificationState'
+import ConfigKeys from './enums/ConfigKeys'
 
 export {
     ActionType,
@@ -201,4 +204,5 @@ export {
     RequestDocumentTypes,
     ReleaseTabIds,
     VulnerabilitiesVerificationState,
+    ConfigKeys,
 }
