@@ -8,7 +8,11 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
 import DetailOverview from './components/DetailOverview'
+import { ApiUtils } from '@/utils/index'
+import { ConfigKeys, Configuration } from '@/object-types'
 
 interface Context {
     params: { id: string }
@@ -17,7 +21,12 @@ interface Context {
 const Detail = async ({ params }: Context) => {
     const releaseId = params.id
 
-    return <DetailOverview releaseId={releaseId} />
+    const session = await getServerSession(authOptions)
+    const response = await ApiUtils.GET('configurations', session.user.access_token)
+    const configs = await response.json() as Configuration
+    const isSPDXFeatureEnabled = configs[ConfigKeys.SPDX_DOCUMENT_ENABLED] == 'true'
+
+    return <DetailOverview releaseId={releaseId} isSPDXFeatureEnabled={isSPDXFeatureEnabled}/>
 }
 
 export default Detail

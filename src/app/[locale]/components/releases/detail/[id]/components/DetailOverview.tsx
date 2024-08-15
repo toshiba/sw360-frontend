@@ -36,7 +36,6 @@ import {
 } from '@/object-types'
 import DownloadService from '@/services/download.service'
 import { ApiUtils, CommonUtils } from '@/utils'
-import { SPDX_ENABLE } from '@/utils/env'
 import styles from '../detail.module.css'
 import ClearingDetails from './ClearingDetails'
 import CommercialDetails from './CommercialDetails'
@@ -52,9 +51,10 @@ type EmbeddedReleaseLinks = Embedded<ReleaseLink, 'sw360:releaseLinks'>
 
 interface Props {
     releaseId: string
+    isSPDXFeatureEnabled: boolean
 }
 
-const DetailOverview = ({ releaseId }: Props) => {
+const DetailOverview = ({ releaseId, isSPDXFeatureEnabled }: Props) => {
     const t = useTranslations('default')
     const { data: session } = useSession()
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
@@ -99,15 +99,15 @@ const DetailOverview = ({ releaseId }: Props) => {
                     setEmbeddedAttachments(release._embedded['sw360:attachments'])
                 }
 
-                if (release.componentType === 'COTS' && SPDX_ENABLE !== 'true') {
+                if (release.componentType === 'COTS' && isSPDXFeatureEnabled !== true) {
                     setTabList(ReleaseDetailTabs.WITH_COMMERCIAL_DETAILS)
                 }
 
-                if (release.componentType === 'COTS' && SPDX_ENABLE === 'true') {
+                if (release.componentType === 'COTS' && isSPDXFeatureEnabled === true) {
                     setTabList(ReleaseDetailTabs.WITH_COMMERCIAL_DETAILS_AND_SPDX)
                 }
 
-                if (release.componentType !== 'COTS' && SPDX_ENABLE === 'true') {
+                if (release.componentType !== 'COTS' && isSPDXFeatureEnabled === true) {
                     setTabList(ReleaseDetailTabs.WITH_SPDX)
                 }
                 return release

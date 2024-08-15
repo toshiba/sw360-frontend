@@ -35,7 +35,6 @@ import {
     SPDX
 } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils'
-import { SPDX_ENABLE } from '@/utils/env'
 import { PageButtonHeader, SideBar } from 'next-sw360'
 import DeleteReleaseModal from '../../../detail/[id]/components/DeleteReleaseModal'
 import EditClearingDetails from './EditClearingDetails'
@@ -47,9 +46,10 @@ import MessageService from '@/services/message.service'
 
 interface Props {
     releaseId?: string
+    isSPDXFeatureEnabled: boolean
 }
 
-const EditRelease = ({ releaseId }: Props) => {
+const EditRelease = ({ releaseId, isSPDXFeatureEnabled }: Props) => {
     const router = useRouter()
     const t = useTranslations('default')
     const [selectedTab, setSelectedTab] = useState<string>(CommonTabIds.SUMMARY)
@@ -144,7 +144,7 @@ const EditRelease = ({ releaseId }: Props) => {
                 setDeletingRelease(releaseId)
                 setComponentId(CommonUtils.getIdFromUrl(release['_links']['sw360:component']['href']))
 
-                if (release.componentType === 'COTS' && SPDX_ENABLE !== 'true') {
+                if (release.componentType === 'COTS' && isSPDXFeatureEnabled !== true) {
                     setTabList(ReleaseEditTabs.WITH_COMMERCIAL_DETAILS)
                 }
 
@@ -153,11 +153,11 @@ const EditRelease = ({ releaseId }: Props) => {
                     setEccInformation(eccInformation)
                 }
 
-                if (release.componentType === 'COTS' && SPDX_ENABLE === 'true') {
+                if (release.componentType === 'COTS' && isSPDXFeatureEnabled === true) {
                     setTabList(ReleaseEditTabs.WITH_COMMERCIAL_DETAILS_AND_SPDX)
                 }
 
-                if (release.componentType !== 'COTS' && SPDX_ENABLE === 'true') {
+                if (release.componentType !== 'COTS' && isSPDXFeatureEnabled === true) {
                     setTabList(ReleaseEditTabs.WITH_SPDX)
                 }
 
@@ -338,7 +338,7 @@ const EditRelease = ({ releaseId }: Props) => {
 
     const submit = async () => {
         const session = await getSession()
-        if (SPDX_ENABLE === 'true') {
+        if (isSPDXFeatureEnabled === true) {
             setInputValid(true)
             if (validateLicenseIdentifier(SPDXPayload) && validateExtractedText(SPDXPayload)) {
                 setErrorLicenseIdentifier(true)
@@ -444,7 +444,7 @@ const EditRelease = ({ releaseId }: Props) => {
                                 setReleasePayload={setReleasePayload}
                             />
                         </div>
-                        {SPDX_ENABLE === 'true' && (
+                        {isSPDXFeatureEnabled === true && (
                             <div className='row' hidden={selectedTab !== ReleaseTabIds.SPDX_DOCUMENT ? true : false}>
                                 <EditSPDXDocument
                                     releaseId={releaseId}
