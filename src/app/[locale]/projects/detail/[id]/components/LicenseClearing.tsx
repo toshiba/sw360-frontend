@@ -10,16 +10,17 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Dropdown, Nav, Tab } from 'react-bootstrap'
 import ListView from './ListView'
 import TreeView from './TreeView'
 import { useRouter } from 'next/navigation'
-import { ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP } from '@/utils/env'
 import dynamic from 'next/dynamic'
 import CreateClearingRequestModal from './CreateClearingRequestModal'
-import { ClearingRequestStates } from '@/object-types'
+import { ClearingRequestStates, ConfigKeys, HttpStatus } from '@/object-types'
 import ViewClearingRequestModal from './ViewClearingRequestModal'
+import { ApiUtils } from '@/utils'
+import { getSession, signOut } from 'next-auth/react'
 
 const DependencyNetworkListView = dynamic(() => import('./DependencyNetworkListView'), { ssr: false })
 const DependencyNetworkTreeView = dynamic(() => import('./DependencyNetworkTreeView'), { ssr: false })
@@ -44,6 +45,26 @@ export default function LicenseClearing({
     const router = useRouter()
     const [showCreateClearingRequestModal, setShowCreateClearingRequestModal] = useState(false)
     const [showViewClearingRequestModal, setShowViewClearingRequestModal] = useState(false)
+    const [isDependencyNetworkFeatureEnabled, setDependencyNetworkFeatureEnabled] = useState(false)
+
+    useEffect(() => {
+        ;(async () => {
+            try {
+                const session = await getSession()
+                const response = await ApiUtils.GET('configurations', session.user.access_token)
+                if (response.status === HttpStatus.UNAUTHORIZED) {
+                    signOut()
+                } else if (response.status !== HttpStatus.OK) {
+                    setDependencyNetworkFeatureEnabled(false)
+                    return
+                }
+                const config = await response.json()
+                setDependencyNetworkFeatureEnabled(config[ConfigKeys.ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP] == 'true')
+            } catch {
+                setDependencyNetworkFeatureEnabled(false)
+            }
+        })()
+    }, [])
 
     const generateSourceCodeBundle = () => {
         router.push(`/projects/generateSourceCode/${projectId}`)
@@ -132,7 +153,7 @@ export default function LicenseClearing({
                 <Tab.Content className='mt-3'>
                     <Tab.Pane eventKey='tree-view'>
                         {
-                            ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP === 'true'
+                            isDependencyNetworkFeatureEnabled
                             ?
                                 <DependencyNetworkTreeView projectId={projectId} />
                             :
@@ -141,7 +162,7 @@ export default function LicenseClearing({
                     </Tab.Pane>
                     <Tab.Pane eventKey='list-view'>
                         {
-                            ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP === 'true'
+                            isDependencyNetworkFeatureEnabled
                             ?
                                 <DependencyNetworkListView projectId={projectId} />
                             :
