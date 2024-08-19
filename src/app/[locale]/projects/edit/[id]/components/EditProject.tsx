@@ -15,7 +15,6 @@ import Summary from '@/components/ProjectAddSummary/Summary'
 import { HttpStatus, InputKeyValue, Project, Vendor, ProjectPayload, ActionType, ProjectObligation, ReleaseDetail, DocumentTypes } from '@/object-types'
 import MessageService from '@/services/message.service'
 import { ApiUtils, CommonUtils } from '@/utils'
-import { ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP } from '@/utils/env'
 import { signOut, getSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { notFound, useRouter, useSearchParams } from 'next/navigation'
@@ -42,7 +41,7 @@ interface LinkedReleaseData {
     version: string
 }
 
-function EditProject({ projectId }: { projectId: string }): JSX.Element {
+function EditProject({ projectId, isDependencyNetworkFeatureEnabled }: { projectId: string, isDependencyNetworkFeatureEnabled: boolean }): JSX.Element {
     const router = useRouter()
     const t = useTranslations('default')
     const [vendor, setVendor] = useState<Vendor>({
@@ -324,7 +323,7 @@ function EditProject({ projectId }: { projectId: string }): JSX.Element {
             if(CommonUtils.isNullOrUndefined(session))
                 return signOut()
             const requests = [
-                ApiUtils.PATCH((ENABLE_FLEXIBLE_PROJECT_RELEASE_RELATIONSHIP === 'true') ? `projects/network/${projectId}` : `projects/${projectId}`, projectPayload, session.user.access_token),
+                ApiUtils.PATCH((isDependencyNetworkFeatureEnabled === true) ? `projects/network/${projectId}` : `projects/${projectId}`, projectPayload, session.user.access_token),
             ]
             if(Object.keys(obligations).length !== 0) {
                 requests.push(ApiUtils.PATCH(`projects/${projectId}/updateLicenseObligation`, obligations, session.user.access_token))
@@ -477,6 +476,7 @@ function EditProject({ projectId }: { projectId: string }): JSX.Element {
                                                     projectPayload={projectPayload}
                                                     setProjectPayload={setProjectPayload}
                                                     existingReleaseData={existingReleaseData}
+                                                    isDependencyNetworkFeatureEnabled={isDependencyNetworkFeatureEnabled}
                                                 />
                                             }
                                         </Tab.Pane>
