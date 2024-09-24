@@ -30,6 +30,8 @@ const isNullOrUndefined = (obj: unknown): boolean => {
  * @returns True if the string is null, empty or undefined, false otherwise.
  */
 const isNullEmptyOrUndefinedString = (str: string): boolean => {
+    if (str === undefined || str === null)
+        return true
     if (str.length === 0) {
         return true
     }
@@ -63,6 +65,8 @@ const createUrlWithParams = (url: string, params: UrlWithParams): string => {
  * @returns True if the array is null, empty or undefined, false otherwise.
  */
 const isNullEmptyOrUndefinedArray = (arr: Array<unknown>): boolean => {
+    if (arr === undefined || arr === null)
+        return true
     if (arr.length === 0) {
         return true
     }
