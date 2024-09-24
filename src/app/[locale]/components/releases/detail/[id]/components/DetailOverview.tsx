@@ -33,6 +33,7 @@ import {
     ReleaseDetail,
     ReleaseLink,
     ReleaseTabIds,
+    User,
 } from '@/object-types'
 import DownloadService from '@/services/download.service'
 import { ApiUtils, CommonUtils } from '@/utils'
@@ -66,6 +67,7 @@ const DetailOverview = ({ releaseId }: Props) => {
     const [changeLogIndex, setChangeLogIndex] = useState(-1)
     const [changeLogList, setChangeLogList] = useState<Array<Changelogs>>([])
     const [linkProjectModalShow, setLinkProjectModalShow] = useState<boolean>(false)
+    const [subscribers, setSubscribers] = useState<Array<string>>([])
 
     const [tabList, setTabList] = useState(ReleaseDetailTabs.WITHOUT_COMMERCIAL_DETAILS_AND_SPDX)
 
@@ -87,10 +89,18 @@ const DetailOverview = ({ releaseId }: Props) => {
         [session]
     )
 
+    const getSubcribersEmail = (release: ReleaseDetail) => {
+        return (release && release._embedded['sw360:subscribers'])
+            ? Object.values(release._embedded['sw360:subscribers'].map((user: User) => user.email))
+            : []
+    }
+
     useEffect(() => {
         fetchData(`releases/${releaseId}`)
             .then((release: ReleaseDetail) => {
                 setRelease(release)
+
+                setSubscribers(getSubcribersEmail(release))
 
                 if (
                     !CommonUtils.isNullOrUndefined(release._embedded) &&
@@ -156,6 +166,21 @@ const DetailOverview = ({ releaseId }: Props) => {
         )
     }
 
+    const handleSubcriptions = async () => {
+        await ApiUtils.POST(`releases/${releaseId}/subscriptions`, undefined, session.user.access_token)
+        fetchData(`releases/${releaseId}`)
+            .then((release: ReleaseDetail) => {
+                setRelease(release)
+                setSubscribers(getSubcribersEmail(release))
+            })
+    }
+
+    const isUserSubscribed = () => {
+        if (!session)
+            return false
+        return subscribers.includes(session.user.email)
+    }
+
     const headerButtons = {
         'Edit release': { link: `/components/editRelease/${releaseId}`, type: 'primary', name: t('Edit release') },
         'Link To Project': {
@@ -167,7 +192,12 @@ const DetailOverview = ({ releaseId }: Props) => {
             name: t('Link To Project'),
         },
         Merge: { link: '', type: 'secondary', name: t('Merge') },
-        Subscribe: { link: '', type: 'outline-success', name: t('Subscribe') },
+        Subscribe: {
+            link: '',
+            type: isUserSubscribed() ? 'outline-danger' : 'outline-success',
+            name: isUserSubscribed() ? t('Unsubscribe') : t('Subscribe'),
+            onClick: handleSubcriptions
+        },
     }
 
     return (
@@ -185,77 +215,79 @@ const DetailOverview = ({ releaseId }: Props) => {
                     </div>
                     <div className='col'>
                         <div className='row' style={{ marginBottom: '20px' }}>
-                            <PageButtonHeader title={`${release.name} ${release.version}`} buttons={headerButtons}>
-                                <div style={{ marginLeft: '5px' }} className='btn-group' role='group'>
-                                    <Dropdown>
-                                        <Dropdown.Toggle variant='primary'>
-                                            <span
-                                                className={`${styles['badge-circle']} ${styles[release.clearingState]}`}
-                                            ></span>
-                                            {`${t('Version')} ${release.version}`}
-                                        </Dropdown.Toggle>
-                                        <Dropdown.Menu>
-                                            {releasesSameComponent &&
-                                                Object.entries(releasesSameComponent).map(
-                                                    ([index, item]: [string, ReleaseLink]) => (
-                                                        <Dropdown.Item key={index} className={styles['dropdown-item']}>
-                                                            <span
-                                                                className={`${styles['badge-circle']} ${
-                                                                    styles[item.clearingState]
-                                                                }`}
-                                                            ></span>
-                                                            <Link href={`/components/releases/detail/${item.id}`}>
-                                                                {`${t('Version')} ${item.version}`}
-                                                            </Link>
-                                                        </Dropdown.Item>
-                                                    )
-                                                )}
-                                        </Dropdown.Menu>
-                                    </Dropdown>
-                                </div>
-                                {selectedTab === CommonTabIds.ATTACHMENTS && embeddedAttachments.length > 0 && (
-                                    <div className='list-group-companion' data-belong-to='tab-Attachments'>
-                                        <div className='btn-group' role='group'>
-                                            <button
-                                                id='downloadAttachmentBundle'
-                                                type='button'
-                                                className='btn btn-secondary'
-                                                onClick={downloadBundle}
-                                            >
-                                                {t('Download Attachment Bundle')}
-                                            </button>
+                            <div className='col-auto pe-0 btn-group' role='group'>
+                                <Dropdown>
+                                    <Dropdown.Toggle variant='primary'>
+                                        <span
+                                            className={`${styles['badge-circle']} ${styles[release.clearingState]}`}
+                                        ></span>
+                                        {`${t('Version')} ${release.version}`}
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        {releasesSameComponent &&
+                                            Object.entries(releasesSameComponent).map(
+                                                ([index, item]: [string, ReleaseLink]) => (
+                                                    <Dropdown.Item key={index} className={styles['dropdown-item']}>
+                                                        <span
+                                                            className={`${styles['badge-circle']} ${
+                                                                styles[item.clearingState]
+                                                            }`}
+                                                        ></span>
+                                                        <Link href={`/components/releases/detail/${item.id}`}>
+                                                            {`${t('Version')} ${item.version}`}
+                                                        </Link>
+                                                    </Dropdown.Item>
+                                                )
+                                            )}
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </div>
+                            <div className='col'>
+                                <PageButtonHeader title={`${release.name} ${release.version}`} buttons={headerButtons}>
+                                    {selectedTab === CommonTabIds.ATTACHMENTS && embeddedAttachments.length > 0 && (
+                                        <div className='list-group-companion' data-belong-to='tab-Attachments'>
+                                            <div className='btn-group' role='group'>
+                                                <button
+                                                    id='downloadAttachmentBundle'
+                                                    type='button'
+                                                    className='btn btn-secondary'
+                                                    onClick={downloadBundle}
+                                                >
+                                                    {t('Download Attachment Bundle')}
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
-                                {selectedTab === CommonTabIds.CHANGE_LOG && (
-                                    <div
-                                        className='nav nav-pills justify-content-center bg-light font-weight-bold'
-                                        id='pills-tab'
-                                        role='tablist'
-                                    >
-                                        <a
-                                            className={`nav-item nav-link ${
-                                                changesLogTab == 'list-change' ? 'active' : ''
-                                            }`}
-                                            onClick={() => setChangesLogTab('list-change')}
-                                            style={{ color: '#F7941E', fontWeight: 'bold' }}
+                                    )}
+                                    {selectedTab === CommonTabIds.CHANGE_LOG && (
+                                        <div
+                                            className='nav nav-pills justify-content-center bg-light font-weight-bold'
+                                            id='pills-tab'
+                                            role='tablist'
                                         >
-                                            {t('Change Log')}
-                                        </a>
-                                        <a
-                                            className={`nav-item nav-link ${
-                                                changesLogTab == 'view-log' ? 'active' : ''
-                                            }`}
-                                            onClick={() => {
-                                                changeLogIndex !== -1 && setChangesLogTab('view-log')
-                                            }}
-                                            style={{ color: '#F7941E', fontWeight: 'bold' }}
-                                        >
-                                            {t('Changes')}
-                                        </a>
-                                    </div>
-                                )}
-                            </PageButtonHeader>
+                                            <a
+                                                className={`nav-item nav-link ${
+                                                    changesLogTab == 'list-change' ? 'active' : ''
+                                                }`}
+                                                onClick={() => setChangesLogTab('list-change')}
+                                                style={{ color: '#F7941E', fontWeight: 'bold' }}
+                                            >
+                                                {t('Change Log')}
+                                            </a>
+                                            <a
+                                                className={`nav-item nav-link ${
+                                                    changesLogTab == 'view-log' ? 'active' : ''
+                                                }`}
+                                                onClick={() => {
+                                                    changeLogIndex !== -1 && setChangesLogTab('view-log')
+                                                }}
+                                                style={{ color: '#F7941E', fontWeight: 'bold' }}
+                                            >
+                                                {t('Changes')}
+                                            </a>
+                                        </div>
+                                    )}
+                                </PageButtonHeader>
+                            </div>
                         </div>
                         <div className='row' hidden={selectedTab !== CommonTabIds.SUMMARY ? true : false}>
                             <Summary release={release} releaseId={releaseId} />
