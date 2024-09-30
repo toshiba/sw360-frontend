@@ -33,6 +33,7 @@ import DownloadService from '@/services/download.service'
 import { ApiUtils, CommonUtils } from '@/utils'
 import ReleaseOverview from './ReleaseOverview'
 import Summary from './Summary'
+import MessageService from '@/services/message.service'
 
 type EmbeddedChangelogs = Embedded<Changelogs, 'sw360:changeLogs'>
 type EmbeddedVulnerabilities = Embedded<LinkedVulnerability, 'sw360:vulnerabilityDTOes'>
@@ -74,6 +75,7 @@ const DetailOverview = ({ componentId }: Props) => {
     const [changeLogList, setChangeLogList] = useState<Array<Changelogs>>([])
     const [vulnerData, setVulnerData] = useState<Array<LinkedVulnerability>>([])
     const [attachmentNumber, setAttachmentNumber] = useState<number>(0)
+    const [isSubscribed, setIsSubscribed] = useState(false);
 
     const fetchData = useCallback(
         async (url: string) => {
@@ -99,10 +101,18 @@ const DetailOverview = ({ componentId }: Props) => {
         )
     }
 
+    const setSubscriptionStatus = (targetComponent: Component) => {
+        const userEmail = session.user.email;
+        const subscribers = targetComponent._embedded['sw360:subscribers'];
+        const isSubscribe = subscribers.some((subscriber: any) => subscriber.email === userEmail);
+        setIsSubscribed(isSubscribe);
+    }
+
     useEffect(() => {
         fetchData(`components/${componentId}`)
             .then((component: Component) => {
-                setComponent(component)
+                setComponent(component);
+                setSubscriptionStatus(component);
                 if (
                     !CommonUtils.isNullOrUndefined(component['_embedded']) &&
                     !CommonUtils.isNullOrUndefined(component['_embedded']['sw360:attachments'])
@@ -129,13 +139,30 @@ const DetailOverview = ({ componentId }: Props) => {
                 }
             })
             .catch((err) => console.error(err))
-    }, [componentId, fetchData])
+    }, [componentId, fetchData, isSubscribed])
+
+    const toggleSubscription = async () => {
+        try {
+            const response = await ApiUtils.POST(`components/${componentId}/subscription`, {}, session.user.access_token);
+            if (response.status == HttpStatus.OK) {
+                setIsSubscribed(!isSubscribed);
+            } else if (response.status === HttpStatus.UNAUTHORIZED) {
+                return signOut();
+            } else {
+                MessageService.error(t('Something went wrong'));
+            }
+        } catch(e) {
+            console.error(e);
+        }
+    }
 
     const headerButtons = {
         Edit: { link: `/components/edit/${componentId}`, type: 'primary', name: t('Edit component') },
         Merge: { link: '', type: 'secondary', name: t('Merge') },
         Split: { link: '', type: 'secondary', name: t('Split') },
-        Subscribe: { link: '', type: 'outline-success', name: t('Subscribe') },
+        Subscribe: isSubscribed ?  
+        { link: '', type: 'outline-danger', name: t('Unsubscribe'), onClick: toggleSubscription } :
+        { link: '', type: 'outline-success', name: t('Subscribe'), onClick: toggleSubscription },
     }
 
     return (
