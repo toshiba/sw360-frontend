@@ -17,22 +17,24 @@ import { useTranslations } from 'next-intl'
 import { AdvancedSearch, QuickFilter, Table, _ } from 'next-sw360'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useState, ReactNode } from 'react'
 import { Spinner } from 'react-bootstrap'
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa'
 import DeleteVulnerabilityModal from './DeleteVulnerabilityModal'
+import { ServerStorageOptions } from 'gridjs/dist/src/storage/server'
 
 type EmbeddedVulnerabilities = Embedded<Vulnerability, 'sw360:vulnerabilityApiDTOes'>
 
 const VulnerabilitesTable = React.memo(Table, () => true)
 
-function Vulnerabilities() {
+function Vulnerabilities() : ReactNode {
     const t = useTranslations('default')
-    const { data: session, status } = useSession()
     const params = useSearchParams()
     const [numVulnerabilities, setNumVulnerabilities] = useState<null | number>(null)
     const [vulnerabilityToBeDeleted, setVulnerabilityToBeDeleted] = useState<null | string>(null)
     const router = useRouter()
+    const { data: session, status } = useSession()
+    if(CommonUtils.isNullOrUndefined(session)) return
 
     const onDeleteClick = (id: string) => {
         setVulnerabilityToBeDeleted(id)
@@ -124,7 +126,7 @@ function Vulnerabilities() {
                 Object.fromEntries(params)
             ),
             then: (data: EmbeddedVulnerabilities) => {
-                setNumVulnerabilities(data.page.totalElements)
+                setNumVulnerabilities(data.page?.totalElements ?? null)
                 if (!CommonUtils.isNullEmptyOrUndefinedArray(data._embedded['sw360:vulnerabilityApiDTOes'])) {
                     return data._embedded['sw360:vulnerabilityApiDTOes'].map((elem: Vulnerability) => [
                         elem.externalId ?? '',
@@ -136,8 +138,8 @@ function Vulnerabilities() {
                     ])
                 }
             },
-            total: (data: EmbeddedVulnerabilities) => data.page.totalElements,
-            headers: { Authorization: `${session.user.access_token}` },
+            total: (data: EmbeddedVulnerabilities) => data.page?.totalElements,
+            headers: { Authorization: `${session.user?.access_token}` },
         }
     }
 
@@ -169,7 +171,7 @@ function Vulnerabilities() {
                         </div>
                         <div className='row mt-3'>
                             {status === 'authenticated' ? (
-                                <VulnerabilitesTable columns={columns} server={initServerPaginationConfig(session)} selector={true} sort={false} />
+                                <VulnerabilitesTable columns={columns} server={initServerPaginationConfig(session) as ServerStorageOptions} selector={true} sort={false} />
                             ) : (
                                 <div className='col-12 d-flex justify-content-center align-items-center'>
                                     <Spinner className='spinner' />

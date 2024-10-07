@@ -10,7 +10,7 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, ReactNode } from 'react'
 import { FaTrashAlt } from 'react-icons/fa'
 
 import { CVEReference, Vulnerability } from '@/object-types'
@@ -21,12 +21,12 @@ function CVEReferences({
 }: {
     payload: Vulnerability
     setPayload: Dispatch<SetStateAction<Vulnerability>>
-}) {
+}) : ReactNode {
     const t = useTranslations('default')
 
     const addReference = () => {
         setPayload((prev: Vulnerability) => {
-            return { ...prev, cveReferences: [...prev.cveReferences, { year: '', number: '' }] }
+            return { ...prev, cveReferences: [...(prev.cveReferences ?? []), { year: '', number: '' }] }
         })
     }
 
@@ -35,7 +35,7 @@ function CVEReferences({
         i: number
     ) => {
         setPayload((prev: Vulnerability) => {
-            const refs = prev.cveReferences
+            const refs = prev.cveReferences ?? []
             refs[i][e.target.name as keyof CVEReference] = e.target.value
             return { ...prev, cveReferences: refs }
         })
@@ -43,7 +43,7 @@ function CVEReferences({
 
     const deleteReference = (i: number) => {
         setPayload((prev: Vulnerability) => {
-            const refs = prev.cveReferences.slice()
+            const refs = (prev.cveReferences ?? []).slice()
             refs.splice(i, 1)
             return { ...prev, cveReferences: refs }
         })
@@ -55,7 +55,7 @@ function CVEReferences({
                 <div className='row header mb-2 pb-2 px-2'>
                     <h6>{t('CVE References')}</h6>
                 </div>
-                {payload?.cveReferences.map((elem, i) => (
+                {payload.cveReferences?.map((elem, i) => (
                     <div className='row mb-2' key={i}>
                         <div className='col-lg-5'>
                             <label htmlFor='vulnerabilityDetail.cveReferences.year' className='form-label fw-medium'>
