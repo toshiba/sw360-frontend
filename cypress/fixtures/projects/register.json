@@ -1,0 +1,120 @@
+{
+    "TC01_REQUIRED_FIELDS": {
+        "summary_tab": {
+            "name": "PROJECT_REQUIRED_FIELDS"
+        }
+    },
+    "TC02_ALL_FIELDS": {
+        "summary_tab": {
+            "name": "PROJECT_ALL_FIELDS",
+            "version": "1.0.0",
+            "visibility": {
+                "name": "Group and Moderators",
+                "value": "BUISNESSUNIT_AND_MODERATORS"
+            },
+            "project_type": {
+                "name": "Product",
+                "value": "PRODUCT"
+            },
+            "tag": "automation-test-001",
+            "description": "This test case will check adding a project with all fields!",
+            "domain": {
+                "name": "Embedded Software",
+                "value": "Embedded Software"
+            },
+            "vendor": {
+                "is_add_vendor": false,
+                "user_no": 0
+            },
+            "external_URL": {
+                "key": "External_URL_key",
+                "value": "http:localhost:8080/"
+            },
+            "project_manager": {
+                "user_no": 1
+            },
+            "project_owner": {
+                "user_no": 2
+            },
+            "owner_accounting_unit": "Yen",
+            "owner_billing_group": "Group 1",
+            "owner_country": {
+                "name": "China",
+                "value": "CN"
+            },
+            "lead_architect": {
+                "user_no": 2
+            },
+            "moderators": {
+                "num_user": 1
+            },
+            "contributors": {
+                "num_user": 1
+            },
+            "security_responsibles": {
+                "num_user": 1
+            },
+            "additional_roles": {
+                "value": "Contributor",
+                "mail": "additionalroles@gmail.com"
+            },
+            "external_ids": {
+                "key": "External_id_key",
+                "value": "External_id_value"
+            },
+            "external_data": {
+                "key": "External_data_key",
+                "value": "External_data_value"
+            }
+        },
+        "administration_tab": {
+            "clearing_state": {
+                "name": "In Progress",
+                "value": "IN_PROGRESS"
+            },
+            "clearing_team": {
+                "value_no": 0
+            },
+            "deadline_for_pre_evaluation": "2024-04-10",
+            "clearing_summary": "This is clearing summary",
+            "special_risk_OSS": "This is special risk OSS",
+            "general_risk_3rd": "This is general risk 3rd party software",
+            "special_risk_3rd": "This is special risk 3rd party software",
+            "sales_and_delivery_channels": "This is Sales and delivery channels",
+            "remarks_additional_requirements": "This is Remarks additional requirements",
+            "system_test_begin_date": "2024-10-01",
+            "system_test_end_date": "2024-10-10",
+            "delivery_start_date": "2024-10-31",
+            "phase_out_date": "2024-10-29",
+            "license_info_header": "License Info Header @@"
+        },
+        "linked_releases_and_projects_tab": {
+            "linked_projects": {
+                "num_projects": 2
+            },
+            "linked_releases": {
+                "num_releases": 1
+            }
+        }
+    },
+    "TC03_DELETE_LINKED": {
+        "summary_tab": {
+            "name": "PROJECT_DELETE_LINKEDS",
+            "version": "1.0.0"
+        },
+        "linked_releases_and_projects_tab": {
+            "linked_projects": {
+                "num_projects": 1
+            },
+            "linked_releases": {
+                "num_releases": 1
+            }
+        }
+    },
+    "TC07_DUPLICATE_PROJECT": {
+        "summary_tab": {
+            "name": "PROJECT_DUPLICATE",
+            "version": "1.0.3"
+        }
+    }
+}

@@ -133,7 +133,8 @@ create_user() {
             \"department\": \"DEPARTMENT1\",
             \"wantsMailNotification\": false,
             \"deactivated\": false,
-            \"issetBitfield\": \"1\"
+            \"issetBitfield\": \"1\",
+            \"password\": \"\$2a\$10\$KcGk3lFG1JkS05sCt1TtaeLy11Xy8HNUkn7JvD2Nsqikhdqn8dLaq\"
         }
     "
 

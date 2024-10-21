@@ -87,7 +87,7 @@ const createRequestHeader = (token) => {
   let myHeaders = new Headers()
   myHeaders.append("Accept", "application/*")
   myHeaders.append("Content-Type", "application/json")
-  myHeaders.append("Authorization", `Bearer ${token}`)
+  myHeaders.append("Authorization", token)
   return myHeaders
 }
 
@@ -282,4 +282,39 @@ Cypress.Commands.add('removeDownloadsFolder', () => {
   cy.task('removeDownloadsFolder').then(() => {
     cy.log('Downloads folder is removed successfully')
   })
+})
+
+Cypress.Commands.add('addKeyValueRow', (addRowSelectors, inputKeyValue) => {
+  cy.get(addRowSelectors.btnAddRow).click()
+  cy.get(addRowSelectors.key).last().should('exist')
+  .type(inputKeyValue.key)
+  cy.get(addRowSelectors.value).last().should('exist')
+  .type(inputKeyValue.value)
+})
+
+
+Cypress.Commands.add('selectOneUser', (dialogSelectors, userNo) => {
+  cy.openDialog(dialogSelectors.openDialog, dialogSelectors.dialog)
+
+  cy.get(dialogSelectors.searchBtn)
+    .contains('Search')
+    .click()
+
+  cy.selectItemsFromTable(dialogSelectors.selectUser, false, userNo)
+
+  cy.get(dialogSelectors.selectUsersBtn)
+    .click()
+})
+
+Cypress.Commands.add('selectMultiUsers', (dialogSelectors, numUser) => {
+  cy.openDialog(dialogSelectors.openDialog, dialogSelectors.dialog)
+
+  cy.get(dialogSelectors.searchBtn)
+    .contains('Search')
+    .click()
+
+  cy.selectItemsFromTable(dialogSelectors.selectUser, true, numUser)
+
+  cy.get(dialogSelectors.selectUsersBtn)
+    .click()
 })
