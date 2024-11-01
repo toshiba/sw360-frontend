@@ -29,7 +29,13 @@ const users = [
         "givename": "clearingex001",
         "lastname": "test",
         "usergroup": "CLEARING_EXPERT",
-    }
+    },
+    {
+        "email": "admin@sw360.org",
+        "givename": "Test",
+        "lastname": "Admin",
+        "usergroup": "ADMIN",
+    },
 ]
 
 const runShellCommand = (command: string) => {
@@ -91,9 +97,7 @@ const initData = () => {
             'obligationLevel': 4
         }
     ]
-    const bashs = [
-        runShellCommand('bash cypress/support/common.sh createOauthClient')
-    ]
+    const bashs = []
 
     for (const vendorName of vendorNames) {
         bashs.push(runShellCommand(`bash cypress/support/common.sh createVendor ${vendorName}`))
@@ -135,20 +139,11 @@ module.exports = (on: any, config: any) => {
             });
         },
         async generateApiToken() {
-            const clientData = JSON.parse(fs.readFileSync('cypress/fixtures/oauth-client.json', 'utf-8'))
-            const myHeaders = new Headers()
-            myHeaders.append("Authorization", `Basic ${Buffer.from(clientData.client_id + ':' + clientData.client_secret).toString('base64')}`)
-
-            const requestOptions = {
-                method: 'GET',
-                headers: myHeaders,
-            }
-
             const users = JSON.parse(fs.readFileSync('cypress/fixtures/sw360_users.json', 'utf-8'))
             const adminUser = users['admin']
-            const response = await fetch(`${config.env.sw360_api_server}/authorization/oauth/token?grant_type=password&username=${adminUser.email}&password=${adminUser.password}`, requestOptions)
-            const data = await response.json()
-            return data.access_token;
+            const credentials = Buffer.from(`${adminUser.email}:${adminUser.password}`).toString('base64')
+            const sw360token = `Basic ${credentials}`
+            return sw360token
         },
     }),
         on('before:run', async () => {

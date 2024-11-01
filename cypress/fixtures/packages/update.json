@@ -1,0 +1,15 @@
+{
+  "TC03_INIT_DATA": {
+    "name": "api-service",
+    "version": "1.0.0-beta",
+    "packageType": "Application",
+    "purl": "pkg:nuget/newtonsoft.json@12.0.3",
+    "vcs": "Bitbucket",
+    "homepageUrl": "https://service-mockurl.com",
+    "description": "A mock API service package"
+  },
+  "TC03_UPDATED_DATA": {
+    "homepageUrl": "pkg:npm/@microsoft/applicationinsights-web@2.5.11",
+    "version": "1.0.2"
+  }
+}

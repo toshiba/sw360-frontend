@@ -87,7 +87,7 @@ const createRequestHeader = (token) => {
   let myHeaders = new Headers()
   myHeaders.append("Accept", "application/*")
   myHeaders.append("Content-Type", "application/json")
-  myHeaders.append("Authorization", generateBasicToken('admin@sw360.org', '12345'))
+  myHeaders.append("Authorization", token)
   return myHeaders
 }
 
@@ -238,6 +238,10 @@ Cypress.Commands.add('createLicenseType', (licenseType) => {
 
 Cypress.Commands.add('deleteLicense', (licenseShortName) => {
   cy.exec('bash cypress/support/common.sh deleteLicenseByShortName ' + licenseShortName)
+})
+
+Cypress.Commands.add('deleteAllPackages', () => {
+  cy.exec('bash cypress/support/common.sh deleteAllPackages')
 })
 
 Cypress.Commands.overwrite('type', (originalFn, element, text, options) => {

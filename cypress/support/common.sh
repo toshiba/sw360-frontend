@@ -133,7 +133,8 @@ create_user() {
             \"department\": \"DEPARTMENT1\",
             \"wantsMailNotification\": false,
             \"deactivated\": false,
-            \"issetBitfield\": \"1\"
+            \"issetBitfield\": \"1\",
+            \"password\": \"\$2a\$10\$KcGk3lFG1JkS05sCt1TtaeLy11Xy8HNUkn7JvD2Nsqikhdqn8dLaq\"
         }
     "
 
@@ -234,6 +235,16 @@ delete_all_obligations() {
         }' | jq -r '.docs[] | "curl -X DELETE 'http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT'/'$DB_NAME'/" + ._id + "?rev=" + ._rev' | sh
 }
 
+delete_all_packages() {
+    curl -X POST "http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT/$DB_NAME/_find" -H "Content-Type: application/json" -d '{
+        "selector": {
+            "type": "package"
+        },
+        "fields": ["_id", "_rev"],
+        "limit": 100
+        }' | jq -r '.docs[] | "curl -X DELETE 'http://$COUCHDB_USERNAME:$COUCHDB_PASSWORD@$COUCHDB_IP:$COUCHDB_PORT'/'$DB_NAME'/" + ._id + "?rev=" + ._rev' | sh
+}
+
 # Run function
 case $option in
     deleteAllComponents)
@@ -298,6 +309,10 @@ case $option in
         
     deleteAllObligations)
         delete_all_obligations
+        ;;
+
+    deleteAllPackages)
+        delete_all_packages
         ;;
 
     *) ;;

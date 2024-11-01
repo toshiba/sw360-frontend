@@ -1,0 +1,17 @@
+{
+    "TC01_REQUIRED_FIELDS": {
+        "name": "core-package",
+        "version": "3.0.0",
+        "packageType": "Framework",
+        "purl": "pkg:npm/vue-router@4.1.2"
+    },
+    "TC02_ALL_FIELDS": {
+        "name": "utility-package",
+        "version": "5.2.1",
+        "packageType": "Firmware",
+        "purl": "pkg:npm/webpack@5.0.0",
+        "vcs": "Gitlab",
+        "homepageUrl": "https://utility-mockurl.com",
+        "description": "A versatile utility package"
+    }
+}
