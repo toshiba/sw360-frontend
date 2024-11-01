@@ -1,10 +1,11 @@
 
 // elements of add/edit project page
 const btnCreateProject = '.row > .me-2'
-const btnUpdateProject = '[href=""] > .btn-primary'
+const btnUpdateProject = '.btn-primary'
+const alertMessageEditPage = '.global-message .alert'
 
 /******* Summary tab *******/
-
+const tabSummary = '[id*=":-tab-summary"]'
 // General Information
 const txtName = '#addProjects\\.name'
 const txtVersion = '#addProjects\\.version'
@@ -145,8 +146,10 @@ const dialogLinkReleases = {
 
 export const addEditSelectors = {
   // summary tab
+  tabSummary,
   btnCreateProject,
   btnUpdateProject,
+  alertMessageEditPage,
   txtName,
   txtVersion,
   selectVisibility,
@@ -200,6 +203,7 @@ export const addEditSelectors = {
 const navProject = '[href="/projects"]'
 const btnAddProject = '.btn-group > .btn-primary'
 const alertMessage = '.fade > span'
+const btnEditProject= '.row > .btn-primary'
 
 // summary tab
 const name = ':nth-child(2) > tbody > :nth-child(2) > :nth-child(2)'
@@ -245,6 +249,7 @@ export const viewSelectors = {
   navProject,
   btnAddProject,
   alertMessage,
+  btnEditProject,
 
   // summary tab
   name,

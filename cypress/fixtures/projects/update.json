@@ -1,0 +1,122 @@
+{
+    "TC05_UPDATE_PJ_SOME_FIELDS": {
+        "initial_data": {
+            "summary_tab": {
+                "name": "PROJECT_REQUIRED_FIELDS_FOR_UPDATE11",
+                "version": "1.0.0"
+            }
+        },
+        "updated_data": {
+            "summary_tab": {
+                "name": "PROJECT_REQUIRED_FIELDS_FOR_UPDATE_changed11"
+            },
+            "linked_releases_and_projects_tab": {
+            "linked_projects": {
+                "num_projects": 1
+            },
+            "linked_releases": {
+                "num_releases": 1
+            }
+        }
+        }
+    },
+
+    "TC06_UPDATE_PJ_ALL_FIELDS": {
+        "initial_data": {
+            "summary_tab": {
+                "name": "A_FULL_BASIC_PROJECT_31_10_2024_2",
+                "version": "1.1.0.1",
+                "visibility": {
+                    "name": "Everyone",
+                    "value": "EVERYONE"
+                },
+                "project_type": {
+                    "name": "Service",
+                    "value": "SERVICE"
+                },
+                "tag": "automation-test-006-update project",
+                "description": "This test case will check updating a project!",
+                "domain": {
+                    "name": "Documentation",
+                    "value": "Documentation"
+                },
+                "vendor": {
+                    "is_add_vendor": false,
+                    "user_no": 0
+                },
+                "external_URL": {
+                    "key": "External_URL_key1",
+                    "value": "http:localhost:3000/"
+                },
+                "project_manager": {
+                    "user_no": 1
+                },
+                "project_owner": {
+                    "user_no": 2
+                },
+                "owner_accounting_unit": "CNY",
+                "owner_billing_group": "Group 2",
+                "owner_country": {
+                    "name": "Angola",
+                    "value": "AO"
+                },
+                "lead_architect": {
+                    "user_no": 1
+                },
+                "moderators": {
+                    "num_user": 2
+                },
+                "contributors": {
+                    "num_user": 3
+                },
+                "security_responsibles": {
+                    "num_user": 1
+                },
+                "additional_roles": {
+                    "value": "Accountant",
+                    "mail": "accountantroles@gmail.com"
+                },
+                "external_ids": {
+                    "key": "External_id_key",
+                    "value": "External_id_value"
+                },
+                "external_data": {
+                    "key": "External_data_key",
+                    "value": "External_data_value"
+                }
+            },
+            "administration_tab": {
+                "clearing_state": {
+                    "name": "Open",
+                    "value": "OPEN"
+                },
+                "clearing_team": {
+                    "value_no": 0
+                },
+                "deadline_for_pre_evaluation": "2024-04-10",
+                "clearing_summary": "This is clearing summary",
+                "special_risk_OSS": "This is special risk OSS",
+                "general_risk_3rd": "This is general risk 3rd party software",
+                "special_risk_3rd": "This is special risk 3rd party software",
+                "sales_and_delivery_channels": "This is Sales and delivery channels",
+                "remarks_additional_requirements": "This is Remarks additional requirements",
+                "system_test_begin_date": "2024-11-01",
+                "system_test_end_date": "2024-11-11",
+                "delivery_start_date": "2024-11-30",
+                "phase_out_date": "2024-11-29",
+                "license_info_header": "License Info Header @@. This project will be updated."
+            }
+        },
+        "updated_data": {
+            "summary_tab": {
+                "name": "A_FULL_BASIC_PROJECT_31_10_2024_changed2"
+            },
+            "administration_tab": {
+                "clearing_state": {
+                    "name": "In Progress",
+                    "value": "IN_PROGRESS"
+                }
+            }
+        }
+    }
+}

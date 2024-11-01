@@ -1,12 +1,12 @@
 {
     "TC01_REQUIRED_FIELDS": {
         "summary_tab": {
-            "name": "PROJECT_REQUIRED_FIELDS10"
+            "name": "PROJECT_REQUIRED_FIELDS15"
         }
     },
     "TC02_ALL_FIELDS": {
         "summary_tab": {
-            "name": "PROJECT_ALL_FIELDS10",
+            "name": "PROJECT_ALL_FIELDS15",
             "version": "1.0.0",
             "visibility": {
                 "name": "Group and Moderators",
@@ -52,7 +52,7 @@
                 "num_user": 1
             },
             "security_responsibles": {
-                "num_user": 3
+                "num_user": 1
             },
             "additional_roles": {
                 "value": "Contributor",
@@ -99,7 +99,7 @@
     },
     "TC03_DELETE_LINKED": {
         "summary_tab": {
-            "name": "PROJECT_ALL_FIELDS10",
+            "name": "PROJECT_DELETE_LINKEDS4",
             "version": "1.0.0"
         },
         "linked_releases_and_projects_tab": {
@@ -109,6 +109,12 @@
             "linked_releases": {
                 "num_releases": 1
             }
+        }
+    },
+    "TC07_DUPLICATE_PROJECT": {
+        "summary_tab": {
+            "name": "PROJECT_DUPLICATE6",
+            "version": "1.0.3"
         }
     }
 }

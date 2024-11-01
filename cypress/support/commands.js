@@ -87,7 +87,7 @@ const createRequestHeader = (token) => {
   let myHeaders = new Headers()
   myHeaders.append("Accept", "application/*")
   myHeaders.append("Content-Type", "application/json")
-  myHeaders.append("Authorization", `Bearer ${token}`)
+  myHeaders.append("Authorization", generateBasicToken('admin@sw360.org', '12345'))
   return myHeaders
 }
 
@@ -318,3 +318,9 @@ Cypress.Commands.add('selectMultiUsers', (dialogSelectors, numUser) => {
   cy.get(dialogSelectors.selectUsersBtn)
     .click()
 })
+
+const generateBasicToken = (username, password) => {
+  const credentials = Buffer.from(`${username}:${password}`).toString('base64')
+  const sw360token = `Basic ${credentials}`
+  return sw360token
+}
