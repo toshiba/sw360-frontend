@@ -29,7 +29,13 @@ const users = [
         "givename": "clearingex001",
         "lastname": "test",
         "usergroup": "CLEARING_EXPERT",
-    }
+    },
+    {
+        "email": "admin@sw360.org",
+        "givename": "Test",
+        "lastname": "Admin",
+        "usergroup": "ADMIN",
+    },
 ]
 
 const runShellCommand = (command: string) => {
@@ -92,7 +98,7 @@ const initData = () => {
         }
     ]
     const bashs = [
-        runShellCommand('bash cypress/support/common.sh createOauthClient')
+        // runShellCommand('bash cypress/support/common.sh createOauthClient')
     ]
 
     for (const vendorName of vendorNames) {
