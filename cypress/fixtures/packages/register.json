@@ -1,0 +1,9 @@
+{
+    "name": "package1",
+    "version": "1.0.0",
+    "package-type": "Framework",
+    "PURL": "pkg:npm/angular-sanitize@1.8.3",
+    "vcs": "Github",
+    "homepageUrl": "https://mockurl.com",
+    "description": "This is a description"
+}
