@@ -10,7 +10,7 @@
 'use client'
 
 import { ApiUtils, CommonUtils } from '@/utils/index'
-import { signOut, useSession } from 'next-auth/react'
+import { getSession, signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { Table, _ } from "next-sw360"
 import Link from 'next/link'
@@ -31,7 +31,6 @@ function OpenModerationRequest() {
 
     const t = useTranslations('default')
     const [loading, setLoading] = useState(true)
-    const { data: session, status } = useSession()
     const [mrIdArray, setMrIdArray] = useState<Array<string>>([])
     const [tableData, setTableData] = useState<Array<any>>([])
     const [disableBulkDecline, setDisableBulkDecline] = useState(true)
@@ -43,6 +42,7 @@ function OpenModerationRequest() {
         PENDING: t('Pending'),
         REJECTED: t('REJECTED'),
     };
+    const { data:session, status } = useSession()
 
     const formatDate = (timestamp: number | undefined): string | null => {
         if(!timestamp){
@@ -57,18 +57,18 @@ function OpenModerationRequest() {
 
     const fetchData = useCallback(
         async (url: string) => {
-            if (CommonUtils.isNullOrUndefined(session))
-                return signOut()
+            if (status === "loading") return;
+            if (!session) return signOut();
             const response = await ApiUtils.GET(url, session.user.access_token)
             if (response.status == HttpStatus.OK) {
                 const data = await response.json() as EmbeddedModerationRequest
                 return data
             } else if (response.status == HttpStatus.UNAUTHORIZED) {
-                return signOut()
+                //return signOut()
             } else {
                 notFound()
             }
-        },[session]
+        }, [status]
     )
 
     useEffect(() => {
@@ -105,7 +105,7 @@ function OpenModerationRequest() {
                 ))
             }
             setLoading(false)
-        })}, [fetchData, session])
+        })}, [fetchData])
 
     const handleCheckboxes = (moderationRequestId: string,
                               documentName: string) => {
@@ -207,7 +207,7 @@ function OpenModerationRequest() {
             ),
         }
     ]
-
+    
     if (status === 'unauthenticated') {
         signOut()
     } else {

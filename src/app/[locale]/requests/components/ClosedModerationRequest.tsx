@@ -10,7 +10,7 @@
 'use client'
 
 import { ApiUtils, CommonUtils } from '@/utils/index'
-import { signOut, getSession } from 'next-auth/react'
+import { signOut, getSession, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { Table, _ } from "next-sw360"
 import Link from 'next/link'
@@ -37,6 +37,7 @@ function ClosedModerationRequest() {
         PENDING: t('Pending'),
         REJECTED: t('REJECTED'),
     };
+    const { data:session, status } = useSession()
 
     const formatDate = (timestamp: number | undefined): string | null => {
         if (!timestamp) {
@@ -51,9 +52,8 @@ function ClosedModerationRequest() {
 
     const fetchData = useCallback(
         async (url: string) => {
-            const session = await getSession()
-            if (CommonUtils.isNullOrUndefined(session))
-                return signOut()
+            if (status === "loading") return;
+            if (!session) return signOut();
             const response = await ApiUtils.GET(url, session.user.access_token)
             if (response.status == HttpStatus.OK) {
                 const data = await response.json() as EmbeddedModeratoinRequest
@@ -63,7 +63,7 @@ function ClosedModerationRequest() {
             } else {
                 notFound()
             }
-        },[]
+        },[status]
     )
 
     useEffect(() => {
