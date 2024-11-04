@@ -240,6 +240,10 @@ Cypress.Commands.add('deleteLicense', (licenseShortName) => {
   cy.exec('bash cypress/support/common.sh deleteLicenseByShortName ' + licenseShortName)
 })
 
+Cypress.Commands.add('deleteAllPackages', () => {
+  cy.exec('bash cypress/support/common.sh deleteAllPackages')
+})
+
 Cypress.Commands.overwrite('type', (originalFn, element, text, options) => {
   return originalFn(element, text, { ...options, delay: 0 })
 })
