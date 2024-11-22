@@ -216,9 +216,9 @@ function EditProject({ projectId }: { projectId: string }) {
                                     project["_embedded"]["leadArchitect"].fullName })
             }
 
-            if (typeof project["_embedded"]["projectOwner"] !== 'undefined') {
-                setProjectOwner({ [project["_embedded"]["projectOwner"].email]:
-                                   project["_embedded"]["projectOwner"].fullName })
+            if (typeof project["projectOwner"] !== 'undefined') {
+                setProjectOwner({ [project["projectOwner"]]:
+                                   project["projectOwner"]})
             }
 
             if (typeof project["_embedded"]["projectManager"] !== 'undefined') {
@@ -287,7 +287,7 @@ function EditProject({ projectId }: { projectId: string }) {
                 securityResponsibles: project.securityResponsibles ?? [],
                 contributors: (project._embedded?.['sw360:contributors'] ?? []).map(user => user.email),
                 moderators: (project._embedded?.['sw360:moderators'] ?? []).map(user => user.email),
-                projectOwner: project._embedded?.projectOwner?.email ?? '',
+                projectOwner: project.projectOwner ?? '',
                 leadArchitect: project._embedded?.leadArchitect?.email ?? '',
                 linkedReleases: projectPayload?.linkedReleases ?? {},
             }

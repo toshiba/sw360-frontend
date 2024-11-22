@@ -10,7 +10,8 @@
 
 'use client'
 
-import { Embedded, HttpStatus, Project as TypeProject, Session } from '@/object-types'
+import { Embedded, HttpStatus, Session, Project as TypeProject } from '@/object-types'
+import MessageService from '@/services/message.service'
 import { ApiUtils, CommonUtils } from '@/utils'
 import { SW360_API_URL } from '@/utils/env'
 import { getSession, signOut, useSession } from 'next-auth/react'
@@ -22,6 +23,7 @@ import { useEffect, useState } from 'react'
 import { Dropdown, OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap'
 import { FaClipboard, FaPencilAlt, FaTrashAlt } from 'react-icons/fa'
 import { MdOutlineTask } from 'react-icons/md'
+import CreateClearingRequestModal from '../detail/[id]/components/CreateClearingRequestModal'
 import DeleteProjectDialog from './DeleteProjectDialog'
 import ImportSBOMModal from './ImportSBOMModal'
 
@@ -42,6 +44,7 @@ interface ImportSBOMMetadata {
 
 function LicenseClearing({ projectId }: { projectId: string }) {
     const [lcData, setLcData] = useState<LicenseClearingData | null>(null)
+
     useEffect(() => {
         const controller = new AbortController()
         const signal = controller.signal
@@ -56,7 +59,7 @@ function LicenseClearing({ projectId }: { projectId: string }) {
                 const response = await ApiUtils.GET(
                     `projects/${projectId}/licenseClearingCount`,
                     session.user.access_token,
-                    signal
+                    signal,
                 )
                 if (response.status === HttpStatus.UNAUTHORIZED) {
                     return signOut()
@@ -95,7 +98,13 @@ function Project() {
     const router = useRouter()
     const [deleteProjectId, setDeleteProjectId] = useState<string>('')
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
-    const [importSBOMMetadata, setImportSBOMMetadata] = useState<ImportSBOMMetadata>({ show: false, importType: 'SPDX' })
+    const [importSBOMMetadata, setImportSBOMMetadata] = useState<ImportSBOMMetadata>({
+        show: false,
+        importType: 'SPDX',
+    })
+
+    const [showClearingRequestModal, setShowClearingRequestModal] = useState(false)
+    const [clearingRequestProjectId, setClearingRequestProjectId] = useState('')
 
     const handleDeleteProject = (projectId: string) => {
         setDeleteProjectId(projectId)
@@ -106,18 +115,26 @@ function Project() {
         router.push('/projects/add')
     }
 
+    const handleEditProject = (projectId: string) => {
+        router.push(`/projects/edit/${projectId}`)
+        MessageService.success(t('You are editing the original document'))
+    }
+
     const columns = [
         {
             id: 'projects.name',
             name: t('Project Name'),
             width: '15%',
-            formatter: ({ id, name, version }: { id: string; name: string; version: string; }) =>
+            formatter: ({ id, name, version }: { id: string; name: string; version: string }) =>
                 _(
                     <>
-                        <Link href={`/projects/detail/${id}`} className='text-link'>
-                            {name}{' '}{(version !== "") && `(${version})`}
+                        <Link
+                            href={`/projects/detail/${id}`}
+                            className='text-link'
+                        >
+                            {name} {version !== '' && `(${version})`}
                         </Link>
-                    </>
+                    </>,
                 ),
             sort: true,
         },
@@ -133,10 +150,13 @@ function Project() {
             formatter: (email: string) =>
                 _(
                     <>
-                        <Link href={`mailto:${email}`} className='text-link'>
+                        <Link
+                            href={`mailto:${email}`}
+                            className='text-link'
+                        >
                             {email}
                         </Link>
-                    </>
+                    </>,
                 ),
             sort: true,
         },
@@ -168,7 +188,7 @@ function Project() {
                                 <span className='badge bg-success capsule-right overlay-badge'>{'CS'}</span>
                             )}
                         </OverlayTrigger>
-                    </>
+                    </>,
                 ),
             sort: true,
         },
@@ -187,19 +207,31 @@ function Project() {
                     <>
                         <span className='d-flex justify-content-evenly'>
                             <OverlayTrigger overlay={<Tooltip>{t('Edit')}</Tooltip>}>
-                                <Link href={`/projects/edit/${id}`} className='overlay-trigger'>
+                                <span
+                                    className='d-inline-block'
+                                    onClick={() => handleEditProject(id)}
+                                >
                                     <FaPencilAlt className='btn-icon' />
-                                </Link>
+                                </span>
                             </OverlayTrigger>
 
-                            <OverlayTrigger overlay={<Tooltip>{t('Create Clearing Request')}</Tooltip>}>
-                                <span className='d-inline-block'>
+                            <OverlayTrigger overlay={<Tooltip>Create Clearing Request</Tooltip>}>
+                                <span
+                                    className='d-inline-block'
+                                    onClick={() => {
+                                        setClearingRequestProjectId(id)
+                                        setShowClearingRequestModal(true)
+                                    }}
+                                >
                                     <MdOutlineTask className='btn-icon overlay-trigger' />
                                 </span>
                             </OverlayTrigger>
 
                             <OverlayTrigger overlay={<Tooltip>{t('Duplicate')}</Tooltip>}>
-                                <Link href={`/projects/duplicate/${id}`} className='overlay-trigger'>
+                                <Link
+                                    href={`/projects/duplicate/${id}`}
+                                    className='overlay-trigger'
+                                >
                                     <FaClipboard className='btn-icon' />
                                 </Link>
                             </OverlayTrigger>
@@ -214,7 +246,7 @@ function Project() {
                                 </span>
                             </OverlayTrigger>
                         </span>
-                    </>
+                    </>,
                 ),
             sort: true,
         },
@@ -226,9 +258,11 @@ function Project() {
             then: (data: EmbeddedProjects) => {
                 return data._embedded['sw360:projects'].map((elem: TypeProject) => [
                     {
-                        id: elem['_links']['self']['href'].substring(elem['_links']['self']['href'].lastIndexOf('/') + 1),
+                        id: elem['_links']['self']['href'].substring(
+                            elem['_links']['self']['href'].lastIndexOf('/') + 1,
+                        ),
                         name: elem.name ?? '',
-                        version: elem.version ?? ''
+                        version: elem.version ?? '',
                     },
                     elem.description ?? '',
                     elem.projectResponsible ?? '',
@@ -344,26 +378,54 @@ function Project() {
 
     return (
         <>
-            <ImportSBOMModal importSBOMMetadata={importSBOMMetadata} setImportSBOMMetadata={setImportSBOMMetadata} />
-            <DeleteProjectDialog projectId={deleteProjectId} show={deleteDialogOpen} setShow={setDeleteDialogOpen} />
+            <ImportSBOMModal
+                importSBOMMetadata={importSBOMMetadata}
+                setImportSBOMMetadata={setImportSBOMMetadata}
+            />
+            <DeleteProjectDialog
+                projectId={deleteProjectId}
+                show={deleteDialogOpen}
+                setShow={setDeleteDialogOpen}
+            />
             <div className='container page-content'>
                 <div className='row'>
                     <div className='col-lg-2'>
-                        <AdvancedSearch title='Advanced Search' fields={advancedSearch} />
+                        <AdvancedSearch
+                            title='Advanced Search'
+                            fields={advancedSearch}
+                        />
                     </div>
                     <div className='col-lg-10'>
                         <div className='row d-flex justify-content-between'>
                             <div className='col-lg-5'>
                                 <div className='row'>
-                                    <div className='btn-group col-auto' role='group'>
-                                        <button className='btn btn-primary' onClick={handleAddProject}>
+                                    <div
+                                        className='btn-group col-auto'
+                                        role='group'
+                                    >
+                                        <button
+                                            className='btn btn-primary'
+                                            onClick={handleAddProject}
+                                        >
                                             {t('Add Project')}
                                         </button>
                                         <Dropdown>
                                             <Dropdown.Toggle variant='secondary'>{t('Import SBOM')}</Dropdown.Toggle>
                                             <Dropdown.Menu>
-                                                <Dropdown.Item onClick={() => setImportSBOMMetadata({ importType: 'SPDX', show: true })}>{t('SPDX')}</Dropdown.Item>
-                                                <Dropdown.Item onClick={() => setImportSBOMMetadata({ importType: 'CycloneDx', show: true })}>{t('CycloneDX')}</Dropdown.Item>
+                                                <Dropdown.Item
+                                                    onClick={() =>
+                                                        setImportSBOMMetadata({ importType: 'SPDX', show: true })
+                                                    }
+                                                >
+                                                    {t('SPDX')}
+                                                </Dropdown.Item>
+                                                <Dropdown.Item
+                                                    onClick={() =>
+                                                        setImportSBOMMetadata({ importType: 'CycloneDx', show: true })
+                                                    }
+                                                >
+                                                    {t('CycloneDX')}
+                                                </Dropdown.Item>
                                             </Dropdown.Menu>
                                         </Dropdown>
                                     </div>
@@ -379,7 +441,12 @@ function Project() {
                             <div className='col-auto buttonheader-title'>{t('PROJECTS')}</div>
                         </div>
                         {status === 'authenticated' ? (
-                            <Table columns={columns} server={initServerPaginationConfig(session)} selector={true} sort={false} />
+                            <Table
+                                columns={columns}
+                                server={initServerPaginationConfig(session)}
+                                selector={true}
+                                sort={false}
+                            />
                         ) : (
                             <div className='col-12 d-flex justify-content-center align-items-center'>
                                 <Spinner className='spinner' />
@@ -388,6 +455,11 @@ function Project() {
                     </div>
                 </div>
             </div>
+            <CreateClearingRequestModal
+                show={showClearingRequestModal}
+                setShow={setShowClearingRequestModal}
+                projectId={clearingRequestProjectId}
+            />
         </>
     )
 }

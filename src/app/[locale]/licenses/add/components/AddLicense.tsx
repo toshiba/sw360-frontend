@@ -143,7 +143,7 @@ export default function AddLicense() : ReactNode {
         const response = await ApiUtils.POST('licenses', licensePayload, session.user.access_token)
         if (response.status == HttpStatus.CREATED) {
             MessageService.success(t('License added successfully'))
-            router.push('/licenses')
+            window.location.href = '/licenses'
         } else if (response.status == HttpStatus.CONFLICT) {
             MessageService.error(t('License shortname has already taken'))
         } else {

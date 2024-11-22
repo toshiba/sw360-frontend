@@ -140,8 +140,8 @@ function Requests() {
 
     const fetchData = useCallback(
         async (url: string) => {
-            if (CommonUtils.isNullOrUndefined(session))
-                return signOut()
+            if (status === "loading") return
+            if (!session) return signOut()
             const response = await ApiUtils.GET(url, session.user.access_token)
             if (response.status == HttpStatus.OK) {
                 const data = await response.json()
@@ -151,7 +151,7 @@ function Requests() {
             } else {
                 notFound()
             }
-        },[session]
+        },[status]
     )
 
     useEffect(() => {
