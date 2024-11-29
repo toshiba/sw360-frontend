@@ -9,7 +9,7 @@
 
 'use client'
 
-import { ApiUtils, CommonUtils } from '@/utils/index'
+import { ApiUtils } from '@/utils/index'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { Table, _ } from "next-sw360"
@@ -31,7 +31,6 @@ function OpenModerationRequest() {
 
     const t = useTranslations('default')
     const [loading, setLoading] = useState(true)
-    const { data: session, status } = useSession()
     const [mrIdArray, setMrIdArray] = useState<Array<string>>([])
     const [tableData, setTableData] = useState<Array<any>>([])
     const [disableBulkDecline, setDisableBulkDecline] = useState(true)
@@ -43,6 +42,7 @@ function OpenModerationRequest() {
         PENDING: t('Pending'),
         REJECTED: t('REJECTED'),
     };
+    const { data:session, status } = useSession()
 
     const formatDate = (timestamp: number | undefined): string | null => {
         if(!timestamp){
@@ -57,18 +57,16 @@ function OpenModerationRequest() {
 
     const fetchData = useCallback(
         async (url: string) => {
-            if (CommonUtils.isNullOrUndefined(session))
-                return signOut()
+            if (status === "loading") return
+            if (!session) return signOut()
             const response = await ApiUtils.GET(url, session.user.access_token)
             if (response.status == HttpStatus.OK) {
                 const data = await response.json() as EmbeddedModerationRequest
                 return data
-            } else if (response.status == HttpStatus.UNAUTHORIZED) {
-                return signOut()
             } else {
                 notFound()
             }
-        },[session]
+        }, [status]
     )
 
     useEffect(() => {
@@ -105,7 +103,7 @@ function OpenModerationRequest() {
                 ))
             }
             setLoading(false)
-        })}, [fetchData, session])
+        })}, [fetchData])
 
     const handleCheckboxes = (moderationRequestId: string,
                               documentName: string) => {
@@ -207,43 +205,44 @@ function OpenModerationRequest() {
             ),
         }
     ]
-
+    
     if (status === 'unauthenticated') {
-        signOut()
+        signOut().catch((e) => console.error(e))
     } else {
-    return (
-        <>
-            <BulkDeclineModerationRequestModal
-                show={bulkDeclineMRModal}
-                setShow={setBulkDeclineMRModal}
-                mrIdNameMap={mrIdNameMap}
-            />
-            <div className='row mb-4'>
-                <div className='col-12'>
-                    <button className='btn btn-danger'
-                            disabled={disableBulkDecline}
-                            onClick={() => setBulkDeclineMRModal(true)}
-                            >
-                        {t('Bulk Actions')}
-                    </button>
+        return (
+            <>
+                <BulkDeclineModerationRequestModal
+                    show={bulkDeclineMRModal}
+                    setShow={setBulkDeclineMRModal}
+                    mrIdNameMap={mrIdNameMap}
+                />
+                <div className='row mb-4'>
+                    <div className='col-12'>
+                        <button className='btn btn-danger'
+                                disabled={disableBulkDecline}
+                                onClick={() => setBulkDeclineMRModal(true)}
+                                >
+                            {t('Bulk Actions')}
+                        </button>
+                    </div>
+                    <div className='col-12 d-flex justify-content-center align-items-center'>
+                        {loading == false ? (
+                            <div style={{ paddingLeft: '0px' }}>
+                                <Table columns={columns}
+                                    data={tableData}
+                                    sort={false}
+                                    selector={true}
+                                />
+                            </div>
+                            ) : (
+                                    <Spinner className='spinner' />
+                            )
+                        }
+                    </div>
                 </div>
-                <div className='col-12 d-flex justify-content-center align-items-center'>
-                    {loading == false ? (
-                        <div style={{ paddingLeft: '0px' }}>
-                            <Table columns={columns}
-                                   data={tableData}
-                                   sort={false}
-                                   selector={true}
-                            />
-                        </div>
-                        ) : (
-                                <Spinner className='spinner' />
-                        )
-                    }
-                </div>
-            </div>
-        </>
-    )}
+            </>
+        )
+    }
 }
 
 export default OpenModerationRequest

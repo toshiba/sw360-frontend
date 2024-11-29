@@ -15,7 +15,7 @@ import { Table, _ } from "next-sw360"
 import { useTranslations } from 'next-intl'
 import { ApiUtils, CommonUtils } from '@/utils/index'
 import { Embedded, HttpStatus } from '@/object-types'
-import { signOut, getSession } from 'next-auth/react'
+import { signOut, getSession, useSession } from 'next-auth/react'
 import { notFound } from 'next/navigation'
 import { ClearingRequest } from '@/object-types'
 import { Button, OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap'
@@ -35,6 +35,7 @@ function ClosedClearingRequest() {
     const [loading, setLoading] = useState(true)
     const [tableData, setTableData] = useState<Array<any>>([])
     const [isProjectDeleted, setIsProjectDeleted] = useState(false)
+    const { data:session, status } = useSession()
 
     const columns = [
         {
@@ -207,9 +208,8 @@ function ClosedClearingRequest() {
 
     const fetchData = useCallback(
         async (url: string) => {
-            const session = await getSession()
-            if (CommonUtils.isNullOrUndefined(session))
-                return signOut()
+            if (status === "loading") return;
+            if (!session) return signOut();
             const response = await ApiUtils.GET(url, session.user.access_token)
             if (response.status == HttpStatus.OK) {
                 const data = await response.json() as EmbeddedClearingRequest
@@ -219,7 +219,7 @@ function ClosedClearingRequest() {
             } else {
                 notFound()
             }
-        },[]
+        },[status]
     )
 
     useEffect(() => {
