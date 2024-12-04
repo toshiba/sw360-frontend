@@ -8,6 +8,7 @@
 // SPDX-License-Identifier: EPL-2.0
 // License-Filename: LICENSE
 
+import { afterEach } from 'node:test'
 import { viewSelectors } from './selectors'
 
 const verifyFileExported = () => {
@@ -20,7 +21,6 @@ describe('Export Spreadsheet', () => {
     beforeEach(() => {
         cy.login('admin')
         cy.visit(`${Cypress.env('sw360_base_url')}/components`)
-        cy.removeDownloadsFolder()
     })
 
     it('TC13: Export components without releases', () => {
@@ -33,5 +33,8 @@ describe('Export Spreadsheet', () => {
         cy.get(viewSelectors.btnExportSpreadsheet).click()
         cy.get(viewSelectors.btnExportComponentsWithReleases).click()
         verifyFileExported()
+    })
+    afterEach(() => {
+        cy.removeDownloadsFiles()
     })
 })

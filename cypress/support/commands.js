@@ -304,8 +304,8 @@ Cypress.Commands.add('verifyDownloadedFile', (fileName) => {
   cy.readFile('cypress/downloads/' + fileName).should('exist')
 })
 
-Cypress.Commands.add('removeDownloadsFolder', () => {
-  cy.task('removeDownloadsFolder').then(() => {
+Cypress.Commands.add('removeDownloadedFiles', () => {
+  cy.task('removeDownloadedFiles').then(() => {
     cy.log('Downloads folder is removed successfully')
   })
 })

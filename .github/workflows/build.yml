@@ -11,7 +11,7 @@ name: Build Frontend
 on:
   push:
     branches:
-      - main
+      - dev/new-frontend-ci-with-cypress
   pull_request:
     branches:
       - main
@@ -20,17 +20,99 @@ on:
 permissions:
   contents: read
 
+env:
+  COUCHDB_USER: sw360
+  COUCHDB_PASSWORD: sw360fossie
+  TOMCAT_DIR: /opt/apache-tomcat-10.1.19
+  THRIFT_VERSION: 0.20.0
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Extract Organization Name
+        run: |
+          ORG_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
+          echo "ORG_NAME=$ORG_NAME" >> $GITHUB_ENV
+
       - name: Harden Runner
         uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
         with:
           egress-policy: audit
 
+      - name: Set up JDK 21
+        uses: actions/setup-java@8df1039502a15bceb9433410b1a100fbe190c53b # v4.5.0
+        with:
+          java-version: "21"
+          distribution: "temurin"
+          check-latest: true
+
+      - name: Checkout sw360-backend
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.ORG_NAME }}/sw360
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: sw360-backend
+      
+      - name: Setup CouchDB
+        working-directory: sw360-backend
+        run: scripts/startCouchdbForTests.sh
+
+      - name: Update properties with DB credentials
+        shell: bash
+        run: |
+          sudo mkdir -p /etc/sw360
+          sudo mkdir /etc/sw360/authorization
+          sudo mkdir /etc/sw360/rest
+
+          sudo cp sw360-backend/rest/resource-server/src/main/resources/application.yml /etc/sw360/rest
+          sudo cp sw360-backend/scripts/docker-config/etc_sw360/authorization/application.yml /etc/sw360/authorization
+          sudo sed -i 's|http://couchdb:5984|http://localhost:5984|g' /etc/sw360/authorization/application.yml
+
+          sudo cp sw360-backend/build-configuration/resources/couchdb.properties /etc/sw360/couchdb.properties
+          sudo sed -i 's/^couchdb.user\s*=/& '${COUCHDB_USER}'/' /etc/sw360/couchdb.properties
+          sudo sed -i 's/^couchdb.password\s*=/& '${COUCHDB_PASSWORD}'/' /etc/sw360/couchdb.properties
+
+      - name: Cache Thrift
+        id: cache-thrift
+        uses: actions/cache@v4
+        with:
+          path: |
+            /usr/local/bin/thrift
+            /usr/share/thrift/${{ env.THRIFT_VERSION }}
+          key: ${{ runner.os }}-thrift-${{ env.THRIFT_VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-thrift-${{ env.THRIFT_VERSION }}
+
+      - name: Install Thrift
+        working-directory: sw360-backend
+        if: steps.cache-thrift.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -yq build-essential libevent-dev libtool flex bison pkg-config libssl-dev git cmake
+          chmod +x scripts/install-thrift.sh
+          DESTDIR=${{ github.workspace }}/dist/thrift-${{ env.THRIFT_VERSION }} scripts/install-thrift.sh
+
+      - name: Download and Install Tomcat
+        shell: bash
+        run: |
+          wget -q https://ftp.unicamp.br/pub/apache/tomcat/tomcat-10/v10.1.19/bin/apache-tomcat-10.1.19.tar.gz
+          tar -xvzf apache-tomcat-10.1.19.tar.gz -C /opt/ > /dev/null 2>&1
+
+      - name: Build and start sw360-backend
+        working-directory: sw360-backend
+        shell: bash
+        run: |
+          export PATH="${{ github.workspace }}/dist/thrift-${{ env.THRIFT_VERSION }}/usr/local/bin:$PATH"
+          mvn clean install --no-transfer-progress -P deploy -Dbase.deploy.dir=${TOMCAT_DIR} -DskipTests
+          bash /opt/apache-tomcat-10.1.19/bin/startup.sh
+        env: 
+            SW360_CORS_ALLOWED_ORIGIN: '*'
+
       - name: Checkout source code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          path: sw360-frontend
 
       - name: pnpm-setup
         uses: pnpm/action-setup@fe02b34f77f8bc703788d5817da081398fad5dd2 # v4.0.0
@@ -40,20 +122,42 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
         with:
+          cache-dependency-path: sw360-frontend/pnpm-lock.yaml
           node-version: '22'
           cache: 'pnpm'
+      
+      - name: Set up Cypress binary cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ runner.os }}-cypress-${{ hashFiles('pnpm-lock.yaml') }}
 
       - name: 📦 Install dependencies
+        working-directory: sw360-frontend
         shell: bash
         run: |
           pnpm i
+          pnpm exec cypress install
 
       - name: Run linting
+        working-directory: sw360-frontend
         shell: bash
         run: |
           pnpm lint
 
-      - name: Run build
+      - name: Build and start sw360-frontend
+        working-directory: sw360-frontend
         shell: bash
         run: |
           pnpm build
+          pnpm i nohup -g
+          nohup npm start &
+        env:
+          NEXT_PUBLIC_SW360_API_URL: http://localhost:8080
+          NEXTAUTH_SECRET: secret
+          NEXTAUTH_URL: http://localhost:3000
+
+      - name: Execute e2e testing
+        working-directory: sw360-frontend
+        run: |
+          npx cypress run

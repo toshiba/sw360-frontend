@@ -127,19 +127,14 @@ const initData = () => {
 
 module.exports = (on: any, config: any) => {
     on('task', {
-        removeDownloadsFolder() {
+        removeDownloadedFiles(){
             const folderName = 'cypress/downloads'
-            const { rmdir } = require('fs')
-            console.log('deleting folder %s', folderName);
-            return new Promise((resolve, reject) => {
-                rmdir(folderName, { maxRetries: 10, recursive: true }, (err: any) => {
-                    if (err) {
-                        console.error(err);
-                        return reject(err);
-                    }
-                    resolve(null);
-                });
-            });
+            const { readdir, unlink } = require('fs').promises
+            return readdir(folderName).then((files: any) => {
+                return Promise.all(files.map((file: any) => {
+                    return unlink(`${folderName}/${file}`)
+                }))
+            })
         },
         async generateApiToken() {
             const users = JSON.parse(fs.readFileSync('cypress/fixtures/sw360_users.json', 'utf-8'))

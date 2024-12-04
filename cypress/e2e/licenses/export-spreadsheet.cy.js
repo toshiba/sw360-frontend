@@ -20,11 +20,13 @@ describe('Export License', () => {
         cy.login('admin')
         cy.visit(`${Cypress.env('sw360_base_url')}/licenses`)
         cy.get(viewSelectors.tblLicenseList).should('be.visible')
-        cy.removeDownloadsFolder()
     })
 
     it('TC06: Check Export Licenses', () => {
         cy.downloadFile(viewSelectors.btnExportSpreadsheet)
         verifyFileExported()
+    })
+    afterEach(() => {
+        cy.removeDownloadedFiles()
     })
 })
