@@ -141,7 +141,7 @@ jobs:
 
       - name: Wait for services
         run: |
-          npx wait-on http://localhost:8080/resource/api/health
+          npx wait-on http://localhost:8080/resource/api/health --http-status 401
           npx wait-on http://localhost:3000
 
       - name: Install dependencies cypress
