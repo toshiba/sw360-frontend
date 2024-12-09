@@ -114,16 +114,19 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
 
       - name: 📦 Install constrained dependencies
+        working-directory: sw360-frontend
         shell: bash
         run: |
           npm ci
 
       - name: 🔄 Check for outdated dependencies
+        working-directory: sw360-frontend
         shell: bash
         run: |
           npm outdated || echo "::warning title=Outdated dependencies::Some dependencies are outdated and need to be updated"
 
       - name: Run linting
+        working-directory: sw360-frontend
         shell: bash
         run: |
           npm run lint
