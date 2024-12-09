@@ -51,7 +51,7 @@ jobs:
       
       - name: Setup CouchDB
         run: sw360-backend/scripts/startCouchdbForTests.sh
-      
+
       - name: Update properties with DB credentials
         run: |
           sudo mkdir -p /etc/sw360
@@ -103,6 +103,8 @@ jobs:
 
       - name: Checkout source code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          path: sw360-frontend
 
       - name: Setup Node
         uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
@@ -133,6 +135,11 @@ jobs:
           NEXT_PUBLIC_SW360_API_URL: http://localhost:8080
           NEXTAUTH_SECRET: secret
           NEXTAUTH_URL: http://localhost:3000
+
+      - name: Wait for services
+        run: |
+          npx wait-on http://localhost:8080/resource/api/health
+          npx wait-on http://localhost:3000
 
       - name: Install dependencies cypress
         run: |
