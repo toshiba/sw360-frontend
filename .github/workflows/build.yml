@@ -139,12 +139,6 @@ jobs:
           NEXTAUTH_SECRET: secret
           NEXTAUTH_URL: http://localhost:3000
 
-      - name: Wait for services
-        run: |
-          npm install --save-dev wait-on
-          # npx wait-on http://localhost:8080/resource/api/health --http-status 401
-          npx wait-on http://localhost:3000
-
       - name: Install dependencies cypress
         run: |
           npx cypress run
