@@ -65,8 +65,6 @@ jobs:
           sudo cp sw360-backend/build-configuration/resources/couchdb.properties /etc/sw360/couchdb.properties
           sudo sed -i 's/^couchdb.user\s*=/& '${COUCHDB_USER}'/' /etc/sw360/couchdb.properties
           sudo sed -i 's/^couchdb.password\s*=/& '${COUCHDB_PASSWORD}'/' /etc/sw360/couchdb.properties
-        env: 
-            SW360_CORS_ALLOWED_ORIGIN: '*'
 
       # - name: Cache Thrift
       #   id: cache-thrift
@@ -100,6 +98,8 @@ jobs:
         run: |
           mvn clean install --no-transfer-progress -P deploy -Dbase.deploy.dir=${TOMCAT_DIR} -DskipTests
           bash /opt/apache-tomcat-10.1.19/bin/startup.sh
+        env: 
+            SW360_CORS_ALLOWED_ORIGIN: '*'
 
       - name: Checkout source code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
