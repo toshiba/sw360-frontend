@@ -57,19 +57,16 @@ jobs:
           sudo mkdir -p /etc/sw360
           sudo mkdir /etc/sw360/authorization
           sudo mkdir /etc/sw360/rest
-          sudo cp sw360-backend/rest/resource-server/src/main/resources/application.yml /etc/sw360/rest
-          sudo sed -i 's|${SW360_CORS_ALLOWED_ORIGIN:#{null}}|${SW360_CORS_ALLOWED_ORIGIN:*}|g' /etc/sw360/rest/application.yml
 
+          sudo cp sw360-backend/rest/resource-server/src/main/resources/application.yml /etc/sw360/rest
           sudo cp sw360-backend/scripts/docker-config/etc_sw360/authorization/application.yml /etc/sw360/authorization
           sudo sed -i 's|http://couchdb:5984|http://localhost:5984|g' /etc/sw360/authorization/application.yml
-          sudo sed -i 's|${SW360_CORS_ALLOWED_ORIGIN:#{null}}|${SW360_CORS_ALLOWED_ORIGIN:*}|g' /etc/sw360/authorization/application.yml
 
           sudo cp sw360-backend/build-configuration/resources/couchdb.properties /etc/sw360/couchdb.properties
           sudo sed -i 's/^couchdb.user\s*=/& '${COUCHDB_USER}'/' /etc/sw360/couchdb.properties
           sudo sed -i 's/^couchdb.password\s*=/& '${COUCHDB_PASSWORD}'/' /etc/sw360/couchdb.properties
-
-          cat /etc/sw360/authorization/application.yml
-          cat /etc/sw360/couchdb.properties
+        env: 
+            SW360_CORS_ALLOWED_ORIGIN: '*'
 
       # - name: Cache Thrift
       #   id: cache-thrift
@@ -98,11 +95,10 @@ jobs:
           tar -xvzf apache-tomcat-10.1.19.tar.gz -C /opt/ > /dev/null 2>&1
 
       - name: Build and start sw360-backend
+        working-directory: sw360-backend
         shell: bash
         run: |
-          cd sw360-backend
           mvn clean install --no-transfer-progress -P deploy -Dbase.deploy.dir=${TOMCAT_DIR} -DskipTests
-          cd & ls /opt/apache-tomcat-10.1.19/webapps
           bash /opt/apache-tomcat-10.1.19/bin/startup.sh
 
       - name: Checkout source code
@@ -130,29 +126,14 @@ jobs:
         run: |
           npm run lint
 
-      - name: Create .env file
-        shell: bash
-        run: |
-          touch .env
-          echo "NEXT_PUBLIC_SW360_API_URL = 'http://localhost:8080'" >> .env
-          echo "NEXTAUTH_SECRET = 'secret'" >> .env
-          echo "NEXTAUTH_URL='http://localhost:3000'" >> .env
-          echo "NODE_TLS_REJECT_UNAUTHORIZED = '0'" >> .env
-          cat .env
-
-      - name: Run build
-        shell: bash
-        run: |
-          npm run build
-
-      - name: Start front-end
-        shell: bash
-        run: |
-          npm i nohup -g
-          nohup npm start &
+      - name: Start frontend
+        working-directory: sw360-frontend
+        run: npm run build && npm start &
+        env:
+          NEXT_PUBLIC_SW360_API_URL: http://localhost:8080
+          NEXTAUTH_SECRET: secret
+          NEXTAUTH_URL: http://localhost:3000
 
       - name: Install dependencies cypress
         run: |
-          sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libnss3 libxss1 libasound2 libxtst6 xauth xvfb jq
-          curl http://localhost:3000
           npx cypress run
