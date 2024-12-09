@@ -133,7 +133,10 @@ jobs:
 
       - name: Start frontend
         working-directory: sw360-frontend
-        run: npm run build && npm start &
+        run: |
+          npm run build
+          npm i nohup -g
+          nohup npm start &
         env:
           NEXT_PUBLIC_SW360_API_URL: http://localhost:8080
           NEXTAUTH_SECRET: secret
