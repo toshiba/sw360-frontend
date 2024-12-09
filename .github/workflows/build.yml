@@ -140,5 +140,6 @@ jobs:
           NEXTAUTH_URL: http://localhost:3000
 
       - name: Install dependencies cypress
+        working-directory: sw360-frontend
         run: |
           npx cypress run
