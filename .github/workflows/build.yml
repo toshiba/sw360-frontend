@@ -30,6 +30,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Extract Organization Name
+        run: |
+          ORG_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
+          echo "ORG_NAME=$ORG_NAME" >> $GITHUB_ENV
+
       - name: Harden Runner
         uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
         with:
@@ -45,7 +50,7 @@ jobs:
       - name: Checkout sw360-backend
         uses: actions/checkout@v4
         with:
-          repository: toshiba/sw360
+          repository: ${{ env.ORG_NAME }}/sw360
           token: ${{ secrets.GITHUB_TOKEN }}
           path: sw360-backend
       
@@ -66,19 +71,19 @@ jobs:
           sudo sed -i 's/^couchdb.user\s*=/& '${COUCHDB_USER}'/' /etc/sw360/couchdb.properties
           sudo sed -i 's/^couchdb.password\s*=/& '${COUCHDB_PASSWORD}'/' /etc/sw360/couchdb.properties
 
-      # - name: Cache Thrift
-      #   id: cache-thrift
-      #   uses: actions/cache@v4
-      #   with:
-      #     path: |
-      #       /usr/local/bin/thrift
-      #       /usr/share/thrift/${{ env.THRIFT_VERSION }}
-      #     key: ${{ runner.os }}-thrift-${{ env.THRIFT_VERSION }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-thrift-${{ env.THRIFT_VERSION }}
+      - name: Cache Thrift
+        id: cache-thrift
+        uses: actions/cache@v4
+        with:
+          path: |
+            /usr/local/bin/thrift
+            /usr/share/thrift/${{ env.THRIFT_VERSION }}
+          key: ${{ runner.os }}-thrift-${{ env.THRIFT_VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-thrift-${{ env.THRIFT_VERSION }}
 
       - name: Install Thrift
-        # if: steps.cache-thrift.outputs.cache-hit != 'true'
+        if: steps.cache-thrift.outputs.cache-hit != 'true'
         run: |
           sudo apt-get update -qq
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -yq build-essential libevent-dev libtool flex bison pkg-config libssl-dev git cmake thrift-compiler
