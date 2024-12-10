@@ -55,7 +55,8 @@ jobs:
           path: sw360-backend
       
       - name: Setup CouchDB
-        run: sw360-backend/scripts/startCouchdbForTests.sh
+        working-directory: sw360-backend
+        run: scripts/startCouchdbForTests.sh
 
       - name: Update properties with DB credentials
         run: |
@@ -147,7 +148,7 @@ jobs:
           NEXTAUTH_SECRET: secret
           NEXTAUTH_URL: http://localhost:3000
 
-      - name: Install dependencies cypress
+      - name: Execute e2e testing
         working-directory: sw360-frontend
         run: |
           npx cypress run
