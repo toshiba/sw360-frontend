@@ -91,6 +91,7 @@ jobs:
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -yq build-essential libevent-dev libtool flex bison pkg-config libssl-dev git cmake
           chmod +x scripts/install-thrift.sh
           DESTDIR=${{ github.workspace }}/dist/thrift-${{ env.THRIFT_VERSION }} scripts/install-thrift.sh
+          export PATH="${{ github.workspace }}/dist/thrift-${{ env.THRIFT_VERSION }}/usr/local/bin:$PATH"
 
       - name: Download and Install Tomcat
         run: |
@@ -105,8 +106,6 @@ jobs:
         working-directory: sw360-backend
         shell: bash
         run: |
-          ls  ${{ github.workspace }}/dist/thrift-${{ env.THRIFT_VERSION }}/usr/local/bin
-          export PATH="${{ github.workspace }}/dist/thrift-${{ env.THRIFT_VERSION }}/usr/local/bin:$PATH"
           mvn clean install --no-transfer-progress -P deploy -Dbase.deploy.dir=${TOMCAT_DIR} -DskipTests
           bash /opt/apache-tomcat-10.1.19/bin/startup.sh
         env: 
