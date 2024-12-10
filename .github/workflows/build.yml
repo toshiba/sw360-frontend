@@ -84,10 +84,13 @@ jobs:
             ${{ runner.os }}-thrift-${{ env.THRIFT_VERSION }}
 
       - name: Install Thrift
+        working-directory: sw360-backend
         if: steps.cache-thrift.outputs.cache-hit != 'true'
         run: |
           sudo apt-get update -qq
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -yq build-essential libevent-dev libtool flex bison pkg-config libssl-dev git cmake thrift-compiler
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -yq build-essential libevent-dev libtool flex bison pkg-config libssl-dev git cmake
+          chmod +x scripts/install-thrift.sh
+          DESTDIR=${{ github.workspace }}/dist/thrift-${{ env.THRIFT_VERSION }} scripts/install-thrift.sh
 
       - name: Download and Install Tomcat
         run: |
