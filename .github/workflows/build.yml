@@ -91,6 +91,7 @@ jobs:
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -yq build-essential libevent-dev libtool flex bison pkg-config libssl-dev git cmake
           chmod +x scripts/install-thrift.sh
           DESTDIR=${{ github.workspace }}/dist/thrift-${{ env.THRIFT_VERSION }} scripts/install-thrift.sh
+          export PATH="${{ github.workspace }}/dist/thrift-${{ env.THRIFT_VERSION }}/bin:$PATH"
 
       - name: Download and Install Tomcat
         run: |
