@@ -70,7 +70,7 @@ import Session from './Session'
 import SummaryDataType from './SummaryDataType'
 import ToastData from './ToastData'
 import UpdateClearingRequestPayload from './UpdateClearingRequestPayload'
-import { CreateUserPayload, User } from './User'
+import { UserPayload, User } from './User'
 import UserCredentialInfo from './UserCredentialInfo'
 import Vendor from './Vendor'
 import VendorAdvisory from './VendorAdvisory'
@@ -116,7 +116,7 @@ export type {
     Component,
     ComponentPayload,
     CreateClearingRequestPayload,
-    CreateUserPayload,
+    UserPayload,
     Creator,
     DocumentCreationInformation,
     DocumentState,
