@@ -11,27 +11,20 @@
 import { UserPayload } from '@/object-types'
 import { useTranslations } from 'next-intl'
 import UserOperationType from './UserOperationType'
+import SecondaryDepartmentsAndRoles from './SecondaryDepartmentsAndRoles'
+import { UserGroupType } from '@/object-types'
 
 interface Props {
     userPayload: UserPayload
     handleChange: (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement | HTMLTextAreaElement>) => void
     userOperationType: UserOperationType
+    setUserPayload: React.Dispatch<React.SetStateAction<UserPayload>>
 }
 
-const UserRoles = {
-    USER: 'User',
-    ADMIN: 'Admin',
-    CLEARING_ADMIN: 'Clearing Admin',
-    CLEARING_EXPERT: 'Clearing Expert',
-    ECC_ADMIN: 'ECC Admin',
-    SERCURITY_ADMIN: 'Security Admin',
-    SW360_ADMIN: 'SW360 Admin',
-}
-
-const UserEditForm = ( { userPayload, handleChange, userOperationType }: Props) : JSX.Element => {
+const UserEditForm = ( { userPayload, handleChange, userOperationType, setUserPayload }: Props) : JSX.Element => {
     const t = useTranslations('default')
 
-    return <div className='row mb-4 mx-0'>
+    return <div className='row mx-0'>
         <div className='row header mb-2 pb-2 px-2'>
             <h6>{t('General Information')}</h6>
         </div>
@@ -143,11 +136,12 @@ const UserEditForm = ( { userPayload, handleChange, userOperationType }: Props) 
                 <select className='form-control' name='role' defaultValue={userPayload.userGroup} onChange={handleChange} required>
                     <option value=''>{t('Select primary role')}</option>
                     {
-                        Object.entries(UserRoles).map(([key, value]) => <option key={key} value={key}>{value}</option>)
+                        Object.entries(UserGroupType).map(([key, value]) => <option key={key} value={key}>{t(value as never)}</option>)
                     }
                 </select>
             </div>
         </div>
+        <SecondaryDepartmentsAndRoles userPayload={userPayload} setUserPayload={setUserPayload}/>
     </div>
 }
 
