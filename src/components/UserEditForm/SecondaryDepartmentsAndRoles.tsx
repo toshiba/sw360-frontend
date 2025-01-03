@@ -79,7 +79,7 @@ const SecondaryDepartmentsAndRoles = ({ userPayload, setUserPayload }: Props): J
             </div>
             {
                 secondaryDepartmentsAndRoles.map((secondaryDepartmentAndRole, index) => (
-                    <div className='row mb-3' key={index}>
+                    <div className='row mb-3 px-0' key={index}>
                         <div className='col-lg-6'>
                             <input
                                 type='text'
