@@ -13,20 +13,18 @@ import { Table, _ } from "next-sw360"
 import { useTranslations } from "next-intl"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import Link from "next/link"
+import { useState } from "react"
+import OuputFormatDialog from "./OuputFormatDialog"
 
 interface Props {
     projectId: string
-    projectName?: string
-    projectVersion?: string
 }
 
-export default function GenerateLicenseInfo({projectId,
-                                                  projectName,
-                                                  projectVersion
-                                                  }: Props): JSX.Element {
+export default function GenerateLicenseInfo({projectId}: Props): JSX.Element {
     const t = useTranslations('default')
-    const handleDownloadLicenseInfo = (projectId: string) => {
-        console.log('download license info', projectId, projectName, projectVersion)
+    const [showOutputFormatDialog, setShowOutputFormatDialog] = useState(false)
+    const handleDownloadLicenseInfo = () => {
+        setShowOutputFormatDialog(true)
     }
 
     const columns = [
@@ -107,7 +105,7 @@ export default function GenerateLicenseInfo({projectId,
                         <Button
                             variant='primary'
                             className='me-2 py-2 col-auto'
-                            onClick={() => handleDownloadLicenseInfo(projectId)}
+                            onClick={() => handleDownloadLicenseInfo()}
                         >
                             {t('Download')}
                         </Button>
@@ -134,7 +132,7 @@ export default function GenerateLicenseInfo({projectId,
                         <Table columns={columns} data={[]} sort={false}  />
                     </div>
                 </div>
-
+            <OuputFormatDialog projectId={projectId} show={showOutputFormatDialog} setShow={setShowOutputFormatDialog} />
             </div>
         </>
     )

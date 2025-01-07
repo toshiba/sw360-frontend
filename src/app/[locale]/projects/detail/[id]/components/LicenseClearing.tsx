@@ -49,6 +49,9 @@ export default function LicenseClearing({
         router.push(`/projects/generateSourceCode/${projectId}`)
     }
 
+    const generateLicenseInfo = (withSubProject: boolean) => {
+        router.push(`/projects/generateLicenseInfo/${projectId}?withSubProject=${withSubProject}`)
+    }
 
     return (
         <>
@@ -88,8 +91,8 @@ export default function LicenseClearing({
                                 <Dropdown className='col-auto'>
                                     <Dropdown.Toggle variant='secondary'>{t('Generate License Info')}</Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                            <Dropdown.Item>{t('Projects only')}</Dropdown.Item>
-                                            <Dropdown.Item>{t('Projects with sub projects')}</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => {generateLicenseInfo(false)}}>{t('Projects only')}</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => {generateLicenseInfo(true)}}>{t('Projects with sub projects')}</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                             </Nav.Item>
