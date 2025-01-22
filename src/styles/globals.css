@@ -1235,3 +1235,7 @@ hr {
 .node-have-diff > td:first-child{
     color: red !important;
 }
+
+.new-added-attachment td{
+    background-color: #edf9f0;
+}

@@ -35,7 +35,6 @@ import LicenseClearing from './LicenseClearing'
 import LicenseDetail from './LicenseDetail'
 import LicensePayload from './LicensePayload'
 import LicenseType from './LicenseType'
-import LinkedAttachments from './LinkedAttachments'
 import LinkedProjectData from './LinkedProjectData'
 import LinkedRelease from './LinkedRelease'
 import LinkedReleaseData from './LinkedReleaseData'
@@ -133,7 +132,6 @@ export type {
     LicenseObligationRelease,
     LicensePayload,
     LicenseType,
-    LinkedAttachments,
     LinkedProjectData,
     LinkedRelease,
     LinkedReleaseData,
@@ -197,7 +195,7 @@ export type {
 export { NavList, Preferences }
 
 // Enums + Constants
-import AttachmentType from './constants/AttachmentTypes'
+import AttachmentTypes from './constants/AttachmentTypes'
 import CommonTabIds from './constants/CommonTabsIds'
 import ComponentTabIds from './constants/ComponentTabIds'
 import HttpStatus from './constants/HttpStatus'
@@ -213,7 +211,7 @@ import VulnerabilitiesVerificationState from './enums/VulnerabilitiesVerificatio
 
 export {
     ActionType,
-    AttachmentType,
+    AttachmentTypes,
     ClearingRequestStates,
     CommonTabIds,
     ComponentTabIds,
