@@ -12,54 +12,32 @@ import { getSession, signOut } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { useCallback, useEffect, useState } from 'react'
 
-import { Attachment, ComponentPayload, DocumentTypes, Embedded, HttpStatus, Release } from '@/object-types'
+import { Attachment, Embedded, HttpStatus, ComponentPayload, Release } from '@/object-types'
 import { ApiUtils, CommonUtils } from '@/utils'
-import styles from './Attachment.module.css'
 import SelectAttachment from './SelectAttachment/SelectAttachment'
 import TableAttachment from './TableAttachment/TableAttachment'
 import TitleAttachment from './TiltleAttachment/TitleAttachment'
+import AttachmentRowData from './AttachmentRowData'
 
 interface Props {
-    documentId?: string
-    documentType?: string
-    componentPayload?: ComponentPayload
-    setComponentPayload?: React.Dispatch<React.SetStateAction<ComponentPayload>>
-    releasePayload?: Release
-    setReleasePayload?: React.Dispatch<React.SetStateAction<Release>>
+    documentId: string
+    documentType: string
+    documentPayload: ComponentPayload | Release,
+    setDocumentPayload: React.Dispatch<React.SetStateAction<ComponentPayload | Release>>
 }
 
-type EmbeddedAttachments = Embedded<Attachment, 'sw360:attachmentDTOes'>
+type EmbeddedAttachments = Embedded<Attachment, 'sw360:attachments'>
 
 function EditAttachments({
     documentId,
     documentType,
-    componentPayload,
-    setComponentPayload,
-    releasePayload,
-    setReleasePayload,
+    documentPayload,
+    setDocumentPayload
 }: Props) : JSX.Element {
     const t = useTranslations('default')
-    const [attachmentData, setAttachmentData] = useState<Array<Attachment>>([])
-    const [reRender, setReRender] = useState(false)
-    const handleReRender = () => {
-        setReRender(!reRender)
-    }
+    const [attachmentsData, setAttachmentsData] = useState<Array<AttachmentRowData>>([])
     const [dialogOpenSelectAttachment, setDialogOpenSelectAttachment] = useState(false)
     const handleClickSelectAttachment = useCallback(() => setDialogOpenSelectAttachment(true), [])
-
-    // const setAttachmentToComponentData = (attachmentDatas: AttachmentDetail[]) => {
-    //     setComponentPayload({
-    //         ...componentPayload,
-    //         attachmentDTOs: attachmentDatas,
-    //     })
-    // }
-
-    // const setAttachmentToReleasePayload = (attachmentDatas: AttachmentDetail[]) => {
-    //     setReleasePayload({
-    //         ...releasePayload,
-    //         attachmentDTOs: attachmentDatas,
-    //     })
-    // }
 
     const fetchData = useCallback(
         async (url: string) => {
@@ -84,50 +62,72 @@ function EditAttachments({
             if (attachments === undefined) return
             if (
                 !CommonUtils.isNullOrUndefined(attachments['_embedded']) &&
-                !CommonUtils.isNullOrUndefined(attachments['_embedded']['sw360:attachmentDTOes'])
+                !CommonUtils.isNullOrUndefined(attachments['_embedded']['sw360:attachments'])
             ) {
                 const attachmentDetails: Array<Attachment> = []
-                attachments['_embedded']['sw360:attachmentDTOes'].map((item: Attachment) => {
+                attachments['_embedded']['sw360:attachments'].map((item: Attachment) => {
                     attachmentDetails.push(item)
                 })
-                setAttachmentData(attachmentDetails)
-                if (documentType === DocumentTypes.COMPONENT) {
-                    if(setComponentPayload !== undefined) {
-                        setComponentPayload({
-                            ...componentPayload,
-                            attachmentDTOs: attachmentDetails,
-                        })
-                    }
-                }
+                const existingAttachmentsRowData: Array<AttachmentRowData> = attachmentDetails.map((attachment) => ({
+                        attachmentContentId: CommonUtils.getIdFromUrl(attachment._links?.self.href),
+                        filename: attachment.filename,
+                        attachmentType: attachment.attachmentType,
+                        createdBy: attachment.createdBy,
+                        createdTeam: attachment.createdTeam,
+                        createdComment: attachment.createdComment,
+                        createdOn: attachment.createdOn,
+                        checkedTeam: attachment.checkedTeam,
+                        checkedComment: attachment.checkedComment,
+                        checkedOn: attachment.checkedOn,
+                        checkStatus: attachment.checkStatus,
+                        checkedBy: attachment.checkedBy,
+                        isAddedNew: false,
+                }))
+                setAttachmentsData(existingAttachmentsRowData)
             }
         }).catch((err) => console.error(err))
-    }, [documentId, documentType, fetchData, setComponentPayload, componentPayload])
+    }, [])
+
+    useEffect(() => {
+        const attachmentsToSave: Array<Attachment> = attachmentsData.map((attachment) => (
+            {
+                attachmentContentId: attachment.attachmentContentId,
+                filename: attachment.filename,
+                attachmentType: attachment.attachmentType,
+                createdBy: attachment.createdBy,
+                createdTeam: attachment.createdTeam,
+                createdComment: attachment.createdComment,
+                createdOn: attachment.createdOn,
+                checkedTeam: attachment.checkedTeam,
+                checkedComment: attachment.checkedComment,
+                checkedOn: attachment.checkedOn,
+                checkStatus: attachment.checkStatus,
+                checkedBy: attachment.checkedBy
+            }
+        ))
+        setDocumentPayload({
+            ...documentPayload,
+            attachmentDTOs: attachmentsToSave
+        })
+    }, [attachmentsData])
 
     return (
         <>
             <SelectAttachment
-                componentPayload={componentPayload}
-                setComponentPayload={setComponentPayload}
-                attachmentUpload={attachmentData}
-                setAttachmentFromUpload={setAttachmentData}
+                attachmentsData={attachmentsData}
+                setAttachmentsData={setAttachmentsData}
                 show={dialogOpenSelectAttachment}
                 setShow={setDialogOpenSelectAttachment}
-                onReRender={handleReRender}
-                documentType={documentType}
-                releasePayload={releasePayload}
-                setReleasePayload={setReleasePayload}
             />
-            <div className={`row ${styles['attachment-table']}`} style={{ padding: '25px' }}>
-                <TitleAttachment />
-                <TableAttachment
-                    data={attachmentData}
-                    setAttachmentData={setAttachmentData}
-                    // setAttachmentToComponentData={setAttachmentToComponentData}
-                    documentType={documentType}
-                    // setAttachmentToReleasePayload={setAttachmentToReleasePayload}
-                />
+            <div className='col'>
+                <table className='table col'>
+                    <TitleAttachment />
+                    <TableAttachment
+                        attachmentsData={attachmentsData}
+                        setAttachmentsData={setAttachmentsData}
+                    />
+                </table>
             </div>
-
             <div>
                 <button type='button' onClick={handleClickSelectAttachment} className={`fw-bold btn btn-secondary`}>
                     {t('Add Attachment')}

@@ -476,8 +476,8 @@ const EditRelease = ({ releaseId }: Props) : ReactNode => {
                             <EditAttachments
                                 documentId={releaseId}
                                 documentType={DocumentTypes.RELEASE}
-                                releasePayload={releasePayload}
-                                setReleasePayload={setReleasePayload}
+                                documentPayload={releasePayload}
+                                setDocumentPayload={setReleasePayload}
                             />
                         </div>
                         <div className='row' hidden={selectedTab != ReleaseTabIds.COMMERCIAL_DETAILS ? true : false}>

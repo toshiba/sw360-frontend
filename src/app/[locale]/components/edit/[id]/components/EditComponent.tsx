@@ -204,8 +204,8 @@ const EditComponent = ({ componentId }: Props) : ReactNode => {
                             <EditAttachments
                                 documentId={componentId}
                                 documentType={DocumentTypes.COMPONENT}
-                                componentPayload={componentPayload}
-                                setComponentPayload={setComponentPayload}
+                                documentPayload={componentPayload}
+                                setDocumentPayload={setComponentPayload}
                             />
                         </div>
                     </div>
