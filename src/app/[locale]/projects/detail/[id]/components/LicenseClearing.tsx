@@ -20,6 +20,8 @@ import dynamic from 'next/dynamic'
 import CreateClearingRequestModal from './CreateClearingRequestModal'
 import { ClearingRequestStates } from '@/object-types'
 import ViewClearingRequestModal from './ViewClearingRequestModal'
+import DownloadService from '@/services/download.service'
+import { useSession } from 'next-auth/react'
 
 const DependencyNetworkListView = dynamic(() => import('./DependencyNetworkListView'), { ssr: false })
 const DependencyNetworkTreeView = dynamic(() => import('./DependencyNetworkTreeView'), { ssr: false })
@@ -39,16 +41,24 @@ export default function LicenseClearing({
     clearingRequestId?: string
     isCalledFromModerationRequestCurrentProject?: boolean
 }): JSX.Element {
+    const { data: session } = useSession()
     const t = useTranslations('default')
     const [key, setKey] = useState('tree-view')
     const router = useRouter()
     const [showCreateClearingRequestModal, setShowCreateClearingRequestModal] = useState(false)
     const [showViewClearingRequestModal, setShowViewClearingRequestModal] = useState(false)
 
-    const generateSourceCodeBundle = () => {
-        router.push(`/projects/generateSourceCode/${projectId}`)
+    const generateSourceCodeBundle = (withSubProject: boolean) => {
+        router.push(`/projects/generateSourceCode/${projectId}?withSubProject=${withSubProject.toString()}`)
     }
 
+    const generateLicenseInfo = (withSubProject: boolean) => {
+        router.push(`/projects/generateLicenseInfo/${projectId}?withSubProject=${withSubProject.toString()}`)
+    }
+
+    const exportSpreadsheet = (withlinkedreleases: boolean) => {
+        DownloadService.download(`reports?module=projects&projectId=${projectId}&withlinkedreleases=${withlinkedreleases.toString()}`, session, `${projectName}.xlsx`)
+    }
 
     return (
         <>
@@ -79,8 +89,8 @@ export default function LicenseClearing({
                                 <Dropdown className='col-auto'>
                                     <Dropdown.Toggle variant='secondary'>{t('Export Spreadsheet')}</Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                            <Dropdown.Item>{t('Projects only')}</Dropdown.Item>
-                                            <Dropdown.Item>{t('Projects with sub projects')}</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => exportSpreadsheet(false)}>{t('Projects only')}</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => exportSpreadsheet(true)}>{t('Projects with linked releases')}</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                             </Nav.Item>
@@ -88,8 +98,8 @@ export default function LicenseClearing({
                                 <Dropdown className='col-auto'>
                                     <Dropdown.Toggle variant='secondary'>{t('Generate License Info')}</Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                            <Dropdown.Item>{t('Projects only')}</Dropdown.Item>
-                                            <Dropdown.Item>{t('Projects with sub projects')}</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => {generateLicenseInfo(false)}}>{t('Projects only')}</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => {generateLicenseInfo(true)}}>{t('Projects with sub projects')}</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                             </Nav.Item>
@@ -97,12 +107,10 @@ export default function LicenseClearing({
                                 <Dropdown className='col-auto'>
                                     <Dropdown.Toggle variant='secondary'>{t('Generate Source Code Bundle')}</Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                            <Dropdown.Item
-                                                onClick = {() => generateSourceCodeBundle()}
-                                            >
+                                            <Dropdown.Item onClick = {() => generateSourceCodeBundle(false)}>
                                                 {t('Projects only')}
                                             </Dropdown.Item>
-                                            <Dropdown.Item>
+                                            <Dropdown.Item onClick = {() => generateSourceCodeBundle(true)}>
                                                 {t('Projects with sub projects')}
                                             </Dropdown.Item>
                                         </Dropdown.Menu>

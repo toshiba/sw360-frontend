@@ -14,19 +14,28 @@ import { useTranslations } from "next-intl"
 import { Button, Col, Form, Row } from "react-bootstrap"
 import Link from "next/link"
 
+import DownloadService from '@/services/download.service'
+import { useSearchParams } from 'next/navigation'
+import { useSession } from "next-auth/react"
+
 interface Props {
     projectId: string
-    projectName?: string
-    projectVersion?: string
 }
 
-export default function GenerateSourceCodeBundle({projectId,
-                                                  projectName,
-                                                  projectVersion
-                                                  }: Props): JSX.Element {
+export default function GenerateSourceCodeBundle({projectId}: Props): JSX.Element {
+    const { data: session } = useSession()
     const t = useTranslations('default')
-    const handleDownloadProject = (projectId: string) => {
-        console.log('download  project', projectId, projectName, projectVersion)
+    const searchParams = useSearchParams()
+    const withSubProject = searchParams.get('withSubProject')
+
+    const handleDownloadResourceBundle = () => {
+        const queryParams = new URLSearchParams({
+            module: 'licenseResourceBundle',
+            projectId: projectId,
+            withSubProject: (withSubProject ?? false).toString()
+        })
+
+        DownloadService.download(`reports?${queryParams.toString()}`, session, `ResourceBundle.zip`)
     }
 
     const columns = [
@@ -107,7 +116,7 @@ export default function GenerateSourceCodeBundle({projectId,
                         <Button
                             variant='primary'
                             className='me-2 py-2 col-auto'
-                            onClick={() => handleDownloadProject(projectId)}
+                            onClick={() => handleDownloadResourceBundle()}
                         >
                             {t('Download File')}
                         </Button>
