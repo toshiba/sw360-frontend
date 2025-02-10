@@ -9,14 +9,14 @@
 
 import { Metadata } from 'next'
 import { ReactNode } from 'react'
-import OAuthClient from './components/OAuthClient'
+import OAuthClientsList from './components/OAuthClientsList'
 
 export const metadata: Metadata = {
     title: 'Admin',
 }
 
 function OAuthClientPage() : ReactNode {
-    return <OAuthClient />
+    return <OAuthClientsList />
 }
 
 export default OAuthClientPage

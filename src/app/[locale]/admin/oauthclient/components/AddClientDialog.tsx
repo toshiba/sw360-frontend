@@ -7,44 +7,79 @@
 // License-Filename: LICENSE
 
 'use client'
+import { OAuthClient } from '@/object-types'
 import { useTranslations } from 'next-intl'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useState, useEffect } from 'react'
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap'
 
 interface Props {
     show: boolean
     setShow: React.Dispatch<React.SetStateAction<boolean>>
+    client: OAuthClient | null
 }
 
-const AddClientDialog = ({show, setShow }: Props) : ReactNode => {
-    const t = useTranslations('default')
-    const [description, setDescription] = useState('')
-    const [authorities, setAuthorities] = useState('BASIC')
-    const [readAccess, setReadAccess] = useState(false)
-    const [writeAccess, setWriteAccess] = useState(false)
-    const [accessTokenValidity, setAccessTokenValidity] = useState('')
-    const [refreshTokenValidity, setRefreshTokenValidity] = useState('')
-    const [accessTokenUnit, setAccessTokenUnit] = useState('Days')
-    const [refreshTokenUnit, setRefreshTokenUnit] = useState('Days')
+interface FormState {
+    description: string
+    authorities: string
+    readAccess: boolean
+    writeAccess: boolean
+    accessTokenValidity: string
+    refreshTokenValidity: string
+    accessTokenUnit: 'Days' | 'Seconds'
+    refreshTokenUnit: 'Days' | 'Seconds'
+}
 
-    const handleAccessTokenUnitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newUnit = e.target.value
-        if (newUnit === 'Seconds' && accessTokenUnit === 'Days') {
-            setAccessTokenValidity((Number(accessTokenValidity) * 86400).toString())
-        } else if (newUnit === 'Days' && accessTokenUnit === 'Seconds') {
-            setAccessTokenValidity((Number(accessTokenValidity) / 86400).toString())
-        }
-        setAccessTokenUnit(newUnit)
+const defaultState: FormState = {
+    description: '',
+    authorities: 'BASIC',
+    readAccess: false,
+    writeAccess: false,
+    accessTokenValidity: '',
+    refreshTokenValidity: '',
+    accessTokenUnit: 'Days',
+    refreshTokenUnit: 'Days'
+}
+
+const AddClientDialog = ({show, setShow, client }: Props) : ReactNode => {
+    const t = useTranslations('default')
+    const [formState, setFormState] = useState<FormState>(defaultState)
+
+    const updateField = <K extends keyof FormState>(field: K, value: FormState[K]) => {
+        setFormState(prev => ({ ...prev, [field]: value }))
     }
 
-    const handleRefreshTokenUnitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newUnit = e.target.value
-        if (newUnit === 'Seconds' && refreshTokenUnit === 'Days') {
-            setRefreshTokenValidity((Number(refreshTokenValidity) * 86400).toString())
-        } else if (newUnit === 'Days' && refreshTokenUnit === 'Seconds') {
-            setRefreshTokenValidity((Number(refreshTokenValidity) / 86400).toString())
+    useEffect(() => {
+        if (client !== null) {
+            setFormState({
+                description: client.description,
+                authorities: client.authorities.join(", "),
+                readAccess: client.scope.includes("READ"),
+                writeAccess: client.scope.includes("WRITE"),
+                accessTokenValidity: client.access_token_validity.toString(),
+                refreshTokenValidity: client.refresh_token_validity.toString(),
+                accessTokenUnit: "Seconds",
+                refreshTokenUnit: "Seconds"
+            })
+        } else {
+            setFormState(defaultState)
         }
-        setRefreshTokenUnit(newUnit)
+    }, [client])
+
+    const handleTokenUnitChange = (tokenType: 'access' | 'refresh') => (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newUnit = e.target.value as 'Days' | 'Seconds'
+        const isAccess = tokenType === 'access'
+        const currentValue = isAccess ? formState.accessTokenValidity : formState.refreshTokenValidity
+        const currentUnit = isAccess ? formState.accessTokenUnit : formState.refreshTokenUnit
+        
+        const oldValue = Number(currentValue)
+        const newValue = newUnit === 'Seconds' && currentUnit === 'Days'
+            ? oldValue * 86400
+            : newUnit === 'Days' && currentUnit === 'Seconds'
+            ? oldValue / 86400
+            : oldValue
+
+        updateField(isAccess ? 'accessTokenUnit' : 'refreshTokenUnit', newUnit)
+        updateField(isAccess ? 'accessTokenValidity' : 'refreshTokenValidity', newValue.toString())
     }
 
     const handleClose = () => {
@@ -52,11 +87,15 @@ const AddClientDialog = ({show, setShow }: Props) : ReactNode => {
     }
 
     const requestBody = {
-        description,
-        access_token_validity: Number(accessTokenValidity) * (accessTokenUnit === 'Seconds' ? 1 : 86400),
-        refresh_token_validity: Number(refreshTokenValidity) * (refreshTokenUnit === 'Seconds' ? 1 : 86400),
-        authorities: [authorities],
-        scope: [readAccess ? 'READ' : '', writeAccess ? 'WRITE' : ''].filter(Boolean)
+        ...(client && {
+            client_id: client.client_id,
+            client_secret: client.client_secret,
+        }),
+        description: formState.description,
+        access_token_validity: Number(formState.accessTokenValidity) * (formState.accessTokenUnit === 'Seconds' ? 1 : 86400),
+        refresh_token_validity: Number(formState.refreshTokenValidity) * (formState.refreshTokenUnit === 'Seconds' ? 1 : 86400),
+        authorities: [formState.authorities],
+        scope: [formState.readAccess ? 'READ' : '', formState.writeAccess ? 'WRITE' : ''].filter(Boolean)
     }
 
     const handleSubmit = () => {
@@ -66,7 +105,7 @@ const AddClientDialog = ({show, setShow }: Props) : ReactNode => {
     return (
         <Modal show={show} onHide={handleClose} backdrop='static' centered size='lg'>
             <Modal.Header closeButton>
-                <Modal.Title>Create new client</Modal.Title>
+                <Modal.Title>{client === null ? ("Create new client") : ("Edit client")}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
@@ -75,8 +114,8 @@ const AddClientDialog = ({show, setShow }: Props) : ReactNode => {
                         <Form.Control 
                             type='text' 
                             placeholder='Enter Description' 
-                            value={description} 
-                            onChange={(e) => setDescription(e.target.value)} 
+                            value={formState.description} 
+                            onChange={(e) => updateField('description', e.target.value)} 
                         />
                     </Form.Group>
                     <Row>
@@ -85,8 +124,8 @@ const AddClientDialog = ({show, setShow }: Props) : ReactNode => {
                                 <Form.Label style={{ fontWeight: 'bold' }}>Authorities *</Form.Label>
                                 <Form.Control 
                                     type='text' 
-                                    value={authorities}
-                                    onChange={(e) => setAuthorities(e.target.value)}
+                                    value={formState.authorities}
+                                    onChange={(e) => updateField('authorities', e.target.value)}
                                 />
                             </Form.Group>
                         </Col>
@@ -97,14 +136,14 @@ const AddClientDialog = ({show, setShow }: Props) : ReactNode => {
                                     <Form.Check 
                                         type='checkbox'
                                         label='Read Access'
-                                        checked={readAccess}
-                                        onChange={(e) => setReadAccess(e.target.checked)}
+                                        checked={formState.readAccess}
+                                        onChange={(e) => updateField('readAccess', e.target.checked)}
                                     />
                                     <Form.Check 
                                         type='checkbox'
                                         label='Write Access'
-                                        checked={writeAccess}
-                                        onChange={(e) => setWriteAccess(e.target.checked)}
+                                        checked={formState.writeAccess}
+                                        onChange={(e) => updateField('writeAccess', e.target.checked)}
                                     />
                                 </div>
                             </Form.Group>
@@ -119,12 +158,12 @@ const AddClientDialog = ({show, setShow }: Props) : ReactNode => {
                                         <Form.Control 
                                             type='number' 
                                             placeholder='Enter access token validity' 
-                                            value={accessTokenValidity} 
-                                            onChange={(e) => setAccessTokenValidity(e.target.value)} 
+                                            value={formState.accessTokenValidity} 
+                                            onChange={(e) => updateField('accessTokenValidity', e.target.value)} 
                                         />
                                     </Col>
                                     <Col>
-                                        <Form.Control as='select' value={accessTokenUnit} onChange={handleAccessTokenUnitChange}>
+                                        <Form.Control as='select' value={formState.accessTokenUnit} onChange={handleTokenUnitChange('access')}>
                                             <option>Days</option>
                                             <option>Seconds</option>
                                         </Form.Control>
@@ -140,12 +179,12 @@ const AddClientDialog = ({show, setShow }: Props) : ReactNode => {
                                         <Form.Control 
                                             type='number' 
                                             placeholder='Enter refresh token validity' 
-                                            value={refreshTokenValidity} 
-                                            onChange={(e) => setRefreshTokenValidity(e.target.value)} 
+                                            value={formState.refreshTokenValidity} 
+                                            onChange={(e) => updateField('refreshTokenValidity', e.target.value)} 
                                         />
                                     </Col>
                                     <Col>
-                                        <Form.Control as='select' value={refreshTokenUnit} onChange={handleRefreshTokenUnitChange}>
+                                        <Form.Control as='select' value={formState.refreshTokenUnit} onChange={handleTokenUnitChange('refresh')}>
                                             <option>Days</option>
                                             <option>Seconds</option>
                                         </Form.Control>
@@ -161,7 +200,7 @@ const AddClientDialog = ({show, setShow }: Props) : ReactNode => {
                     Cancel
                 </Button>
                 <Button variant='primary' onClick={handleSubmit}>
-                    Create
+                    {client === null ? ("Create") : ("Update")}
                 </Button>
             </Modal.Footer>
         </Modal>
