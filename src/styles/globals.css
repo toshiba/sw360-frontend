@@ -1279,3 +1279,16 @@ hr {
 svg.action:hover {
     color: #F7941E;
 }
+
+.header-underlined {
+    color: #5D8EA9;
+    border-bottom: 1px solid #5D8EA9;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.table-header {
+    background-color: #5d8ea9 !important;
+    color: white !important;
+}
