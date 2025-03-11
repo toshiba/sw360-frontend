@@ -11,7 +11,7 @@
   SPDX-License-Identifier: EPL-2.0
   License-Filename: LICENSE
 */
-
+n
 body {
     background-color: #fafafa;
     color: #272833;
@@ -1194,7 +1194,7 @@ svg.cursor {
     color: #2e5aac;
 }
 
-a.text-primary:hover, a.text-primary:focus {
+a.text-primary:hover, a.text-primary:focus {/*  */
     color: #c26c07 !important;
 }
 
