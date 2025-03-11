@@ -1288,6 +1288,14 @@ svg.action:hover {
     background-color: #edf9f0;
 }
 
+.tree-row .action-buttons {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tree-row:hover .action-buttons {
+    opacity: 1;
+}
 .table-container {
     width: 100%;
     overflow-x: auto;

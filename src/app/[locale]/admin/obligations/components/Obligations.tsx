@@ -16,11 +16,11 @@ import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { PageButtonHeader, QuickFilter, Table, _ } from 'next-sw360'
 import { useSearchParams } from 'next/navigation'
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap'
 import { FaClipboard, FaPencilAlt, FaTrashAlt } from 'react-icons/fa'
 import { MdOutlineTask } from 'react-icons/md'
-import DeleteObligationDialog from './DeleteComponentDialog'
+import DeleteObligationDialog from './DeleteObligationDialog'
 
 const levels = {
     COMPONENT_OBLIGATION: 'Component Obligation',
@@ -47,6 +47,7 @@ function Obligations(): ReactNode {
         }
     }
 
+
     const extractObligationId = (obligation: Obligation): string | undefined => {
         if (!obligation._links) return undefined
         const href = obligation._links.self.href
@@ -55,7 +56,7 @@ function Obligations(): ReactNode {
     }
 
     const headerButtons = {
-        'Add Obligation': { type: 'primary', link: '/admin/obligations', name: t('Add Obligation') },
+        'Add Obligation': { type: 'primary', link: '/admin/obligations/add', name: t('Add Obligation') },
     }
 
     const server = {
