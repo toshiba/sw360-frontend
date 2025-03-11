@@ -1,23 +1,50 @@
-// Copyright (C) TOSHIBA CORPORATION, 2025. Part of the SW360 Frontend Project.
-// Copyright (C) Toshiba Software Development (Vietnam) Co., Ltd., 2025. Part of the SW360 Frontend Project.
+'use client'
+import { useTranslations } from 'next-intl'
+import { PageButtonHeader } from 'next-sw360'
+import { ReactNode, useState } from 'react'
+import ObligationForm from '../components/AddOrEditObligation'
+import { Obligation } from '@/object-types'
 
-// This program and the accompanying materials are made
-// available under the terms of the Eclipse Public License 2.0
-// which is available at https://www.eclipse.org/legal/epl-2.0/
+function AddObligation(): ReactNode {
+    const t = useTranslations('default')
+    const [obligation, setObligation] = useState<Obligation>({
+        title: '',
+        text: '',
+        obligationLevel: '',
+        obligationType: ''
+    } as Obligation)
 
-// SPDX-License-Identifier: EPL-2.0
-// License-Filename: LICENSE
+    const printOut = () => {
+        console.log(obligation)
+    }
 
-import { Metadata } from 'next'
-import { ReactNode } from 'react'
-import AddOrEditObligation from '.././components/AddOrEditObligation'
+    const headerButtons = {
+        'Create Obligation': {
+            type: 'primary',
+            link: '/admin/obligations/add',
+            name: t('Add Obligation'),
+            onClick: printOut,
+        },
+        Cancel: {
+            type: 'secondary',
+            link: '/admin/obligations',
+            name: t('Cancel'),
+        },
+    }
 
-export const metadata: Metadata = {
-    title: 'Admin',
-}
+    return (
+        <div className='container page-content'>
+            <div className='row'>
+                <div className='col-12'>
+                    <div className='row mb-3'>
+                        <PageButtonHeader buttons={headerButtons} />
+                    </div>
 
-function AddObligation() : ReactNode {
-    return <AddOrEditObligation/>
+                    <ObligationForm obligation={obligation} setObligation={setObligation}/>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export default AddObligation
