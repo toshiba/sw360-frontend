@@ -1,7 +1,8 @@
 'use client'
 import { Obligation } from '@/object-types'
 import { useTranslations } from 'next-intl'
-import { ReactNode, useState, useEffect } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 const ObligationLevels = {
     COMPONENT_OBLIGATION: 'Component Obligation',
@@ -20,28 +21,38 @@ interface TreeNode {
     parentId?: string
 }
 
+const obligationLevelInfoArray = [
+    'Organisation Obligation: Organisation Obligations are general rules or mandatory steps to made sure before conveying software. An example would be to add the OSS contact e-mail address in case of questions to the project, software or to the organisation at all instances of conveyed software.',
+    'Component Obligation: Component obligations are obligations for a specific component or release only. For example, special measure or actions to be carried out could result from trade compliance or IP issues with the component.',
+    'License Obligation: License obligation are task to be carried out or risks to be considered from the use of software under a particular license.',
+    'Project Obligation: Project obligations are specific to the projects or products nature and are also requires steps or tasks to be made sure before conveying the software. An example could be tiny hardware with limited printed documentation. In this case open source license information would required special handling, for example print instructions how to obtain OSS license information on the packaging.',
+]
+
 interface Prop {
     obligation: Obligation
     setObligation: React.Dispatch<React.SetStateAction<Obligation>>
 }
 
-function ObligationForm({obligation, setObligation} : Prop): ReactNode {
+function ObligationForm({ obligation, setObligation }: Prop): ReactNode {
     const t = useTranslations('default')
     const [title, setTitle] = useState(obligation.title ?? '')
     const [obligationType, setObligationType] = useState(obligation.obligationType ?? '')
     const [obligationLevel, setObligationLevel] = useState(obligation.obligationLevel ?? '')
     const [tree, setTree] = useState<TreeNode[]>([])
-    const [treeText, setTreeText] = useState('')
+    const [treeText, setTreeText] = useState(obligation.text ?? '')
 
     useEffect(() => {
-        const targetObligation: Obligation = {
+        setObligation({
             title: title,
             text: treeText,
             obligationType: obligationType,
-            obligationLevel: obligationLevel
-        };
-        setObligation(targetObligation);
-    }, [title, treeText, obligationType, obligationLevel]);
+            obligationLevel:
+                Object.keys(ObligationLevels).find(
+                    (key) => ObligationLevels[key as keyof typeof ObligationLevels] === obligationLevel,
+                ) ?? '',
+            ...obligation,
+        })
+    }, [title, treeText, obligationType, obligationLevel])
 
     const generateId = () => Math.random().toString(36).substring(2, 11)
 
@@ -171,7 +182,7 @@ function ObligationForm({obligation, setObligation} : Prop): ReactNode {
                 style={{ marginLeft: `${level * 20}px` }}
                 className='tree-row'
             >
-                <div className='row mb-2 align-items-center'>
+                <div className='row mb-2 align-items-center position-relative'>
                     <div className='col-md-3'>
                         <input
                             type='text'
@@ -191,7 +202,7 @@ function ObligationForm({obligation, setObligation} : Prop): ReactNode {
                         />
                     </div>
                     <div className='col-md-2'>
-                        <div className='d-flex align-items-center action-buttons'>
+                        <div className='d-flex align-items-center action-buttons opacity-0 hover-visible'>
                             <span>»</span>
                             <a
                                 href='#'
@@ -247,7 +258,7 @@ function ObligationForm({obligation, setObligation} : Prop): ReactNode {
     return (
         <div className='obligation-container'>
             <div className='p-3'>
-                <div className='row mb-3 align-items-center'>
+                <div className='row mb-2 align-items-center'>
                     <div className='col-md-4'>
                         <label
                             htmlFor='title'
@@ -299,23 +310,39 @@ function ObligationForm({obligation, setObligation} : Prop): ReactNode {
                         >
                             {'Obligation Level'}
                         </label>
-                        <div className='d-flex align-items-center'>
-                            <select
-                                className='form-select'
-                                id='obligationLevel'
-                                value={obligationLevel}
-                                onChange={(e) => setObligationLevel(e.target.value)}
-                            >
-                                {Object.values(ObligationLevels).map((option) => (
-                                    <option
-                                        key={option}
-                                        value={option}
-                                    >
-                                        {option}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+                        <select
+                            className='form-select'
+                            id='obligationLevel'
+                            value={obligationLevel}
+                            onChange={(e) => setObligationLevel(e.target.value)}
+                        >
+                            {Object.values(ObligationLevels).map((option) => (
+                                <option
+                                    key={option}
+                                    value={option}
+                                >
+                                    {option}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+                <div className='row mb-2'>
+                    <div className='col-md-4 offset-md-8'>
+                        <OverlayTrigger
+                            overlay={
+                                <Tooltip id='obligation-level-info'>
+                                    {obligationLevelInfoArray.map((line, index) => (
+                                        <div key={index}>{line}</div>
+                                    ))}
+                                </Tooltip>
+                            }
+                            placement='bottom'
+                        >
+                            <span className='d-inline-block btn-overlay cursor-pointer'>
+                                <small>ⓘ Learn more about obligation level</small>
+                            </span>
+                        </OverlayTrigger>
                     </div>
                 </div>
 
@@ -356,8 +383,11 @@ function ObligationForm({obligation, setObligation} : Prop): ReactNode {
                     </div>
                 </div>
 
-                <div className='row'>
-                    <div className='col-12'>
+                <div
+                    className='row'
+                    style={{ marginBottom: '10px' }}
+                >
+                    <div className='col-md-4'>
                         <label
                             className='form-label'
                             style={{ fontWeight: 'bold' }}
@@ -371,7 +401,9 @@ function ObligationForm({obligation, setObligation} : Prop): ReactNode {
                                 backgroundColor: '#f8f9fa',
                                 whiteSpace: 'pre-wrap',
                             }}
-                        >   {title}
+                        >
+                            {' '}
+                            {title}
                             <br />
                             {treeText}
                         </div>
