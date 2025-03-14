@@ -1284,11 +1284,9 @@ svg.action:hover {
     background-color: #edf9f0;
 }
 
-.tree-row .action-buttons {
-    opacity: 0;
-    transition: opacity 0.3s ease;
+.hover-visible {
+    transition: opacity 0.2s;
 }
-
-.tree-row:hover .action-buttons {
-    opacity: 1;
+.row:hover > .col-md-2 .hover-visible {
+    opacity: 1 !important;
 }

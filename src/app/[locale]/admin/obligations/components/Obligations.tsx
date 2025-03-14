@@ -15,7 +15,7 @@ import { SW360_API_URL } from '@/utils/env'
 import { signOut, useSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { PageButtonHeader, QuickFilter, Table, _ } from 'next-sw360'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { ReactNode, useState } from 'react'
 import { OverlayTrigger, Spinner, Tooltip } from 'react-bootstrap'
 import { FaClipboard, FaPencilAlt, FaTrashAlt } from 'react-icons/fa'
@@ -40,13 +40,14 @@ function Obligations(): ReactNode {
     const [showDeleteDialog, setShowDeleteDialog] = useState(false)
     const [deletedObligationId, setDeletedObligationId] = useState('')
 
+    const router = useRouter()
+
     const openDeleteDialog = (obligationId: string | undefined) => {
         if (obligationId !== undefined) {
             setDeletedObligationId(obligationId)
             setShowDeleteDialog(true)
         }
     }
-
 
     const extractObligationId = (obligation: Obligation): string | undefined => {
         if (!obligation._links) return undefined
@@ -84,7 +85,24 @@ function Obligations(): ReactNode {
             name: t('Title'),
             sort: true,
         },
-        { name: t('Text'), width: '40%', sort: true },
+        {
+            name: t('Text'),
+            width: '35%',
+            sort: true,
+            formatter: (text: string) => {
+                return _(
+                    <div
+                        style={{
+                            whiteSpace: 'pre-wrap',
+                            wordBreak: 'break-word',
+                            maxWidth: '100%',
+                        }}
+                    >
+                        {text}
+                    </div>,
+                )
+            },
+        },
         { name: t('Obligation Level'), width: '30%', sort: true },
         {
             name: t('Actions'),
@@ -95,7 +113,12 @@ function Obligations(): ReactNode {
                         <span className='d-flex justify-content-evenly'>
                             <OverlayTrigger overlay={<Tooltip>{t('Edit')}</Tooltip>}>
                                 <span className='d-inline-block btn-overlay cursor-pointer'>
-                                    <FaPencilAlt className='btn-icon' />
+                                    <FaPencilAlt
+                                        onClick={() => {
+                                            router.push(`obligations/edit/${extractObligationId(item)}`)
+                                        }}
+                                        className='btn-icon'
+                                    />
                                 </span>
                             </OverlayTrigger>
                             <OverlayTrigger overlay={<Tooltip>{t('Create Clearing Request')}</Tooltip>}>
