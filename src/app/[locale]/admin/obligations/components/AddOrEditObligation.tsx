@@ -3,6 +3,7 @@ import { Obligation } from '@/object-types'
 import { useTranslations } from 'next-intl'
 import { ReactNode, useEffect, useState } from 'react'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import ImportElementDialog from './ImportElementDialog'
 
 const ObligationLevels = {
     COMPONENT_OBLIGATION: 'Component Obligation',
@@ -40,6 +41,7 @@ function ObligationForm({ obligation, setObligation }: Prop): ReactNode {
     const [obligationLevel, setObligationLevel] = useState(obligation.obligationLevel ?? '')
     const [tree, setTree] = useState<TreeNode[]>([])
     const [treeText, setTreeText] = useState(obligation.text ?? '')
+    const [openImportElementDialog, setOpenImportElementDialog] = useState(false)
 
     useEffect(() => {
         setObligation({
@@ -244,6 +246,10 @@ function ObligationForm({ obligation, setObligation }: Prop): ReactNode {
                                 href='#'
                                 className='mx-2'
                                 style={{ color: 'blue', textDecoration: 'none' }}
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    setOpenImportElementDialog(true)
+                                }}
                             >
                                 Import
                             </a>
@@ -257,6 +263,7 @@ function ObligationForm({ obligation, setObligation }: Prop): ReactNode {
 
     return (
         <div className='obligation-container'>
+            <ImportElementDialog show={openImportElementDialog} setShow={setOpenImportElementDialog} />
             <div className='p-3'>
                 <div className='row mb-2 align-items-center'>
                     <div className='col-md-4'>

@@ -17,6 +17,7 @@ import { useTranslations } from 'next-intl'
 import {  Button, Form, Modal } from 'react-bootstrap'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
 import MessageService from '@/services/message.service'
+import { ReactNode } from 'react'
 
 interface Props {
     obligationId: string
@@ -24,7 +25,7 @@ interface Props {
     setShow: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function DeleteObligationDialog ({ obligationId, show, setShow }: Props): JSX.Element {
+function DeleteObligationDialog ({ obligationId, show, setShow }: Props): ReactNode {
     const t = useTranslations('default')
 
 
@@ -36,7 +37,7 @@ function DeleteObligationDialog ({ obligationId, show, setShow }: Props): JSX.El
             const response = await ApiUtils.DELETE(`obligations/${obligationId}`, session.user.access_token)
             console.log(response)
             if (response.status === HttpStatus.MULTIPLE_STATUS) {
-                MessageService.success(t('Obligation deleted successfully'))
+                MessageService.success(('Obligation deleted successfully'))
                 setShow(false)
             } else if (response.status == HttpStatus.UNAUTHORIZED) {
                 await signOut()
@@ -73,7 +74,7 @@ function DeleteObligationDialog ({ obligationId, show, setShow }: Props): JSX.El
                             <Form>
                                 <Form.Group>
                                     <Form.Label className='mb-3'>
-                                        {t('Do you really want to delete this obligation')} ?
+                                        {('Do you really want to delete this obligation')} ?
                                     </Form.Label>
                                     <br />
                                 </Form.Group>
