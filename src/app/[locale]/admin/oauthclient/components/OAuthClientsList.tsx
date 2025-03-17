@@ -12,7 +12,7 @@
 
 import { HttpStatus, OAuthClient } from '@/object-types'
 import { SW360_API_URL } from '@/utils/env'
-import { getSession, signOut, useSession } from 'next-auth/react'
+import { getSession, signOut } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import { PageButtonHeader } from 'next-sw360'
 import React, { ReactNode, useState, useEffect } from 'react'
@@ -25,7 +25,6 @@ import MessageService from '@/services/message.service'
 function OAuthClientsList(): ReactNode {
     const t = useTranslations('default')
     const [numberClient, setNumberClient] = useState(0)
-    const { status } = useSession()
     const [openAddClientDialog, setOpenAddClientDialog] = useState(false)
     const [openDeleteClientDialog, setOpenDeleteClientDialog] = useState(false)
     const [selectedClient, setSelectedClient] = useState<OAuthClient | null>(null)
@@ -78,11 +77,8 @@ function OAuthClientsList(): ReactNode {
         setLoading(true)
         try {
             const session = await getSession()
-            console.log('Session:', session)
             if (CommonUtils.isNullOrUndefined(session)) {
-                console.log('Session is null or undefined')
-                setLoading(false)
-                return
+                return signOut()
             }
 
             const response = await sendOAuthClientRequest(session.user.access_token)
@@ -92,7 +88,8 @@ function OAuthClientsList(): ReactNode {
                 setClients(data)
                 setNumberClient(data.length)
             } else if (response.status === HttpStatus.UNAUTHORIZED) {
-                await signOut()
+                MessageService.error(t('Session has expired'))
+                return
             } else {
                 MessageService.error(t('Error when processing'))
             }
@@ -108,12 +105,13 @@ function OAuthClientsList(): ReactNode {
         fetchClientsData()
     }, [refreshTrigger])
 
-    if (status === 'unauthenticated') {
-        return signOut()
-    } else {
         return (
-            <div className="container page-content">
-                <AddClientDialog show={openAddClientDialog} setShow={handleDialogClose} client={selectedClient} />
+            <div className='container page-content'>
+                <AddClientDialog
+                    show={openAddClientDialog}
+                    setShow={handleDialogClose}
+                    client={selectedClient}
+                />
                 {selectedClient && (
                     <DeleteClientDialog
                         show={openDeleteClientDialog}
@@ -121,20 +119,24 @@ function OAuthClientsList(): ReactNode {
                         clientId={selectedClient.client_id}
                     />
                 )}
-                <div className="row">
-                    <div className="col col-12">
-                        <div className="col">
-                            <div className="row">
+                <div className='row'>
+                    <div className='col col-12'>
+                        <div className='col'>
+                            <div className='row'>
                                 <PageButtonHeader
                                     buttons={headerButtons}
                                     title={`${t('OAuth Client')} (${numberClient})`}
                                 />
 
-                                <div className="row mt-3">
+                                <div className='row mt-3'>
                                     {loading ? (
                                         <p>Loading clients...</p>
                                     ) : (
-                                        <OAuthClientTable updateClient={updateClient} deleteClient={deleteClient} clients={clients} />
+                                        <OAuthClientTable
+                                            updateClient={updateClient}
+                                            deleteClient={deleteClient}
+                                            clients={clients}
+                                        />
                                     )}
                                 </div>
                             </div>
@@ -143,6 +145,5 @@ function OAuthClientsList(): ReactNode {
                 </div>
             </div>
         )
-    }
 }
 export default OAuthClientsList

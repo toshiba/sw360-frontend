@@ -12,7 +12,7 @@
 import { HttpStatus } from '@/object-types'
 import { CommonUtils } from '@/utils'
 import { SW360_API_URL } from '@/utils/env'
-import { signOut, getSession } from 'next-auth/react'
+import { getSession } from 'next-auth/react'
 import { useTranslations } from 'next-intl'
 import {  Button, Form, Modal } from 'react-bootstrap'
 import { AiOutlineQuestionCircle } from 'react-icons/ai'
@@ -50,9 +50,11 @@ function DeleteClientDialog ({ clientId, show, setShow }: Props): JSX.Element {
                 MessageService.success(t('Client deleted successfully'))
                 setShow(false)
             } else if (response.status == HttpStatus.UNAUTHORIZED) {
-                await signOut()
+                MessageService.error(t('Session has expired'))
+                return
             } else {
                 MessageService.error(t('Error when processing'))
+                return
             }
         } catch (err) {
             MessageService.error(t('Error when processing'))
